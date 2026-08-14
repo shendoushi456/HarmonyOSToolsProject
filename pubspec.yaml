@@ -1,0 +1,59 @@
+name: qingman_weather
+description: 轻漫天气 - Flutter-ohos 版
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=2.19.6 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+
+  # 状态管理（CODEBUDDY.md 规定）
+  flutter_riverpod: 2.3.7
+  riverpod_annotation: 2.1.2
+
+  # 路由
+  go_router: 7.1.1
+
+  # 图表（趋势折线图备选；主用 CustomPaint）
+  fl_chart: 0.55.2
+
+  # 国际化（flutter_localizations 锁定 intl 0.19.0，从 0.17.0 放宽）
+  intl: 0.19.0
+
+  # 字体渲染/SVG
+  flutter_svg: 2.0.5
+
+  # 网络（纯 Dart，无需 ohos 适配）
+  dio: 5.4.0
+
+  # 存储（需 ohos 适配，从 gitcode.com/openharmony-tpc/flutter_packages 获取）
+  # 主包内部已声明对 *_ohos 适配包的依赖，无需显式引入 _ohos 包
+  shared_preferences:
+    git:
+      url: https://gitcode.com/openharmony-tpc/flutter_packages.git
+      path: packages/shared_preferences/shared_preferences
+      ref: br_shared_preferences-v2.5.3_ohos
+  path_provider:
+    git:
+      url: https://gitcode.com/openharmony-sig/flutter_packages.git
+      path: packages/path_provider/path_provider
+      ref: br_path_provider-v2.1.5_ohos
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^2.0.0
+  riverpod_generator: 2.2.0
+  build_runner: ^2.3.3
+  very_good_analysis: 4.0.0
+
+flutter:
+  uses-material-design: true
+  generate: true
+  assets:
+    - assets/images/

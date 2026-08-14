@@ -1,0 +1,25 @@
+# Flutter
+.dart_tool/
+.packages
+.flutter-plugins
+.flutter-plugins-dependencies
+pubspec.lock
+**/build/
+
+# IDE
+/.idea
+*.iml
+
+# HarmonyOS / ohos
+/node_modules
+/oh_modules
+/ohos/**/build
+/ohos/**/oh_modules
+/local.properties
+/.hvigor
+.cxx
+/.clangd
+/.clang-format
+/.clang-tidy
+**/.test
+/.appanalyzer
