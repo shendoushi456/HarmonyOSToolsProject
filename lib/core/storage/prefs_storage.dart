@@ -29,6 +29,9 @@ class PrefsStorage {
   /// 是否刚添加城市(用于跳转到新城市)
   static const String keySaveCurrentItem = 'saveCurrentItem';
 
+  /// 是否同意隐私协议(对齐 Android SPUtil "isAgressment")
+  static const String keyIsAgressment = 'isAgressment';
+
   /// 保存城市列表 JSON
   static Future<void> saveCityList(List<Map<String, dynamic>> cities) async {
     final json = jsonEncode(cities);
@@ -59,4 +62,13 @@ class PrefsStorage {
   /// 读取是否刚添加城市
   static bool loadSaveCurrentItem() =>
       _instance.getBool(keySaveCurrentItem) ?? false;
+
+  /// 读取是否同意隐私协议 - 对齐 Android SPUtil "isAgressment"
+  static bool loadIsAgressment() =>
+      _instance.getBool(keyIsAgressment) ?? false;
+
+  /// 保存是否同意隐私协议
+  static Future<void> saveIsAgressment(bool value) async {
+    await _instance.setBool(keyIsAgressment, value);
+  }
 }

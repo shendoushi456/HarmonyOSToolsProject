@@ -60,4 +60,51 @@ class AppAssets {
   /// 底部导航 - 空气
   static const String tabAirNormal = '$_base/qmtq_tab_air_normal.png';
   static const String tabAirSelected = '$_base/qmtq_tab_air_selected.png';
+
+  /// 日历卡片背景(335x328)
+  static const String calendarCard = '$_base/qmtq_calendar_card.png';
+
+  /// 日历上一月箭头(28dp)
+  static const String calendarLeft = '$_base/qmtq_calendar_left.png';
+
+  /// 日历下一月箭头(28dp)
+  static const String calendarRight = '$_base/qmtq_calendar_right.png';
+
+  /// 日历选中周背景
+  static const String calendarWeekHighlight = '$_base/qmtq_calendar_week_highlight.png';
+
+  /// 城市搜索图标(16dp)
+  static const String icSearch = '$_base/ic_search.webp';
+
+  // ====== 空气质量页资源 ======
+  /// AQI 卡片右侧"实时更新"图标
+  static const String airRefresh = '$_base/qmtq_air_refresh.png';
+
+  /// 紫外线指数图标
+  static const String airUv = '$_base/qmtq_air_uv.png';
+
+  /// 化妆指数图标
+  static const String airMakeup = '$_base/qmtq_air_makeup.png';
+
+  // ====== 设置页资源 ======
+  /// 应用 logo
+  static const String appLogo = '$_base/ic_logo.png';
+
+  /// 右箭头(设置项)
+  static const String arrowRight = '$_base/arrow_right.png';
+
+  /// 白色返回箭头(设置页顶部栏)
+  static const String iconWhiteBack = '$_base/icon_white_back.webp';
+
+  /// 用户协议图标
+  static const String settingUserIcon = '$_base/setting_4_user_icon.webp';
+
+  /// 隐私协议图标
+  static const String settingPrivateIcon = '$_base/setting_4_private_icon.webp';
+
+  /// 关于我们图标
+  static const String settingAboutIcon = '$_base/setting_4_about_icon.webp';
+
+  /// 意见反馈图标
+  static const String settingFeedbackIcon = '$_base/setting_4_feedback_icon.webp';
 }

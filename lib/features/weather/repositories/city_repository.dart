@@ -33,6 +33,13 @@ class CityRepository {
 
   /// 默认城市
   CityBean defaultCity() => CityBean.defaultCity();
+
+  /// 单选模式替换当前城市 - 对齐 Android AddCityActivity.saveAndJump(行 95-101)
+  /// 单选模式下整个城市列表替换为新选中的单个城市
+  Future<void> replaceCity(CityBean city) async {
+    await saveCities([city]);
+    await PrefsStorage.saveSaveCurrentItem(true);
+  }
 }
 
 /// CityRepository Provider

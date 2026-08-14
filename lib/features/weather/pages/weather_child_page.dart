@@ -11,7 +11,15 @@ import 'widgets/forecast_content.dart';
 class WeatherChildPage extends ConsumerStatefulWidget {
   final CityBean city;
 
-  const WeatherChildPage({super.key, required this.city});
+  /// 城市切换回调 - 对齐 Android WeatherChildFragment.onCityClick
+  /// 由父级 WeatherPage 传入,跳转到城市选择页
+  final VoidCallback? onCityClick;
+
+  const WeatherChildPage({
+    super.key,
+    required this.city,
+    this.onCityClick,
+  });
 
   @override
   ConsumerState<WeatherChildPage> createState() => _WeatherChildPageState();
@@ -67,13 +75,8 @@ class _WeatherChildPageState extends ConsumerState<WeatherChildPage> {
                           today: state.today,
                           airQuality: state.airQuality,
                           onCityClick: () {
-                            // 本期仅预留入口
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text('敬请期待'),
-                                duration: Duration(seconds: 1),
-                              ),
-                            );
+                            // 跳转到城市选择页 - 对齐 Android changeCity
+                            widget.onCityClick?.call();
                           },
                         ),
                         ForecastContent(

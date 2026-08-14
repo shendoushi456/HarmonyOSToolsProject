@@ -1,5 +1,5 @@
 name: qingman_weather
-description: 轻漫天气 - Flutter-ohos 版
+description: 晴满天气 - Flutter-ohos 版
 publish_to: 'none'
 version: 1.0.0+1
 
@@ -31,6 +31,15 @@ dependencies:
   # 网络（纯 Dart，无需 ohos 适配）
   dio: 5.4.0
 
+  # 打开协议 URL（系统浏览器）
+  url_launcher: 6.1.11
+
+  # 应用内 WebView 显示协议页(OpenHarmony 适配版)
+  webview_flutter_ohos:
+    git:
+      url: https://gitcode.com/Chyuning/webview_flutter_ohos.git
+      ref: main
+
   # 存储（需 ohos 适配，从 gitcode.com/openharmony-tpc/flutter_packages 获取）
   # 主包内部已声明对 *_ohos 适配包的依赖，无需显式引入 _ohos 包
   shared_preferences:
@@ -57,3 +66,4 @@ flutter:
   generate: true
   assets:
     - assets/images/
+    - assets/hot_city.json

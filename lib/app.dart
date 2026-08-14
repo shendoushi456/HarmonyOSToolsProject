@@ -9,7 +9,7 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
-      title: '轻漫天气',
+      title: '晴满天气',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         useMaterial3: false,

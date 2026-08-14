@@ -49,6 +49,7 @@ class HomeShellPage extends ConsumerWidget {
       ),
       child: SafeArea(
         top: false,
+        bottom: false,
         child: Row(
           children: [
             _buildNavItem(
