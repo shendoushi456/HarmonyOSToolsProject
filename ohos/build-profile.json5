@@ -1,6 +1,20 @@
 {
   "app": {
-    "signingConfigs": [],
+    "signingConfigs": [
+      {
+        "name": "default",
+        "type": "HarmonyOS",
+        "material": {
+          "storeFile": "/Users/zhuanzmima0000/DevEcoStudioProjects/sxtqt.p12",
+          "storePassword": "0000001B87A97B5338E9CE894D3981A60E7521015D03090749282C4B1A6C3A4318ED47DB0BA8E2F326D91A",
+          "keyAlias": "sxtqt",
+          "keyPassword": "0000001B06F26E8D4476DFB2AEBF65ECA3D76E8741A256507423D47C37432E45AACB01DE954D7BD94029FD",
+          "signAlg": "SHA256withECDSA",
+          "profile": "/Users/zhuanzmima0000/Downloads/瞬息天气通Release.p7b",
+          "certpath": "/Users/zhuanzmima0000/Downloads/Release_Cert.cer"
+        }
+      }
+    ],
     "products": [
       {
         "name": "default",

@@ -1,7 +1,7 @@
 {
   "app": {
-    "bundleName": "com.dgwcl.qingmantianqi",
-    "vendor": "dgwcl",
+    "bundleName": "com.rsy.sxtqt",
+    "vendor": "rsy",
     "versionCode": 1000000,
     "versionName": "1.0.0",
     "icon": "$media:app_icon",
