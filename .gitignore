@@ -1,10 +1,22 @@
 /node_modules
+**/node_modules/
 /oh_modules
+**/oh_modules/
 /local.properties
+**/local.properties
 /.idea
+**/.idea/
+# Flutter generated files
+/.dart_tool/
+/.flutter-plugins
+/.flutter-plugins-dependencies
+/.packages
+/build/
 **/build
 /.hvigor
-.cxx
+**/.hvigor/
+/.cxx
+**/.cxx/
 /.clangd
 /.clang-format
 /.clang-tidy
