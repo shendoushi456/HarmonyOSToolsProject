@@ -1,0 +1,59 @@
+{
+  "app": {
+    "signingConfigs": [
+      {
+        "name": "default",
+        "type": "HarmonyOS",
+        "material": {
+          "storeFile": "/Users/zhuanzmima0000/youyouchuxing.p12",
+          "storePassword": "0000001AE0EC38EDE80BD113D08AA4DE8BB98C877190C67039C4E195E571F335771433F4F4A028E33A01",
+          "keyAlias": "youyouchuxing",
+          "keyPassword": "0000001AE59FE11ECC77F5783768C01888AC6A870857FF00449238A12A06DA54D79485FD59F8F31DCDFA",
+          "signAlg": "SHA256withECDSA",
+          "profile": "/Users/zhuanzmima0000/Downloads/youyouchuxingRelease.p7b",
+          "certpath": "/Users/zhuanzmima0000/Downloads/youyouchuxing_Cert.cer"
+        }
+      }
+    ],
+    "products": [
+      {
+        "name": "default",
+        "signingConfig": "default",
+        "targetSdkVersion": "6.1.1(24)",
+        "compatibleSdkVersion": "5.0.0(12)",
+        "runtimeOS": "HarmonyOS",
+        "buildOption": {
+          "strictMode": {
+            "caseSensitiveCheck": true,
+            "useNormalizedOHMUrl": false
+          }
+        }
+      }
+    ],
+    "buildModeSet": [
+      {
+        "name": "debug",
+      },
+      {
+        "name": "profile"
+      },
+      {
+        "name": "release"
+      }
+    ]
+  },
+  "modules": [
+    {
+      "name": "entry",
+      "srcPath": "./entry",
+      "targets": [
+        {
+          "name": "default",
+          "applyToProducts": [
+            "default"
+          ]
+        }
+      ]
+    }
+  ]
+}

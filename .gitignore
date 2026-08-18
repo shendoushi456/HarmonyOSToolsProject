@@ -1,12 +1,25 @@
-/node_modules
-/oh_modules
-/local.properties
-/.idea
-**/build
-/.hvigor
-.cxx
-/.clangd
-/.clang-format
-/.clang-tidy
+# Dart / Flutter
+**/.dart_tool/
+**/.flutter-plugins
+**/.flutter-plugins-dependencies
+**/.packages
+**/.pub
+**/build/
+
+# 鸿蒙 (ohos/)
+**/oh_modules
+**/local.properties
+**/.idea
+**/.hvigor
+**/.cxx
+**/.clangd
+**/.clang-format
+**/.clang-tidy
+**/.appanalyzer
+**/node_modules
+
+# macOS
+.DS_Store
+
+# 测试
 **/.test
-/.appanalyzer

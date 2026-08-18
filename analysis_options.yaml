@@ -1,0 +1,23 @@
+include: package:very_good_analysis/analysis_options.yaml
+
+linter:
+  rules:
+    public_member_api_docs: false
+    sort_pub_dependencies: false
+    avoid_print: true
+    # 以下为风格偏好规则，禁用以聚焦真正的错误（相对导入、构造函数顺序等）
+    always_use_package_imports: false
+    sort_constructors_first: false
+    always_put_required_named_parameters_first: false
+    lines_longer_than_80_chars: false
+    prefer_const_constructors: false
+    use_decorated_box: false
+    prefer_if_elements_to_conditional_expressions: false
+    avoid_redundant_argument_values: false
+    require_trailing_commas: false
+
+analyzer:
+  exclude:
+    - "lib/generated/**"
+    - "**/*.g.dart"
+    - "**/*.freezed.dart"
