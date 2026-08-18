@@ -485,14 +485,6 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "6.0.2"
-  plugin_platform_interface:
-    dependency: transitive
-    description:
-      name: plugin_platform_interface
-      sha256: "4820fbfdb9478b1ebae27888254d445073732dae3d6ea81f0b7e06d5dedc3f02"
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "2.1.8"
   pool:
     dependency: transitive
     description:
@@ -762,51 +754,6 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "3.0.3"
-  webview_flutter:
-    dependency: "direct main"
-    description:
-      path: "packages/webview_flutter/webview_flutter"
-      ref: "br_webview_flutter-v4.13.0_ohos"
-      resolved-ref: "5a9d0055772c7973712c0eaaf2de0e5f0749f8b9"
-      url: "https://atomgit.com/CPF-Flutter/flutter_packages.git"
-    source: git
-    version: "4.13.0"
-  webview_flutter_android:
-    dependency: transitive
-    description:
-      path: "packages/webview_flutter/webview_flutter_android"
-      ref: "br_webview_flutter-v4.13.0_ohos"
-      resolved-ref: "5a9d0055772c7973712c0eaaf2de0e5f0749f8b9"
-      url: "https://atomgit.com/CPF-Flutter/flutter_packages.git"
-    source: git
-    version: "4.7.0"
-  webview_flutter_ohos:
-    dependency: transitive
-    description:
-      path: "packages/webview_flutter/webview_flutter_ohos"
-      ref: "br_webview_flutter-v4.13.0_ohos"
-      resolved-ref: "5a9d0055772c7973712c0eaaf2de0e5f0749f8b9"
-      url: "https://atomgit.com/CPF-Flutter/flutter_packages.git"
-    source: git
-    version: "4.7.0"
-  webview_flutter_platform_interface:
-    dependency: transitive
-    description:
-      path: "packages/webview_flutter/webview_flutter_platform_interface"
-      ref: "br_webview_flutter-v4.13.0_ohos"
-      resolved-ref: "5a9d0055772c7973712c0eaaf2de0e5f0749f8b9"
-      url: "https://atomgit.com/CPF-Flutter/flutter_packages.git"
-    source: git
-    version: "2.13.1"
-  webview_flutter_wkwebview:
-    dependency: transitive
-    description:
-      path: "packages/webview_flutter/webview_flutter_wkwebview"
-      ref: "br_webview_flutter-v4.13.0_ohos"
-      resolved-ref: "5a9d0055772c7973712c0eaaf2de0e5f0749f8b9"
-      url: "https://atomgit.com/CPF-Flutter/flutter_packages.git"
-    source: git
-    version: "3.22.0"
   xml:
     dependency: transitive
     description:

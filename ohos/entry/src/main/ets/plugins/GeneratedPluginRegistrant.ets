@@ -1,5 +1,4 @@
-import { FlutterEngine } from '@ohos/flutter_ohos';
-import { PolicyWebViewPlugin } from '../webview/PolicyWebViewPlugin';
+import { FlutterEngine, Log } from '@ohos/flutter_ohos';
 
 /**
  * Generated file. Do not edit.
@@ -7,9 +6,19 @@ import { PolicyWebViewPlugin } from '../webview/PolicyWebViewPlugin';
  * plugins that support the Ohos platform.
  */
 
+const TAG = "GeneratedPluginRegistrant";
+
 export class GeneratedPluginRegistrant {
 
   static registerWith(flutterEngine: FlutterEngine) {
-    flutterEngine.getPlugins()?.add(new PolicyWebViewPlugin());
+    try {
+    } catch (e) {
+      Log.e(
+        TAG,
+        "Tried to register plugins with FlutterEngine ("
+          + flutterEngine
+          + ") failed.");
+      Log.e(TAG, "Received exception while registering", e);
+    }
   }
 }

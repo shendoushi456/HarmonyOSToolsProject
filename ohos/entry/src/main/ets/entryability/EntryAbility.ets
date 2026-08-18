@@ -1,5 +1,6 @@
 import { FlutterAbility, FlutterEngine, MethodChannel, MethodCall, MethodResult } from '@ohos/flutter_ohos';
 import { GeneratedPluginRegistrant } from '../plugins/GeneratedPluginRegistrant';
+import { PolicyWebViewPlugin } from '../webview/PolicyWebViewPlugin';
 import { BusinessError } from '@kit.BasicServicesKit';
 import { bundleManager } from '@kit.AbilityKit';
 import { preferences } from '@kit.ArkData';
@@ -17,6 +18,9 @@ export default class EntryAbility extends FlutterAbility {
   configureFlutterEngine(flutterEngine: FlutterEngine) {
     super.configureFlutterEngine(flutterEngine)
     GeneratedPluginRegistrant.registerWith(flutterEngine)
+    // 项目内 PlatformView 不属于 pub 插件，必须在此手动注册；
+    // 不放在 GeneratedPluginRegistrant，避免 flutter pub get 后被覆盖。
+    flutterEngine.getPlugins()?.add(new PolicyWebViewPlugin())
 
     // 注册 MethodChannel：接收 Flutter 侧 openApp 调用
     const messenger = flutterEngine.getDartExecutor().getBinaryMessenger()

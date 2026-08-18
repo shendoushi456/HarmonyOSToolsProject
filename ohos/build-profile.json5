@@ -6,12 +6,12 @@
         "type": "HarmonyOS",
         "material": {
           "storeFile": "/Users/zhuanzmima0000/youyouchuxing.p12",
-          "storePassword": "0000001AE0EC38EDE80BD113D08AA4DE8BB98C877190C67039C4E195E571F335771433F4F4A028E33A01",
+          "storePassword": "0000001A72C7F568982A024A7B8CF9E17D8261FF5C69D3FCCFE1D2099332E4AAE7A97101F093A3109345",
           "keyAlias": "youyouchuxing",
-          "keyPassword": "0000001AE59FE11ECC77F5783768C01888AC6A870857FF00449238A12A06DA54D79485FD59F8F31DCDFA",
+          "keyPassword": "0000001AA44B2C47B6598757A9CF8F51660A09C9541CE09799B3220EE89C48A6EFAC3942C2A2C7B567C9",
           "signAlg": "SHA256withECDSA",
-          "profile": "/Users/zhuanzmima0000/Downloads/youyouchuxingRelease.p7b",
-          "certpath": "/Users/zhuanzmima0000/Downloads/youyouchuxing_Cert.cer"
+          "profile": "/Users/zhuanzmima0000/鸿蒙签名/悠游出行/youyouchuxingRelease.p7b",
+          "certpath": "/Users/zhuanzmima0000/鸿蒙签名/悠游出行/youyouchuxing.cer"
         }
       }
     ],
