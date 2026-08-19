@@ -29,6 +29,9 @@ abstract final class AppRoutes {
   /// 指示灯完整列表页
   static const indicatorLight = '/indicator-light';
 
+  /// 指示灯详情页（通过 extra 传递指示灯数据）
+  static const indicatorLightDetail = '/indicator-light/detail';
+
   /// 驾照扣分规则页
   static const drivingLicense = '/driving-license';
 

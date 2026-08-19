@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../application/providers/indicator_light_provider.dart';
 import '../router/app_routes.dart';
 import '../theme/app_colors.dart';
 import 'widgets/car_maintenance_card.dart';
 import 'widgets/circle_icons_row.dart';
-import 'widgets/indicator_light_section.dart';
 import 'widgets/practical_info_card.dart';
 import 'widgets/violation_handling_card.dart';
 import 'widgets/violation_query_card.dart';
@@ -16,14 +13,11 @@ import 'widgets/violation_query_card.dart';
 ///
 /// 对应 Android: CarFragment.kt:152-223 CarContent()
 /// Scaffold + 绿色顶栏（标题"首页" + 右上角设置图标）+ ListView 6 卡片区块。
-class CarHomePage extends ConsumerWidget {
+class CarHomePage extends StatelessWidget {
   const CarHomePage({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    // 触发指示灯数据加载（首页 LazyRow 预览用）
-    ref.watch(indicatorLightListProvider);
-
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('首页'),
@@ -50,13 +44,9 @@ class CarHomePage extends ConsumerWidget {
             SizedBox(height: 12),
             // item 3：5 个圆形图标
             CircleIconsRow(),
-            // item 4：汽车指示灯标题
-            _SectionTitle('汽车指示灯', topPadding: 4),
-            // item 5：指示灯横向滚动
-            IndicatorLightSection(),
-            // item 6：实用信息标题
+            // item 4：实用信息标题
             _SectionTitle('实用信息', topPadding: 18),
-            // item 7：实用信息卡片（车牌类型 + 驾照扣分）
+            // item 5：实用信息卡片（车牌类型 + 驾照扣分）
             PracticalInfoCard(),
           ],
         ),

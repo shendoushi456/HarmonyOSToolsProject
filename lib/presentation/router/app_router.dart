@@ -1,8 +1,10 @@
 import 'package:go_router/go_router.dart';
 
+import '../../domain/models/indicator_light.dart';
 import '../car_detail/image_display_page.dart';
 import '../car_maintenance/car_maintenance_page.dart';
 import '../driving_license/driving_license_deduction_page.dart';
+import '../indicator_light/indicator_light_detail_page.dart';
 import '../indicator_light/indicator_light_page.dart';
 import '../markdown/markdown_page.dart';
 import '../scan_menu/scan_menu_page.dart';
@@ -63,6 +65,12 @@ final goRouter = GoRouter(
     GoRoute(
       path: AppRoutes.indicatorLight,
       builder: (context, state) => const IndicatorLightPage(),
+    ),
+    GoRoute(
+      path: AppRoutes.indicatorLightDetail,
+      builder: (context, state) => IndicatorLightDetailPage(
+        light: state.extra! as IndicatorLight,
+      ),
     ),
     GoRoute(
       path: AppRoutes.drivingLicense,
