@@ -35,9 +35,9 @@ class AppConfig {
 
   /// 隐私政策 URL
   static const String privacyUrl =
-      'https://api.bjbaby.top/agreement/bbkxfy/privacy';
+      'http://api.jyhytech.top/agreement/txsls/privacy';
 
   /// 用户协议 URL
   static const String userAgreementUrl =
-      'https://api.bjbaby.top/agreement/bbkxfy/user';
+      'http://api.jyhytech.top/agreement/txsls/user';
 }
