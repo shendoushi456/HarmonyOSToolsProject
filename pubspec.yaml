@@ -1,0 +1,80 @@
+name: harmonyos_flutter_empty
+description: 鸿蒙 Flutter 翻译应用（从安卓 toolbox_c 迁移）
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.6.2
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+  # 状态管理
+  flutter_riverpod: 2.3.7
+  # 路由
+  go_router: 7.1.1
+  # 网络（调用有道 API）
+  http: 1.6.0
+  # 加密（有道签名 sha256）
+  crypto: 3.0.7
+  # UUID（生成 salt）
+  uuid: 4.6.0
+  # 存储（语言持久化）— ohos 适配版
+  # shared_preferences 主包 + shared_preferences_ohos 实现包（git 依赖，openharmony-tpc 维护）
+  shared_preferences: 2.1.0
+  shared_preferences_ohos:
+    git:
+      url: https://gitcode.com/openharmony-tpc/flutter_packages.git
+      ref: ce0d3d4a9c6921edf5a5e4467c3dfecb377fd684
+      path: packages/shared_preferences/shared_preferences_ohos
+  # 文件选择（文档翻译）— ohos 适配版
+  file_selector: ^1.0.0
+  file_selector_ohos:
+    git:
+      url: https://gitcode.com/openharmony-tpc/flutter_packages.git
+      ref: fd410050c6842717ee1b851ca7640c294de9568c
+      path: packages/file_selector/file_selector_ohos
+  # 文件路径（文档翻译保存）— ohos 适配版
+  path_provider: 2.1.0
+  path_provider_ohos:
+    git:
+      url: https://gitcode.com/openharmony-tpc/flutter_packages.git
+      ref: fd410050c6842717ee1b851ca7640c294de9568c
+      path: packages/path_provider/path_provider_ohos
+  # 相机（拍照翻译）— ohos 适配版
+  camera: ^0.10.5+4
+  camera_ohos:
+    git:
+      url: https://gitcode.com/openharmony-tpc/flutter_packages.git
+      ref: fd410050c6842717ee1b851ca7640c294de9568c
+      path: packages/camera/camera_ohos
+  # SVG/字体（CODEBUDDY.md 规定）
+  flutter_svg: 2.0.5
+  # WebView（隐私政策/用户协议展示）— ohos 适配版
+  webview_flutter: ^4.10.0
+  webview_flutter_ohos:
+    path: /Users/zhuanzmima0000/PUB/git/webview_flutter_ohos-bbb23a3426dbe4645e3181f6c6257a336cc7158f
+  # 应用信息（关于我们版本号）
+  package_info_plus: ^8.0.0
+  # 二维码扫描（OpenHarmony 适配版）
+  qr_code_scanner_ohos: any
+  # 二维码生成（纯 Flutter）
+  qr_flutter: ^4.1.0
+  # 国际化
+  intl: 0.19.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  # Lint
+  very_good_analysis: 4.0.0
+  # Golden 测试
+  alchemist: 0.6.1
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/images/

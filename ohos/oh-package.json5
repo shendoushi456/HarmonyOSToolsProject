@@ -1,0 +1,13 @@
+{
+  "modelVersion": "5.0.0",
+  "name": "harmonyos_flutter_empty",
+  "version": "1.0.0",
+  "description": "鸿蒙 Flutter 翻译应用",
+  "main": "",
+  "author": "",
+  "license": "",
+  "dependencies": {},
+  "devDependencies": {
+    "@ohos/hypium": "1.0.6"
+  }
+}

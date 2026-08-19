@@ -1,24 +1,55 @@
-/node_modules
-**/node_modules/
-/oh_modules
-**/oh_modules/
-/local.properties
-**/local.properties
-/.idea
-**/.idea/
-# Flutter generated files
-/.dart_tool/
-/.flutter-plugins
-/.flutter-plugins-dependencies
-/.packages
+# Miscellaneous
+*.class
+*.log
+*.pyc
+*.swp
+.DS_Store
+.atom/
+.build/
+.buildlog/
+.history
+.svn/
+.swiftpm/
+migrate_working_dir/
+
+# IntelliJ related
+*.iml
+*.ipr
+*.iws
+.idea/
+
+# Flutter/Dart/Pub related
+**/doc/api/
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.pub-cache/
+.pub/
 /build/
-**/build
-/.hvigor
+
+# Symbolication related
+app.*.symbols
+
+# Obfuscation related
+app.*.map.json
+
+# Ohos related
+**/oh_modules/
 **/.hvigor/
-/.cxx
 **/.cxx/
-/.clangd
-/.clang-format
-/.clang-tidy
+**/.clangd
+**/.clang-format
+**/.clang-tidy
+**/.preview
 **/.test
-/.appanalyzer
+**/BuildProfile.ets
+**/oh-package-lock.json5
+ohos/**/node_modules/
+ohos/**/package.json
+ohos/**/package-lock.json
+ohos/local.properties
+ohos/entry/src/main/ets/plugins/GeneratedPluginRegistrant.ets
+ohos/entry/src/main/resources/rawfile/flutter_assets/
+**/libs/**/libapp.so
+**/libs/**/libflutter.so
+**/libs/**/libvmservice_snapshot.so
