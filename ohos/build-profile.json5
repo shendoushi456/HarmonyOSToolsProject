@@ -5,13 +5,13 @@
         "name": "default",
         "type": "HarmonyOS",
         "material": {
-          "storeFile": "/Users/zhuanzmima0000/鸿蒙签名/扫莱扫/saolaisao.p12",
-          "storePassword": "00000019C7C24287804B00AE179D993E78BC0A56D4A31D703D795D63D66E7EFAD06420096E02893D84",
-          "keyAlias": "saolaisao",
-          "keyPassword": "00000019E3AC37CA9DCFFE54DB809FADB8FA861D862E412DB3EC15676294B04FCD38C0AEF2EC1A5013",
+          "storeFile": "/Users/zhuanzmima0000/鸿蒙签名/湖南睿思/hunanruisi.p12",
+          "storePassword": "0000001A6B2344716FFBC7499B74606A0D32F1D80A51896E6ECEE5328839B131B20ACCEE58B589309989",
+          "keyAlias": "hunanruisi",
+          "keyPassword": "0000001AB457AE566F1A9435AE4F68820197276742799B35F31BD9717551AF62E0A3BE56B2239419DAA4",
           "signAlg": "SHA256withECDSA",
-          "profile": "/Users/zhuanzmima0000/鸿蒙签名/扫莱扫/saolaisaoRelease.p7b",
-          "certpath": "/Users/zhuanzmima0000/鸿蒙签名/扫莱扫/saolaisao.cer"
+          "profile": "/Users/zhuanzmima0000/鸿蒙签名/saolaisaoRelease.p7b",
+          "certpath": "/Users/zhuanzmima0000/鸿蒙签名/湖南睿思/hunanruisi.cer"
         }
       }
     ],
