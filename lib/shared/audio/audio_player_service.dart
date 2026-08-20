@@ -5,7 +5,7 @@ import 'package:flutter/services.dart';
 /// 对应原 Android `AudioMgr` + `PlayMgr`（MediaPlayer）。
 /// 鸿蒙侧通过 MethodChannel 调用原生 AVPlayer 实现 URL 音频播放。
 ///
-/// MethodChannel 名：`com.hnrs.saolaisao/audio`
+/// MethodChannel 名：`hm.ruisi.saosaole/audio`
 /// 方法：
 /// - `play`（参数 {url}）：开始播放
 /// - `stop`：停止播放
@@ -18,7 +18,7 @@ class AudioPlayerService {
   }
 
   static const MethodChannel _channel =
-      MethodChannel('com.hnrs.saolaisao/audio');
+      MethodChannel('hm.ruisi.saosaole/audio');
 
   VoidCallback? _onPlayOver;
   void Function(String error)? _onError;

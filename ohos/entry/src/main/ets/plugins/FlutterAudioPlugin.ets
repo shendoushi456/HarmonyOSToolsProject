@@ -4,7 +4,7 @@
 // 对应原 Android `AudioMgr` + `PlayMgr`（MediaPlayer），改用鸿蒙 AVPlayer。
 // 通过 MethodChannel 与 Flutter 侧 `AudioPlayerService` 通信。
 //
-// MethodChannel 名：com.hnrs.saolaisao/audio
+// MethodChannel 名：hm.ruisi.saosaole/audio
 // 方法：
 //   - play(url: string)：开始播放
 //   - stop()：停止播放
@@ -21,7 +21,7 @@ import media from '@ohos.multimedia.media';
 import Log from '@ohos/flutter_ohos/src/main/ets/util/Log';
 
 const TAG = 'FlutterAudioPlugin';
-const CHANNEL_NAME = 'com.hnrs.saolaisao/audio';
+const CHANNEL_NAME = 'hm.ruisi.saosaole/audio';
 
 export default class FlutterAudioPlugin {
   private channel?: MethodChannel;

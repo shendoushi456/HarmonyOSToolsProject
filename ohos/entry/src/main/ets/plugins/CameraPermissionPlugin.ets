@@ -7,7 +7,7 @@ import { FlutterEngine, MethodCall } from '@ohos/flutter_ohos';
 import Log from '@ohos/flutter_ohos/src/main/ets/util/Log';
 
 const TAG = 'CameraPermissionPlugin';
-const CHANNEL_NAME = 'com.hnrs.saolaisao/camera_permission';
+const CHANNEL_NAME = 'hm.ruisi.saosaole/camera_permission';
 const CAMERA_PERMISSION: Permissions = 'ohos.permission.CAMERA';
 
 /**

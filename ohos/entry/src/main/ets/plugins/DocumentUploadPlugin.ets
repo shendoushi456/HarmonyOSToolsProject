@@ -7,7 +7,7 @@ import Log from '@ohos/flutter_ohos/src/main/ets/util/Log';
 
 const TAG = 'DocumentUploadPlugin';
 const LOG_TAG = 'wdfyqqsj';
-const CHANNEL_NAME = 'com.hnrs.saolaisao/document_upload';
+const CHANNEL_NAME = 'hm.ruisi.saosaole/document_upload';
 
 /**
  * 使用 HarmonyOS NetStack 上传文档。

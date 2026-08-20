@@ -26,7 +26,7 @@ class SettingTranslationPage extends StatefulWidget {
 
 class _SettingTranslationPageState extends State<SettingTranslationPage> {
   static const MethodChannel _cameraPermissionChannel = MethodChannel(
-    'com.hnrs.saolaisao/camera_permission',
+    'hm.ruisi.saosaole/camera_permission',
   );
   static const String _qrCameraPermissionDeniedKey =
       'qr_scanner_camera_permission_denied';
