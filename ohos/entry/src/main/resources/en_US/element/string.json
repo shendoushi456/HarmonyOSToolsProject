@@ -10,7 +10,23 @@
     },
     {
       "name": "EntryAbility_label",
-      "value": "瞬息天气通"
+      "value": "全能WiFi互联"
+    },
+    {
+      "name": "permission_internet_reason",
+      "value": "Used to fetch weather data"
+    },
+    {
+      "name": "permission_wifi_info_reason",
+      "value": "Used to view current WiFi connection info"
+    },
+    {
+      "name": "permission_network_info_reason",
+      "value": "Used to detect network connection status"
+    },
+    {
+      "name": "permission_location_reason",
+      "value": "Used to scan nearby WiFi networks"
     }
   ]
 }

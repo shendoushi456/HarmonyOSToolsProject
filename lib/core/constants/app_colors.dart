@@ -86,4 +86,29 @@ class AppColors {
 
   /// 设置页应用名色
   static const Color settingAppName = Color(0xFF333333);
+
+  // ====== WiFi 工具页颜色 - 对齐 activity_main_tool.xml + item_my_wifi_list.xml ======
+  /// WiFi 页背景灰
+  static const Color wifiPageBg = Color(0xFFEDEFF9);
+
+  /// "当前网络状态良好"绿(对齐 net_status #FF51AB30)
+  static const Color wifiConnectGreen = Color(0xFF51AB30);
+
+  /// "已连接"按钮蓝(对齐 blue_btn, 取色 #317EFE)
+  static const Color wifiBlueBtn = Color(0xFF317EFE);
+
+  /// WiFi 卡片标题色("wifi列表" #1E1E1E)
+  static const Color wifiCardText = Color(0xFF1E1E1E);
+
+  /// WiFi 列表已连接项文字蓝(对齐 lmwifiylj #3674EB)
+  static const Color wifiConnectedBlue = Color(0xFF3674EB);
+
+  /// WiFi 列表未连接项文字深灰(对齐 text_primary #3C3C3C)
+  static const Color wifiDisconnectedText = Color(0xFF3C3C3C);
+
+  /// WiFi 卡片阴影色(对齐 shape_shadowColor #666666)
+  static const Color wifiCardShadow = Color(0x66666666);
+
+  /// WiFi dialog 确认按钮蓝(对齐 dialog_wifi #FF5597F7)
+  static const Color wifiDialogConfirm = Color(0xFF5597F7);
 }

@@ -1,10 +1,11 @@
-// 底部 3 Tab 容器 - 对齐 Android MainWeatherActivity
-// 首页(天气)迁移,日历/空气质量预留入口
+// 底部 4 Tab 容器 - 对齐 Android MainWeatherActivity
+// 首页(天气)/WiFi/日历/空气质量, WiFi 为新增中间 tab
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../calendar/pages/calendar_page.dart';
 import '../../air_quality/pages/air_quality_page.dart';
 import '../../weather/pages/weather_page.dart';
+import '../../wifi/pages/wifi_page.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_assets.dart';
 
@@ -20,6 +21,7 @@ class HomeShellPage extends ConsumerWidget {
 
     const pages = [
       WeatherPage(),
+      WifiPage(),
       CalendarPage(),
       AirQualityPage(),
     ];
@@ -65,19 +67,28 @@ class HomeShellPage extends ConsumerWidget {
               context,
               ref,
               index: 1,
-              label: '日历',
-              normalIcon: AppAssets.tabCalendarNormal,
-              selectedIcon: AppAssets.tabCalendarSelected,
+              label: 'WiFi',
+              normalIcon: AppAssets.tabWifiNormal,
+              selectedIcon: AppAssets.tabWifiSelected,
               isSelected: currentIndex == 1,
             ),
             _buildNavItem(
               context,
               ref,
               index: 2,
+              label: '日历',
+              normalIcon: AppAssets.tabCalendarNormal,
+              selectedIcon: AppAssets.tabCalendarSelected,
+              isSelected: currentIndex == 2,
+            ),
+            _buildNavItem(
+              context,
+              ref,
+              index: 3,
               label: '空气质量',
               normalIcon: AppAssets.tabAirNormal,
               selectedIcon: AppAssets.tabAirSelected,
-              isSelected: currentIndex == 2,
+              isSelected: currentIndex == 3,
             ),
           ],
         ),

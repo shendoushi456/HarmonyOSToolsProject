@@ -10,7 +10,23 @@
     },
     {
       "name": "EntryAbility_label",
-      "value": "瞬息天气通"
+      "value": "全能WiFi互联"
+    },
+    {
+      "name": "permission_internet_reason",
+      "value": "用于获取天气数据"
+    },
+    {
+      "name": "permission_wifi_info_reason",
+      "value": "用于查看当前 WiFi 连接信息"
+    },
+    {
+      "name": "permission_network_info_reason",
+      "value": "用于检测网络连接状态"
+    },
+    {
+      "name": "permission_location_reason",
+      "value": "用于扫描附近 WiFi 网络"
     }
   ]
 }

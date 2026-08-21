@@ -107,4 +107,47 @@ class AppAssets {
 
   /// 意见反馈图标
   static const String settingFeedbackIcon = '$_base/setting_4_feedback_icon.webp';
+
+  // ====== WiFi 工具页资源 - 对齐 Android ToolsWifiHomeFragment/activity_main_tool.xml ======
+  /// 底部导航 - WiFi
+  static const String tabWifiNormal = '$_base/qmtq_tab_wifi_normal.png';
+  static const String tabWifiSelected = '$_base/qmtq_tab_wifi_selected.png';
+
+  /// WiFi 页顶部背景
+  static const String wifiTopBg = '$_base/wifi_top_bg.png';
+
+  /// WiFi 详情卡左侧 wifi 图标(114dp)
+  static const String wifiTopIcon = '$_base/top_wifi_icon.png';
+
+  // ====== WiFi 列表 item 资源 - 对齐 item_my_wifi_list.xml + ClearLib Adapter ======
+  // 信号强度图标(5 级 × 无锁/有锁 = 10 个)。命名对齐安卓原版(_locker/_locked/_excelent 拼写)
+  /// 信号 0 级 - 无锁(disabled)
+  static const String wifiSignalDisabled = '$_base/wifi_disabled.png';
+  /// 信号 0 级 - 有锁(安卓原版命名 _locker)
+  static const String wifiSignalDisabledLocked = '$_base/wifi_disabled_locker.png';
+  /// 信号 1 级 - 无锁(low)
+  static const String wifiSignalLow = '$_base/wifi_low.webp';
+  /// 信号 1 级 - 有锁
+  static const String wifiSignalLowLocked = '$_base/wifi_low_locked.webp';
+  /// 信号 2 级 - 无锁(med)
+  static const String wifiSignalMed = '$_base/wifi_med.webp';
+  /// 信号 2 级 - 有锁
+  static const String wifiSignalMedLocked = '$_base/wifi_med_locked.webp';
+  /// 信号 3 级 - 无锁(high)
+  static const String wifiSignalHigh = '$_base/wifi_high.webp';
+  /// 信号 3 级 - 有锁
+  static const String wifiSignalHighLocked = '$_base/wifi_high_locked.webp';
+  /// 信号 4 级 - 无锁(安卓原版拼写 excelent)
+  static const String wifiSignalExcellent = '$_base/wifi_excelent.png';
+  /// 信号 4 级 - 有锁
+  static const String wifiSignalExcellentLocked = '$_base/wifi_excelent_locked.png';
+
+  /// wifi 列表已连接小图标(原 lwifiylj)
+  static const String wifiConnected = '$_base/wifi_connected.png';
+  /// wifi 列表未连接小图标(原 lwifiwlj)
+  static const String wifiDisconnected = '$_base/wifi_disconnected.png';
+  /// wifi 列表项右箭头(原 clearitemjt)
+  static const String wifiArrow = '$_base/wifi_arrow.png';
+  /// wifi 空状态图标(临时复用 wifi_disconnected，原 ic_wifi_empty 待补)
+  static const String wifiEmpty = '$_base/wifi_disconnected.png';
 }
