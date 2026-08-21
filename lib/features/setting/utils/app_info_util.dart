@@ -11,13 +11,13 @@ class AppInfoUtil {
   static const String version = '1.0.1';
 }
 
-/// 协议 URL 常量 - 对齐 Android SettingUrlConstants + config.gradle
+/// 协议 URL 常量 - 对齐 Android ProtocolDialog.java 中的 URL
 class SettingUrls {
   SettingUrls._();
 
-  /// 用户协议 URL
-  static const String user = 'http://api.jyhytech.top/agreement/bbsxtqt/user';
+  /// 用户协议 URL（对齐 Android ProtocolDialog protocol_url_2）
+  static const String user = 'https://api.bjbaby.top/agreement/bbsflwf/user';
 
-  /// 隐私协议 URL
-  static const String policy = 'http://api.jyhytech.top/agreement/bbsxtqt/privacy';
+  /// 隐私协议 URL（对齐 Android ProtocolDialog protocol_url_1）
+  static const String policy = 'https://api.bjbaby.top/agreement/bbsflwf/privacy';
 }

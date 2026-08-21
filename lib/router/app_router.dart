@@ -1,5 +1,16 @@
 // 路由配置 - 集中定义所有路由
 import 'package:go_router/go_router.dart';
+import '../features/bus/pages/bus_location_detail_page.dart';
+import '../features/bus/pages/bus_map_search_page.dart';
+import '../features/bus/pages/bus_route_line_detail_page.dart';
+import '../features/bus/pages/bus_route_page.dart';
+import '../features/bus/pages/bus_search_page.dart';
+import '../features/bus/pages/map_navi_page.dart';
+import '../features/bus/pages/map_route_page.dart';
+import '../features/bus/pages/walk_navi_page.dart';
+import '../features/travel/pages/disney_scenic_detail_page.dart';
+import '../features/travel/pages/editor_pic_tips_page.dart';
+import '../features/travel/pages/leshan_scenic_detail_page.dart';
 import '../features/home/pages/home_shell_page.dart';
 import '../features/setting/pages/about_page.dart';
 import '../features/setting/pages/feedback_page.dart';
@@ -58,6 +69,92 @@ final GoRouter appRouter = GoRouter(
       path: RoutePaths.feedback,
       name: RouteNames.feedback,
       builder: (context, state) => const FeedbackPage(),
+    ),
+    // ====== 畅行（bus）模块路由 - 对齐 Android bus 包 Activity ======
+    // 搜索选址页 - 对齐 Android BusSearchActivity(extra: is_from_location + current_city)
+    GoRoute(
+      path: RoutePaths.busSearch,
+      name: RouteNames.busSearch,
+      builder: (context, state) {
+        final extra = state.extra as Map<String, dynamic>? ?? {};
+        return BusSearchPage(extra: extra);
+      },
+    ),
+    // 地图搜索页 - 对齐 Android BusMapSearchActivity(extra: search_keyword)
+    GoRoute(
+      path: RoutePaths.busMapSearch,
+      name: RouteNames.busMapSearch,
+      builder: (context, state) {
+        final extra = state.extra as Map<String, dynamic>? ?? {};
+        return BusMapSearchPage(extra: extra);
+      },
+    ),
+    // 路线规划页 - 对齐 Android MapRouteActivity(extra: transport_mode + start_*/end_*)
+    GoRoute(
+      path: RoutePaths.mapRoute,
+      name: RouteNames.mapRoute,
+      builder: (context, state) {
+        final extra = state.extra as Map<String, dynamic>? ?? {};
+        return MapRoutePage(extra: extra);
+      },
+    ),
+    // 路线导航页 - 对齐 Android BusRouteActivity(extra: destination_* + use_my_location + transport_mode)
+    GoRoute(
+      path: RoutePaths.busRoute,
+      name: RouteNames.busRoute,
+      builder: (context, state) {
+        final extra = state.extra as Map<String, dynamic>? ?? {};
+        return BusRoutePage(extra: extra);
+      },
+    ),
+    // 地点详情页 - 对齐 Android BusLocationDetailActivity(extra: search_result)
+    GoRoute(
+      path: RoutePaths.busLocationDetail,
+      name: RouteNames.busLocationDetail,
+      builder: (context, state) => const BusLocationDetailPage(),
+    ),
+    // 公交换乘详情页 - 对齐 Android BusRouteLineDetailActivity
+    GoRoute(
+      path: RoutePaths.busRouteLineDetail,
+      name: RouteNames.busRouteLineDetail,
+      builder: (context, state) {
+        final extra = state.extra as Map<String, dynamic>? ?? {};
+        return BusRouteLineDetailPage(extra: extra);
+      },
+    ),
+    // 导航页 - 对齐 Android MapNaviActivity(extra: route_type + start_*/end_*)
+    GoRoute(
+      path: RoutePaths.mapNavi,
+      name: RouteNames.mapNavi,
+      builder: (context, state) => const MapNaviPage(),
+    ),
+    // 步行导航页 - 对齐 Android WalkNaviActivity
+    GoRoute(
+      path: RoutePaths.walkNavi,
+      name: RouteNames.walkNavi,
+      builder: (context, state) => const WalkNaviPage(),
+    ),
+    // ====== 旅行规划（travel）模块路由 - 对齐 Android hotSceniclib Activity ======
+    // 迪士尼攻略页 - 对齐 Android DisneyShangHaiScenicDetailActivity
+    GoRoute(
+      path: RoutePaths.disneyScenic,
+      name: RouteNames.disneyScenic,
+      builder: (context, state) => const DisneyScenicDetailPage(),
+    ),
+    // 图片攻略页 - 对齐 Android EditorPicTipsActivity(extra: type String)
+    GoRoute(
+      path: RoutePaths.editorPicTips,
+      name: RouteNames.editorPicTips,
+      builder: (context, state) {
+        final extra = state.extra as Map<String, dynamic>? ?? {};
+        return EditorPicTipsPage(extra: extra);
+      },
+    ),
+    // 乐山峨眉攻略页 - 对齐 Android LeShanScenicDetailActivity
+    GoRoute(
+      path: RoutePaths.leShanScenic,
+      name: RouteNames.leShanScenic,
+      builder: (context, state) => const LeShanScenicDetailPage(),
     ),
   ],
 );

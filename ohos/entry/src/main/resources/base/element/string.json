@@ -2,19 +2,23 @@
   "string": [
     {
       "name": "module_desc",
-      "value": "瞬息天气通主模块"
+      "value": "清逸出行气象主模块"
     },
     {
       "name": "EntryAbility_desc",
-      "value": "瞬息天气通"
+      "value": "清逸出行气象"
     },
     {
       "name": "EntryAbility_label",
-      "value": "瞬息天气通"
+      "value": "清逸出行气象"
     },
     {
       "name": "permission_internet_reason",
       "value": "用于获取天气数据"
+    },
+    {
+      "name": "permission_location_reason",
+      "value": "用于查看附近功能信息及使用路线规划等功能"
     }
   ]
 }

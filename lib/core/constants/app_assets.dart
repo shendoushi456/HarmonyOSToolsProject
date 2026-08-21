@@ -107,4 +107,129 @@ class AppAssets {
 
   /// 意见反馈图标
   static const String settingFeedbackIcon = '$_base/setting_4_feedback_icon.webp';
+
+  // ====== 畅行（bus）模块资源 - 对齐 Android jbcx_* 系列 ======
+  /// 畅行无标题图（128dp 宽）
+  static const String jbcxHomeTitle = '$_base/jbcx_home_title.png';
+
+  /// 首页右侧 hero 图（178dp）
+  static const String jbcxHomeHero = '$_base/jbcx_home_hero.png';
+
+  /// 畅行搜索图标（19dp）
+  static const String jbcxSearch = '$_base/jbcx_search.png';
+
+  /// 步行路线图标
+  static const String jbcxRouteWalk = '$_base/jbcx_route_walk.png';
+
+  /// 骑行路线图标
+  static const String jbcxRouteCycle = '$_base/jbcx_route_cycle.png';
+
+  /// 驾车路线图标
+  static const String jbcxRouteDrive = '$_base/jbcx_route_drive.png';
+
+  /// 公交路线图标
+  static const String jbcxRouteBus = '$_base/jbcx_route_bus.png';
+
+  /// 家地址图标
+  static const String jbcxAddressHome = '$_base/jbcx_address_home.png';
+
+  /// 公司地址图标
+  static const String jbcxAddressCompany = '$_base/jbcx_address_company.png';
+
+  /// 学校地址图标
+  static const String jbcxAddressSchool = '$_base/jbcx_address_school.png';
+
+  /// 权限引导页背景图（450dp 高）
+  static const String icMainBg = '$_base/ic_main_bg.webp';
+
+  /// 权限引导页定位图标
+  static const String icMainLocation = '$_base/ic_main_location.webp';
+
+  /// 搜索空状态图（207x153dp）
+  static const String icBusSearchEmpty = '$_base/ic_bus_search_empty.webp';
+
+  /// "到这去"图标（18dp）
+  static const String icBusStopGo = '$_base/ic_bus_stop_go.webp';
+
+  /// 交换位置图标（20x19dp）
+  static const String icBusRouteCommutation = '$_base/ic_bus_route_commutation.png';
+
+  // ====== 旅行规划（travel）模块资源 - 对齐 Android ViewpointFragment ======
+  /// 旅行卡片图（9 张，154dp 高）
+  static const String travelDisney = '$_base/jbcx_travel_disney.webp';
+  static const String travelBund = '$_base/jbcx_travel_bund.webp';
+  static const String travelForbiddenCity = '$_base/jbcx_travel_forbidden_city.png';
+  static const String travelUniversalBeijing = '$_base/jbcx_travel_universal_beijing.png';
+  static const String travelGreatWall = '$_base/jbcx_travel_great_wall.png';
+  static const String travelTerracottaWarriors = '$_base/jbcx_travel_terracotta_warriors.png';
+  static const String travelHuanglong = '$_base/jbcx_travel_huanglong.png';
+  static const String travelLeshanBuddha = '$_base/jbcx_travel_leshan_buddha.png';
+  static const String travelWestLake = '$_base/jbcx_travel_west_lake.png';
+
+  // ====== 景点详情页资源 - 对齐 Android hotSceniclib ======
+  /// 迪士尼攻略图（3 张）
+  static const String disneyMenpai = '$_base/dishini_s_menpai.webp';
+  static const String disneyLeyuan = '$_base/dishini_sh_leyuan.webp';
+  static const String disneyFood = '$_base/dishini_s_food.webp';
+
+  /// 图片攻略图（7 张，对应 EditorPicTipsActivity）
+  static const String scenicGugong = '$_base/guggong_bg2.webp';
+  static const String scenicHuanqiiu = '$_base/huanqiiu.webp';
+  static const String scenicBadaling = '$_base/badaling.webp';
+  static const String scenicBingmayong = '$_base/bingmayong.webp';
+  static const String scenicWaitan = '$_base/waitan.webp';
+  static const String scenicJiuzhaigou = '$_base/jiuzhaigou.webp';
+  static const String scenicXihu = '$_base/xihu.webp';
+
+  /// 乐山峨眉攻略图（4 张）
+  static const String leshanHead = '$_base/img_head_leshan.webp';
+  static const String leshanDafo = '$_base/leshan_dafo.webp';
+  static const String emeishan = '$_base/emeishan.webp';
+  static const String sichuanChuanchuan = '$_base/sichuan_chuanchuan.webp';
+
+  /// 通用返回按钮（灰白色）
+  static const String icBackGrayWhite = '$_base/ic_back_gray_white.webp';
+
+  // ====== 个人主页（TravelSetting）模块资源 - 对齐 Android TravelSettingFragment ======
+  /// 应用 Logo
+  static const String icLogo = '$_base/ic_logo.png';
+
+  /// 今日天气行右箭头（复用已有 arrowRight）
+
+  /// 生活指数图标（6 个）— 对齐 Android ic_ling_main_2_*
+  static const String lifeIndexDressing = '$_base/ic_ling_main_2_1.png';
+  static const String lifeIndexTravel = '$_base/ic_ling_main_2_2.png';
+  static const String lifeIndexSunscreen = '$_base/ic_ling_main_2_3.png';
+  static const String lifeIndexTraffic = '$_base/ic_ling_main_2_4.png';
+  static const String lifeIndexMakeup = '$_base/ic_ling_main_2_5.png';
+  static const String lifeIndexUv = '$_base/ic_ling_main_2_6.png';
+
+  /// 设置菜单图标（4 个）— 对齐 Android ic_man_own_2_* + ic_lu_own_3_4
+  static const String settingPrivacy = '$_base/ic_man_own_2_1.webp';
+  static const String settingUserTerms = '$_base/ic_man_own_2_2.webp';
+  static const String settingFeedback = '$_base/ic_man_own_2_3.webp';
+  static const String settingAbout = '$_base/ic_lu_own_3_4.png';
+
+  /// 设置菜单项右箭头
+  static const String icMyMore = '$_base/ic_my_more.webp';
+
+  // ====== 首页（Nearby）模块资源 - 对齐 Android NearbyFragment ======
+  /// 大卡片图标（美食、超市）
+  static const String nearbyFood = '$_base/ic_man_nearby_1_1.png';
+  static const String nearbyFoodBg = '$_base/meishi_icon.png';
+  static const String nearbyMarket = '$_base/ic_man_nearby_1_3.png';
+  static const String nearbyMarketBg = '$_base/chaoshi_icon.png';
+
+  /// 小图标（8 个功能项）
+  static const String nearbyEntertainment = '$_base/ic_man_nearby_1_2.png';
+  static const String nearbyHotel = '$_base/ic_man_nearby_1_4.png';
+  static const String nearbyScenic = '$_base/ic_man_nearby_1_5.png';
+  static const String nearbyToilet = '$_base/ic_man_nearby_1_10.png';
+  static const String nearbySubway = '$_base/ic_man_nearby_1_8.png';
+  static const String nearbyBus = '$_base/ic_man_nearby_1_7.png';
+  static const String nearbyGas = '$_base/ic_man_nearby_1_9.png';
+  static const String nearbyParking = '$_base/ic_man_nearby_1_6.png';
+
+  /// 大卡片右侧箭头
+  static const String carrowIcon = '$_base/carrow_icon.png';
 }

@@ -1,9 +1,12 @@
 // 底部 3 Tab 容器 - 对齐 Android MainWeatherActivity
-// 首页(天气)迁移,日历/空气质量预留入口
+// 首页(天气)+畅行(对齐 Android HomeFragment)+空气质量
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../calendar/pages/calendar_page.dart';
 import '../../air_quality/pages/air_quality_page.dart';
+import '../../bus/pages/bus_home_fragment_page.dart';
+import '../../nearby/pages/nearby_fragment_page.dart';
+import '../../travel/pages/travel_setting_page.dart';
+import '../../travel/pages/viewpoint_fragment_page.dart';
 import '../../weather/pages/weather_page.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_assets.dart';
@@ -19,9 +22,10 @@ class HomeShellPage extends ConsumerWidget {
     final currentIndex = ref.watch(homeTabIndexProvider);
 
     const pages = [
-      WeatherPage(),
-      CalendarPage(),
-      AirQualityPage(),
+      NearbyFragmentPage(),
+      BusHomeFragmentPage(),
+      ViewpointFragmentPage(),
+      TravelSettingPage(),
     ];
 
     return Scaffold(
@@ -65,7 +69,7 @@ class HomeShellPage extends ConsumerWidget {
               context,
               ref,
               index: 1,
-              label: '日历',
+              label: '畅行',
               normalIcon: AppAssets.tabCalendarNormal,
               selectedIcon: AppAssets.tabCalendarSelected,
               isSelected: currentIndex == 1,
@@ -74,10 +78,19 @@ class HomeShellPage extends ConsumerWidget {
               context,
               ref,
               index: 2,
-              label: '空气质量',
+              label: '旅行',
               normalIcon: AppAssets.tabAirNormal,
               selectedIcon: AppAssets.tabAirSelected,
               isSelected: currentIndex == 2,
+            ),
+            _buildNavItem(
+              context,
+              ref,
+              index: 3,
+              label: '我的',
+              normalIcon: AppAssets.tabAirNormal,
+              selectedIcon: AppAssets.tabAirSelected,
+              isSelected: currentIndex == 3,
             ),
           ],
         ),

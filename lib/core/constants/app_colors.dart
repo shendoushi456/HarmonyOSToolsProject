@@ -86,4 +86,50 @@ class AppColors {
 
   /// 设置页应用名色
   static const Color settingAppName = Color(0xFF333333);
+
+  // ====== 畅行（bus）模块颜色 - 对齐 Android bus/utils/BusThemeColors + HomeFragment.kt ======
+  /// 畅行主题色（对齐 Android BusThemeColors.PRIMARY_COLOR = 0xFF31C580）
+  static const Color busPrimary = Color(0xFF31C580);
+
+  /// 畅行主题色上的对比色（对齐 Android BusThemeColors.ON_PRIMARY_COLOR）
+  static const Color busOnPrimary = Color(0xFFFFFFFF);
+
+  /// 畅行强调色（对齐 Android HomeFragment.JbcxAccent = 0xFF7CE2E2）
+  static const Color jbcxAccent = Color(0xFF7CE2E2);
+
+  /// 畅行主文本色（对齐 Android HomeFragment.JbcxText = 0xFF1E1E1E）
+  static const Color jbcxText = Color(0xFF1E1E1E);
+
+  /// 畅行次要文本灰（对齐 Android HomeFragment.kt 0xFF626262）
+  static const Color jbcxSubText = Color(0xFF626262);
+
+  /// 畅行输入框文本灰（对齐 Android HomeFragment.kt 0xFF666666）
+  static const Color jbcxInputText = Color(0xFF666666);
+
+  /// 畅行路线卡片背景灰（对齐 Android HomeFragment.kt 0xFFF3F3F3）
+  static const Color jbcxRouteBg = Color(0xFFF3F3F3);
+
+  /// 畅行路线起点绿（对齐 Android HomeFragment.kt 0xFF37D466）
+  static const Color jbcxRouteStart = Color(0xFF37D466);
+
+  /// 畅行路线终点红（对齐 Android HomeFragment.kt 0xFFD43737）
+  static const Color jbcxRouteEnd = Color(0xFFD43737);
+
+  /// 畅行分隔线灰（对齐 Android HomeFragment.kt 0xFFE0E0E0）
+  static const Color jbcxDivider = Color(0xFFE0E0E0);
+
+  /// 畅行头部渐变起点（对齐 Android HomeFragment.kt 0xFFBCFFFF）
+  static const Color jbcxHeaderGradientStart = Color(0xFFBCFFFF);
+
+  /// 畅行头部渐变终点
+  static const Color jbcxHeaderGradientEnd = Color(0xFFFFFFFF);
+
+  /// 畅行地址区域分隔线灰（对齐 Android AddressSection.kt 0xFFE5E5E5）
+  static const Color jbcxAddressDivider = Color(0xFFE5E5E5);
+
+  /// 畅行地址次要文本灰（对齐 Android AddressSection.kt 0xFF888888）
+  static const Color jbcxAddressSubText = Color(0xFF888888);
+
+  /// 畅行交换图标色（对齐 Android MapRouteActivity.kt 0xFF333333）
+  static const Color jbcxSwapIcon = Color(0xFF333333);
 }

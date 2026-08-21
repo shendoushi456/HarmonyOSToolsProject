@@ -167,13 +167,13 @@ class _ProtocolDialog extends StatelessWidget {
             // "各条款信息..." - 对齐行 83-88
             _buildParagraph('各条款信息，来了解详细内容。如您同意，请点击“同意”开始接受我们的服务。',
                 Colors.black, top: 10),
-            // 同意按钮 - 对齐行 91-101 (100x40, #3F5BDF 圆角, 18sp white)
+            // 同意按钮 - 对齐 Android agreen(match_parent, marginHorizontal=50dp, height=40dp, #3F5BDF 圆角, 18sp white)
             Padding(
-              padding: const EdgeInsets.only(top: 20),
+              padding: const EdgeInsets.only(top: 20, left: 50, right: 50),
               child: GestureDetector(
                 onTap: onAgree,
                 child: Container(
-                  width: 100,
+                  width: double.infinity,
                   height: 40,
                   alignment: Alignment.center,
                   decoration: BoxDecoration(

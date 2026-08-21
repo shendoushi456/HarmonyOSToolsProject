@@ -42,6 +42,86 @@
           ],
           "when": "always"
         }
+      },
+      {
+        // 读取当前 HAP 的签名 AppID，用于百度鸿蒙 AK 鉴权诊断
+        "name": "ohos.permission.GET_BUNDLE_INFO"
+      },
+      {
+        // 百度定位 SDK 通过 Wi-Fi 和网络辅助提升网络定位成功率
+        "name": "ohos.permission.GET_WIFI_INFO",
+        "reason": "$string:permission_location_reason",
+        "usedScene": {
+          "abilities": [
+            "EntryAbility"
+          ],
+          "when": "inuse"
+        }
+      },
+      {
+        "name": "ohos.permission.GET_NETWORK_INFO",
+        "reason": "$string:permission_location_reason",
+        "usedScene": {
+          "abilities": [
+            "EntryAbility"
+          ],
+          "when": "inuse"
+        }
+      },
+      {
+        // 定位 SDK 依赖该权限完成设备标识合规处理
+        "name": "ohos.permission.APP_TRACKING_CONSENT",
+        "reason": "$string:permission_location_reason",
+        "usedScene": {
+          "abilities": [
+            "EntryAbility"
+          ],
+          "when": "inuse"
+        }
+      },
+      {
+        // SDK 连续定位服务所需；当前业务在获得首个结果后会主动停止。
+        "name": "ohos.permission.KEEP_BACKGROUND_RUNNING",
+        "reason": "$string:permission_location_reason",
+        "usedScene": {
+          "abilities": [
+            "EntryAbility"
+          ],
+          "when": "always"
+        }
+      },
+      {
+        // 精准定位（百度地图 SDK 必需，对齐 Android ACCESS_FINE_LOCATION）
+        "name": "ohos.permission.LOCATION",
+        "reason": "$string:permission_location_reason",
+        "usedScene": {
+          "abilities": [
+            "EntryAbility"
+          ],
+          "when": "inuse"
+        }
+      },
+      {
+        // 模糊定位（对齐 Android ACCESS_COARSE_LOCATION）
+        "name": "ohos.permission.APPROXIMATELY_LOCATION",
+        "reason": "$string:permission_location_reason",
+        "usedScene": {
+          "abilities": [
+            "EntryAbility"
+          ],
+          "when": "inuse"
+        }
+      },
+      {
+        // 后台定位（对齐 Android ACCESS_BACKGROUND_LOCATION）
+        "name": "ohos.permission.LOCATION_IN_BACKGROUND",
+        "reason": "$string:permission_location_reason",
+        "usedScene": {
+          "abilities": [
+            "EntryAbility"
+          ],
+          "when": "always"
+        }
       }
     ]
   }

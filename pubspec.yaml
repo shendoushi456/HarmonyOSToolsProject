@@ -28,11 +28,24 @@ dependencies:
   # 字体渲染/SVG
   flutter_svg: 2.0.5
 
+  # 百度地图 SDK（CODEBUDDY.md 规定，鸿蒙原生支持）
+  # 鸿蒙端 AK 通过代码 myLocPlugin.authAK 设置，非 manifest meta-data
+  flutter_baidu_mapapi_base: 4.0.1+1
+  flutter_baidu_mapapi_map: 4.0.1+1
+  # 固化鸿蒙端搜索失败回调修复，避免云真机网络/服务异常时页面永久加载。
+  flutter_baidu_mapapi_search:
+    path: third_party/flutter_baidu_mapapi_search
+  flutter_baidu_mapapi_utils: 4.0.1+1
+  flutter_bmflocation: 3.8.4+1
+
   # 网络（纯 Dart，无需 ohos 适配）
   dio: 5.4.0
 
   # 打开协议 URL（系统浏览器）
   url_launcher: 6.1.11
+
+  # 权限请求（定位等）
+  permission_handler: ^11.0.0
 
   # 应用内 WebView 显示协议页(OpenHarmony 适配版)
   webview_flutter_ohos:
