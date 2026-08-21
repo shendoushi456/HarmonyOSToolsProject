@@ -185,9 +185,9 @@ class BaiduLocationManager {
           'appIdentifier=${_runtimeAppIdentifier ?? '未获取到'}, '
           'locationAK=$locationAk',
         );
-        message = '$message\n运行时 appId：${_runtimeAppId ?? '未获取到'}'
-            '\n运行时 appIdentifier：${_runtimeAppIdentifier ?? '未获取到'}'
-            '\n百度定位 AK：$locationAk';
+        // message = '$message\n运行时 appId：${_runtimeAppId ?? '未获取到'}'
+        //     '\n运行时 appIdentifier：${_runtimeAppIdentifier ?? '未获取到'}'
+        //     '\n百度定位 AK：$locationAk';
       }
       final error = LocationException(message);
       if (_currentCompleter != null && !_currentCompleter!.isCompleted) {

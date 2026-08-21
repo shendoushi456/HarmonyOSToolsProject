@@ -43,6 +43,9 @@ class _MapRoutePageState extends ConsumerState<MapRoutePage> {
     final extra = widget.extra ?? const {};
     // 对齐 Android: val transportMode = intent.getIntExtra(EXTRA_TRANSPORT_MODE, 0)
     final transportMode = extra['transport_mode'] as int? ?? 0;
+    // 首页点击“请选择出发地/目的地”进入时，不主动触发定位，等用户选择地址。
+    final skipInitialLocation =
+        extra['skip_initial_location'] as bool? ?? false;
     // 对齐 Android: val searchMode = true; viewModel.setSearchMode(searchMode)
     final notifier = ref.read(busRouteViewModelProvider.notifier);
     // 每次进入路线规划页都从空状态开始，避免复用上一次的起终点或路线结果。
@@ -84,7 +87,7 @@ class _MapRoutePageState extends ConsumerState<MapRoutePage> {
         latitude: extra['end_latitude'] as double,
         longitude: extra['end_longitude'] as double,
       );
-    } else {
+    } else if (!skipInitialLocation) {
       // 对齐 Android: viewModel.startLocationForRoute()
       await notifier.startLocationForRoute();
     }

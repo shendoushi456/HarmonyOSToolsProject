@@ -479,7 +479,10 @@ class _RoutePlanningCardState extends State<_RoutePlanningCard> {
     GoRouter.of(context).push(
       RoutePaths.mapRoute,
       extra: {
-        'transport_mode': selectedMode.index,
+        // MapRoutePage 使用 UI 顺序：公交0、驾车1、骑行2、步行3。
+        'transport_mode': TransportModeConverter.toUiInt(selectedMode),
+        // 从“请选择出发地/目的地”入口进入时，等待用户主动选择，不自动定位。
+        'skip_initial_location': true,
       },
     );
   }
@@ -507,7 +510,7 @@ class _RoutePlanningCardState extends State<_RoutePlanningCard> {
     GoRouter.of(context).push(
       RoutePaths.mapRoute,
       extra: {
-        'transport_mode': mode.index,
+        'transport_mode': TransportModeConverter.toUiInt(mode),
         'start_name': _fromName,
         'start_latitude': _fromLat,
         'start_longitude': _fromLng,
