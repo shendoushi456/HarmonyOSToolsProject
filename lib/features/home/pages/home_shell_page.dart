@@ -2,9 +2,9 @@
 // 首页(天气)迁移,日历/空气质量预留入口
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../calendar/pages/calendar_page.dart';
-import '../../air_quality/pages/air_quality_page.dart';
-import '../../weather/pages/weather_page.dart';
+import '../../calendar/pages/calendar_new_page.dart';
+import '../../air_quality/pages/air_quality_new_page.dart';
+import '../../weather/pages/weather_new_page.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_assets.dart';
 
@@ -19,9 +19,9 @@ class HomeShellPage extends ConsumerWidget {
     final currentIndex = ref.watch(homeTabIndexProvider);
 
     const pages = [
-      WeatherPage(),
-      CalendarPage(),
-      AirQualityPage(),
+      WeatherNewPage(),
+      CalendarNewPage(),
+      AirQualityNewPage(),
     ];
 
     return Scaffold(

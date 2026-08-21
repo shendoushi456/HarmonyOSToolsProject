@@ -1,12 +1,15 @@
 // 路由配置 - 集中定义所有路由
 import 'package:go_router/go_router.dart';
 import '../features/home/pages/home_shell_page.dart';
+import '../features/history/pages/history_page.dart';
 import '../features/setting/pages/about_page.dart';
 import '../features/setting/pages/feedback_page.dart';
 import '../features/setting/pages/policy_page.dart';
 import '../features/setting/pages/setting_page.dart';
 import '../features/splash/pages/splash_page.dart';
 import '../features/weather/pages/city_select_page.dart';
+import '../features/weather/pages/solar_terms_page.dart';
+import '../features/calendar/pages/life_tips_page.dart';
 import 'route_names.dart';
 
 final GoRouter appRouter = GoRouter(
@@ -58,6 +61,24 @@ final GoRouter appRouter = GoRouter(
       path: RoutePaths.feedback,
       name: RouteNames.feedback,
       builder: (context, state) => const FeedbackPage(),
+    ),
+    // 二十四节气 H5 页 - 对齐 Android WeatherWebViewActivity 加载本地 H5
+    GoRoute(
+      path: RoutePaths.solarTerms,
+      name: RouteNames.solarTerms,
+      builder: (context, state) => const SolarTermsPage(),
+    ),
+    // 历史上的今天页 - 对齐 Android HistoryActivity
+    GoRoute(
+      path: RoutePaths.historyToday,
+      name: RouteNames.historyToday,
+      builder: (context, state) => const HistoryPage(),
+    ),
+    // 生活小贴士 H5 页 - 对齐 Android WeatherWebViewActivity 加载 xiaoqiaomen.html
+    GoRoute(
+      path: RoutePaths.lifeTips,
+      name: RouteNames.lifeTips,
+      builder: (context, state) => const LifeTipsPage(),
     ),
   ],
 );

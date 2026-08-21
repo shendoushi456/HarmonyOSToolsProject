@@ -31,6 +31,15 @@ class RouteNames {
 
   /// 反馈页(对齐 Android FeedBackSettingActivity)
   static const String feedback = 'feedback';
+
+  /// 二十四节气 H5 页(对齐 Android WeatherWebViewActivity 加载 ershisijieqi/index.html)
+  static const String solarTerms = 'solarTerms';
+
+  /// 历史上的今天页(对齐 Android HistoryActivity)
+  static const String historyToday = 'historyToday';
+
+  /// 生活小贴士 H5 页(对齐 Android WeatherWebViewActivity 加载 xiaoqiaomen.html)
+  static const String lifeTips = 'lifeTips';
 }
 
 class RoutePaths {
@@ -57,4 +66,13 @@ class RoutePaths {
 
   /// 反馈页路径
   static const String feedback = '/feedback';
+
+  /// 二十四节气 H5 页路径
+  static const String solarTerms = '/solarTerms';
+
+  /// 历史上的今天页路径
+  static const String historyToday = '/historyToday';
+
+  /// 生活小贴士 H5 页路径
+  static const String lifeTips = '/lifeTips';
 }

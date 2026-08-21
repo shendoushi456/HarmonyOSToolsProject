@@ -1,0 +1,85 @@
+.solar-head{
+	display: flex;
+	align-items:center;
+	justify-content:center;
+	height: 4.5rem;
+	text-align: center;
+	background-image: url("../images/solar_bg.png");
+	background-size:100% 100%;
+}
+.solar-head .title{
+	border:2px double #e6e0d4;
+	display: flex;
+	justify-content:center;
+	align-items:center;
+	background: rgba(255, 255, 255, 0.2);
+	height: 3.2rem;
+	width: 8.51rem;
+	font-size: 0.85rem;
+	color:#333333;
+	margin-top: 2rem;
+	border-radius:0.3rem;
+}
+.solar-head .info{
+	width: 2rem;
+	height: 2.4rem;
+	margin-left: 1rem;
+	display: flex;
+	align-items:flex-end;
+	justify-content:flex-end;
+	background: url("../images/date_bg.png") no-repeat;
+	background-size:100% auto;
+
+}
+.solar-body{
+	padding: 0 0.4rem;
+	margin-top: 3rem;
+}
+.solar-body .session{
+	margin: 2rem 0;
+	padding: 0.4rem;
+	border:2px solid rgba(148,121,72,0.3);
+	border-radius: 0.3rem;
+}
+.solar-body .icon{
+	position:absolute;
+	margin-top: -1.4rem;
+	width: 0.8rem;
+	height: 1.35rem;
+}
+.solar-text{
+	text-align: center;
+	font-size: 0.7rem;
+	color:#333333;
+}
+.solar-day{
+	text-align: center;
+	font-size: 0.7rem;
+	color:rgb(148,121,72);
+}
+.solar-img{
+	width: 2.4rem;
+	height: 2.4rem;
+	background-size: 100% 100%;
+	background-repeat: no-repeat;
+	margin: 0 auto;
+}
+.pop-header{
+	height: 2.2rem;;
+}
+.pop-header .picker-button {
+	position: absolute;
+	right: 0;
+	box-sizing: border-box;
+	height: 2.2rem;
+	line-height: 2.2rem;
+	color: #04BE02;
+	z-index: 1;
+	padding: 0 .5rem;
+}
+.solar-text.red{
+	color:red;
+}
+.solar-day.red{
+	color:red;
+}

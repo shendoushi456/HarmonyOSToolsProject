@@ -32,4 +32,24 @@ class WeatherIconUtil {
     }
     return AppAssets.weatherCloudy;
   }
+
+  /// 七日预报小图标 - 对齐 Android WeatherUtils.getWeatherDayIcon
+  /// 保真还原：默认返回 weatherDaySun（区别于 smallIcon 默认 weatherCloudy）
+  /// 保真还原原 Bug：含"雷"也返回 weatherDayRain（Android 注释掉了 thunderstorm 行）
+  static String dayIcon(String condition) {
+    if (condition.contains('晴')) {
+      return AppAssets.weatherDaySun;
+    }
+    if (condition.contains('阴') || condition.contains('多云')) {
+      return AppAssets.weatherDayCloudy;
+    }
+    // 还原原 Bug: Android 期望返回 thunderstorm 但实际返回 rain
+    if (condition.contains('雷')) {
+      return AppAssets.weatherDayRain;
+    }
+    if (condition.contains('雨')) {
+      return AppAssets.weatherDayRain;
+    }
+    return AppAssets.weatherDaySun;
+  }
 }

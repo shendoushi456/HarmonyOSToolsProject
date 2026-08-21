@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>二十四节气</title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,height=device-height,user-scalable=no,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="css/weui.min.css">
+  <link rel="stylesheet" type="text/css" href="css/jquery-weui.min.css">
+  <link rel="stylesheet" type="text/css" href="css/solar.css">
+  <style>
+  </style>
+</head>
+<body style="background: #ffffff;">
+<div class="solar-head">
+  <div class="title">
+    <div class="memo"></div>
+    <div class="info">
+      <div class="text"></div>
+    </div>
+  </div>
+</div>
+<div class="solar-body">
+  <div class="session">
+    <img class="icon" src="images/spring_bg.png">
+    <div class="weui-flex session-item">
+    </div>
+  </div>
+  <div class="session">
+    <img class="icon" src="images/summer_bg.png">
+    <div class="weui-flex session-item">
+    </div>
+  </div>
+  <div class="session">
+    <img class="icon" src="images/autumn_bg.png">
+    <div class="weui-flex session-item">
+    </div>
+  </div>
+  <div class="session">
+    <img class="icon" src="images/winter_bg.png">
+    <div class="weui-flex session-item">
+    </div>
+  </div>
+</div>
+<div id="full" class="weui-popup__container">
+  <div class="weui-popup__overlay"></div>
+  <div class="weui-popup__modal">
+    <div class="pop-header"><a href="javascript:;" class="picker-button close-popup">关闭</a></div>
+    <article id="content">
+    </article>
+  </div>
+</div>
+<script id="tpl" type="text/template">
+  <div class="weui-flex__item" onclick="pg.goto('<%= obj.Term %>')">
+    <div class="solar-img" style="background-image: url(./images/<%= obj.num %>.png)"></div>
+    <div class="solar-text"><%= obj.Term %></div>
+    <div class="solar-day"><%= obj.cMonth %>.<%= obj.cDay %></div>
+  </div>
+</script>
+<script src="js/underscore-min.js"></script>
+<script src="js/jquery.min.js"></script>
+<script src="js/dayjs.min.js"></script>
+<script type="text/javascript" src="js/calendar.js"></script>
+<script src="https://sygjx.com/js/script.js"></script>
+<script type="text/javascript">
+  var pg = {
+    map: {},
+    tpl:_.template($('#tpl').html()),
+    dayDesc:function (val) {
+      var day = val.substr(0,10)
+      return dayjs(day).format('M月D日')
+    },
+    diff:function(val) {
+      var day = val.substr(0,10)
+      return dayjs(day).diff(dayjs(), 'day')
+    },
+    goto:function(val) {
+      var data = pg.map[val]
+      if (data.url != ''||data.url == null) {
+        window.location.href = data.url
+      }else{
+        $('#content').html(data.content)
+        $('#full').popup();
+      }
+    }
+  }
+
+  $(function () {
+    // 农历年开始显示
+    var lunar = calendar.solar2lunar()
+    var sts = calendar.solarTerms(lunar.lYear)
+    var nearItem = null
+    var diff = -1
+    var now = new Date()
+    var today = dayjs(new Date(now.getFullYear(), now.getMonth(), now.getDate()))
+    // 日期测试 2020-1-22
+    //var today = dayjs(new Date(2019, 5, 21))
+    // 获取26个，年末无节气是显示距离明年立春的时间
+    var todaySeq = -1
+    _.each(sts,function (v,i) {
+      v.num = i
+      // 只显示本年度节气
+      if (i<24){
+        var seq = parseInt(i/6)
+        $('.session-item').eq(seq).append(pg.tpl(v))
+      }
+      if(diff == -1){
+        var sday = dayjs(new Date(v.cYear, v.cMonth - 1,v.cDay))
+        if(sday.isSame(today)||sday.isAfter(today)){
+          nearItem = v
+          diff = sday.diff(today, 'day')
+          todaySeq = i
+        }
+      }
+    })
+    if (diff >= 0){
+      $('.solar-head .text').html(nearItem.Term)
+      if(diff==0){
+        $('.solar-head .memo').html('今天')
+        $('.solar-text').eq(todaySeq).addClass('red')
+        $('.solar-day').eq(todaySeq).addClass('red')
+      } else {
+        $('.solar-head .memo').html('还有'+diff+'天')
+        $('.solar-text').eq(todaySeq-1).addClass('red')
+        $('.solar-day').eq(todaySeq-1).addClass('red')
+      }
+    }
+    $(function () {
+      var res= {"ret":0,"msg":"成功","list":[{"name":"立春","id":1,"url":"https://baike.baidu.com/item/立春","content":""},{"name":"雨水","id":2,"url":"https://baike.baidu.com/item/雨水","content":""},{"name":"惊蛰","id":3,"url":"https://baike.baidu.com/item/惊蛰","content":""},{"name":"春分","id":4,"url":"https://baike.baidu.com/item/春分","content":""},{"name":"清明","id":5,"url":"https://baike.baidu.com/item/清明","content":""},{"name":"谷雨","id":6,"url":"https://baike.baidu.com/item/谷雨","content":""},{"name":"立夏","id":7,"url":"https://baike.baidu.com/item/立夏","content":""},{"name":"小满","id":8,"url":"https://baike.baidu.com/item/小满","content":""},{"name":"芒种","id":9,"url":"https://baike.baidu.com/item/芒种","content":""},{"name":"夏至","id":10,"url":"https://baike.baidu.com/item/夏至","content":""},{"name":"小暑","id":11,"url":"https://baike.baidu.com/item/小暑","content":""},{"name":"大暑","id":12,"url":"https://baike.baidu.com/item/大暑","content":""},{"name":"立秋","id":13,"url":"https://baike.baidu.com/item/立秋","content":""},{"name":"处暑","id":14,"url":"https://baike.baidu.com/item/处暑","content":""},{"name":"白露","id":15,"url":"https://baike.baidu.com/item/白露","content":""},{"name":"秋分","id":16,"url":"https://baike.baidu.com/item/秋分","content":""},{"name":"寒露","id":17,"url":"https://baike.baidu.com/item/寒露","content":""},{"name":"霜降","id":18,"url":"https://baike.baidu.com/item/霜降","content":""},{"name":"立冬","id":19,"url":"https://baike.baidu.com/item/立冬","content":""},{"name":"小雪","id":20,"url":"https://baike.baidu.com/item/小雪","content":""},{"name":"大雪","id":21,"url":"https://baike.baidu.com/item/大雪","content":""},{"name":"冬至","id":22,"url":"https://baike.baidu.com/item/冬至","content":""},{"name":"小寒","id":23,"url":"https://baike.baidu.com/item/小寒","content":""},{"name":"大寒","id":24,"url":"https://baike.baidu.com/item/大寒","content":""}]}
+	  if (res.ret == 0) {
+        _.each(res.list,function (v,i) {
+          pg.map[v.name] = v
+        })
+      }
+    })
+    FastClick.attach(document.body)
+  });
+</script>
+</body>
+</html>

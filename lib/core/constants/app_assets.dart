@@ -34,6 +34,90 @@ class AppAssets {
   /// 大天气图标(雨/雪/默认)
   static const String weatherLarge = '$_base/qmtq_weather_large.png';
 
+  // ====== 新 UI 资源（对齐 Android 第一个 WeatherFragment Compose UI）======
+  /// TemperatureDisplay 卡片背景图（对齐 Android weather_lbg）
+  static const String weatherCardBg = '$_base/weather_lbg.png';
+
+  /// 顶部栏定位图标（对齐 Android llocation，黑色 tint）
+  static const String weatherLocation = '$_base/llocation.png';
+
+  /// 二十四节气卡片图标（对齐 Android llifejq）
+  static const String weatherToolSolarTerms = '$_base/llifejq.png';
+
+  /// 历史上的今天卡片图标（对齐 Android llifetoday）
+  static const String weatherToolHistoryToday = '$_base/llifetoday.png';
+
+  /// 卡片右箭头 18dp（对齐 Android arrow_right_ic，区别于设置页 arrowRight）
+  static const String arrowRightIcon = '$_base/arrow_right_ic.png';
+
+  /// 七日预报 - 晴天图标（对齐 Android ic_six_7day_sun）
+  static const String weatherDaySun = '$_base/ic_six_7day_sun.png';
+
+  /// 七日预报 - 多云/阴图标（对齐 Android ic_six_7day_cloudy）
+  static const String weatherDayCloudy = '$_base/ic_six_7day_cloudy.png';
+
+  /// 七日预报 - 雨图标（对齐 Android ic_six_7day_rain，雷也复用此图标——还原原 Bug）
+  static const String weatherDayRain = '$_base/ic_six_7day_rain.png';
+
+  /// 七日预报 - 雷雨图标（对齐 Android ic_six_7day_thunderstorm，保真保留未启用）
+  static const String weatherDayThunderstorm = '$_base/ic_six_7day_thunderstorm.png';
+
+  // ====== 空气质量新 UI 资源（对齐 Android WeatherShChildFragment Compose UI）======
+  /// 风速图标（对齐 Android ic_feng_main_2_1，WeatherInfoCard 风速项）
+  static const String airWindSpeed = '$_base/ic_feng_main_2_1.png';
+
+  /// 气压图标（对齐 Android ic_feng_main_2_2，WeatherInfoCard 气压项）
+  static const String airPressure = '$_base/ic_feng_main_2_2.png';
+
+  /// 湿度图标（对齐 Android ic_feng_main_2_3，WeatherInfoCard 湿度项）
+  static const String airHumidity = '$_base/ic_feng_main_2_3.png';
+
+  /// PM2.5 污染物图标（对齐 Android ic_ling_life_2_1，细颗粒物）
+  static const String pollutantPm25 = '$_base/ic_ling_life_2_1.png';
+
+  /// PM10 污染物图标（对齐 Android ic_ling_life_2_2，粗颗粒度）
+  static const String pollutantPm10 = '$_base/ic_ling_life_2_2.png';
+
+  /// NO₂ 污染物图标（对齐 Android ic_ling_life_2_3，二氧化氮）
+  static const String pollutantNo2 = '$_base/ic_ling_life_2_3.png';
+
+  /// SO₂ 污染物图标（对齐 Android ic_ling_life_2_4，二氧化硫）
+  static const String pollutantSo2 = '$_base/ic_ling_life_2_4.png';
+
+  /// CO 污染物图标（对齐 Android ic_ling_life_2_5，一氧化碳）
+  static const String pollutantCo = '$_base/ic_ling_life_2_5.png';
+
+  /// O3 污染物图标（对齐 Android ic_ling_life_2_6，臭氧）
+  static const String pollutantO3 = '$_base/ic_ling_life_2_6.png';
+
+  /// 圆环中心空气质量图标（对齐 Android kqzl_iocn，注意原拼写是 iocn 不是 icon）
+  static const String airQualityCenterIcon = '$_base/kqzl_iocn.png';
+
+  // ====== 日历新 UI 资源（对齐 Android NearbyFragment Compose UI）======
+  /// 生活小窍门图标（对齐 Android shenghxts，106dp，点击→xiaoqiaomen.html H5）
+  static const String lifeTipsIcon = '$_base/shenghxts.png';
+
+  /// 压力管理卡片背景图（对齐 Android llifehjyl_bg，315x165dp）
+  static const String pressureCardBg = '$_base/llifehjyl_bg.png';
+
+  /// 压力管理卡片插图（对齐 Android llifehjyl，90dp）
+  static const String pressureCardIllustration = '$_base/llifehjyl.png';
+
+  /// 日历左箭头（对齐 Android ic_arrow_left，15dp）
+  static const String calendarArrowLeft = '$_base/ic_arrow_left.png';
+
+  /// 日历右箭头（对齐 Android ic_arrow_right，15dp）
+  static const String calendarArrowRight = '$_base/ic_arrow_right.png';
+
+  /// 日历天气占位图标（对齐 Android ic_sun.webp，gone 区域用，保真保留）
+  static const String calendarSunIcon = '$_base/ic_sun.webp';
+
+  /// WebView 标题栏返回箭头 - 黑色（对齐 Android icon_black_back）
+  static const String webviewBackBlack = '$_base/icon_black_back.png';
+
+  /// WebView 标题栏返回箭头（对齐 Android ic_back）
+  static const String webviewBack = '$_base/ic_back.png';
+
   /// 晴图标
   static const String weatherSunny = '$_base/qmtq_weather_sunny.png';
 
