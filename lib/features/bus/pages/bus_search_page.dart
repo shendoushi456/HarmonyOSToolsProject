@@ -346,7 +346,7 @@ class _SearchInputBarState extends State<_SearchInputBar> {
                       bottom: 0,
                       child: Center(
                         child: Text(
-                          '搜索线路、站点、目的地',
+                          '',
                           style: TextStyle(
                             fontSize: 12,
                             color: Color(0xFF979797),

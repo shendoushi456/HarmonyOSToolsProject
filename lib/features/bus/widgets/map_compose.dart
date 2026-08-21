@@ -63,6 +63,7 @@ class MapCompose extends StatefulWidget {
     super.key,
     this.currentLocation,
     this.searchResults = const [],
+    this.routePoints = const [],
     this.onMapReady,
     this.onLocationButtonClick,
     this.resetUserDrag = false,
@@ -75,6 +76,9 @@ class MapCompose extends StatefulWidget {
 
   /// 搜索结果列表（红色 Marker）
   final List<MapSearchResult> searchResults;
+
+  /// 路线规划返回的实际轨迹点；不少于两个点时会绘制路线折线。
+  final List<BMFCoordinate> routePoints;
 
   /// 地图就绪回调 - 对齐 Android onMapReady(BaiduMap)
   /// 鸿蒙端 controller 与 Android BaiduMap 角色对应
@@ -109,6 +113,12 @@ class _MapComposeState extends State<MapCompose> {
 
   /// 上一次的搜索结果，用于检测变化 - 对齐 Android lastSearchResults
   List<MapSearchResult> _lastSearchResults = const [];
+
+  /// 上一次绘制的路线点，避免不必要地重新渲染路线。
+  List<BMFCoordinate> _lastRoutePoints = const [];
+
+  /// 当前路线折线，用于在路线变更时移除旧覆盖物。
+  BMFPolyline? _routePolyline;
 
   /// 当前位置 Marker 的图标数据（蓝色）- 对齐 Android createBitmapDescriptorFromIcon(Color.Blue)
   Uint8List? _blueIconData;
@@ -148,8 +158,9 @@ class _MapComposeState extends State<MapCompose> {
     // 检测数据变化 - 对齐 Android update 回调中的 locationChanged/searchResultsChanged
     final locationChanged = _lastCurrentLocation != widget.currentLocation;
     final searchResultsChanged = _lastSearchResults != widget.searchResults;
+    final routeChanged = _lastRoutePoints != widget.routePoints;
 
-    if (locationChanged || searchResultsChanged) {
+    if (locationChanged || searchResultsChanged || routeChanged) {
       _updateMarkers();
     }
   }
@@ -212,12 +223,17 @@ class _MapComposeState extends State<MapCompose> {
 
     final currentLocation = widget.currentLocation;
     final searchResults = widget.searchResults;
+    final routePoints = widget.routePoints
+        .where((point) =>
+            point.latitude.abs() > 0.0001 && point.longitude.abs() > 0.0001)
+        .toList();
 
     final locationChanged = _lastCurrentLocation != currentLocation;
     final searchResultsChanged = _lastSearchResults != searchResults;
+    final routeChanged = _lastRoutePoints != widget.routePoints;
 
-    if (!locationChanged && !searchResultsChanged) {
-      debugPrint('MapCompose: 数据无变化，跳过地图标记更新');
+    if (!locationChanged && !searchResultsChanged && !routeChanged) {
+      debugPrint('MapCompose: 数据无变化，跳过地图更新');
       return;
     }
 
@@ -226,11 +242,18 @@ class _MapComposeState extends State<MapCompose> {
 
     _lastCurrentLocation = currentLocation;
     _lastSearchResults = searchResults;
+    _lastRoutePoints = widget.routePoints;
 
     try {
       // 对齐 Android map.clear()：清空所有覆盖物
       await controller.cleanAllMarkers();
       debugPrint('MapCompose: 地图标记已清空');
+
+      final previousRoutePolyline = _routePolyline;
+      if (previousRoutePolyline != null) {
+        await controller.removeOverlay(previousRoutePolyline.id);
+        _routePolyline = null;
+      }
 
       // 对齐 Android adjustMapViewToTargetLocation
       if (widget.isSearchTargetLocation && searchResults.isNotEmpty) {
@@ -299,9 +322,51 @@ class _MapComposeState extends State<MapCompose> {
       } else {
         debugPrint('MapCompose: 没有搜索结果需要添加标记');
       }
+
+      debugPrint('MapCompose: 路线轨迹点数量=${routePoints.length}');
+      if (routePoints.length >= 2) {
+        final routePolyline = BMFPolyline.colorline(
+          coordinates: routePoints,
+          strokerColor: const Color(0xFF2F80ED),
+          width: 10,
+          lineCapType: BMFLineCapType.LineCapRound,
+          lineJoinType: BMFLineJoinType.LineJoinRound,
+        );
+        await controller.addPolyline(routePolyline);
+        _routePolyline = routePolyline;
+        await _fitRouteBounds(controller, routePoints);
+      } else {
+        debugPrint('MapCompose: 有效路线点不足，使用起终点显示直线');
+      }
     } catch (e) {
       debugPrint('MapCompose: 更新地图标记时出错: $e');
     }
+  }
+
+  /// 将镜头调整为完整容纳起终点和路线轨迹。
+  Future<void> _fitRouteBounds(
+    BMFMapController controller,
+    List<BMFCoordinate> points,
+  ) async {
+    var minLatitude = points.first.latitude;
+    var maxLatitude = minLatitude;
+    var minLongitude = points.first.longitude;
+    var maxLongitude = minLongitude;
+    for (final point in points.skip(1)) {
+      minLatitude = point.latitude < minLatitude ? point.latitude : minLatitude;
+      maxLatitude = point.latitude > maxLatitude ? point.latitude : maxLatitude;
+      minLongitude =
+          point.longitude < minLongitude ? point.longitude : minLongitude;
+      maxLongitude =
+          point.longitude > maxLongitude ? point.longitude : maxLongitude;
+    }
+    await controller.setVisibleMapBounds(
+      BMFCoordinateBounds(
+        northeast: BMFCoordinate(maxLatitude, maxLongitude),
+        southwest: BMFCoordinate(minLatitude, minLongitude),
+      ),
+      true,
+    );
   }
 
   /// 添加单个 Marker - 对齐 Android map.addOverlay(MarkerOptions) as Marker

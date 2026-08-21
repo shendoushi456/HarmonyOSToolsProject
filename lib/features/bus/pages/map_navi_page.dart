@@ -15,6 +15,7 @@ import 'package:go_router/go_router.dart';
 
 import '../utils/bus_theme_colors.dart';
 import '../utils/navi_plan_manager.dart';
+import '../utils/route_data_manager.dart';
 import '../viewmodels/map_navi_view_model.dart';
 import '../widgets/map_compose.dart';
 
@@ -43,6 +44,7 @@ class _MapNaviPageState extends ConsumerState<MapNaviPage>
 
   /// 终点名称 - 对齐 Android EXTRA_END_NAME
   late final String _endName;
+  late final List<BMFCoordinate> _routePoints;
 
   @override
   void initState() {
@@ -109,14 +111,21 @@ class _MapNaviPageState extends ConsumerState<MapNaviPage>
     final extra = GoRouterState.of(context).extra;
     String routeTypeString = 'drive';
     if (extra is Map<String, dynamic>) {
-      routeTypeString = (extra['route_type'] as String?) ?? 'drive';
+      routeTypeString = (extra['navi_start_type'] as String?) ??
+          (extra['route_type'] as String?) ??
+          'drive';
 
-      final hasCoordinates = extra.containsKey('start_lat');
+      final hasCoordinates =
+          extra.containsKey('start_latitude') || extra.containsKey('start_lat');
       if (hasCoordinates) {
-        final startLat = _toDouble(extra['start_lat']) ?? 0.0;
-        final startLng = _toDouble(extra['start_lng']) ?? 0.0;
-        final endLat = _toDouble(extra['end_lat']) ?? 0.0;
-        final endLng = _toDouble(extra['end_lng']) ?? 0.0;
+        final startLat =
+            _toDouble(extra['start_latitude'] ?? extra['start_lat']) ?? 0.0;
+        final startLng =
+            _toDouble(extra['start_longitude'] ?? extra['start_lng']) ?? 0.0;
+        final endLat =
+            _toDouble(extra['end_latitude'] ?? extra['end_lat']) ?? 0.0;
+        final endLng =
+            _toDouble(extra['end_longitude'] ?? extra['end_lng']) ?? 0.0;
         _startName = (extra['start_name'] as String?) ?? '';
         _endName = (extra['end_name'] as String?) ?? '';
 
@@ -132,9 +141,11 @@ class _MapNaviPageState extends ConsumerState<MapNaviPage>
         _startName = '';
         _endName = '';
       }
+      _routePoints = _parseRoutePoints(extra['route_points']);
     } else {
       _startName = '';
       _endName = '';
+      _routePoints = const [];
     }
 
     // 对齐 Android: when (routeTypeString) { "bike" -> Bike; "walk" -> Walk; "drive" -> Drive }
@@ -155,6 +166,23 @@ class _MapNaviPageState extends ConsumerState<MapNaviPage>
     if (value is num) return value.toDouble();
     if (value is String) return double.tryParse(value);
     return null;
+  }
+
+  List<BMFCoordinate> _parseRoutePoints(dynamic value) {
+    if (value is! List) return const [];
+    final points = <BMFCoordinate>[];
+    for (final item in value) {
+      if (item is BMFCoordinate) {
+        points.add(item);
+      } else if (item is Map) {
+        try {
+          points.add(BMFCoordinate.fromMap(item));
+        } catch (_) {
+          // 忽略无法解析的轨迹点，后续使用路线管理器中的原始路线数据。
+        }
+      }
+    }
+    return points;
   }
 
   /// 退出导航 - 对齐 Android exitNavigation()
@@ -185,27 +213,14 @@ class _MapNaviPageState extends ConsumerState<MapNaviPage>
 
   /// 根据 route_type 渲染对应导航内容 - 对齐 Android onCreate when (naviStartType)
   Widget _buildNaviContent() {
-    final uiState = ref.watch(mapNaviViewModelProvider);
-    switch (_routeType) {
-      case NaviStartType.bike:
-        return _BikeNaviContent(
-          uiState: uiState,
-          startName: _startName,
-          endName: _endName,
-        );
-      case NaviStartType.walk:
-        return _WalkNaviContent(
-          uiState: uiState,
-          startName: _startName,
-          endName: _endName,
-        );
-      case NaviStartType.drive:
-        return _DriveNaviContent(
-          uiState: uiState,
-          startName: _startName,
-          endName: _endName,
-        );
-    }
+    return _RouteMapNavigationContent(
+      routeType: _routeType,
+      startPoint: _startPoint,
+      endPoint: _endPoint,
+      startName: _startName,
+      endName: _endName,
+      routePoints: _routePoints,
+    );
   }
 
   /// 获取导航标题 - 对齐 Android NavigationStatusBar("驾车/骑行/步行导航")
@@ -218,6 +233,118 @@ class _MapNaviPageState extends ConsumerState<MapNaviPage>
       case NaviStartType.walk:
         return '步行导航';
     }
+  }
+}
+
+/// 路线结果详情地图：替代鸿蒙端不可用的原生导航占位视图。
+class _RouteMapNavigationContent extends StatelessWidget {
+  const _RouteMapNavigationContent({
+    required this.routeType,
+    required this.startPoint,
+    required this.endPoint,
+    required this.startName,
+    required this.endName,
+    required this.routePoints,
+  });
+
+  final NaviStartType routeType;
+  final BMFCoordinate? startPoint;
+  final BMFCoordinate? endPoint;
+  final String startName;
+  final String endName;
+  final List<BMFCoordinate> routePoints;
+
+  @override
+  Widget build(BuildContext context) {
+    final start = startPoint;
+    final end = endPoint;
+    if (start == null || end == null) {
+      return const _LoadingContent(message: '正在加载路线地图...');
+    }
+
+    final routePoints = <BMFCoordinate>[
+      start,
+      ...this.routePoints.where(_isValidCoordinate),
+    ];
+    dynamic routeLine;
+    switch (routeType) {
+      case NaviStartType.drive:
+        routeLine = RouteDataManager.instance.getDrivingRouteLine();
+        break;
+      case NaviStartType.bike:
+        routeLine = RouteDataManager.instance.getBikingRouteLine();
+        break;
+      case NaviStartType.walk:
+        routeLine = RouteDataManager.instance.getWalkingRouteLine();
+        break;
+    }
+    // 页面参数在部分鸿蒙路由实现中不会保留对象引用，参数不足时回退到单例路线。
+    if (routePoints.length < 2) {
+      for (final dynamic step in (routeLine?.steps ?? const [])) {
+        final stepPoints = step.points as List<BMFCoordinate>?;
+        if (stepPoints != null) {
+          routePoints.addAll(stepPoints.where(_isValidCoordinate));
+        }
+      }
+    }
+    if (routePoints.length < 2) {
+      // SDK 未返回轨迹点时仍绘制起终点直线，避免退化为全国视野。
+      routePoints.add(end);
+    } else if (routePoints.last != end) {
+      routePoints.add(end);
+    }
+
+    return Stack(
+      children: [
+        MapCompose(
+          searchResults: [
+            MapSearchResult(
+                id: 'route-start', name: '起点：$startName', latLng: start),
+            MapSearchResult(id: 'route-end', name: '终点：$endName', latLng: end),
+          ],
+          routePoints: routePoints,
+        ),
+        Positioned(
+          left: 16,
+          right: 16,
+          top: 16,
+          child: _RouteSummary(startName: startName, endName: endName),
+        ),
+      ],
+    );
+  }
+
+  bool _isValidCoordinate(BMFCoordinate point) {
+    return point.latitude.abs() > 0.0001 && point.longitude.abs() > 0.0001;
+  }
+}
+
+class _RouteSummary extends StatelessWidget {
+  const _RouteSummary({required this.startName, required this.endName});
+
+  final String startName;
+  final String endName;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(10),
+        boxShadow: const [
+          BoxShadow(color: Color(0x33000000), blurRadius: 8),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text('起点：$startName', maxLines: 1, overflow: TextOverflow.ellipsis),
+          const SizedBox(height: 6),
+          Text('终点：$endName', maxLines: 1, overflow: TextOverflow.ellipsis),
+        ],
+      ),
+    );
   }
 }
 
@@ -274,82 +401,6 @@ class _NavigationStatusBar extends StatelessWidget {
   }
 }
 
-/// 驾车导航内容 - 对齐 Android DriveNaviContent
-class _DriveNaviContent extends StatelessWidget {
-  const _DriveNaviContent({
-    required this.uiState,
-    required this.startName,
-    required this.endName,
-  });
-
-  final MapNaviState uiState;
-  final String startName;
-  final String endName;
-
-  @override
-  Widget build(BuildContext context) {
-    // 对齐 Android: if (uiState.isRoutePlanSuccess) AndroidView else LoadingContent("正在规划驾车路线...")
-    if (uiState.isRoutePlanSuccess) {
-      // TODO(HarmonyOS): 鸿蒙端百度导航 SDK 不可用，无法显示真实驾车导航视图
-      // 替代 Android AndroidView(viewModel.getDriveNaviView(activity)) 的占位 UI
-      return _NaviPlaceholderContent(
-        message: '鸿蒙端驾车导航 SDK 不可用\n起点: $startName\n终点: $endName',
-      );
-    }
-    return _LoadingContent(message: '正在规划驾车路线...');
-  }
-}
-
-/// 骑行导航内容 - 对齐 Android BikeNaviContent
-class _BikeNaviContent extends StatelessWidget {
-  const _BikeNaviContent({
-    required this.uiState,
-    required this.startName,
-    required this.endName,
-  });
-
-  final MapNaviState uiState;
-  final String startName;
-  final String endName;
-
-  @override
-  Widget build(BuildContext context) {
-    // 对齐 Android: if (uiState.isRoutePlanSuccess) AndroidView else LoadingContent("正在规划骑行路线...")
-    if (uiState.isRoutePlanSuccess) {
-      // TODO(HarmonyOS): 鸿蒙端 BikeNavigateHelper 不可用，无法显示真实骑行导航视图
-      return _NaviPlaceholderContent(
-        message: '鸿蒙端骑行导航 SDK 不可用\n起点: $startName\n终点: $endName',
-      );
-    }
-    return _LoadingContent(message: '正在规划骑行路线...');
-  }
-}
-
-/// 步行导航内容 - 对齐 Android WalkNaviContent
-class _WalkNaviContent extends StatelessWidget {
-  const _WalkNaviContent({
-    required this.uiState,
-    required this.startName,
-    required this.endName,
-  });
-
-  final MapNaviState uiState;
-  final String startName;
-  final String endName;
-
-  @override
-  Widget build(BuildContext context) {
-    // 对齐 Android: if (uiState.isRoutePlanSuccess) AndroidView else LoadingContent("正在规划步行路线...")
-    if (uiState.isRoutePlanSuccess) {
-      // TODO(HarmonyOS): 鸿蒙端 WalkNavigateHelper 不可用，无法显示真实步行导航视图
-      return _NaviPlaceholderContent(
-        message: '鸿蒙端步行导航 SDK 不可用\n起点: $startName\n终点: $endName',
-      );
-    }
-    return _LoadingContent(message: '正在规划步行路线...');
-  }
-}
-
 /// 加载中内容 - 对齐 Android LoadingContent
 class _LoadingContent extends StatelessWidget {
   const _LoadingContent({required this.message});
@@ -387,42 +438,6 @@ class _LoadingContent extends StatelessWidget {
           ),
         ],
       ),
-    );
-  }
-}
-
-/// 导航占位内容 - 鸿蒙端 SDK 不可用时的兜底 UI
-/// 对齐 Android MapInfoContent（审图号等信息）
-class _NaviPlaceholderContent extends StatelessWidget {
-  const _NaviPlaceholderContent({required this.message});
-
-  final String message;
-
-  @override
-  Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        // 占位提示 - 对齐 Android AndroidView 替代
-        Center(
-          child: Padding(
-            padding: const EdgeInsets.all(24),
-            child: Text(
-              message,
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                color: Color(0xFF666666),
-                fontSize: 14,
-              ),
-            ),
-          ),
-        ),
-        // 审图号信息 - 对齐 Android BoxScope.MapInfoContent
-        const Positioned(
-          left: 20,
-          top: 16,
-          child: MapInfoContent(),
-        ),
-      ],
     );
   }
 }

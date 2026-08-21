@@ -154,6 +154,7 @@ class PendingNaviAction {
     required this.naviStartType,
     this.transitRouteLines,
     this.transitRouteResult,
+    this.routePoints = const [],
   });
 
   /// 动作类型：导航 / 路线详情
@@ -179,6 +180,9 @@ class PendingNaviAction {
 
   /// 公交路线结果（仅 type == routeLineDetail 时使用）
   final BMFTransitRouteResult? transitRouteResult;
+
+  /// 规划结果中的轨迹点，直接传给导航地图，避免页面切换时单例数据不同步。
+  final List<BMFCoordinate> routePoints;
 }
 
 /// 导航动作类型
@@ -1113,6 +1117,7 @@ class BusRouteViewModel extends Notifier<BusRouteUiState> {
           startName: state.fromLocation,
           endName: state.toLocation,
           naviStartType: NaviStartType.drive,
+          routePoints: _routePointsFromLine(drivingRouteLine),
         ),
       );
       debugPrint('BusRouteViewModel: 成功启动驾车导航（pending）');
@@ -1139,6 +1144,7 @@ class BusRouteViewModel extends Notifier<BusRouteUiState> {
           startName: state.fromLocation,
           endName: state.toLocation,
           naviStartType: NaviStartType.bike,
+          routePoints: _routePointsFromLine(bikingRouteLine),
         ),
       );
       debugPrint('BusRouteViewModel: 成功启动骑行导航（pending）');
@@ -1164,6 +1170,7 @@ class BusRouteViewModel extends Notifier<BusRouteUiState> {
           startName: state.fromLocation,
           endName: state.toLocation,
           naviStartType: NaviStartType.walk,
+          routePoints: _routePointsFromLine(walkingRouteLine),
         ),
       );
       debugPrint('BusRouteViewModel: 成功启动步行导航（pending）');
@@ -1171,6 +1178,20 @@ class BusRouteViewModel extends Notifier<BusRouteUiState> {
       debugPrint('BusRouteViewModel: 启动步行导航失败: $e');
       state = state.copyWith(errorMessage: '启动步行导航失败: $e');
     }
+  }
+
+  List<BMFCoordinate> _routePointsFromLine(dynamic routeLine) {
+    final points = <BMFCoordinate>[];
+    for (final dynamic step in (routeLine.steps ?? const [])) {
+      final stepPoints = step.points as List<BMFCoordinate>?;
+      if (stepPoints != null) {
+        points.addAll(stepPoints.where(
+          (point) =>
+              point.latitude.abs() > 0.0001 && point.longitude.abs() > 0.0001,
+        ));
+      }
+    }
+    return points;
   }
 
   /// 清除待处理导航动作（Page 层处理跳转后调用）

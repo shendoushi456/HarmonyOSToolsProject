@@ -179,6 +179,8 @@ class _BusRoutePageState extends ConsumerState<BusRoutePage> {
           'end_longitude': action.endPoint.longitude,
           'start_name': action.startName,
           'end_name': action.endName,
+          // 将当前选中的规划轨迹一并交给地图页，避免仅显示起终点连线。
+          'route_points': action.routePoints,
         },
       );
     }
@@ -280,23 +282,17 @@ class _InputSection extends StatelessWidget {
                   // 出发地输入框 - 对齐 Android: 出发地 Box
                   _LocationInput(
                     text: uiState.fromLocation,
-                    // 对齐 Android: isLocationSwapped 时第一个框可点击
-                    onTap: uiState.isLocationSwapped
-                        ? () => ref
-                            .read(busRouteViewModelProvider.notifier)
-                            .navigateToSearch(isFromLocation: true)
-                        : null,
+                    onTap: () => ref
+                        .read(busRouteViewModelProvider.notifier)
+                        .navigateToSearch(isFromLocation: true),
                   ),
                   const SizedBox(height: 12),
                   // 目的地输入框 - 对齐 Android: 目的地 Box
                   _LocationInput(
                     text: uiState.toLocation,
-                    // 对齐 Android: !isLocationSwapped 时第二个框可点击
-                    onTap: !uiState.isLocationSwapped
-                        ? () => ref
-                            .read(busRouteViewModelProvider.notifier)
-                            .navigateToSearch(isFromLocation: false)
-                        : null,
+                    onTap: () => ref
+                        .read(busRouteViewModelProvider.notifier)
+                        .navigateToSearch(isFromLocation: false),
                   ),
                 ],
               ),
