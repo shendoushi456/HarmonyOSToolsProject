@@ -82,6 +82,36 @@
           ],
           "when": "inuse"
         }
+      },
+      {
+        "name": "ohos.permission.ACCELEROMETER",
+        "reason": "$string:permission_accelerometer_reason",
+        "usedScene": {
+          "abilities": [
+            "EntryAbility"
+          ],
+          "when": "inuse"
+        }
+      },
+      {
+        "name": "ohos.permission.GYROSCOPE",
+        "reason": "$string:permission_gyroscope_reason",
+        "usedScene": {
+          "abilities": [
+            "EntryAbility"
+          ],
+          "when": "inuse"
+        }
+      },
+      {
+        "name": "ohos.permission.CAMERA",
+        "reason": "$string:permission_camera_reason",
+        "usedScene": {
+          "abilities": [
+            "EntryAbility"
+          ],
+          "when": "inuse"
+        }
       }
     ]
   }

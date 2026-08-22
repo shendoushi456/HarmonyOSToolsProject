@@ -6,9 +6,9 @@
         "type": "HarmonyOS",
         "material": {
           "storeFile": "/Users/zhuanzmima0000/鸿蒙签名/湖南睿思/hunanruisi.p12",
-          "storePassword": "0000001AC16BDD7E48E68F91F2C95066CE23937D06D53876C56A25911B8063C97B1F7F5437F422E68B2D",
+          "storePassword": "0000001AB7E92A2161BF41916923A17F44B09D7BB2B6B666F3240AA357255949D4F8DFCCAAF60A104B43",
           "keyAlias": "hunanruisi",
-          "keyPassword": "0000001A670F1A9B9C5496ED4762FA449541C199EB9CD51F85484724E5E453AD177490D423DAB803AEA9",
+          "keyPassword": "0000001A575E58A72258202A9401B13D816543A765C3AA874830361A3646F8E3B2EE2FF370C5C6DE371B",
           "signAlg": "SHA256withECDSA",
           "profile": "/Users/zhuanzmima0000/鸿蒙签名/quannengwifihulianRelease.p7b",
           "certpath": "/Users/zhuanzmima0000/鸿蒙签名/湖南睿思/hunanruisi.cer"

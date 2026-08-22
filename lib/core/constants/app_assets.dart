@@ -150,4 +150,57 @@ class AppAssets {
   static const String wifiArrow = '$_base/wifi_arrow.png';
   /// wifi 空状态图标(临时复用 wifi_disconnected，原 ic_wifi_empty 待补)
   static const String wifiEmpty = '$_base/wifi_disconnected.png';
+
+  // ====== LifeTools 资源 - 对齐 LifeFragment.kt ======
+  /// 入口卡片页背景图(对齐 ic_shan_main_1_1)
+  static const String lifeBg = '$_base/ic_shan_main_1_1.png';
+
+  /// 记事本卡片大图(对齐 ic_notebook)
+  static const String notebookCard = '$_base/ic_notebook.png';
+
+  /// 旅行清单图标(对齐 ic_tong_life_3_3)
+  static const String icTravel = '$_base/ic_tong_life_3_3.png';
+
+  /// 指南针图标(对齐 ic_tong_life_3_4)
+  static const String icCompass = '$_base/ic_tong_life_3_4.png';
+
+  /// 花费记账图标(对齐 ic_shan_main_4_8)
+  static const String icTally = '$_base/ic_shan_main_4_8.png';
+
+  /// 马赛克/毛玻璃图标(对齐 ic_shan_main_4_9)
+  static const String icBlur = '$_base/ic_shan_main_4_9.png';
+
+  /// 今天吃什么图标(对齐 eat_icon)
+  static const String icEat = '$_base/eat_icon.png';
+
+  /// json编辑器图标(对齐 json_icon)
+  static const String icJson = '$_base/json_icon.png';
+
+  /// 画板图标(对齐 drawb_icon)
+  static const String icDraw = '$_base/drawb_icon.png';
+
+  /// 白色右箭头(对齐 white_jt)
+  static const String whiteArrow = '$_base/white_jt.png';
+
+  // ====== MenuHome 资源 - 对齐 MenuFragment.kt ======
+  /// MenuHome 入口背景图(对齐 ic_shan_main_1_1, 复用 lifeBg)
+  static const String menuHomeBg = '$_base/ic_shan_main_1_1.png';
+
+  /// PDF 转图片图标(对齐 ic_shan_main_4_1)
+  static const String icPdfToImage = '$_base/ic_shan_main_4_1.png';
+
+  /// 图片转 PDF 图标(对齐 ic_shan_main_4_2)
+  static const String icImageToPdf = '$_base/ic_shan_main_4_2.png';
+
+  /// 压缩 PDF 图标(对齐 ic_shan_main_4_3)
+  static const String icPdfCompress = '$_base/ic_shan_main_4_3.png';
+
+  /// 加密 PDF 图标(对齐 ic_shan_main_4_4)
+  static const String icPdfEncrypt = '$_base/ic_shan_main_4_4.png';
+
+  /// 生成二维码图标(对齐 ic_tong_life_2_1)
+  static const String icQrGenerate = '$_base/ic_tong_life_2_1.png';
+
+  /// 扫描二维码图标(对齐 ic_tong_life_2_2)
+  static const String icQrScan = '$_base/ic_tong_life_2_2.png';
 }

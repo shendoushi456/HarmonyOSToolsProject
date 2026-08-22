@@ -1,10 +1,8 @@
-// 底部 4 Tab 容器 - 对齐 Android MainWeatherActivity
-// 首页(天气)/WiFi/日历/空气质量, WiFi 为新增中间 tab
+// 底部 3 Tab 容器：WiFi / 工具 / 更多
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../calendar/pages/calendar_page.dart';
-import '../../air_quality/pages/air_quality_page.dart';
-import '../../weather/pages/weather_page.dart';
+import '../../life_tools/pages/life_tools_page.dart';
+import '../../setting/pages/more_page.dart';
 import '../../wifi/pages/wifi_page.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_assets.dart';
@@ -20,10 +18,9 @@ class HomeShellPage extends ConsumerWidget {
     final currentIndex = ref.watch(homeTabIndexProvider);
 
     const pages = [
-      WeatherPage(),
       WifiPage(),
-      CalendarPage(),
-      AirQualityPage(),
+      LifeToolsPage(),
+      MorePage(),
     ];
 
     return Scaffold(
@@ -36,7 +33,8 @@ class HomeShellPage extends ConsumerWidget {
   }
 
   /// 底部导航栏 - 对齐 Android MyBottomNavView
-  Widget _buildBottomNav(BuildContext context, WidgetRef ref, int currentIndex) {
+  Widget _buildBottomNav(
+      BuildContext context, WidgetRef ref, int currentIndex) {
     return Container(
       height: 62,
       decoration: const BoxDecoration(
@@ -58,37 +56,34 @@ class HomeShellPage extends ConsumerWidget {
               context,
               ref,
               index: 0,
-              label: '首页',
-              normalIcon: AppAssets.tabHomeNormal,
-              selectedIcon: AppAssets.tabHomeSelected,
+              label: 'WiFi',
+              normalIcon: AppAssets.tabWifiNormal,
+              selectedIcon: AppAssets.tabWifiSelected,
               isSelected: currentIndex == 0,
             ),
             _buildNavItem(
               context,
               ref,
               index: 1,
-              label: 'WiFi',
-              normalIcon: AppAssets.tabWifiNormal,
-              selectedIcon: AppAssets.tabWifiSelected,
+              label: '工具',
+              normalIcon: AppAssets.tabHomeNormal,
+              selectedIcon: AppAssets.tabHomeSelected,
               isSelected: currentIndex == 1,
+              useMaterialIcon: true,
+              materialIcon: Icons.grid_view_outlined,
+              materialSelectedIcon: Icons.grid_view,
             ),
             _buildNavItem(
               context,
               ref,
               index: 2,
-              label: '日历',
-              normalIcon: AppAssets.tabCalendarNormal,
-              selectedIcon: AppAssets.tabCalendarSelected,
-              isSelected: currentIndex == 2,
-            ),
-            _buildNavItem(
-              context,
-              ref,
-              index: 3,
-              label: '空气质量',
+              label: '更多',
               normalIcon: AppAssets.tabAirNormal,
               selectedIcon: AppAssets.tabAirSelected,
-              isSelected: currentIndex == 3,
+              isSelected: currentIndex == 2,
+              useMaterialIcon: true,
+              materialIcon: Icons.settings_outlined,
+              materialSelectedIcon: Icons.settings,
             ),
           ],
         ),
@@ -105,7 +100,11 @@ class HomeShellPage extends ConsumerWidget {
     required String normalIcon,
     required String selectedIcon,
     required bool isSelected,
+    bool useMaterialIcon = false,
+    IconData? materialIcon,
+    IconData? materialSelectedIcon,
   }) {
+    final color = isSelected ? AppColors.qmtqBlue : const Color(0xFF999999);
     return Expanded(
       child: GestureDetector(
         behavior: HitTestBehavior.opaque,
@@ -113,18 +112,24 @@ class HomeShellPage extends ConsumerWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset(
-              isSelected ? selectedIcon : normalIcon,
-              width: 25,
-              height: 25,
-            ),
+            if (useMaterialIcon)
+              Icon(
+                isSelected
+                    ? materialSelectedIcon ?? materialIcon
+                    : materialIcon,
+                size: 25,
+                color: color,
+              )
+            else
+              Image.asset(
+                isSelected ? selectedIcon : normalIcon,
+                width: 25,
+                height: 25,
+              ),
             const SizedBox(height: 2),
             Text(
               label,
-              style: TextStyle(
-                fontSize: 10,
-                color: isSelected ? AppColors.qmtqBlue : const Color(0xFF999999),
-              ),
+              style: TextStyle(fontSize: 10, color: color),
             ),
           ],
         ),

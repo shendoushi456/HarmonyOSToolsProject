@@ -71,4 +71,22 @@ class PrefsStorage {
   static Future<void> saveIsAgressment(bool value) async {
     await _instance.setBool(keyIsAgressment, value);
   }
+
+  // ====== LifeTools - 旅行清单勾选状态持久化 ======
+  /// 旅行清单勾选状态 key(对齐原版无持久化的改进,避免每次进入重置)
+  static const String keyChecklistChecked = 'checklist_checked';
+
+  /// 保存旅行清单勾选状态 - Map<itemId, isChecked>
+  static Future<void> saveChecklistChecked(Map<int, bool> checked) async {
+    final json = jsonEncode(checked.map((k, v) => MapEntry(k.toString(), v)));
+    await _instance.setString(keyChecklistChecked, json);
+  }
+
+  /// 读取旅行清单勾选状态
+  static Map<int, bool> loadChecklistChecked() {
+    final json = _instance.getString(keyChecklistChecked);
+    if (json == null) return {};
+    final map = jsonDecode(json) as Map<String, dynamic>;
+    return map.map((k, v) => MapEntry(int.parse(k), v as bool));
+  }
 }

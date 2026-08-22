@@ -111,4 +111,93 @@ class AppColors {
 
   /// WiFi dialog 确认按钮蓝(对齐 dialog_wifi #FF5597F7)
   static const Color wifiDialogConfirm = Color(0xFF5597F7);
+
+  // ====== LifeTools 颜色 - 对齐 LifeFragment.kt + TravelChecklistScreen.kt ======
+  /// 工具页顶栏背景(旅行清单/记账/记事本,对齐 #F0FFB8)
+  static const Color toolsTopBarBg = Color(0xFFF0FFB8);
+
+  /// 顶栏标题色
+  static const Color toolsTitleText = Color(0xFF4C4C4C);
+
+  /// RouteItem label 色
+  static const Color toolsCardText = Color(0xFF1E1E1E);
+
+  /// 旅行清单 section 标题
+  static const Color toolsSectionTitle = Color(0xFF303030);
+
+  /// 旅行清单 "x/y" 计数
+  static const Color toolsSectionCount = Color(0xFF737373);
+
+  // ====== 指南针颜色 - 对齐 ChaosCompassView colors.xml ======
+  /// 对齐 R.color.darkRed #702216
+  static const Color compassDarkRed = Color(0xFF702216);
+
+  /// 对齐 R.color.deepGray #8B8B8B
+  static const Color compassDeepGray = Color(0xFF8B8B8B);
+
+  /// 对齐 R.color.lightGray #323232
+  static const Color compassLightGray = Color(0xFF323232);
+
+  /// 偏转红弧(mAnglePaint) - 对齐 R.color.red #FF0000
+  static const Color compassRed = Color(0xFFFF0000);
+
+  /// 对齐内圆辐射渐变起点 #323232(与 lightGray 同)
+  static const Color compassInnerStart = Color(0xFF323232);
+
+  /// 对齐内圆辐射渐变终点 #000000
+  static const Color compassInnerEnd = Color(0xFF000000);
+
+  // ====== LifeFragment 卡片图标背景色 - 对齐 LifeFragment.kt:271-452 ======
+  /// 旅行清单图标背景(对齐 ic_tong_life_3_3 #FEF9C3)
+  static const Color cardTravelIconBg = Color(0xFFFEF9C3);
+
+  /// 指南针图标背景(对齐 ic_tong_life_3_4 #F3E8FF)
+  static const Color cardCompassIconBg = Color(0xFFF3E8FF);
+
+  /// 花费记账图标背景(对齐 ic_shan_main_4_8 #DCFCE7)
+  static const Color cardTallyIconBg = Color(0xFFDCFCE7);
+
+  /// 今天吃什么图标背景(对齐 eat_icon #F3E8FF)
+  static const Color cardEatIconBg = Color(0xFFF3E8FF);
+
+  /// json编辑器图标背景(对齐 json_icon #DBEAFE)
+  static const Color cardJsonIconBg = Color(0xFFDBEAFE);
+
+  /// 画板图标背景(对齐 drawb_icon #DCFCE7)
+  static const Color cardDrawIconBg = Color(0xFFDCFCE7);
+
+  /// 马赛克图标背景(对齐 ic_shan_main_4_9 #FEF9C3)
+  static const Color cardBlurIconBg = Color(0xFFFEF9C3);
+
+  // ====== 记事本/记账 tallynotes 模块颜色 ======
+  /// 记事本/记账顶栏蓝(对齐 activity_record.xml @color/blue)
+  static const Color notepadTitleBlue = Color(0xFF7B68EE);
+
+  /// 记事本次要文字紫(对齐 item_time #7b68ee)
+  static const Color notepadSubText = Color(0xFF7B68EE);
+
+  /// 记账表头文字色(对齐 record_item_layout #404040)
+  static const Color tallyHeaderText = Color(0xFF404040);
+
+  /// 记账分隔线色(对齐 0.5dp #D8D3D3)
+  static const Color tallyDivider = Color(0xFFD8D3D3);
+
+  // ====== MenuHome 颜色 - 对齐 MenuFragment.kt:202-526 ======
+  /// 常用工具卡片背景色(白)
+  static const Color menuCardBg = Color(0xFFFFFFFF);
+
+  /// 生成二维码图标背景(对齐 ic_tong_life_2_1 #C9F0FF)
+  static const Color qrGenerateIconBg = Color(0xFFC9F0FF);
+
+  /// 扫描二维码图标背景(对齐 ic_tong_life_2_2 #E6B5FA)
+  static const Color qrScanIconBg = Color(0xFFE6B5FA);
+
+  /// MenuHome 分组标题色(对齐 #1E1E1E)
+  static const Color menuSectionTitle = Color(0xFF1E1E1E);
+
+  /// MenuHome 卡片副标题色(对齐 #757575)
+  static const Color menuCardSubtitle = Color(0xFF757575);
+
+  /// MenuHome 卡片阴影色(对齐 #0A000000)
+  static const Color menuCardShadow = Color(0x0A000000);
 }

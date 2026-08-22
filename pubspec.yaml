@@ -53,6 +53,53 @@ dependencies:
       path: packages/path_provider/path_provider
       ref: br_path_provider-v2.1.5_ohos
 
+  # ====== LifeTools 新增依赖（2026-08-21）======
+  # SQLite（记事本/记账共享 Notepad.db）- 鸿蒙适配
+#  sqflite: ^2.3.3+1
+  sqflite:
+    git:
+      url: "https://gitcode.com/CPF-Flutter/flutter_sqflite.git"
+      # ref: 请根据下方TAG版本对应表选择TAG
+      ref: 2.2.8-ohos-1.0.0
+      path: sqflite
+#  sqflite_common_ffi: ^2.3.3  # 备选：FFI 模式，鸿蒙无原生 host 实现时降级
+
+  # 图片处理（毛玻璃 box-blur + 画板保存 PNG）- 纯 Dart 无需 ohos 适配
+  image: ^4.1.7
+
+  # 传感器（指南针）- 鸿蒙适配
+  sensors_plus:
+    git:
+      url: https://gitcode.com/openharmony-sig/flutter_plus_plugins.git
+      path: packages/sensors_plus/sensors_plus
+      ref: br_sensors_plus-v6.1.1_ohos
+
+  # 图片选择（毛玻璃选图）- 鸿蒙适配
+  image_picker:
+    git:
+      url: https://gitcode.com/openharmony-sig/flutter_packages.git
+      path: packages/image_picker/image_picker
+      ref: br_image_picker-v1.1.2_ohos
+
+  # ====== MenuHome PDF + 二维码新增依赖（2026-08-22）======
+  # PDF 备用纯 Dart 方案（当 pdfService 不可用时降级）
+  pdf: ^3.11.1
+
+  # 生成二维码
+  qr_flutter: ^4.1.0
+
+  # 扫描二维码 - 鸿蒙适配版
+  mobile_scanner:
+    git:
+      url: https://gitcode.com/openharmony-sig/fluttertpc_mobile_scanner.git
+      ref: br_v6.0.10_ohos
+
+  # 选择 PDF 文件 - 鸿蒙适配版
+  file_picker_ohos:
+    git:
+      url: https://gitcode.com/openharmony-sig/fluttertpc_file_picker.git
+      ref: br_v10.3.8_ohos
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -61,9 +108,18 @@ dev_dependencies:
   build_runner: ^2.3.3
   very_good_analysis: 4.0.0
 
+# 覆盖 file_picker_ohos 对 hosted image_picker 的依赖，强制使用鸿蒙适配版
+dependency_overrides:
+  image_picker:
+    git:
+      url: https://gitcode.com/openharmony-sig/flutter_packages.git
+      path: packages/image_picker/image_picker
+      ref: br_image_picker-v1.1.2_ohos
+
 flutter:
   uses-material-design: true
   generate: true
   assets:
     - assets/images/
     - assets/hot_city.json
+    - assets/game/jintianchishenme/   # 今天吃什么 WebView 本地资源
