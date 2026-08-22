@@ -1,6 +1,7 @@
 // 应用根 Widget - MaterialApp.router + 主题配置
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'features/todo_clockin/pages/foreground_reminder_dialog_host.dart';
 import 'router/app_router.dart';
 
 class App extends StatelessWidget {
@@ -8,8 +9,9 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      title: '瞬息天气通',
+    return ForegroundReminderDialogHost(
+        child: MaterialApp.router(
+      title: '糖压管家宝',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         useMaterial3: false,
@@ -26,6 +28,6 @@ class App extends StatelessWidget {
       ],
       locale: const Locale('zh', 'CN'),
       routerConfig: appRouter,
-    );
+    ));
   }
 }

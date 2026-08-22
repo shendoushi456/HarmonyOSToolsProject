@@ -2,19 +2,23 @@
   "string": [
     {
       "name": "module_desc",
-      "value": "瞬息天气通主模块"
+      "value": "糖压管家宝主模块"
     },
     {
       "name": "EntryAbility_desc",
-      "value": "瞬息天气通"
+      "value": "糖压管家宝"
     },
     {
       "name": "EntryAbility_label",
-      "value": "瞬息天气通"
+      "value": "糖压管家宝"
     },
     {
       "name": "permission_internet_reason",
       "value": "用于获取天气数据"
+    },
+    {
+      "name": "permission_reminder_reason",
+      "value": "用于在待办和打卡时间到达时发送提醒"
     }
   ]
 }

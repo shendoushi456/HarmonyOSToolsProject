@@ -1,10 +1,10 @@
-// 底部 3 Tab 容器 - 对齐 Android MainWeatherActivity
-// 首页(天气)迁移,日历/空气质量预留入口
+// 底部导航容器：依次承载待办、吃药、临期提醒和更多页面。
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../calendar/pages/calendar_page.dart';
-import '../../air_quality/pages/air_quality_page.dart';
-import '../../weather/pages/weather_page.dart';
+import '../../todo_clockin/pages/todo_clockin_page.dart';
+import '../../medication_reminder/pages/medication_reminder_page.dart';
+import '../../expiration_reminder/pages/expiration_reminder_page.dart';
+import '../../more/pages/more_page.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_assets.dart';
 
@@ -19,9 +19,10 @@ class HomeShellPage extends ConsumerWidget {
     final currentIndex = ref.watch(homeTabIndexProvider);
 
     const pages = [
-      WeatherPage(),
-      CalendarPage(),
-      AirQualityPage(),
+      TodoClockInPage(),
+      MedicationReminderPage(),
+      ExpirationReminderPage(),
+      MorePage(),
     ];
 
     return Scaffold(
@@ -34,7 +35,8 @@ class HomeShellPage extends ConsumerWidget {
   }
 
   /// 底部导航栏 - 对齐 Android MyBottomNavView
-  Widget _buildBottomNav(BuildContext context, WidgetRef ref, int currentIndex) {
+  Widget _buildBottomNav(
+      BuildContext context, WidgetRef ref, int currentIndex) {
     return Container(
       height: 62,
       decoration: const BoxDecoration(
@@ -56,28 +58,37 @@ class HomeShellPage extends ConsumerWidget {
               context,
               ref,
               index: 0,
-              label: '首页',
-              normalIcon: AppAssets.tabHomeNormal,
-              selectedIcon: AppAssets.tabHomeSelected,
+              label: '待办打卡',
+              normalIcon: AppAssets.toolboxTabTodoNormal,
+              selectedIcon: AppAssets.toolboxTabTodoSelected,
               isSelected: currentIndex == 0,
             ),
             _buildNavItem(
               context,
               ref,
               index: 1,
-              label: '日历',
-              normalIcon: AppAssets.tabCalendarNormal,
-              selectedIcon: AppAssets.tabCalendarSelected,
+              label: '吃药提醒',
+              normalIcon: AppAssets.toolboxTabMedicationNormal,
+              selectedIcon: AppAssets.toolboxTabMedicationSelected,
               isSelected: currentIndex == 1,
             ),
             _buildNavItem(
               context,
               ref,
               index: 2,
-              label: '空气质量',
-              normalIcon: AppAssets.tabAirNormal,
-              selectedIcon: AppAssets.tabAirSelected,
+              label: '临期提醒',
+              normalIcon: AppAssets.toolboxTabExpiryNormal,
+              selectedIcon: AppAssets.toolboxTabExpirySelected,
               isSelected: currentIndex == 2,
+            ),
+            _buildNavItem(
+              context,
+              ref,
+              index: 3,
+              label: '更多',
+              normalIcon: AppAssets.toolboxTabMoreNormal,
+              selectedIcon: AppAssets.toolboxTabMoreSelected,
+              isSelected: currentIndex == 3,
             ),
           ],
         ),
@@ -112,7 +123,8 @@ class HomeShellPage extends ConsumerWidget {
               label,
               style: TextStyle(
                 fontSize: 10,
-                color: isSelected ? AppColors.qmtqBlue : const Color(0xFF999999),
+                color:
+                    isSelected ? AppColors.qmtqBlue : const Color(0xFF999999),
               ),
             ),
           ],

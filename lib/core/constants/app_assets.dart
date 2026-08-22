@@ -47,7 +47,8 @@ class AppAssets {
   static const String weatherThunder = '$_base/qmtq_weather_thunder.png';
 
   /// 15日天气标题图标
-  static const String weatherForecastTitle = '$_base/qmtq_weather_forecast_title.png';
+  static const String weatherForecastTitle =
+      '$_base/qmtq_weather_forecast_title.png';
 
   /// 底部导航 - 首页
   static const String tabHomeNormal = '$_base/qmtq_tab_home_normal.png';
@@ -55,11 +56,30 @@ class AppAssets {
 
   /// 底部导航 - 日历
   static const String tabCalendarNormal = '$_base/qmtq_tab_calendar_normal.png';
-  static const String tabCalendarSelected = '$_base/qmtq_tab_calendar_selected.png';
+  static const String tabCalendarSelected =
+      '$_base/qmtq_tab_calendar_selected.png';
 
   /// 底部导航 - 空气
   static const String tabAirNormal = '$_base/qmtq_tab_air_normal.png';
   static const String tabAirSelected = '$_base/qmtq_tab_air_selected.png';
+
+  // ====== 糖压管家底部导航（从 Android navtools_menu 迁移） ======
+  static const String toolboxTabTodoNormal =
+      '$_base/toolbox_tab_todo_normal.png';
+  static const String toolboxTabTodoSelected =
+      '$_base/toolbox_tab_todo_selected.png';
+  static const String toolboxTabMedicationNormal =
+      '$_base/toolbox_tab_medication_normal.png';
+  static const String toolboxTabMedicationSelected =
+      '$_base/toolbox_tab_medication_selected.png';
+  static const String toolboxTabExpiryNormal =
+      '$_base/toolbox_tab_expiry_normal.png';
+  static const String toolboxTabExpirySelected =
+      '$_base/toolbox_tab_expiry_selected.png';
+  static const String toolboxTabMoreNormal =
+      '$_base/toolbox_tab_more_normal.png';
+  static const String toolboxTabMoreSelected =
+      '$_base/toolbox_tab_more_selected.png';
 
   /// 日历卡片背景(335x328)
   static const String calendarCard = '$_base/qmtq_calendar_card.png';
@@ -71,7 +91,8 @@ class AppAssets {
   static const String calendarRight = '$_base/qmtq_calendar_right.png';
 
   /// 日历选中周背景
-  static const String calendarWeekHighlight = '$_base/qmtq_calendar_week_highlight.png';
+  static const String calendarWeekHighlight =
+      '$_base/qmtq_calendar_week_highlight.png';
 
   /// 城市搜索图标(16dp)
   static const String icSearch = '$_base/ic_search.webp';
@@ -106,5 +127,6 @@ class AppAssets {
   static const String settingAboutIcon = '$_base/setting_4_about_icon.webp';
 
   /// 意见反馈图标
-  static const String settingFeedbackIcon = '$_base/setting_4_feedback_icon.webp';
+  static const String settingFeedbackIcon =
+      '$_base/setting_4_feedback_icon.webp';
 }

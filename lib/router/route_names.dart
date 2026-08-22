@@ -31,6 +31,11 @@ class RouteNames {
 
   /// 反馈页(对齐 Android FeedBackSettingActivity)
   static const String feedback = 'feedback';
+
+  /// MoreFragment 可迁移工具页。
+  static const String timeScreen = 'timeScreen';
+  static const String compass = 'compass';
+  static const String calculator = 'calculator';
 }
 
 class RoutePaths {
@@ -57,4 +62,8 @@ class RoutePaths {
 
   /// 反馈页路径
   static const String feedback = '/feedback';
+
+  static const String timeScreen = '/timeScreen';
+  static const String compass = '/compass';
+  static const String calculator = '/calculator';
 }

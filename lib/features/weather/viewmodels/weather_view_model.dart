@@ -64,6 +64,12 @@ class WeatherViewModel extends Notifier<WeatherState> {
     }
   }
 
+  /// 主动刷新同一城市天气，供 MoreFragment 对齐 Android onResume 刷新行为使用。
+  Future<void> refresh(CityBean city) async {
+    state = state.copyWith(isFirst: true);
+    await loadData(city);
+  }
+
   /// 构建 15 日预报列表 - 对齐 populateForecasts + buildForecasts
   List<HomeForecast> buildForecasts(WeatherInfo? info) {
     if (info == null || info.daily.isEmpty) return [];
