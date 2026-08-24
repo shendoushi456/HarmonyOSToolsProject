@@ -2,15 +2,15 @@
   "string": [
     {
       "name": "module_desc",
-      "value": "全能WiFi互联主模块"
+      "value": "灵感画色堡主模块"
     },
     {
       "name": "EntryAbility_desc",
-      "value": "全能WiFi互联"
+      "value": "灵感画色堡"
     },
     {
       "name": "EntryAbility_label",
-      "value": "全能WiFi互联"
+      "value": "灵感画色堡"
     },
     {
       "name": "permission_internet_reason",

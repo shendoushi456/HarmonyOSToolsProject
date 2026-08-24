@@ -1,5 +1,5 @@
 name: qingman_weather
-description: 全能WiFi互联 - Flutter-ohos 版
+description: 灵感画色堡 - Flutter-ohos 版
 publish_to: 'none'
 version: 1.0.0+1
 
@@ -121,5 +121,10 @@ flutter:
   generate: true
   assets:
     - assets/images/
+    - assets/images/color_more/
+    - assets/images/color_draw/
+    - assets/images/color_draw/trace/
+    - assets/images/color_draw/shapes/
+    - assets/images/coloring_book/fruits/
     - assets/hot_city.json
     - assets/game/jintianchishenme/   # 今天吃什么 WebView 本地资源

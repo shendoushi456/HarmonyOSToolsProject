@@ -47,7 +47,8 @@ class AppAssets {
   static const String weatherThunder = '$_base/qmtq_weather_thunder.png';
 
   /// 15日天气标题图标
-  static const String weatherForecastTitle = '$_base/qmtq_weather_forecast_title.png';
+  static const String weatherForecastTitle =
+      '$_base/qmtq_weather_forecast_title.png';
 
   /// 底部导航 - 首页
   static const String tabHomeNormal = '$_base/qmtq_tab_home_normal.png';
@@ -55,7 +56,8 @@ class AppAssets {
 
   /// 底部导航 - 日历
   static const String tabCalendarNormal = '$_base/qmtq_tab_calendar_normal.png';
-  static const String tabCalendarSelected = '$_base/qmtq_tab_calendar_selected.png';
+  static const String tabCalendarSelected =
+      '$_base/qmtq_tab_calendar_selected.png';
 
   /// 底部导航 - 空气
   static const String tabAirNormal = '$_base/qmtq_tab_air_normal.png';
@@ -71,7 +73,8 @@ class AppAssets {
   static const String calendarRight = '$_base/qmtq_calendar_right.png';
 
   /// 日历选中周背景
-  static const String calendarWeekHighlight = '$_base/qmtq_calendar_week_highlight.png';
+  static const String calendarWeekHighlight =
+      '$_base/qmtq_calendar_week_highlight.png';
 
   /// 城市搜索图标(16dp)
   static const String icSearch = '$_base/ic_search.webp';
@@ -106,7 +109,8 @@ class AppAssets {
   static const String settingAboutIcon = '$_base/setting_4_about_icon.webp';
 
   /// 意见反馈图标
-  static const String settingFeedbackIcon = '$_base/setting_4_feedback_icon.webp';
+  static const String settingFeedbackIcon =
+      '$_base/setting_4_feedback_icon.webp';
 
   // ====== WiFi 工具页资源 - 对齐 Android ToolsWifiHomeFragment/activity_main_tool.xml ======
   /// 底部导航 - WiFi
@@ -123,31 +127,45 @@ class AppAssets {
   // 信号强度图标(5 级 × 无锁/有锁 = 10 个)。命名对齐安卓原版(_locker/_locked/_excelent 拼写)
   /// 信号 0 级 - 无锁(disabled)
   static const String wifiSignalDisabled = '$_base/wifi_disabled.png';
+
   /// 信号 0 级 - 有锁(安卓原版命名 _locker)
-  static const String wifiSignalDisabledLocked = '$_base/wifi_disabled_locker.png';
+  static const String wifiSignalDisabledLocked =
+      '$_base/wifi_disabled_locker.png';
+
   /// 信号 1 级 - 无锁(low)
   static const String wifiSignalLow = '$_base/wifi_low.webp';
+
   /// 信号 1 级 - 有锁
   static const String wifiSignalLowLocked = '$_base/wifi_low_locked.webp';
+
   /// 信号 2 级 - 无锁(med)
   static const String wifiSignalMed = '$_base/wifi_med.webp';
+
   /// 信号 2 级 - 有锁
   static const String wifiSignalMedLocked = '$_base/wifi_med_locked.webp';
+
   /// 信号 3 级 - 无锁(high)
   static const String wifiSignalHigh = '$_base/wifi_high.webp';
+
   /// 信号 3 级 - 有锁
   static const String wifiSignalHighLocked = '$_base/wifi_high_locked.webp';
+
   /// 信号 4 级 - 无锁(安卓原版拼写 excelent)
   static const String wifiSignalExcellent = '$_base/wifi_excelent.png';
+
   /// 信号 4 级 - 有锁
-  static const String wifiSignalExcellentLocked = '$_base/wifi_excelent_locked.png';
+  static const String wifiSignalExcellentLocked =
+      '$_base/wifi_excelent_locked.png';
 
   /// wifi 列表已连接小图标(原 lwifiylj)
   static const String wifiConnected = '$_base/wifi_connected.png';
+
   /// wifi 列表未连接小图标(原 lwifiwlj)
   static const String wifiDisconnected = '$_base/wifi_disconnected.png';
+
   /// wifi 列表项右箭头(原 clearitemjt)
   static const String wifiArrow = '$_base/wifi_arrow.png';
+
   /// wifi 空状态图标(临时复用 wifi_disconnected，原 ic_wifi_empty 待补)
   static const String wifiEmpty = '$_base/wifi_disconnected.png';
 
@@ -179,8 +197,45 @@ class AppAssets {
   /// 画板图标(对齐 drawb_icon)
   static const String icDraw = '$_base/drawb_icon.png';
 
+  // ColorDrawFragment 画板工具图标
+  static const String colorDrawPenSize = '$_base/color_draw/icon_draw_c1.png';
+  static const String colorDrawPencil = '$_base/color_draw/icon_draw_c2.png';
+  static const String colorDrawUndo = '$_base/color_draw/icon_draw_c3.png';
+  static const String colorDrawRedo = '$_base/color_draw/icon_draw_c4.png';
+  static const String colorDrawClear = '$_base/color_draw/icon_draw_c5.png';
+  static const String colorDrawPen = '$_base/color_draw/icon_draw_pen.png';
+  static const String colorDrawEraser =
+      '$_base/color_draw/icon_draw_xiangpi.png';
+  static const String colorDrawSave = '$_base/color_draw/icon_hb_save.png';
+  static const String colorDreamHero = '$_base/color_draw/img_home1.png';
+  static const String colorDreamEditor = '$_base/color_draw/img_home2.png';
+  static const String colorDreamAnime = '$_base/color_draw/img_home3.png';
+  static const String colorDreamArrow = '$_base/color_draw/icon_home_right.png';
+  static const String colorDrawTrace = '$_base/color_draw/img_draw_bot1.png';
+  static const String colorDrawShape = '$_base/color_draw/img_draw_bot3.png';
+  static const String colorDrawCat = '$_base/color_draw/img_animals_cat1.webp';
+
+  // ScanMenuActivity / nav_tools_menu 原版底部导航图标
+  static const String colorTabHomeNormal =
+      '$_base/color_draw/icon_tab_tuse.png';
+  static const String colorTabHomeSelected =
+      '$_base/color_draw/icon_tab_tuse2.png';
+  static const String colorTabBoardNormal = '$_base/color_draw/icon_tab_hb.png';
+  static const String colorTabBoardSelected =
+      '$_base/color_draw/icon_tab_hb2.png';
+  static const String colorTabMoreNormal = '$_base/color_draw/icon_tab_gj.png';
+  static const String colorTabMoreSelected =
+      '$_base/color_draw/icon_tab_gj2.png';
+
   /// 白色右箭头(对齐 white_jt)
   static const String whiteArrow = '$_base/white_jt.png';
+
+  // ColorMoreFragment 资源
+  static const String colorMoreOffline = '$_base/color_more/img_more1.png';
+  static const String colorMoreNutrition = '$_base/color_more/img_more2.png';
+  static const String colorMoreCalculator = '$_base/color_more/img_more4.png';
+  static const String colorMoreNotebook = '$_base/color_more/img_more5.png';
+  static const String colorMoreTravel = '$_base/color_more/img_more7.png';
 
   // ====== MenuHome 资源 - 对齐 MenuFragment.kt ======
   /// MenuHome 入口背景图(对齐 ic_shan_main_1_1, 复用 lifeBg)

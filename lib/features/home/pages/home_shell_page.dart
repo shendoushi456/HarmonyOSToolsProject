@@ -1,10 +1,9 @@
-// 底部 3 Tab 容器：WiFi / 工具 / 更多
+// 底部 3 Tab 容器：ScanMenuActivity 原版 首页 / 画板 / 更多。
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../life_tools/pages/life_tools_page.dart';
+import '../../life_tools/pages/color_draw_page.dart';
 import '../../setting/pages/more_page.dart';
 import '../../wifi/pages/wifi_page.dart';
-import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_assets.dart';
 
 /// 当前选中的 Tab 索引
@@ -19,7 +18,7 @@ class HomeShellPage extends ConsumerWidget {
 
     const pages = [
       WifiPage(),
-      LifeToolsPage(),
+      ColorDrawPage(),
       MorePage(),
     ];
 
@@ -56,34 +55,28 @@ class HomeShellPage extends ConsumerWidget {
               context,
               ref,
               index: 0,
-              label: 'WiFi',
-              normalIcon: AppAssets.tabWifiNormal,
-              selectedIcon: AppAssets.tabWifiSelected,
+              label: '首页',
+              normalIcon: AppAssets.colorTabHomeNormal,
+              selectedIcon: AppAssets.colorTabHomeSelected,
               isSelected: currentIndex == 0,
             ),
             _buildNavItem(
               context,
               ref,
               index: 1,
-              label: '工具',
-              normalIcon: AppAssets.tabHomeNormal,
-              selectedIcon: AppAssets.tabHomeSelected,
+              label: '画板',
+              normalIcon: AppAssets.colorTabBoardNormal,
+              selectedIcon: AppAssets.colorTabBoardSelected,
               isSelected: currentIndex == 1,
-              useMaterialIcon: true,
-              materialIcon: Icons.grid_view_outlined,
-              materialSelectedIcon: Icons.grid_view,
             ),
             _buildNavItem(
               context,
               ref,
               index: 2,
               label: '更多',
-              normalIcon: AppAssets.tabAirNormal,
-              selectedIcon: AppAssets.tabAirSelected,
+              normalIcon: AppAssets.colorTabMoreNormal,
+              selectedIcon: AppAssets.colorTabMoreSelected,
               isSelected: currentIndex == 2,
-              useMaterialIcon: true,
-              materialIcon: Icons.settings_outlined,
-              materialSelectedIcon: Icons.settings,
             ),
           ],
         ),
@@ -100,11 +93,7 @@ class HomeShellPage extends ConsumerWidget {
     required String normalIcon,
     required String selectedIcon,
     required bool isSelected,
-    bool useMaterialIcon = false,
-    IconData? materialIcon,
-    IconData? materialSelectedIcon,
   }) {
-    final color = isSelected ? AppColors.qmtqBlue : const Color(0xFF999999);
     return Expanded(
       child: GestureDetector(
         behavior: HitTestBehavior.opaque,
@@ -112,24 +101,15 @@ class HomeShellPage extends ConsumerWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            if (useMaterialIcon)
-              Icon(
-                isSelected
-                    ? materialSelectedIcon ?? materialIcon
-                    : materialIcon,
-                size: 25,
-                color: color,
-              )
-            else
-              Image.asset(
-                isSelected ? selectedIcon : normalIcon,
-                width: 25,
-                height: 25,
-              ),
+            Image.asset(
+              isSelected ? selectedIcon : normalIcon,
+              width: 25,
+              height: 25,
+            ),
             const SizedBox(height: 2),
             Text(
               label,
-              style: TextStyle(fontSize: 10, color: color),
+              style: const TextStyle(fontSize: 10, color: Color(0xFF393939)),
             ),
           ],
         ),
