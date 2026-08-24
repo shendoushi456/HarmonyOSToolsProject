@@ -2,15 +2,15 @@
   "string": [
     {
       "name": "module_desc",
-      "value": "轻漫天气主模块"
+      "value": "乐熊菜谱主模块"
     },
     {
       "name": "EntryAbility_desc",
-      "value": "轻漫天气"
+      "value": "乐熊菜谱"
     },
     {
       "name": "EntryAbility_label",
-      "value": "轻漫天气"
+      "value": "乐熊菜谱"
     },
     {
       "name": "permission_internet_reason",

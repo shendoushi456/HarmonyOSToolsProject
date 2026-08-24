@@ -1,5 +1,5 @@
 name: qingman_weather
-description: 轻漫天气 - Flutter-ohos 版
+description: 乐熊菜谱 - Flutter-ohos 版
 publish_to: 'none'
 version: 1.0.0+1
 
@@ -44,6 +44,13 @@ dependencies:
       path: packages/path_provider/path_provider
       ref: br_path_provider-v2.1.5_ohos
 
+  # 鸿蒙 WebView：用于按 Android 原逻辑加载用户协议和隐私政策 URL。
+  webview_flutter_ohos:
+    git:
+      url: https://gitcode.com/Chyuning/webview_flutter_ohos.git
+      ref: main
+  webview_flutter_platform_interface: ^2.14.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -56,4 +63,9 @@ flutter:
   uses-material-design: true
   generate: true
   assets:
-    - assets/images/
+    - assets/recipes/database.json
+    - assets/fonts/didact.otf
+  fonts:
+    - family: Didact
+      fonts:
+        - asset: assets/fonts/didact.otf
