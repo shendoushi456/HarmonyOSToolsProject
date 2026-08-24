@@ -22,6 +22,9 @@ class WeatherState {
   /// 空气质量
   final AirQuality? airQuality;
 
+  /// 真实24小时预报
+  final List<HourlyWeather> hourlyWeather;
+
   /// 是否首次加载
   final bool isFirst;
 
@@ -38,6 +41,7 @@ class WeatherState {
     this.weather,
     this.today,
     this.airQuality,
+    this.hourlyWeather = const [],
     this.isFirst = true,
     this.isLoading = false,
     this.error,
@@ -50,6 +54,7 @@ class WeatherState {
     WeatherInfo? weather,
     DailyWeather? today,
     AirQuality? airQuality,
+    List<HourlyWeather>? hourlyWeather,
     bool? isFirst,
     bool? isLoading,
     String? error,
@@ -62,6 +67,7 @@ class WeatherState {
       weather: weather ?? this.weather,
       today: today ?? this.today,
       airQuality: airQuality ?? this.airQuality,
+      hourlyWeather: hourlyWeather ?? this.hourlyWeather,
       isFirst: isFirst ?? this.isFirst,
       isLoading: isLoading ?? this.isLoading,
       error: clearError ? null : (error ?? this.error),

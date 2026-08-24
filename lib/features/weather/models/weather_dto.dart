@@ -160,3 +160,58 @@ int _parseInt(dynamic value) {
   if (value is String) return int.tryParse(value) ?? 0;
   return 0;
 }
+
+/// 24小时天气响应 DTO - 对应 Android HourlyWeatherBean
+class HourlyWeatherBeanDTO {
+  final String code;
+  final List<HourlyWeatherDTO> hourly;
+
+  const HourlyWeatherBeanDTO({
+    required this.code,
+    required this.hourly,
+  });
+
+  factory HourlyWeatherBeanDTO.fromJson(Map<String, dynamic> json) {
+    return HourlyWeatherBeanDTO(
+      code: json['code']?.toString() ?? '',
+      hourly: (json['hourly'] as List?)
+              ?.map((item) =>
+                  HourlyWeatherDTO.fromJson(item as Map<String, dynamic>))
+              .toList() ??
+          const [],
+    );
+  }
+
+  static HourlyWeatherBeanDTO? fromJsonString(String jsonString) {
+    try {
+      final json = jsonDecode(jsonString) as Map<String, dynamic>;
+      return HourlyWeatherBeanDTO.fromJson(json);
+    } catch (_) {
+      return null;
+    }
+  }
+}
+
+/// 单小时天气 DTO - 保留领域层需要的时间、温度和天气描述
+class HourlyWeatherDTO {
+  final String fxTime;
+  final String temp;
+  final String icon;
+  final String text;
+
+  const HourlyWeatherDTO({
+    required this.fxTime,
+    required this.temp,
+    required this.icon,
+    required this.text,
+  });
+
+  factory HourlyWeatherDTO.fromJson(Map<String, dynamic> json) {
+    return HourlyWeatherDTO(
+      fxTime: json['fxTime']?.toString() ?? '',
+      temp: json['temp']?.toString() ?? '',
+      icon: json['icon']?.toString() ?? '',
+      text: json['text']?.toString() ?? '',
+    );
+  }
+}

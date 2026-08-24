@@ -43,4 +43,10 @@ class WeatherRepository {
       return null;
     }
   }
+
+  /// 加载真实的24小时预报 - 对应 Android WeatherUtils.getWeather24H
+  Future<List<HourlyWeather>> loadHourlyWeather(String cityId) async {
+    final dto = await _service.getWeather24h(cityId);
+    return dto.hourly.map(WeatherMapper.toHourlyWeather).toList();
+  }
 }

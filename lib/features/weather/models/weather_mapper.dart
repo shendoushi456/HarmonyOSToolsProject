@@ -51,4 +51,14 @@ class WeatherMapper {
       so2: dto.so2,
     );
   }
+
+  /// HourlyWeatherDTO → HourlyWeather
+  static HourlyWeather toHourlyWeather(HourlyWeatherDTO dto) {
+    return HourlyWeather(
+      fxTime: dto.fxTime,
+      temp: dto.temp,
+      icon: dto.icon,
+      text: dto.text,
+    );
+  }
 }

@@ -39,8 +39,7 @@ class AddCityViewModel extends Notifier<AddCityState> {
     state = state.copyWith(isSearching: true, searchResults: results);
   }
 
-  /// 选择城市(单选模式) - 对齐 AddCityActivity.saveAndJump 单选分支(行 91-102)
-  /// 构造 CityBean 并替换整个城市列表,返回 true 表示成功
+  /// 选择城市（单城市模式） - 对齐 Android AddCityActivity 的 isMulti=false 分支。
   Future<bool> selectCity(Citys city) async {
     final cityBean = CityBean(
       areaCode: city.id,

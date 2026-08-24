@@ -2,7 +2,6 @@
 // 使用 riverpod Notifier 管理状态
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/utils/date_util.dart';
-import '../../../core/utils/hourly_temp_util.dart';
 import '../models/city_bean.dart';
 import '../models/weather_model.dart';
 import '../repositories/weather_repository.dart';
@@ -39,14 +38,17 @@ class WeatherViewModel extends Notifier<WeatherState> {
       // 3. 城市名 → 城市ID
       final cityId = await _repository.resolveCityId(city.cityName);
 
-      // 4. 并发加载天气和空气质量
+      // 4. 并发加载每日天气、空气质量和真实24小时预报。
+      // 小时预报失败不应阻断主天气页，对齐 Android 三个接口独立回调的行为。
       final results = await Future.wait([
         _repository.loadDailyWeather(cityId),
         _repository.loadAirQuality(cityId),
+        _loadHourlySafely(cityId),
       ]);
 
       final weather = results[0] as WeatherInfo;
       final airQuality = results[1] as AirQuality?;
+      final hourlyWeather = results[2] as List<HourlyWeather>;
 
       final today = weather.daily.isNotEmpty ? weather.daily.first : null;
 
@@ -54,6 +56,7 @@ class WeatherViewModel extends Notifier<WeatherState> {
         weather: weather,
         today: today,
         airQuality: airQuality,
+        hourlyWeather: hourlyWeather,
         isLoading: false,
       );
     } catch (e) {
@@ -61,6 +64,14 @@ class WeatherViewModel extends Notifier<WeatherState> {
         isLoading: false,
         error: e.toString(),
       );
+    }
+  }
+
+  Future<List<HourlyWeather>> _loadHourlySafely(String cityId) async {
+    try {
+      return await _repository.loadHourlyWeather(cityId);
+    } catch (_) {
+      return const [];
     }
   }
 
@@ -85,24 +96,19 @@ class WeatherViewModel extends Notifier<WeatherState> {
     return forecasts;
   }
 
-  /// 构建逐小时预报(24小时,本地模拟) - 对齐 buildHourlyForecasts
-  List<HourForecast> buildHourly(DailyWeather? today) {
-    if (today == null) return [];
-    final minT = int.tryParse(today.tempMin) ?? 10;
-    final maxT = int.tryParse(today.tempMax) ?? 20;
-    final nowHour = DateTime.now().hour;
-    final condition = today.textDay;
-
-    return List.generate(24, (i) {
-      final hour = (nowHour + i) % 24;
-      final temp = HourlyTempUtil.hourlyTemperature(hour, minT, maxT);
-      final time = i == 0 ? '现在' : '${hour.toString().padLeft(2, '0')}时';
+  /// 将真实小时预报转换为展示模型 - 对齐 Android TwentyFourHourWeatherScreen
+  List<HourForecast> buildHourly(List<HourlyWeather> hourlyWeather) {
+    return hourlyWeather.take(24).map((weather) {
+      final dateTime = DateTime.tryParse(weather.fxTime.replaceFirst(' ', 'T'));
+      final time = dateTime == null
+          ? weather.fxTime
+          : '${dateTime.hour.toString().padLeft(2, '0')}时';
       return HourForecast(
         time: time,
-        temperature: '$temp°',
-        condition: condition,
+        temperature: '${weather.temp}°',
+        condition: weather.text,
       );
-    });
+    }).toList();
   }
 }
 

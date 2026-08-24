@@ -64,11 +64,15 @@ class PrefsStorage {
       _instance.getBool(keySaveCurrentItem) ?? false;
 
   /// 读取是否同意隐私协议 - 对齐 Android SPUtil "isAgressment"
-  static bool loadIsAgressment() =>
-      _instance.getBool(keyIsAgressment) ?? false;
+  static bool loadIsAgressment() => _instance.getBool(keyIsAgressment) ?? false;
 
   /// 保存是否同意隐私协议
   static Future<void> saveIsAgressment(bool value) async {
     await _instance.setBool(keyIsAgressment, value);
+  }
+
+  /// 撤销协议或注销账号时清理应用本地数据。
+  static Future<void> clearUserData() async {
+    await _instance.clear();
   }
 }

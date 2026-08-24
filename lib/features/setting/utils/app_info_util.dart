@@ -5,7 +5,7 @@ class AppInfoUtil {
   AppInfoUtil._();
 
   /// 应用名(对齐 Android getApplicationLabel)
-  static const String appName = '瞬息天气通';
+  static const String appName = '灵犀百宝囊';
 
   /// 版本号(对齐 Android getVersion → "1.0.1")
   static const String version = '1.0.1';
@@ -16,8 +16,9 @@ class SettingUrls {
   SettingUrls._();
 
   /// 用户协议 URL
-  static const String user = 'http://api.jyhytech.top/agreement/bbsxtqt/user';
+  static const String user = 'https://api.zaosuancuo.cn/agreement/wlfyzn/user';
 
   /// 隐私协议 URL
-  static const String policy = 'http://api.jyhytech.top/agreement/bbsxtqt/privacy';
+  static const String policy =
+      'https://api.zaosuancuo.cn/agreement/wlfyzn/privacy';
 }

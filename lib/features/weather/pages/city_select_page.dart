@@ -1,5 +1,5 @@
 // 城市选择页 - 对齐 Android AddCityActivity.kt + ac_add_city.xml
-// 单选模式:选择城市后替换当前城市并返回
+// 单城市模式：选择城市后替换当前城市并返回。
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -28,13 +28,12 @@ class _CitySelectPageState extends ConsumerState<CitySelectPage> {
     super.dispose();
   }
 
-  /// 选择城市 - 对齐 AddCityActivity.saveAndJump 单选分支
+  /// 选择城市 - 对齐 AddCityActivity.saveAndJump 的单城市分支。
   Future<void> _onCitySelected(Citys city) async {
     final success =
         await ref.read(addCityViewModelProvider.notifier).selectCity(city);
     if (success && mounted) {
-      // 返回 true 通知首页刷新
-      context.pop(true);
+      context.pop<bool>(true);
     }
   }
 
@@ -97,8 +96,7 @@ class _CitySelectPageState extends ConsumerState<CitySelectPage> {
                       style: const TextStyle(color: Colors.white, fontSize: 16),
                       decoration: const InputDecoration(
                         hintText: '请输入城市或地区',
-                        hintStyle:
-                            TextStyle(color: Colors.white, fontSize: 16),
+                        hintStyle: TextStyle(color: Colors.white, fontSize: 16),
                         contentPadding: EdgeInsets.only(left: 6),
                         border: InputBorder.none,
                         isDense: true,

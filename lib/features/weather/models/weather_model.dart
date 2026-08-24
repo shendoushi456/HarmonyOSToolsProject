@@ -78,6 +78,21 @@ class AirQuality {
   });
 }
 
+/// 单小时天气领域模型 - 对应 Android HourlyWeatherBean.Hourly
+class HourlyWeather {
+  final String fxTime;
+  final String temp;
+  final String icon;
+  final String text;
+
+  const HourlyWeather({
+    required this.fxTime,
+    required this.temp,
+    required this.icon,
+    required this.text,
+  });
+}
+
 /// 15日预报 UI 展示模型 - 对应 Android HomeForecast
 class HomeForecast {
   final String dayLabel;

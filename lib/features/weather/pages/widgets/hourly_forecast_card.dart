@@ -1,5 +1,5 @@
 // 逐小时预报卡 - 对齐 Android WeatherChildFragment.HourlyForecastCard
-// 133dp 高,24 小时预报(本地模拟温度)
+// 133dp 高，展示和风天气接口返回的真实24小时预报
 import 'package:flutter/material.dart';
 import '../../../../core/constants/app_assets.dart';
 import '../../../../core/constants/app_colors.dart';

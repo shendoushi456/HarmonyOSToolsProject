@@ -47,7 +47,8 @@ class AppAssets {
   static const String weatherThunder = '$_base/qmtq_weather_thunder.png';
 
   /// 15日天气标题图标
-  static const String weatherForecastTitle = '$_base/qmtq_weather_forecast_title.png';
+  static const String weatherForecastTitle =
+      '$_base/qmtq_weather_forecast_title.png';
 
   /// 底部导航 - 首页
   static const String tabHomeNormal = '$_base/qmtq_tab_home_normal.png';
@@ -55,7 +56,8 @@ class AppAssets {
 
   /// 底部导航 - 日历
   static const String tabCalendarNormal = '$_base/qmtq_tab_calendar_normal.png';
-  static const String tabCalendarSelected = '$_base/qmtq_tab_calendar_selected.png';
+  static const String tabCalendarSelected =
+      '$_base/qmtq_tab_calendar_selected.png';
 
   /// 底部导航 - 空气
   static const String tabAirNormal = '$_base/qmtq_tab_air_normal.png';
@@ -71,7 +73,8 @@ class AppAssets {
   static const String calendarRight = '$_base/qmtq_calendar_right.png';
 
   /// 日历选中周背景
-  static const String calendarWeekHighlight = '$_base/qmtq_calendar_week_highlight.png';
+  static const String calendarWeekHighlight =
+      '$_base/qmtq_calendar_week_highlight.png';
 
   /// 城市搜索图标(16dp)
   static const String icSearch = '$_base/ic_search.webp';
@@ -106,5 +109,83 @@ class AppAssets {
   static const String settingAboutIcon = '$_base/setting_4_about_icon.webp';
 
   /// 意见反馈图标
-  static const String settingFeedbackIcon = '$_base/setting_4_feedback_icon.webp';
+  static const String settingFeedbackIcon =
+      '$_base/setting_4_feedback_icon.webp';
+
+  // ====== 海拔/指南针页资源 ======
+  /// 从 Android AltitudeFragment/CompassFragment 迁入并统一加 outdoor_ 前缀，避免资源重名。
+  static const String outdoorHomeBackground =
+      '$_base/outdoor_home_background.png';
+  static const String outdoorAddressIcon = '$_base/outdoor_address_icon.png';
+  static const String outdoorAirIcon = '$_base/outdoor_air_icon.png';
+  static const String outdoorUvIcon = '$_base/outdoor_uv_icon.png';
+  static const String outdoorWindDirectionIcon =
+      '$_base/outdoor_wind_direction_icon.png';
+  static const String outdoorWindSpeedIcon =
+      '$_base/outdoor_wind_speed_icon.png';
+  static const String outdoorAltitudeIcon = '$_base/outdoor_altitude_icon.png';
+
+  // ====== WeatherChildFragment 天气详情资源 ======
+  /// Android WeatherChildFragment 的整页深蓝背景。
+  static const String weatherChildBackground =
+      '$_base/weather_child_background.png';
+  static const String weatherChildWindIcon = '$_base/weather_child_wind.png';
+  static const String weatherChildPressureIcon =
+      '$_base/weather_child_pressure.png';
+  static const String weatherChildHumidityIcon =
+      '$_base/weather_child_humidity.png';
+  static const String weatherChildClothingIcon =
+      '$_base/weather_child_clothing.png';
+  static const String weatherChildSunblockIcon =
+      '$_base/weather_child_sunblock.png';
+  static const String weatherChildTravelIcon =
+      '$_base/weather_child_travel.png';
+  static const String weatherChildSportIcon = '$_base/weather_child_sport.png';
+  static const String weatherChildTrafficIcon =
+      '$_base/weather_child_traffic.png';
+  static const String weatherChildMakeupIcon =
+      '$_base/weather_child_makeup.png';
+  static const String weatherChildUvIcon = '$_base/weather_child_uv.png';
+  static const String weatherChildCarWashIcon =
+      '$_base/weather_child_car_wash.png';
+
+  // ====== ToolsBoxFragment 资源 ======
+  static const String toolsBoxBackground =
+      '$_base/toolsbox_home_background.png';
+  static const String toolsBoxRuler = '$_base/toolsbox_ruler.png';
+  static const String toolsBoxLevel = '$_base/toolsbox_level.png';
+  static const String toolsBoxProtractor = '$_base/toolsbox_protractor.png';
+  static const String toolsBoxTabNormal = '$_base/toolsbox_tab_normal.png';
+  static const String toolsBoxTabSelected = '$_base/toolsbox_tab_selected.png';
+  static const String toolsBoxSettingUser = '$_base/toolsbox_setting_user.png';
+  static const String toolsBoxSettingPrivacy =
+      '$_base/toolsbox_setting_privacy.png';
+  static const String toolsBoxSettingAbout =
+      '$_base/toolsbox_setting_about.png';
+  static const String toolsBoxSettingFeedback =
+      '$_base/toolsbox_setting_feedback.png';
+  static const String toolsBoxSettingRevoke =
+      '$_base/toolsbox_setting_revoke.png';
+  static const String toolsBoxSettingCancel =
+      '$_base/toolsbox_setting_cancel.png';
+  static const String toolsBoxSettingArrow =
+      '$_base/toolsbox_setting_arrow.png';
+
+  // Android MainWeatherActivity 底部导航原始图标（xxhdpi，按 24dp 使用）。
+  static const String bottomTabAltitudeNormal =
+      '$_base/toolsbox_bottom_tab_1_normal.png';
+  static const String bottomTabAltitudeSelected =
+      '$_base/toolsbox_bottom_tab_1_selected.png';
+  static const String bottomTabCompassNormal =
+      '$_base/toolsbox_bottom_tab_2_normal.png';
+  static const String bottomTabCompassSelected =
+      '$_base/toolsbox_bottom_tab_2_selected.png';
+  static const String bottomTabWeatherNormal =
+      '$_base/toolsbox_bottom_tab_3_normal.png';
+  static const String bottomTabWeatherSelected =
+      '$_base/toolsbox_bottom_tab_3_selected.png';
+  static const String bottomTabToolsNormal =
+      '$_base/toolsbox_bottom_tab_4_normal.png';
+  static const String bottomTabToolsSelected =
+      '$_base/toolsbox_bottom_tab_4_selected.png';
 }

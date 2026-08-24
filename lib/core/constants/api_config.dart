@@ -17,6 +17,9 @@ class ApiConfig {
   /// 15天预报 - /v7/weather/15d
   static const String pathWeather15d = '/v7/weather/15d';
 
+  /// 24小时预报 - /v7/weather/24h
+  static const String pathWeather24h = '/v7/weather/24h';
+
   /// 实时空气质量 - /v7/air/now
   static const String pathAirNow = '/v7/air/now';
 

@@ -52,6 +52,26 @@ class WeatherService {
     return _getWeather(ApiConfig.pathWeather7d, cityId);
   }
 
+  /// 24小时预报 - GET /v7/weather/24h
+  Future<HourlyWeatherBeanDTO> getWeather24h(String cityId) async {
+    try {
+      final response = await _dio.get(
+        ApiConfig.pathWeather24h,
+        queryParameters: {'location': cityId},
+      );
+      final dto = HourlyWeatherBeanDTO.fromJsonString(response.toString());
+      if (dto == null) {
+        throw WeatherException('24小时天气数据解析失败');
+      }
+      return dto;
+    } on DioException catch (e) {
+      throw WeatherException(
+        '24小时天气查询失败: ${e.message}',
+        code: e.response?.statusCode,
+      );
+    }
+  }
+
   /// 实时空气质量 - GET /v7/air/now
   Future<WeatherBeanInfoDTO> getAirNow(String cityId) async {
     try {
