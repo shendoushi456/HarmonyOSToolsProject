@@ -1,7 +1,7 @@
 {
   "app": {
     "bundleName": "hm.hnrsy.lghsb",
-    "vendor": "rsy",
+    "vendor": "hnrs",
     "versionCode": 1000000,
     "versionName": "1.0.1",
     "icon": "$media:app_icon",

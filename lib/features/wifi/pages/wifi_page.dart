@@ -67,39 +67,70 @@ class _HeroCard extends StatelessWidget {
   const _HeroCard({required this.onTap});
   final VoidCallback onTap;
   @override
-  Widget build(BuildContext context) => SizedBox(
-        height: 210,
-        child: Stack(children: [
-          Positioned.fill(
-            child: Padding(
-              padding: const EdgeInsets.only(left: 20),
-              child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text('灵感画色堡',
-                        style: TextStyle(
-                            color: Color(0xFF352570),
-                            fontSize: 36,
-                            fontWeight: FontWeight.w500)),
-                    const Text('方寸纸笔，万千世界！',
-                        style: TextStyle(
+  Widget build(BuildContext context) => LayoutBuilder(
+        builder: (context, constraints) {
+          final cardWidth = constraints.maxWidth;
+          final imageWidth = (cardWidth * 0.40).clamp(128.0, 162.0);
+          final titleSize = cardWidth < 350 ? 30.0 : 36.0;
+          return SizedBox(
+            height: 210,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Expanded(
+                  flex: 13,
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 20, right: 8),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        FittedBox(
+                          fit: BoxFit.scaleDown,
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            '灵感画色堡',
+                            maxLines: 1,
+                            style: TextStyle(
+                              color: const Color(0xFF352570),
+                              fontSize: titleSize,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 2),
+                        const Text(
+                          '方寸纸笔，万千世界！',
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
                             color: Color(0xFF352570),
                             fontSize: 12,
-                            fontWeight: FontWeight.w500)),
-                    const SizedBox(height: 30),
-                    _DreamButton(label: '开始创作', onTap: onTap, width: 84),
-                  ]),
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        const SizedBox(height: 30),
+                        _DreamButton(label: '开始创作', onTap: onTap, width: 84),
+                      ],
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 8),
+                SizedBox(
+                  width: imageWidth,
+                  child: IgnorePointer(
+                    child: Image.asset(
+                      AppAssets.colorDreamHero,
+                      fit: BoxFit.contain,
+                      alignment: Alignment.centerRight,
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 8),
+              ],
             ),
-          ),
-          Positioned(
-              right: 10,
-              top: 0,
-              bottom: 0,
-              child: IgnorePointer(
-                  child: Image.asset(AppAssets.colorDreamHero,
-                      width: 162, fit: BoxFit.contain))),
-        ]),
+          );
+        },
       );
 }
 
