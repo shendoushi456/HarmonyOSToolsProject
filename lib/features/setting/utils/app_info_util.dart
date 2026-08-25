@@ -16,8 +16,8 @@ class SettingUrls {
   SettingUrls._();
 
   /// 用户协议 URL
-  static const String user = 'http://api.jyhytech.top/agreement/bbsxtqt/user';
+  static const String user = 'http://api.jyhytech.top/agreement/bjqnfwhlhm/user';
 
   /// 隐私协议 URL
-  static const String policy = 'http://api.jyhytech.top/agreement/bbsxtqt/privacy';
+  static const String policy = 'http://api.jyhytech.top/agreement/bjqnfwhlhm/privacy';
 }
