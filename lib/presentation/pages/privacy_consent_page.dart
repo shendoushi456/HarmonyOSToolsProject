@@ -84,8 +84,8 @@ class PrivacyConsentPage extends StatelessWidget {
         builder: (_) => WebPolicyPage(
           title: title,
           url: title == '用户协议'
-              ? 'http://api.hnrsyc.top/agreement/lxcp/user'
-              : 'http://api.hnrsyc.top/agreement/lxcp/privacy',
+              ? 'http://api.jyhytech.top/agreement/bjlxcp/user'
+              : 'http://api.jyhytech.top/agreement/bjlxcp/privacy',
         ),
       ),
     );

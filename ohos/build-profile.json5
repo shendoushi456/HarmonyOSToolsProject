@@ -1,6 +1,20 @@
 {
   "app": {
-    "signingConfigs": [],
+    "signingConfigs": [
+      {
+        "name": "default",
+        "type": "HarmonyOS",
+        "material": {
+          "storeFile": "/Users/zhuanzmima0000/鸿蒙签名/湖南睿思/hunanruisi.p12",
+          "storePassword": "0000001A09FFFA8B7D5D4E6C1F021B16045A34D89D0E4E2F11A7077D8AFCE21FB963B881256809D02134",
+          "keyAlias": "hunanruisi",
+          "keyPassword": "0000001A68EE053440669751A5FA3C7F7635343C1C2041A16B2F743DBFB592BB49BEF624CB2F3D6B02E2",
+          "signAlg": "SHA256withECDSA",
+          "profile": "/Users/zhuanzmima0000/鸿蒙签名/lexiongcaipuRelease.p7b",
+          "certpath": "/Users/zhuanzmima0000/鸿蒙签名/湖南睿思/hunanruisi.cer"
+        }
+      }
+    ],
     "products": [
       {
         "name": "default",
