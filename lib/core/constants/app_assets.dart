@@ -203,4 +203,39 @@ class AppAssets {
 
   /// 扫描二维码图标(对齐 ic_tong_life_2_2)
   static const String icQrScan = '$_base/ic_tong_life_2_2.png';
+
+  // ====== ScanMenu 资源 - 仅来自 Android 源码 res/mipmap-xxhdpi ======
+  static const String scanHomeBg = '$_base/scan_home_bg.png';
+  static const String scanToolArchive = '$_base/scan_tool_archive.png';
+  static const String scanToolQrScan = '$_base/scan_tool_qr_scan.png';
+  static const String scanToolQrGenerate = '$_base/scan_tool_qr_generate.png';
+  static const String scanPdfToImage = '$_base/scan_pdf_to_image.png';
+  static const String scanImageToPdf = '$_base/scan_image_to_pdf.png';
+  static const String scanPdfCompress = '$_base/scan_pdf_compress.png';
+  static const String scanExchangeArrow = '$_base/scan_exchange_arrow.png';
+  static const String scanDocumentBlue = '$_base/scan_document_blue.png';
+  static const String scanDocumentGreen = '$_base/scan_document_green.png';
+  static const String scanDocumentPurple = '$_base/scan_document_purple.png';
+  static const String scanDocumentYellow = '$_base/scan_document_yellow.png';
+  static const String scanDocumentIcon = '$_base/scan_document_icon.png';
+  static const String scanDocumentEmpty = '$_base/scan_document_empty.png';
+  static const String scanSortNewest = '$_base/scan_sort_newest.png';
+  static const String scanSortOldest = '$_base/scan_sort_oldest.png';
+  static const String scanSaveLocal = '$_base/scan_save_local.png';
+  static const String scanDelete = '$_base/scan_delete.png';
+  static const String scanCrop = '$_base/scan_crop.png';
+  static const String scanRetake = '$_base/scan_retake.png';
+  static const String scanWatermark = '$_base/scan_watermark.png';
+
+  // ====== 便携工具资源 - 对齐 BianxieToolsFragment ======
+  static const String portableToolsHomeBg = '$_base/portable_tools_home_bg.png';
+  static const String portableToolsClearCamera =
+      '$_base/portable_tools_clear_camera.png';
+  static const String portableToolsSolarTerms =
+      '$_base/portable_tools_solar_terms.png';
+  static const String portableToolsCalculator =
+      '$_base/portable_tools_calculator.png';
+  static const String portableToolsPixel = '$_base/portable_tools_pixel.png';
+  static const String portableToolsWatermark =
+      '$_base/portable_tools_watermark.png';
 }

@@ -1,6 +1,5 @@
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mobile_scanner/mobile_scanner.dart';
 import 'qr_scan_state.dart';
 
 final qrScanViewModelProvider = NotifierProvider<QrScanViewModel, QrScanState>(
@@ -23,9 +22,10 @@ class QrScanViewModel extends Notifier<QrScanState> {
     state = state.copyWith(showPermissionRationale: false);
   }
 
-  /// 用户同意权限说明后，标记可以继续（实际权限由 mobile_scanner 自动申请）
+  /// 用户同意权限说明后，展示鸿蒙原生扫码预览；插件会申请实际相机权限。
   void onAgreeRationale() {
-    state = state.copyWith(showPermissionRationale: false, permissionGranted: true);
+    state =
+        state.copyWith(showPermissionRationale: false, permissionGranted: true);
   }
 
   /// 拒绝权限后提示并返回
@@ -38,11 +38,8 @@ class QrScanViewModel extends Notifier<QrScanState> {
   }
 
   /// 扫描到条码 - 对齐 MenuFragment.kt:793-800 CaptureScanActivity 结果
-  void onScan(BarcodeCapture capture) {
-    final barcodes = capture.barcodes;
-    if (barcodes.isEmpty) return;
-    final code = barcodes.first.rawValue;
-    if (code != null && code.isNotEmpty) {
+  void onScan(String? code) {
+    if (code != null && code.isNotEmpty && !state.showResultDialog) {
       state = state.copyWith(scanResult: code, showResultDialog: true);
     }
   }

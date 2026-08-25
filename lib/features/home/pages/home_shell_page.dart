@@ -1,14 +1,11 @@
-// 底部 3 Tab 容器：WiFi / 工具 / 更多
+// 指定 ScanMenu 的底部两栏容器：首页 / 文档。
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../life_tools/pages/life_tools_page.dart';
-import '../../setting/pages/more_page.dart';
-import '../../wifi/pages/wifi_page.dart';
 import '../../../core/constants/app_colors.dart';
-import '../../../core/constants/app_assets.dart';
-
-/// 当前选中的 Tab 索引
-final homeTabIndexProvider = StateProvider<int>((ref) => 0);
+import '../../scan_menu/pages/document_gallery_page.dart';
+import '../../scan_menu/pages/scan_home_page.dart';
+import '../../portable_tools/pages/portable_tools_page.dart';
+import '../viewmodels/home_tab_view_model.dart';
 
 class HomeShellPage extends ConsumerWidget {
   const HomeShellPage({super.key});
@@ -17,11 +14,7 @@ class HomeShellPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final currentIndex = ref.watch(homeTabIndexProvider);
 
-    const pages = [
-      WifiPage(),
-      LifeToolsPage(),
-      MorePage(),
-    ];
+    const pages = [ScanHomePage(), DocumentGalleryPage(), PortableToolsPage()];
 
     return Scaffold(
       body: IndexedStack(
@@ -56,34 +49,31 @@ class HomeShellPage extends ConsumerWidget {
               context,
               ref,
               index: 0,
-              label: 'WiFi',
-              normalIcon: AppAssets.tabWifiNormal,
-              selectedIcon: AppAssets.tabWifiSelected,
+              label: '首页',
               isSelected: currentIndex == 0,
+              useMaterialIcon: true,
+              materialIcon: Icons.home_outlined,
+              materialSelectedIcon: Icons.home,
             ),
             _buildNavItem(
               context,
               ref,
               index: 1,
-              label: '工具',
-              normalIcon: AppAssets.tabHomeNormal,
-              selectedIcon: AppAssets.tabHomeSelected,
+              label: '文档',
               isSelected: currentIndex == 1,
               useMaterialIcon: true,
-              materialIcon: Icons.grid_view_outlined,
-              materialSelectedIcon: Icons.grid_view,
+              materialIcon: Icons.folder_outlined,
+              materialSelectedIcon: Icons.folder,
             ),
             _buildNavItem(
               context,
               ref,
               index: 2,
-              label: '更多',
-              normalIcon: AppAssets.tabAirNormal,
-              selectedIcon: AppAssets.tabAirSelected,
+              label: '工具',
               isSelected: currentIndex == 2,
               useMaterialIcon: true,
-              materialIcon: Icons.settings_outlined,
-              materialSelectedIcon: Icons.settings,
+              materialIcon: Icons.grid_view_outlined,
+              materialSelectedIcon: Icons.grid_view,
             ),
           ],
         ),
@@ -97,8 +87,6 @@ class HomeShellPage extends ConsumerWidget {
     WidgetRef ref, {
     required int index,
     required String label,
-    required String normalIcon,
-    required String selectedIcon,
     required bool isSelected,
     bool useMaterialIcon = false,
     IconData? materialIcon,
@@ -119,12 +107,6 @@ class HomeShellPage extends ConsumerWidget {
                     : materialIcon,
                 size: 25,
                 color: color,
-              )
-            else
-              Image.asset(
-                isSelected ? selectedIcon : normalIcon,
-                width: 25,
-                height: 25,
               ),
             const SizedBox(height: 2),
             Text(

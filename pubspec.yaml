@@ -1,5 +1,5 @@
 name: qingman_weather
-description: 全能WiFi互联 - Flutter-ohos 版
+description: 慧扫文档宝 - Flutter-ohos 版
 publish_to: 'none'
 version: 1.0.0+1
 
@@ -81,6 +81,14 @@ dependencies:
       path: packages/image_picker/image_picker
       ref: br_image_picker-v1.1.2_ohos
 
+  # 应用内相机预览与拍照（拍照存档不再依赖系统相机 Ability）
+  camera: ^0.10.5+4
+  camera_ohos:
+    git:
+      url: https://gitcode.com/openharmony-tpc/flutter_packages.git
+      ref: fd410050c6842717ee1b851ca7640c294de9568c
+      path: packages/camera/camera_ohos
+
   # ====== MenuHome PDF + 二维码新增依赖（2026-08-22）======
   # PDF 备用纯 Dart 方案（当 pdfService 不可用时降级）
   pdf: ^3.11.1
@@ -88,11 +96,8 @@ dependencies:
   # 生成二维码
   qr_flutter: ^4.1.0
 
-  # 扫描二维码 - 鸿蒙适配版
-  mobile_scanner:
-    git:
-      url: https://gitcode.com/openharmony-sig/fluttertpc_mobile_scanner.git
-      ref: br_v6.0.10_ohos
+  # 二维码扫描：采用 master_saolaisao 已接入的鸿蒙原生扫码预览实现。
+  qr_code_scanner_ohos: 1.0.0
 
   # 选择 PDF 文件 - 鸿蒙适配版
   file_picker_ohos:
@@ -123,3 +128,7 @@ flutter:
     - assets/images/
     - assets/hot_city.json
     - assets/game/jintianchishenme/   # 今天吃什么 WebView 本地资源
+    - assets/game/ershisijieqi/       # 二十四节气 WebView 本地资源
+    - assets/game/ershisijieqi/css/       # 二十四节气 WebView 本地资源
+    - assets/game/ershisijieqi/js/       # 二十四节气 WebView 本地资源
+    - assets/game/ershisijieqi/images/       # 二十四节气 WebView 本地资源
