@@ -7,7 +7,7 @@ import { preferences } from '@kit.ArkData';
 import Want from '@ohos.app.ability.Want';
 
 // MethodChannel 名称（Flutter 侧 external_app_service.dart 必须一致）
-const CHANNEL_NAME = 'com.lxhy.yycx/external_app';
+const CHANNEL_NAME = 'hm.lxhy.youyouxing/external_app';
 
 // 交管12123 鸿蒙版 bundleName：需在真机用 hdc shell bm dump -a 确认后更新
 // Android 版包名为 com.tmri.app.main，鸿蒙版 bundleName 不一定相同

@@ -5,13 +5,13 @@
         "name": "default",
         "type": "HarmonyOS",
         "material": {
-          "storeFile": "/Users/zhuanzmima0000/youyouchuxing.p12",
-          "storePassword": "0000001A72C7F568982A024A7B8CF9E17D8261FF5C69D3FCCFE1D2099332E4AAE7A97101F093A3109345",
-          "keyAlias": "youyouchuxing",
-          "keyPassword": "0000001AA44B2C47B6598757A9CF8F51660A09C9541CE09799B3220EE89C48A6EFAC3942C2A2C7B567C9",
+          "storeFile": "/Users/zhuanzmima0000/鸿蒙签名/北京乐熊鸿运/beijinglexionghongyun.p12",
+          "storePassword": "0000001CC3DD9E762B85D079B28FA24AEC5C6E3F780955BC34637C5052B8521452E0810B50A182602A5E86A4",
+          "keyAlias": "beijinglexionghongyun",
+          "keyPassword": "0000001C55408492A17EA0BCB127904875A7331036B47A05DAA8EC0894F184FC0EBC2A938CEDA359F0C3E163",
           "signAlg": "SHA256withECDSA",
-          "profile": "/Users/zhuanzmima0000/鸿蒙签名/悠游出行/youyouchuxingRelease.p7b",
-          "certpath": "/Users/zhuanzmima0000/鸿蒙签名/悠游出行/youyouchuxing.cer"
+          "profile": "/Users/zhuanzmima0000/鸿蒙签名/youyouchuxingRelease.p7b",
+          "certpath": "/Users/zhuanzmima0000/鸿蒙签名/北京乐熊鸿运/beijinglexionghongyun.cer"
         }
       }
     ],

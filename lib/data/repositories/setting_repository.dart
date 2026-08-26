@@ -4,8 +4,8 @@
 /// 原值来自 BuildConfig.PRIVATE_URL / USER_URL，最终取自 config.gradle。
 class SettingUrlConstants {
   /// 隐私协议 URL
-  static const String policyUrl = 'https://api.jyhytech.top/agreement/bjyycx/privacy';
+  static const String policyUrl = 'http://api.jyhytech.top/agreement/bjyycxhm/privacy';
 
   /// 用户协议 URL
-  static const String userUrl = 'https://api.jyhytech.top/agreement/bjyycx/user';
+  static const String userUrl = 'http://api.jyhytech.top/agreement/bjyycxhm/user';
 }

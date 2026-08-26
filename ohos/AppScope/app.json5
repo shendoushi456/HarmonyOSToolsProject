@@ -1,7 +1,7 @@
 {
   "app": {
-    "bundleName": "com.lxhy.yycx",
-    "vendor": "example",
+    "bundleName": "hm.lxhy.youyouxing",
+    "vendor": "lxhy",
     "versionCode": 1000001,
     "versionName": "1.0.1",
     "buildVersion": "1",

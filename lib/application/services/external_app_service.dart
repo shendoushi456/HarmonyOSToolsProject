@@ -7,7 +7,7 @@ import 'package:flutter/services.dart';
 /// 鸿蒙侧实现在 EntryAbility.ets 的 MethodChannel handler 中。
 class ExternalAppService {
   /// MethodChannel 名称（鸿蒙侧 EntryAbility.ets 中必须一致）
-  static const _channel = MethodChannel('com.lxhy.yycx/external_app');
+  static const _channel = MethodChannel('hm.lxhy.youyouxing/external_app');
 
   /// 交管12123 包名（Android 包名 com.tmri.app.main，鸿蒙版 bundleName 可能不同，
   /// 鸿蒙侧 handler 会先尝试此 bundleName，失败则跳应用市场）。

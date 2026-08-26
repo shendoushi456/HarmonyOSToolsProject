@@ -61,7 +61,7 @@ class _PolicyPageState extends State<PolicyPage> {
           Expanded(
             // 通过项目内注册的 ArkWeb PlatformView 加载，页面不会跳出 App。
             child: OhosView(
-              viewType: 'com.lxhy.yycx/policy_webview',
+              viewType: 'hm.lxhy.youyouxing/policy_webview',
               creationParams: <String, Object>{'url': widget.url},
               creationParamsCodec: const StandardMessageCodec(),
             ),

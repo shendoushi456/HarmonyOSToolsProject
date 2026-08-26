@@ -66,17 +66,15 @@ class TelephoneCarPage extends ConsumerWidget {
                     TelephoneTabButton(
                       text: '道路救援',
                       isSelected: tabIndex == 0,
-                      onTap: () => ref
-                          .read(telephoneTabProvider.notifier)
-                          .state = 0,
+                      onTap: () =>
+                          ref.read(telephoneTabProvider.notifier).state = 0,
                     ),
                     const SizedBox(width: 12),
                     TelephoneTabButton(
                       text: '保险公司',
                       isSelected: tabIndex == 1,
-                      onTap: () => ref
-                          .read(telephoneTabProvider.notifier)
-                          .state = 1,
+                      onTap: () =>
+                          ref.read(telephoneTabProvider.notifier).state = 1,
                     ),
                   ],
                 ),
@@ -89,8 +87,6 @@ class TelephoneCarPage extends ConsumerWidget {
               child: PhoneListItem(
                 title: phone.title,
                 subtitle: phone.phone,
-                onTap: () =>
-                    ref.read(externalAppServiceProvider).dialPhone(phone.phone),
               ),
             );
           },

@@ -9,7 +9,7 @@ export class PolicyWebViewPlugin implements FlutterPlugin {
 
   onAttachedToEngine(binding: FlutterPluginBinding): void {
     binding.getPlatformViewRegistry().registerViewFactory(
-      'com.lxhy.yycx/policy_webview',
+      'hm.lxhy.youyouxing/policy_webview',
       new PolicyWebViewFactory()
     );
   }
