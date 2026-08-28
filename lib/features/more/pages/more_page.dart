@@ -1,234 +1,225 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-
+import '../../../core/constants/app_assets.dart';
 import '../../../router/route_names.dart';
-import '../../setting/utils/app_info_util.dart';
-import '../../weather/viewmodels/weather_view_model.dart';
-import '../models/more_tool.dart';
-import '../viewmodels/more_view_model.dart';
 
-const _pageBackground = Color(0xFFF6F8FA);
-const _textColor = Color(0xFF222222);
-const _subtextColor = Color(0xFF747B83);
+const _background = Color(0xFFD8EFFF);
+const _blue = Color(0xFF2879DE);
 
-/// Android MoreFragment 的第四个 Tab。
-/// 不包含放大镜、消息通知、提醒方式和提示音四项。
-class MorePage extends ConsumerStatefulWidget {
+/// Android MoreComposeFragment 的 Flutter 迁移版。识别卡只迁移 UI。
+class MorePage extends StatelessWidget {
   const MorePage({super.key});
-
-  @override
-  ConsumerState<MorePage> createState() => _MorePageState();
-}
-
-class _MorePageState extends ConsumerState<MorePage> {
-  Future<void> _selectCity() async {
-    final changed = await context.push<bool>(RoutePaths.citySelect);
-    if (changed == true && mounted) {
-      await ref.read(moreViewModelProvider.notifier).load(refreshWeather: true);
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
-    final moreState = ref.watch(moreViewModelProvider);
-    final weather = ref.watch(weatherViewModelProvider);
-    final today = weather.today;
-    final temp = today == null
-        ? (weather.isLoading ? '加载中...' : '---')
-        : '${today.tempMin}°~${today.tempMax}°';
-
-    const tools = [
-      MoreTool(
-          title: '时间屏幕',
-          icon: Icons.access_time_rounded,
-          color: Color(0xFFFFCCAD)),
-      MoreTool(
-          title: '指南针', icon: Icons.explore_rounded, color: Color(0xFF6FABDC)),
-      MoreTool(
-          title: '计算器',
-          icon: Icons.calculate_rounded,
-          color: Color(0xFF71CEC8)),
-    ];
-
     return Scaffold(
-      backgroundColor: _pageBackground,
+      backgroundColor: _background,
       body: SafeArea(
         bottom: false,
-        child: Column(children: [
-          _MoreHeader(
-              cityName: moreState.city?.cityName ?? '北京',
-              temperature: temp,
-              weatherText: today?.textDay ?? '',
-              onCityTap: _selectCity),
-          Expanded(
-              child: ListView(
-                  padding: const EdgeInsets.only(bottom: 24),
-                  children: [
-                Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
-                    child: Wrap(
-                        spacing: 10,
-                        runSpacing: 10,
-                        children: List<Widget>.generate(tools.length, (index) {
-                          final tool = tools[index];
-                          return _ToolCard(
-                              tool: tool, onTap: () => _openTool(index));
-                        }))),
-                const SizedBox(height: 28),
-                _SettingsCard(items: [
-                  _SettingItem(
-                      title: '隐私协议',
-                      icon: Icons.verified_user_outlined,
-                      onTap: () => context.push(RoutePaths.policy,
-                          extra: {'title': '隐私政策', 'url': SettingUrls.policy})),
-                  _SettingItem(
-                      title: '用户协议',
-                      icon: Icons.description_outlined,
-                      onTap: () => context.push(RoutePaths.policy,
-                          extra: {'title': '用户协议', 'url': SettingUrls.user})),
-                  _SettingItem(
-                      title: '意见反馈',
-                      icon: Icons.chat_bubble_outline_rounded,
-                      onTap: () => context.push(RoutePaths.feedback)),
-                  _SettingItem(
-                      title: '关于我们',
-                      icon: Icons.info_outline_rounded,
-                      onTap: () => context.push(RoutePaths.about)),
-                ])
-              ]))
+        child: ListView(padding: const EdgeInsets.only(bottom: 24), children: [
+          _Header(onSettings: () => context.push(RoutePaths.setting)),
+          _NotebookCard(onTap: () => context.push(RoutePaths.notebook)),
+          const SizedBox(height: 16),
+          Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Row(children: [
+                Expanded(
+                    child: _RecognitionCard(
+                        title: '银行卡识别',
+                        description: '快速识别银行卡信息',
+                        action: '点击扫描',
+                        background: AppAssets.toolboxBankCard,
+                        icon: AppAssets.toolboxBank,
+                        onTap: () => _recognitionHint(context))),
+                const SizedBox(width: 10),
+                Expanded(
+                    child: _RecognitionCard(
+                        title: '文字识别',
+                        description: '快速识别文字内容',
+                        action: '点击识别',
+                        background: AppAssets.toolboxTextCard,
+                        icon: AppAssets.toolboxText,
+                        onTap: () => _recognitionHint(context))),
+              ])),
+          const SizedBox(height: 20),
+          Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Row(children: [
+                Expanded(
+                    child: _RecognitionCard(
+                        title: '植物识别',
+                        description: '对准植物直观了解',
+                        action: '点击识别',
+                        background: AppAssets.toolboxPlantCard,
+                        icon: AppAssets.toolboxPlant,
+                        onTap: () => _recognitionHint(context))),
+                const SizedBox(width: 10),
+                Expanded(
+                    child: _RecognitionCard(
+                        title: '动物识别',
+                        description: '一键快速查看动物种类',
+                        action: '点击识别',
+                        background: AppAssets.toolboxAnimalCard,
+                        icon: AppAssets.toolboxAnimal,
+                        onTap: () => _recognitionHint(context))),
+              ])),
         ]),
       ),
     );
   }
 
-  void _openTool(int index) {
-    switch (index) {
-      case 0:
-        context.push(RoutePaths.timeScreen);
-        return;
-      case 1:
-        context.push(RoutePaths.compass);
-        return;
-      case 2:
-        context.push(RoutePaths.calculator);
-        return;
-    }
-  }
+  void _recognitionHint(BuildContext context) => ScaffoldMessenger.of(context)
+      .showSnackBar(const SnackBar(content: Text('识别功能暂迁移 UI，暂未接入相机和接口')));
 }
 
-class _MoreHeader extends StatelessWidget {
-  final String cityName;
-  final String temperature;
-  final String weatherText;
-  final VoidCallback onCityTap;
-  const _MoreHeader({
-    required this.cityName,
-    required this.temperature,
-    required this.weatherText,
-    required this.onCityTap,
-  });
-
+class _Header extends StatelessWidget {
+  final VoidCallback onSettings;
+  const _Header({required this.onSettings});
   @override
   Widget build(BuildContext context) => SizedBox(
-      height: 54,
+      height: 67,
       child: Stack(children: [
-        Align(
-            alignment: Alignment.centerLeft,
-            child: TextButton.icon(
-                onPressed: onCityTap,
-                icon: const Icon(Icons.location_on_outlined,
-                    size: 18, color: _textColor),
-                label: Text(cityName,
-                    style: const TextStyle(fontSize: 13, color: _textColor)))),
         const Center(
-            child: Text('更多',
+            child: Text('百宝箱',
                 style: TextStyle(
-                    color: _textColor,
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold))),
-        Align(
-            alignment: Alignment.centerRight,
-            child: TextButton.icon(
-                onPressed: onCityTap,
-                icon: Text(temperature,
-                    style: const TextStyle(fontSize: 12, color: _textColor)),
-                label: Icon(_weatherIcon(weatherText),
-                    size: 21, color: const Color(0xFFFFB33E))))
+                    color: Color(0xFF222222),
+                    fontSize: 22,
+                    fontWeight: FontWeight.w600))),
+        Positioned(
+            right: 20,
+            top: 14,
+            child: GestureDetector(
+                onTap: onSettings,
+                child: Container(
+                    width: 38,
+                    height: 38,
+                    decoration: const BoxDecoration(
+                        color: _blue, shape: BoxShape.circle),
+                    child: const Icon(Icons.settings,
+                        color: Colors.white, size: 21)))),
       ]));
 }
 
-IconData _weatherIcon(String text) {
-  if (text.contains('雨') || text.contains('雪')) {
-    return Icons.umbrella_outlined;
-  }
-  if (text.contains('云') || text.contains('阴')) {
-    return Icons.cloud_queue_rounded;
-  }
-  return Icons.wb_sunny_outlined;
-}
-
-class _ToolCard extends StatelessWidget {
-  final MoreTool tool;
+class _NotebookCard extends StatelessWidget {
   final VoidCallback onTap;
-  const _ToolCard({required this.tool, required this.onTap});
-
+  const _NotebookCard({required this.onTap});
   @override
-  Widget build(BuildContext context) => SizedBox(
-      width: (MediaQuery.sizeOf(context).width - 50) / 2,
-      child: Material(
-          color: tool.color,
-          borderRadius: BorderRadius.circular(10),
-          child: InkWell(
-              onTap: onTap,
-              borderRadius: BorderRadius.circular(10),
-              child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 12, vertical: 15),
-                  child: Row(children: [
-                    Icon(tool.icon, size: 40, color: Colors.white),
-                    const SizedBox(width: 12),
-                    Expanded(
-                        child: Text(tool.title,
-                            style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 14,
-                                fontWeight: FontWeight.w600)))
-                  ])))));
+  Widget build(BuildContext context) => GestureDetector(
+      onTap: onTap,
+      child: SizedBox(
+          height: 185,
+          child: Stack(children: [
+            Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: ClipRRect(
+                    borderRadius: BorderRadius.circular(5),
+                    child: Image.asset(AppAssets.toolboxNotebookCard,
+                        width: double.infinity,
+                        height: 185,
+                        fit: BoxFit.fill))),
+            const Positioned(
+                left: 43,
+                top: 27,
+                child: SizedBox(
+                    width: 171,
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('记事本',
+                              style: TextStyle(
+                                  color: Color(0xFF14549B),
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500)),
+                          SizedBox(height: 17),
+                          Text('记事本可快速记录文字、随手备忘、整理灵感笔记，简洁高效满足日常轻量书写需求。',
+                              style: TextStyle(
+                                  color: Color(0xFF75B5FC),
+                                  fontSize: 12,
+                                  height: 1.42,
+                                  fontWeight: FontWeight.w500))
+                        ]))),
+            Positioned(
+                right: 41,
+                top: 25,
+                child: Image.asset(AppAssets.toolboxNotebook,
+                    width: 90, height: 108, fit: BoxFit.contain)),
+            Positioned(
+                left: 44,
+                right: 44,
+                bottom: 20,
+                child: Container(
+                    height: 31,
+                    decoration: BoxDecoration(
+                        color: const Color(0xFFC3E6FF),
+                        borderRadius: BorderRadius.circular(44)),
+                    alignment: Alignment.center,
+                    child: const Text('点击使用',
+                        style: TextStyle(
+                            color: Color(0xFF14549B),
+                            fontSize: 13,
+                            fontWeight: FontWeight.w500)))),
+          ])));
 }
 
-class _SettingItem {
-  final String title;
-  final IconData icon;
+class _RecognitionCard extends StatelessWidget {
+  final String title, description, action, background, icon;
   final VoidCallback onTap;
-  const _SettingItem(
-      {required this.title, required this.icon, required this.onTap});
-}
-
-class _SettingsCard extends StatelessWidget {
-  final List<_SettingItem> items;
-  const _SettingsCard({required this.items});
-
+  const _RecognitionCard(
+      {required this.title,
+      required this.description,
+      required this.action,
+      required this.background,
+      required this.icon,
+      required this.onTap});
   @override
-  Widget build(BuildContext context) => Card(
-      margin: const EdgeInsets.symmetric(horizontal: 20),
-      elevation: 2,
-      shadowColor: const Color(0x16000000),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-      child: Column(
-          children: List<Widget>.generate(items.length, (index) {
-        final item = items[index];
-        return Column(children: [
-          ListTile(
-              onTap: item.onTap,
-              leading:
-                  Icon(item.icon, size: 22, color: const Color(0xFF62BFC5)),
-              title: Text(item.title,
-                  style: const TextStyle(fontSize: 15, color: _textColor)),
-              trailing: const Icon(Icons.chevron_right_rounded,
-                  color: _subtextColor)),
-          if (index != items.length - 1)
-            const Divider(height: 1, indent: 54, endIndent: 16)
-        ]);
-      })));
+  Widget build(BuildContext context) => GestureDetector(
+      onTap: onTap,
+      child: SizedBox(
+          height: 92,
+          child: Stack(children: [
+            ClipRRect(
+                borderRadius: BorderRadius.circular(5),
+                child: Image.asset(background,
+                    width: double.infinity, height: 92, fit: BoxFit.fill)),
+            Positioned(
+                left: 10,
+                top: 14,
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(title,
+                          style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 14,
+                              height: 1.28,
+                              fontWeight: FontWeight.w500)),
+                      const SizedBox(height: 3),
+                      SizedBox(
+                          width: 100,
+                          child: Text(description,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 8,
+                                  height: 1.35))),
+                      const SizedBox(height: 10),
+                      Container(
+                          width: 62,
+                          height: 20,
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(23)),
+                          alignment: Alignment.center,
+                          child: Text(action,
+                              style: const TextStyle(
+                                  color: Color(0xFF14549B),
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.w500)))
+                    ])),
+            Positioned(
+                right: 10,
+                bottom: 8,
+                child: Image.asset(icon,
+                    width: 46, height: 46, fit: BoxFit.contain)),
+          ])));
 }

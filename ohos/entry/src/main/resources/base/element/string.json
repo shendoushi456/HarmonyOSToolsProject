@@ -2,15 +2,15 @@
   "string": [
     {
       "name": "module_desc",
-      "value": "糖压管家宝主模块"
+      "value": "全能宝具库主模块"
     },
     {
       "name": "EntryAbility_desc",
-      "value": "糖压管家宝"
+      "value": "全能宝具库"
     },
     {
       "name": "EntryAbility_label",
-      "value": "糖压管家宝"
+      "value": "全能宝具库"
     },
     {
       "name": "permission_internet_reason",

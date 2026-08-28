@@ -5,7 +5,7 @@ class AppInfoUtil {
   AppInfoUtil._();
 
   /// 应用名(对齐 Android getApplicationLabel)
-  static const String appName = '糖压管家宝';
+  static const String appName = '全能宝具库';
 
   /// 版本号(对齐 Android getVersion → "1.0.1")
   static const String version = '1.0.1';

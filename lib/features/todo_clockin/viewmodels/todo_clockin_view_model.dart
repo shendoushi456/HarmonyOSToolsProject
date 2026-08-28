@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../models/todo_models.dart';
@@ -203,12 +204,50 @@ class TodoClockInViewModel extends Notifier<TodoClockInState> {
     }
   }
 
-  bool isClocked(HabitItem habit, String timePoint) => state.records.any(
+  bool isClocked(HabitItem habit, String timePoint) =>
+      isClockedOnDate(habit, timePoint, state.selectedDate);
+
+  bool isClockedOnDate(HabitItem habit, String timePoint, DateTime date) =>
+      state.records.any(
         (record) =>
             record.habitId == habit.id &&
-            dateKey(record.date) == dateKey(state.selectedDate) &&
+            dateKey(record.date) == dateKey(_dateOnly(date)) &&
             record.timePoint == timePoint,
       );
+
+  /// 获取指定日期的待办列表（按 createdAt 降序），对齐 Android filteredTodos()。
+  List<TodoItem> todosForDate(DateTime date) {
+    final target = _dateOnly(date);
+    final today = _dateOnly(DateTime.now());
+    return state.todos
+        .where((todo) {
+          final reminderAt = todo.reminderAt;
+          if (reminderAt == null) return target == today;
+          return _dateOnly(reminderAt) == target;
+        })
+        .toList()
+      ..sort((a, b) => b.createdAt.compareTo(a.createdAt));
+  }
+
+  /// 获取指定日期的打卡条目（包含是否已打卡），按时间点升序排列。
+  /// 对齐 Android NxtxHomeContent 中习惯列表的合并排序规则。
+  List<HabitEntry> habitEntriesForDate(DateTime date) {
+    final entries = <HabitEntry>[];
+    for (final habit in state.habits) {
+      if (!isHabitActiveOn(habit, date)) continue;
+      final times = habit.clockInTimes.isEmpty ? const [''] : habit.clockInTimes;
+      for (final time in times) {
+        entries.add(HabitEntry(
+          habit: habit,
+          time: time,
+          clocked: isClockedOnDate(habit, time, date),
+        ));
+      }
+    }
+    entries.sort((a, b) => (a.time.isEmpty ? '99:99' : a.time)
+        .compareTo(b.time.isEmpty ? '99:99' : b.time));
+    return entries;
+  }
 
   Future<void> _persist() => _repository.save(
         TodoClockInData(
@@ -240,4 +279,18 @@ class TodoClockInViewModel extends Notifier<TodoClockInState> {
 
   DateTime _dateOnly(DateTime value) =>
       DateTime(value.year, value.month, value.day);
+}
+
+/// 习惯在某个时间点的打卡条目，供 UI 层直接展示。
+@immutable
+class HabitEntry {
+  final HabitItem habit;
+  final String time;
+  final bool clocked;
+
+  const HabitEntry({
+    required this.habit,
+    required this.time,
+    required this.clocked,
+  });
 }

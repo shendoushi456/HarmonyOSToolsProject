@@ -1,9 +1,9 @@
-// 底部导航容器：依次承载待办、吃药、临期提醒和更多页面。
+// 底部导航容器：依次承载待办、倒数日、花费记账和更多页面。
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../todo_clockin/pages/todo_clockin_page.dart';
-import '../../medication_reminder/pages/medication_reminder_page.dart';
-import '../../expiration_reminder/pages/expiration_reminder_page.dart';
+import '../../countdown/pages/countdown_page.dart';
+import '../../expense/pages/expense_page.dart';
 import '../../more/pages/more_page.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_assets.dart';
@@ -20,8 +20,8 @@ class HomeShellPage extends ConsumerWidget {
 
     const pages = [
       TodoClockInPage(),
-      MedicationReminderPage(),
-      ExpirationReminderPage(),
+      CountdownPage(),
+      ExpensePage(),
       MorePage(),
     ];
 
@@ -67,18 +67,18 @@ class HomeShellPage extends ConsumerWidget {
               context,
               ref,
               index: 1,
-              label: '吃药提醒',
-              normalIcon: AppAssets.toolboxTabMedicationNormal,
-              selectedIcon: AppAssets.toolboxTabMedicationSelected,
+              label: '倒数日',
+              normalIcon: AppAssets.toolboxTabCountdownNormal,
+              selectedIcon: AppAssets.toolboxTabCountdownSelected,
               isSelected: currentIndex == 1,
             ),
             _buildNavItem(
               context,
               ref,
               index: 2,
-              label: '临期提醒',
-              normalIcon: AppAssets.toolboxTabExpiryNormal,
-              selectedIcon: AppAssets.toolboxTabExpirySelected,
+              label: '花费记账',
+              normalIcon: AppAssets.toolboxTabExpenseNormal,
+              selectedIcon: AppAssets.toolboxTabExpenseSelected,
               isSelected: currentIndex == 2,
             ),
             _buildNavItem(

@@ -11,7 +11,7 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return ForegroundReminderDialogHost(
         child: MaterialApp.router(
-      title: '糖压管家宝',
+      title: '全能宝具库',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         useMaterial3: false,

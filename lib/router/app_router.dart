@@ -1,10 +1,15 @@
 // 路由配置 - 集中定义所有路由
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import '../features/countdown/pages/add_countdown_page.dart';
+import '../features/expense/pages/add_expense_page.dart';
 import '../features/home/pages/home_shell_page.dart';
 import '../features/more/pages/calculator_page.dart';
 import '../features/more/pages/compass_page.dart';
 import '../features/more/pages/time_screen_page.dart';
+import '../features/notebook/pages/notebook_page.dart';
+import '../features/notebook/pages/notebook_record_page.dart';
+import '../features/notebook/models/notebook_entry.dart';
 import '../features/setting/pages/about_page.dart';
 import '../features/setting/pages/feedback_page.dart';
 import '../features/setting/pages/policy_page.dart';
@@ -82,5 +87,28 @@ final GoRouter appRouter = GoRouter(
       name: RouteNames.calculator,
       builder: (context, state) => const CalculatorPage(),
     ),
+    // 新增倒数日页 - 对齐 Android AddCountdownActivity
+    GoRoute(
+      path: RoutePaths.countdownAdd,
+      name: RouteNames.countdownAdd,
+      builder: (context, state) => const AddCountdownPage(),
+    ),
+    // 添加账单页 - 对齐 Android AddExpenseActivity
+    GoRoute(
+      path: RoutePaths.expenseAdd,
+      name: RouteNames.expenseAdd,
+      builder: (context, state) => const AddExpensePage(),
+    ),
+    GoRoute(
+        path: RoutePaths.notebook,
+        name: RouteNames.notebook,
+        builder: (context, state) => const NotebookPage()),
+    GoRoute(
+        path: RoutePaths.notebookRecord,
+        name: RouteNames.notebookRecord,
+        builder: (context, state) => NotebookRecordPage(
+            entry: state.extra is NotebookEntry
+                ? state.extra as NotebookEntry
+                : null)),
   ],
 );

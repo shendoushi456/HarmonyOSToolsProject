@@ -36,6 +36,16 @@ class RouteNames {
   static const String timeScreen = 'timeScreen';
   static const String compass = 'compass';
   static const String calculator = 'calculator';
+
+  /// 新增倒数日页（对齐 Android AddClockIn 同级的 AddCountdownActivity）。
+  static const String countdownAdd = 'countdownAdd';
+
+  /// 添加账单页（对齐 Android AddExpenseActivity）。
+  static const String expenseAdd = 'expenseAdd';
+
+  /// 记事本列表与编辑页。
+  static const String notebook = 'notebook';
+  static const String notebookRecord = 'notebookRecord';
 }
 
 class RoutePaths {
@@ -66,4 +76,8 @@ class RoutePaths {
   static const String timeScreen = '/timeScreen';
   static const String compass = '/compass';
   static const String calculator = '/calculator';
+  static const String countdownAdd = '/countdownAdd';
+  static const String expenseAdd = '/expenseAdd';
+  static const String notebook = '/notebook';
+  static const String notebookRecord = '/notebookRecord';
 }
