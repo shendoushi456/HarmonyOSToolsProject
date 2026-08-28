@@ -10,6 +10,8 @@ import '../features/more/pages/time_screen_page.dart';
 import '../features/notebook/pages/notebook_page.dart';
 import '../features/notebook/pages/notebook_record_page.dart';
 import '../features/notebook/models/notebook_entry.dart';
+import '../features/recognition/models/recognition_type.dart';
+import '../features/recognition/pages/recognition_page.dart';
 import '../features/setting/pages/about_page.dart';
 import '../features/setting/pages/feedback_page.dart';
 import '../features/setting/pages/policy_page.dart';
@@ -110,5 +112,11 @@ final GoRouter appRouter = GoRouter(
             entry: state.extra is NotebookEntry
                 ? state.extra as NotebookEntry
                 : null)),
+    GoRoute(
+      path: RoutePaths.recognition,
+      name: RouteNames.recognition,
+      builder: (context, state) =>
+          RecognitionPage(type: state.extra as RecognitionType),
+    ),
   ],
 );

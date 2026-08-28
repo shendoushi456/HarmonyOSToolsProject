@@ -11,6 +11,14 @@
     {
       "name": "EntryAbility_label",
       "value": "全能宝具库"
+    },
+    {
+      "name": "permission_camera_reason",
+      "value": "Used to capture images for recognition"
+    },
+    {
+      "name": "permission_media_reason",
+      "value": "Used to select images for recognition"
     }
   ]
 }

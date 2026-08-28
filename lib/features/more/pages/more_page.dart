@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/constants/app_assets.dart';
 import '../../../router/route_names.dart';
+import '../../recognition/models/recognition_type.dart';
 
 const _background = Color(0xFFD8EFFF);
 const _blue = Color(0xFF2879DE);
@@ -29,7 +30,8 @@ class MorePage extends StatelessWidget {
                         action: '点击扫描',
                         background: AppAssets.toolboxBankCard,
                         icon: AppAssets.toolboxBank,
-                        onTap: () => _recognitionHint(context))),
+                        onTap: () => _openRecognition(
+                            context, RecognitionType.bankCard))),
                 const SizedBox(width: 10),
                 Expanded(
                     child: _RecognitionCard(
@@ -38,7 +40,8 @@ class MorePage extends StatelessWidget {
                         action: '点击识别',
                         background: AppAssets.toolboxTextCard,
                         icon: AppAssets.toolboxText,
-                        onTap: () => _recognitionHint(context))),
+                        onTap: () =>
+                            _openRecognition(context, RecognitionType.text))),
               ])),
           const SizedBox(height: 20),
           Padding(
@@ -51,7 +54,8 @@ class MorePage extends StatelessWidget {
                         action: '点击识别',
                         background: AppAssets.toolboxPlantCard,
                         icon: AppAssets.toolboxPlant,
-                        onTap: () => _recognitionHint(context))),
+                        onTap: () =>
+                            _openRecognition(context, RecognitionType.plant))),
                 const SizedBox(width: 10),
                 Expanded(
                     child: _RecognitionCard(
@@ -60,15 +64,16 @@ class MorePage extends StatelessWidget {
                         action: '点击识别',
                         background: AppAssets.toolboxAnimalCard,
                         icon: AppAssets.toolboxAnimal,
-                        onTap: () => _recognitionHint(context))),
+                        onTap: () =>
+                            _openRecognition(context, RecognitionType.animal))),
               ])),
         ]),
       ),
     );
   }
 
-  void _recognitionHint(BuildContext context) => ScaffoldMessenger.of(context)
-      .showSnackBar(const SnackBar(content: Text('识别功能暂迁移 UI，暂未接入相机和接口')));
+  void _openRecognition(BuildContext context, RecognitionType type) =>
+      context.push(RoutePaths.recognition, extra: type);
 }
 
 class _Header extends StatelessWidget {

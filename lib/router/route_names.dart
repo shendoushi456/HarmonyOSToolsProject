@@ -46,6 +46,7 @@ class RouteNames {
   /// 记事本列表与编辑页。
   static const String notebook = 'notebook';
   static const String notebookRecord = 'notebookRecord';
+  static const String recognition = 'recognition';
 }
 
 class RoutePaths {
@@ -80,4 +81,5 @@ class RoutePaths {
   static const String expenseAdd = '/expenseAdd';
   static const String notebook = '/notebook';
   static const String notebookRecord = '/notebookRecord';
+  static const String recognition = '/recognition';
 }

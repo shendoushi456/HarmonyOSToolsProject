@@ -85,7 +85,7 @@ class HomeShellPage extends ConsumerWidget {
               context,
               ref,
               index: 3,
-              label: '更多',
+              label: '百宝箱',
               normalIcon: AppAssets.toolboxTabMoreNormal,
               selectedIcon: AppAssets.toolboxTabMoreSelected,
               isSelected: currentIndex == 3,

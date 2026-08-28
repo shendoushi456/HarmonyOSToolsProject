@@ -19,6 +19,14 @@
     {
       "name": "permission_reminder_reason",
       "value": "用于在待办和打卡时间到达时发送提醒"
+    },
+    {
+      "name": "permission_camera_reason",
+      "value": "用于拍摄图片并进行识别"
+    },
+    {
+      "name": "permission_media_reason",
+      "value": "用于从相册选择图片并进行识别"
     }
   ]
 }

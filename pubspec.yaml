@@ -1,7 +1,7 @@
 name: qingman_weather
 description: 全能宝具库 - Flutter-ohos 版
 publish_to: 'none'
-version: 1.0.0+1
+version: 1.0.1+1
 
 environment:
   sdk: '>=2.19.6 <4.0.0'
@@ -30,6 +30,18 @@ dependencies:
 
   # 网络（纯 Dart，无需 ohos 适配）
   dio: 5.4.0
+
+  # OpenHarmony SIG 适配，版本与当前 Flutter 3.27 工具链对应。
+  camera:
+    git:
+      url: https://gitcode.com/openharmony-sig/flutter_packages.git
+      path: packages/camera/camera
+      ref: camera-v0.11.1-ohos-1.0.1
+  image_picker:
+    git:
+      url: https://gitcode.com/openharmony-sig/flutter_packages.git
+      path: packages/image_picker/image_picker
+      ref: image_picker-v1.1.2-ohos-1.0.1
 
   # 打开协议 URL（系统浏览器）
   url_launcher: 6.1.11
