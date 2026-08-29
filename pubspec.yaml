@@ -1,5 +1,5 @@
 name: qingman_weather
-description: 慧扫文档宝 - Flutter-ohos 版
+description: WIFI互联通 - Flutter-ohos 版
 publish_to: 'none'
 version: 1.0.0+1
 
@@ -30,6 +30,18 @@ dependencies:
 
   # 网络（纯 Dart，无需 ohos 适配）
   dio: 5.4.0
+
+  # 识别功能：沿用 master_quannengbaojuku“添加识别功能”提交的鸿蒙适配版本。
+  camera:
+    git:
+      url: https://gitcode.com/openharmony-sig/flutter_packages.git
+      path: packages/camera/camera
+      ref: camera-v0.11.1-ohos-1.0.1
+  image_picker:
+    git:
+      url: https://gitcode.com/openharmony-sig/flutter_packages.git
+      path: packages/image_picker/image_picker
+      ref: image_picker-v1.1.2-ohos-1.0.1
 
   # 打开协议 URL（系统浏览器）
   url_launcher: 6.1.11
@@ -74,21 +86,6 @@ dependencies:
       path: packages/sensors_plus/sensors_plus
       ref: br_sensors_plus-v6.1.1_ohos
 
-  # 图片选择（毛玻璃选图）- 鸿蒙适配
-  image_picker:
-    git:
-      url: https://gitcode.com/openharmony-sig/flutter_packages.git
-      path: packages/image_picker/image_picker
-      ref: br_image_picker-v1.1.2_ohos
-
-  # 应用内相机预览与拍照（拍照存档不再依赖系统相机 Ability）
-  camera: ^0.10.5+4
-  camera_ohos:
-    git:
-      url: https://gitcode.com/openharmony-tpc/flutter_packages.git
-      ref: fd410050c6842717ee1b851ca7640c294de9568c
-      path: packages/camera/camera_ohos
-
   # ====== MenuHome PDF + 二维码新增依赖（2026-08-22）======
   # PDF 备用纯 Dart 方案（当 pdfService 不可用时降级）
   pdf: ^3.11.1
@@ -119,7 +116,7 @@ dependency_overrides:
     git:
       url: https://gitcode.com/openharmony-sig/flutter_packages.git
       path: packages/image_picker/image_picker
-      ref: br_image_picker-v1.1.2_ohos
+      ref: image_picker-v1.1.2-ohos-1.0.1
 
 flutter:
   uses-material-design: true

@@ -10,7 +10,7 @@
     },
     {
       "name": "EntryAbility_label",
-      "value": "慧扫文档宝"
+      "value": "WIFI互联通"
     },
     {
       "name": "permission_internet_reason",
@@ -27,6 +27,14 @@
     {
       "name": "permission_location_reason",
       "value": "用于扫描附近 WiFi 网络"
+    },
+    {
+      "name": "permission_camera_reason",
+      "value": "用于拍照存档和二维码识别"
+    },
+    {
+      "name": "permission_media_reason",
+      "value": "用于从相册选择识别图片"
     }
   ]
 }

@@ -15,6 +15,9 @@ class WifiService {
   /// wifi 开关状态(对齐 WifiManager.isWifiEnabled)
   Future<bool> isWifiActive() => _channel.isWifiActive();
 
+  /// 申请读取附近 Wi-Fi 所需的位置权限。
+  Future<bool> requestWifiPermissions() => _channel.requestWifiPermissions();
+
   /// 总接收字节数(对齐 TrafficStats.getTotalRxBytes)
   Future<int> getAllRxBytes() => _channel.getAllRxBytes();
 
@@ -27,8 +30,8 @@ class WifiService {
   /// 运营商名(对齐 TelephonyManager.getNetworkOperatorName)
   Future<String> getOperatorName() => _channel.getOperatorName();
 
-  /// 跳转系统 wifi 设置页
-  Future<void> openWifiSettings() => _channel.openWifiSettings();
+  /// 尝试跳转系统 Wi-Fi 设置页，返回是否已发起跳转。
+  Future<bool> openWifiSettings() => _channel.openWifiSettings();
 
   /// wifi 扫描完成事件流(对齐 WIFI_SCAN_RESULTS_AVAILABLE_ACTION 广播)
   Stream<dynamic> get onScanFinishedStream => _channel.onScanFinishedStream;

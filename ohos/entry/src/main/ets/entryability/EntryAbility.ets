@@ -13,7 +13,7 @@ export default class EntryAbility extends FlutterAbility {
     // 注册 pub 依赖的插件
     GeneratedPluginRegistrant.registerWith(flutterEngine)
     // 注册自写 WiFi 原生插件(对齐 Android WifiManager/TrafficStats)
-    flutterEngine.getPlugins()?.add(new WifiPlugin());
+    flutterEngine.getPlugins()?.add(new WifiPlugin(this.context));
     // 注册自写 PDF Kit 原生插件(对齐 Android pic_toolslibrary/pdf/)
     flutterEngine.getPlugins()?.add(new PdfKitPlugin());
     // 保存扫描文档到系统相册。

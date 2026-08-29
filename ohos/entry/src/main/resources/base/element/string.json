@@ -2,15 +2,15 @@
   "string": [
     {
       "name": "module_desc",
-      "value": "慧扫文档宝主模块"
+      "value": "WIFI互联通主模块"
     },
     {
       "name": "EntryAbility_desc",
-      "value": "慧扫文档宝"
+      "value": "WIFI互联通"
     },
     {
       "name": "EntryAbility_label",
-      "value": "慧扫文档宝"
+      "value": "WIFI互联通"
     },
     {
       "name": "permission_internet_reason",
@@ -39,6 +39,10 @@
     {
       "name": "permission_camera_reason",
       "value": "用于拍照存档和二维码识别"
+    },
+    {
+      "name": "permission_media_reason",
+      "value": "用于从相册选择识别图片"
     }
   ]
 }

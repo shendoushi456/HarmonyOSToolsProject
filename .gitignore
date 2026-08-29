@@ -23,3 +23,9 @@ pubspec.lock
 /.clang-tidy
 **/.test
 /.appanalyzer
+ohos/.appanalyzer/
+**/.DS_Store
+**/junkcode/**
+**/junk_code/**
+**/proguardMapping.txt
+**/mapping/**

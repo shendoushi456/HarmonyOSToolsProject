@@ -10,7 +10,7 @@
     },
     {
       "name": "EntryAbility_label",
-      "value": "慧扫文档宝"
+      "value": "WIFI互联通"
     },
     {
       "name": "permission_internet_reason",
@@ -27,6 +27,14 @@
     {
       "name": "permission_location_reason",
       "value": "Used to scan nearby WiFi networks"
+    },
+    {
+      "name": "permission_camera_reason",
+      "value": "Used for taking photos and QR recognition"
+    },
+    {
+      "name": "permission_media_reason",
+      "value": "Used to choose recognition images from your gallery"
     }
   ]
 }

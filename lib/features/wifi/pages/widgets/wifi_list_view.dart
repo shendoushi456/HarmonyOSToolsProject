@@ -1,5 +1,5 @@
 // WiFi 列表视图 - 对齐 my_wifi_list_view.xml
-// 三态切换: 扫描中(进度) / wifi 未开启(空态"请先开启WiFi") / 有数据(ListView.builder)
+// 三态切换: 扫描中 / wifi 未开启 / 有数据(GridLayoutManager 两列)
 import 'package:flutter/material.dart';
 import '../../../../core/constants/app_assets.dart';
 import '../../../../core/constants/app_colors.dart';
@@ -42,10 +42,16 @@ class WifiListView extends StatelessWidget {
     if (wifiList.isEmpty) {
       return _emptyView(emptyText);
     }
-    // 4. 有数据 → ListView.builder
-    return ListView.builder(
+    // 4. 有数据 → 安卓 MyWifiListView 的两列 GridLayoutManager
+    return GridView.builder(
       itemCount: wifiList.length,
       padding: EdgeInsets.zero,
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        crossAxisSpacing: 0,
+        mainAxisSpacing: 0,
+        childAspectRatio: 0.92,
+      ),
       itemBuilder: (ctx, i) {
         final item = wifiList[i];
         return WifiListItem(

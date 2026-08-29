@@ -1,15 +1,8 @@
-// 应用入口 - 初始化存储并启动 App
-import 'package:flutter/material.dart';
+// 应用入口 - 先启动 Flutter，存储初始化由启动页在首帧后完成。
+import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'app.dart';
-import 'core/storage/prefs_storage.dart';
 
-Future<void> main() async {
-  // 确保 Flutter 绑定初始化(用于 SharedPreferences)
-  WidgetsFlutterBinding.ensureInitialized();
-
-  // 初始化本地存储
-  await PrefsStorage.init();
-
+void main() {
   runApp(const ProviderScope(child: App()));
 }

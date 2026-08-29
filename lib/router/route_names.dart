@@ -31,6 +31,7 @@ class RouteNames {
 
   /// 反馈页(对齐 Android FeedBackSettingActivity)
   static const String feedback = 'feedback';
+  static const String recognition = 'recognition';
 }
 
 class RoutePaths {
@@ -57,4 +58,5 @@ class RoutePaths {
 
   /// 反馈页路径
   static const String feedback = '/feedback';
+  static const String recognition = '/recognition';
 }

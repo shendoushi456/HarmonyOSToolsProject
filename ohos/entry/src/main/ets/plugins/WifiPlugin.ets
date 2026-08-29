@@ -12,6 +12,8 @@ import {
   Log,
 } from '@ohos/flutter_ohos';
 import wifiManager from '@ohos.wifi';
+import abilityAccessCtrl, { PermissionRequestResult, Permissions } from '@ohos.abilityAccessCtrl';
+import bundleManager from '@ohos.bundle.bundleManager';
 import statistics from '@ohos.net.statistics';
 import connection from '@ohos.net.connection';
 import radio from '@ohos.telephony.radio';
@@ -20,6 +22,10 @@ import common from '@ohos.app.ability.common';
 const TAG = 'WifiPlugin';
 const METHOD_CHANNEL = 'qingman.wifi/native';
 const EVENT_CHANNEL = 'qingman.wifi/scan_events';
+const WIFI_LOCATION_PERMISSIONS: Permissions[] = [
+  'ohos.permission.APPROXIMATELY_LOCATION',
+  'ohos.permission.LOCATION',
+];
 
 // ArkTS 严格模式要求对象字面量对应显式 interface(arkts-no-untyped-obj-literals)
 // 跳转系统 wifi 设置页的 Want 参数
@@ -36,6 +42,11 @@ export default class WifiPlugin implements FlutterPlugin {
   private eventChannel: EventChannel | null = null;
   private context: common.Context | null = null;
   private eventSink: EventSink | null = null;
+  private readonly uiContext: common.UIAbilityContext | null;
+
+  constructor(context?: common.UIAbilityContext) {
+    this.uiContext = context ?? null;
+  }
 
   getUniqueClassName(): string {
     return 'WifiPlugin';
@@ -86,6 +97,9 @@ export default class WifiPlugin implements FlutterPlugin {
         case 'isWifiActive':
           result.success(this.isWifiActive());
           break;
+        case 'requestWifiPermissions':
+          result.success(await this.requestWifiPermissions());
+          break;
         case 'getAllRxBytes':
           result.success(await this.getAllRxBytes());
           break;
@@ -99,8 +113,7 @@ export default class WifiPlugin implements FlutterPlugin {
           result.success(await this.getOperatorName());
           break;
         case 'openWifiSettings':
-          this.openWifiSettings();
-          result.success(null);
+          result.success(await this.openWifiSettings());
           break;
         default:
           result.notImplemented();
@@ -174,6 +187,33 @@ export default class WifiPlugin implements FlutterPlugin {
     }
   }
 
+  // ====== 运行时授权 - 对齐 Android 10+ 读取 Wi-Fi 时需要的位置权限 ======
+  private async requestWifiPermissions(): Promise<boolean> {
+    if (this.uiContext === null) {
+      throw new Error('无法获取 UIAbility 上下文以请求 Wi-Fi 权限');
+    }
+    const manager = abilityAccessCtrl.createAtManager();
+    const bundleInfo = await bundleManager.getBundleInfoForSelf(
+      bundleManager.BundleFlag.GET_BUNDLE_INFO_WITH_APPLICATION,
+    );
+    const accessTokenId = bundleInfo.appInfo.accessTokenId;
+    // 近似位置已经足够读取附近 Wi-Fi；精确位置是可选增强项。
+    let locationGranted = false;
+    for (const permission of WIFI_LOCATION_PERMISSIONS) {
+      const grant = await manager.checkAccessToken(accessTokenId, permission);
+      if (grant === abilityAccessCtrl.GrantStatus.PERMISSION_GRANTED) {
+        locationGranted = true;
+      }
+    }
+    if (locationGranted) return true;
+
+    const response: PermissionRequestResult = await manager.requestPermissionsFromUser(
+      this.uiContext,
+      WIFI_LOCATION_PERMISSIONS,
+    );
+    return response.authResults.some((result: number) => result === 0);
+  }
+
   // ====== 总接收字节数 - 对齐 Android TrafficStats.getTotalRxBytes ======
   private async getAllRxBytes(): Promise<number> {
     try {
@@ -227,13 +267,28 @@ export default class WifiPlugin implements FlutterPlugin {
   }
 
   // ====== 跳转系统 wifi 设置页 ======
-  private openWifiSettings(): void {
+  /**
+   * 尝试打开系统无线设置。
+   *
+   * ACTION_WIRELESS_SETTINGS 是公开 API，但在部分新系统上已不再注册可供
+   * 三方应用解析的 Ability。此时返回 false，由 Flutter 提示用户手动进入
+   * “设置 > WLAN”；不调用厂商私有 Ability，也不伪造跳转成功。
+   */
+  private async openWifiSettings(): Promise<boolean> {
+    if (this.uiContext === null) {
+      Log.e(TAG, 'openWifiSettings skipped: UIAbility context is unavailable');
+      return false;
+    }
+    // HarmonyOS SDK 公开的无线设置入口；其中包含 Wi-Fi 设置，
+    // 不使用不存在的 ohos.settings.wifi action。
+    const want: WifiSettingsWant = { action: 'ohos.settings.wireless' };
     try {
-      const ctx = this.context as common.UIAbilityContext;
-      const want: WifiSettingsWant = { action: 'ohos.settings.wifi' };
-      ctx.startAbility(want);
+      await this.uiContext.startAbility(want);
+      return true;
     } catch (e) {
-      Log.e(TAG, `openWifiSettings error: ${(e as Error)?.message ?? String(e)}`);
+      const message = (e as Error)?.message ?? String(e);
+      Log.w(TAG, `openWifiSettings is unavailable on this device: ${message}`);
+      return false;
     }
   }
 

@@ -58,10 +58,11 @@ class WifiViewModel extends Notifier<WifiState> {
       // 2. 当前连接信息 + 运营商名
       String ssid = '';
       String carrier = '';
-      bool wifiEnabled = false;
+      // Wi-Fi 开关状态与默认网络类型独立：Wi-Fi 开着但未连接时，
+      // 仍应显示扫描入口，而不是误报“请先开启 WiFi”。
+      final wifiEnabled = await _repository.isWifiEnabled();
       bool ssidUnknown = false;
       if (netType == NetworkType.wifi) {
-        wifiEnabled = await _repository.isWifiEnabled();
         final conn = await _repository.getCurrentConnection();
         ssid = conn?.ssid ?? '';
         // 鸿蒙 API 12+ 无位置权限时 SSID 返回 <unknown ssid>
@@ -110,16 +111,23 @@ class WifiViewModel extends Notifier<WifiState> {
     }
   }
 
-  /// 详情卡点击触发权限二次校验(对齐 checkAndRequestWifiPermissions)
-  /// 阶段 5 接入 permission_handler 完整实现
-  Future<void> checkAndRequestPermissions() async {
-    // TODO 阶段 5: 用 permission_handler_ohos 申请 LOCATION/APPROXIMATELY_LOCATION
+  /// 详情卡点击触发鸿蒙位置授权，允许系统返回真实 SSID 与扫描缓存。
+  /// 平台调用保留在 Repository 后，页面仅消费结果，便于新 UI 复用。
+  Future<bool> checkAndRequestPermissions() async {
+    try {
+      final granted = await _repository.requestWifiPermissions();
+      state = state.copyWith(permissionRequired: !granted);
+      if (granted) await _poll();
+      return granted;
+    } catch (_) {
+      state = state.copyWith(permissionRequired: true);
+      return false;
+    }
   }
 
-  /// 跳转系统 wifi 设置页(列表项点击确认后调用)
-  Future<void> openWifiSettings() async {
-    await _repository.openWifiSettings();
-  }
+  /// 跳转系统 Wi-Fi 设置页（列表项点击确认后调用）。
+  /// false 表示当前系统没有对三方应用开放这个入口。
+  Future<bool> openWifiSettings() => _repository.openWifiSettings();
 
   /// 手动刷新(对齐安卓进入页面触发一次拉取)
   Future<void> refresh() async => _poll();

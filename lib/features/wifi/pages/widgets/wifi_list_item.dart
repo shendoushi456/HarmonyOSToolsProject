@@ -1,9 +1,7 @@
-// WiFi 列表 item - 对齐 item_my_wifi_list.xml
-// 水平布局, paddingVertical 16dp:
-// 信号图标 16×16 + WiFi 名(weight 1, 14sp) + "已连接"标签(12sp #3674EB) + 右箭头(8×8)
+// WiFi 列表 item - 对齐 MyWifiListAdapter + item_my_wifi_list.xml。
+// 已连接项为 #99CEF3 蓝底白字，未连接项为白底灰字。
 import 'package:flutter/material.dart';
 import '../../../../core/constants/app_assets.dart';
-import '../../../../core/constants/app_colors.dart';
 import '../../models/wifi_scan_result.dart';
 
 class WifiListItem extends StatelessWidget {
@@ -12,78 +10,48 @@ class WifiListItem extends StatelessWidget {
 
   const WifiListItem({super.key, required this.wifi, this.onTap});
 
-  /// 根据 signalLevel + isSecured 选 10 个图标之一
-  /// signalLevel: 0=disabled 1=low 2=med 3=high 4=excellent
-  static String _signalIcon(int level, bool isSecured) {
-    const table = <String>[
-      AppAssets.wifiSignalDisabled,
-      AppAssets.wifiSignalLow,
-      AppAssets.wifiSignalMed,
-      AppAssets.wifiSignalHigh,
-      AppAssets.wifiSignalExcellent,
-    ];
-    const tableLocked = <String>[
-      AppAssets.wifiSignalDisabledLocked,
-      AppAssets.wifiSignalLowLocked,
-      AppAssets.wifiSignalMedLocked,
-      AppAssets.wifiSignalHighLocked,
-      AppAssets.wifiSignalExcellentLocked,
-    ];
-    final idx = level.clamp(0, 4);
-    return isSecured ? tableLocked[idx] : table[idx];
-  }
-
   @override
   Widget build(BuildContext context) {
     final bool connected = wifi.isConnected;
-    return InkWell(
-      onTap: onTap,
-      child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 16),
-        child: Row(
-          children: [
-            // 信号图标 16×16
-            Image.asset(
-              _signalIcon(wifi.signalLevel.level, wifi.isSecured),
-              width: 16,
-              height: 16,
-            ),
-            const SizedBox(width: 12),
-            // WiFi 名 + 已连接标签/右箭头
-            Expanded(
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Text(
-                      wifi.ssid,
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: connected
-                            ? AppColors.wifiConnectedBlue
-                            : AppColors.wifiDisconnectedText,
-                      ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                  if (connected)
-                    const Text(
-                      '已连接',
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: AppColors.wifiConnectedBlue,
-                      ),
-                    )
-                  else
-                    Image.asset(
-                      AppAssets.wifiArrow,
-                      width: 8,
-                      height: 8,
-                    ),
-                ],
+    final textColor = connected ? Colors.white : const Color(0xFFBFBFBF);
+    return Card(
+      margin: const EdgeInsets.all(5),
+      elevation: 3,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(10),
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 10),
+          decoration: BoxDecoration(
+            color: connected ? const Color(0xFF99CEF3) : Colors.white,
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset(
+                connected
+                    ? AppAssets.wifiConnected
+                    : AppAssets.wifiDisconnected,
+                width: 26,
+                height: 26,
               ),
-            ),
-          ],
+              const SizedBox(height: 6),
+              Text(
+                wifi.ssid,
+                style: TextStyle(fontSize: 14, color: textColor),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 6),
+              Text(
+                connected ? '已连接' : '未连接',
+                style: TextStyle(fontSize: 12, color: textColor),
+              ),
+            ],
+          ),
         ),
       ),
     );

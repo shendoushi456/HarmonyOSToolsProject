@@ -1,5 +1,5 @@
 // WiFi 页顶部背景 - 对齐 activity_main_tool.xml FrameLayout 顶部
-// wifi_top_bg 背景图(fitXY) + 居中 "WIFI" 标题(粗 15sp 黑, marginTop 30dp)
+// wifi_top_bg 背景图(fitXY) + 居中 "WIFI" 标题(粗 22sp 黑, marginTop 50dp)
 import 'package:flutter/material.dart';
 import '../../../../core/constants/app_assets.dart';
 
@@ -11,9 +11,6 @@ class WifiTopBackground extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // 状态栏高度,用于让标题下沉到状态栏下方
-    final double statusBar = MediaQuery.of(context).padding.top;
-
     return SizedBox(
       width: double.infinity,
       height: height,
@@ -24,18 +21,18 @@ class WifiTopBackground extends StatelessWidget {
             AppAssets.wifiTopBg,
             width: double.infinity,
             height: height,
-            fit: BoxFit.cover,
+            fit: BoxFit.fill,
           ),
-          // 居中 WIFI 标题,marginTop 30dp(在状态栏下方)
-          Positioned(
+          // 居中 WIFI 标题,marginTop 50dp(在状态栏下方)
+          const Positioned(
             left: 0,
             right: 0,
-            top: statusBar + 30,
-            child: const Center(
+            top: 50,
+            child: Center(
               child: Text(
                 'WIFI',
                 style: TextStyle(
-                  fontSize: 15,
+                  fontSize: 22,
                   fontWeight: FontWeight.bold,
                   color: Colors.black,
                 ),

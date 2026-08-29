@@ -19,12 +19,20 @@ class _SplashPageState extends State<SplashPage> {
   @override
   void initState() {
     super.initState();
-    // 延迟到首帧后检查,确保 context 可用
+    // 先完成启动页首帧，再异步初始化本地存储；避免在 runApp 前等待
+    // SharedPreferences 导致原生启动窗口退出后出现白屏。
     WidgetsBinding.instance.addPostFrameCallback((_) => _checkAgreement());
   }
 
   /// 检查隐私协议同意状态 - 对齐 SplashActivity.onCreate 行 23-28
-  void _checkAgreement() {
+  Future<void> _checkAgreement() async {
+    try {
+      await PrefsStorage.init();
+    } catch (_) {
+      // 存储不可用时保守地展示协议弹框，避免直接进入应用主页。
+      if (mounted) _showProtocolDialog();
+      return;
+    }
     if (!mounted) return;
     final agreed = PrefsStorage.loadIsAgressment();
     if (!agreed) {

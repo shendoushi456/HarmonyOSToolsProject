@@ -47,8 +47,11 @@ class WifiRepository {
   /// wifi 是否已开启
   Future<bool> isWifiEnabled() => _service.isWifiActive();
 
-  /// 跳转系统 wifi 设置页
-  Future<void> openWifiSettings() => _service.openWifiSettings();
+  /// 申请读取附近 Wi-Fi 所需的位置权限。
+  Future<bool> requestWifiPermissions() => _service.requestWifiPermissions();
+
+  /// 尝试跳转系统 Wi-Fi 设置页，返回是否已发起跳转。
+  Future<bool> openWifiSettings() => _service.openWifiSettings();
 
   /// wifi 扫描完成事件流
   Stream<dynamic> get onScanFinishedStream => _service.onScanFinishedStream;

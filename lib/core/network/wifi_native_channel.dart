@@ -23,14 +23,17 @@ class WifiNativeChannel {
   /// 鸿蒙三方应用无法主动 startScan, 返回系统最近一次扫描缓存
   Future<List<WifiScanInfoDTO>> getScanInfoList() async {
     final list = await _method.invokeMethod<List>('getScanInfoList') ?? [];
-    return list
-        .map((e) => WifiScanInfoDTO.fromMap(e as Map))
-        .toList();
+    return list.map((e) => WifiScanInfoDTO.fromMap(e as Map)).toList();
   }
 
   /// wifi 是否已开启(对齐 Android WifiManager.isWifiEnabled)
   Future<bool> isWifiActive() async =>
       (await _method.invokeMethod<bool>('isWifiActive')) ?? false;
+
+  /// 请求读取 Wi-Fi 列表所需的位置权限。
+  /// HarmonyOS 会在未授权时脱敏 SSID 或拒绝读取扫描缓存。
+  Future<bool> requestWifiPermissions() async =>
+      (await _method.invokeMethod<bool>('requestWifiPermissions')) ?? false;
 
   /// 总接收字节数(对齐 Android TrafficStats.getTotalRxBytes)
   Future<int> getAllRxBytes() async =>
@@ -49,12 +52,12 @@ class WifiNativeChannel {
   Future<String> getOperatorName() async =>
       (await _method.invokeMethod<String>('getOperatorName')) ?? '';
 
-  /// 跳转系统 wifi 设置页
-  Future<void> openWifiSettings() async =>
-      await _method.invokeMethod<void>('openWifiSettings');
+  /// 尝试跳转系统 Wi-Fi 设置页。
+  /// 返回 false 表示当前系统未对三方应用开放该入口，应引导用户手动前往设置。
+  Future<bool> openWifiSettings() async =>
+      (await _method.invokeMethod<bool>('openWifiSettings')) ?? false;
 
   /// wifi 扫描完成事件流(对齐 Android WIFI_SCAN_RESULTS_AVAILABLE_ACTION 广播)
   /// 系统周期性扫描完成后触发,客户端据此刷新 getScanInfoList
-  Stream<dynamic> get onScanFinishedStream =>
-      _events.receiveBroadcastStream();
+  Stream<dynamic> get onScanFinishedStream => _events.receiveBroadcastStream();
 }
