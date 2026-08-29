@@ -7,6 +7,7 @@
 // - Android ImmersionBar → Flutter SafeArea
 // - Android finish() → Flutter GoRouter.of(context).pop()
 import 'package:flutter/material.dart';
+import 'package:flutter_baidu_mapapi_base/flutter_baidu_mapapi_base.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -14,6 +15,7 @@ import '../models/bus_transfer_data.dart';
 import '../utils/bus_theme_colors.dart';
 import '../utils/route_data_manager.dart';
 import '../viewmodels/bus_route_line_detail_view_model.dart';
+import '../widgets/map_compose.dart';
 
 /// 公交换乘详情页 - 对齐 Android BusRouteLineDetailActivity
 class BusRouteLineDetailPage extends ConsumerStatefulWidget {
@@ -31,13 +33,55 @@ class BusRouteLineDetailPage extends ConsumerStatefulWidget {
 
 class _BusRouteLineDetailPageState
     extends ConsumerState<BusRouteLineDetailPage> {
+  BMFCoordinate? _startPoint;
+  BMFCoordinate? _endPoint;
+  List<BMFCoordinate> _routePoints = const [];
+
   @override
   void initState() {
     super.initState();
+    final extra = widget.extra ?? const {};
+    _startPoint = _readCoordinate(extra, 'start_latitude', 'start_longitude');
+    _endPoint = _readCoordinate(extra, 'end_latitude', 'end_longitude');
+    _routePoints = _readRoutePoints(extra['route_points']);
     // 对齐 Android onCreate: 从 RouteDataManager 取路线数据 + 调用 setBusRouteData
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _initRouteData();
     });
+  }
+
+  BMFCoordinate? _readCoordinate(
+      Map<String, dynamic> extra, String latitudeKey, String longitudeKey) {
+    final latitude = _toDouble(extra[latitudeKey]);
+    final longitude = _toDouble(extra[longitudeKey]);
+    if (latitude == null ||
+        longitude == null ||
+        latitude.abs() < 0.0001 ||
+        longitude.abs() < 0.0001) {
+      return null;
+    }
+    return BMFCoordinate(latitude, longitude);
+  }
+
+  double? _toDouble(dynamic value) {
+    if (value is num) return value.toDouble();
+    if (value is String) return double.tryParse(value);
+    return null;
+  }
+
+  List<BMFCoordinate> _readRoutePoints(dynamic value) {
+    if (value is! List) return const [];
+    final points = <BMFCoordinate>[];
+    for (final item in value) {
+      if (item is BMFCoordinate) {
+        points.add(item);
+      } else if (item is Map) {
+        try {
+          points.add(BMFCoordinate.fromMap(item));
+        } catch (_) {}
+      }
+    }
+    return points;
   }
 
   /// 初始化路线数据 - 对齐 Android onCreate 中的数据初始化
@@ -46,12 +90,14 @@ class _BusRouteLineDetailPageState
     // 对齐 Android: transitRouteResult = intent.getParcelableExtra("transitRouteResult")
     final transitRouteLines =
         RouteDataManager.instance.getTransitRouteLines() ?? const [];
-    final transitRouteResult = RouteDataManager.instance.getTransitRouteResult();
+    final transitRouteResult =
+        RouteDataManager.instance.getTransitRouteResult();
 
     // 对齐 Android: viewModel.setBusRouteData(transitRouteLines, transitRouteResult)
     await ref
         .read(busRouteLineDetailViewModelProvider.notifier)
-        .setBusRouteData(transitRouteLines, transitRouteResult: transitRouteResult);
+        .setBusRouteData(transitRouteLines,
+            transitRouteResult: transitRouteResult);
   }
 
   @override
@@ -92,7 +138,49 @@ class _BusRouteLineDetailPageState
     }
     final route = uiState.transferRoute;
     if (route != null) {
-      return _BusRouteLineDetailContent(route: route);
+      final transitLine =
+          RouteDataManager.instance.getTransitRouteLines()?.isNotEmpty == true
+              ? RouteDataManager.instance.getTransitRouteLines()!.first
+              : null;
+      final points = <BMFCoordinate>[
+        if (_startPoint != null) _startPoint!,
+        ..._routePoints,
+        if (_endPoint != null) _endPoint!,
+      ];
+      if (points.length < 2 && transitLine != null) {
+        for (final step in transitLine.steps ?? const []) {
+          points.addAll(step.points ?? const []);
+        }
+      }
+      final mapPoints = points
+          .where((point) =>
+              point.latitude.abs() > 0.0001 && point.longitude.abs() > 0.0001)
+          .toList();
+      return Column(
+        children: [
+          SizedBox(
+            height: 260,
+            child: MapCompose(
+              searchResults: [
+                if (_startPoint != null)
+                  MapSearchResult(
+                    id: 'route-start',
+                    name: '起点',
+                    latLng: _startPoint!,
+                  ),
+                if (_endPoint != null)
+                  MapSearchResult(
+                    id: 'route-end',
+                    name: '终点',
+                    latLng: _endPoint!,
+                  ),
+              ],
+              routePoints: mapPoints,
+            ),
+          ),
+          Expanded(child: _BusRouteLineDetailContent(route: route)),
+        ],
+      );
     }
     return const _EmptyContent();
   }
@@ -252,7 +340,8 @@ class _PointSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // 对齐 Android: 起点 BusThemeColors.PRIMARY_COLOR, 终点 Color(0xFFFF0707)
-    final color = isStart ? BusThemeColors.primaryColor : const Color(0xFFFF0707);
+    final color =
+        isStart ? BusThemeColors.primaryColor : const Color(0xFFFF0707);
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),

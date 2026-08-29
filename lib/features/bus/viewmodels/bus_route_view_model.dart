@@ -1064,6 +1064,7 @@ class BusRouteViewModel extends Notifier<BusRouteUiState> {
             naviStartType: NaviStartType.drive,
             transitRouteLines: [transitRouteLine],
             transitRouteResult: transitRouteResult,
+            routePoints: _routePointsFromLine(transitRouteLine),
           ),
         );
         debugPrint(

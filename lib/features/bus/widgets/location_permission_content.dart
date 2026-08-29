@@ -30,8 +30,9 @@ class LocationPermissionContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+
       color: Colors.white,
-      padding: const EdgeInsets.only(top: 10),
+      padding: const EdgeInsets.only(top: 50),
       child: Stack(
         children: [
           // 中间定位权限内容 - 对齐 Android Box(modifier = Modifier.align(Alignment.Center))

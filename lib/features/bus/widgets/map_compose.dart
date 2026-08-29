@@ -69,6 +69,7 @@ class MapCompose extends StatefulWidget {
     this.resetUserDrag = false,
     this.resetLocation = false,
     this.isSearchTargetLocation = false,
+    this.targetLocation,
   });
 
   /// 当前位置（蓝色 Marker）
@@ -96,6 +97,9 @@ class MapCompose extends StatefulWidget {
 
   /// 是否将镜头移动到首个搜索结果 - 对齐 Android isSearchTargetLocation
   final bool isSearchTargetLocation;
+
+  /// 明确指定地图镜头目标，避免依赖搜索结果列表的异步状态。
+  final BMFCoordinate? targetLocation;
 
   @override
   State<MapCompose> createState() => _MapComposeState();
@@ -159,9 +163,37 @@ class _MapComposeState extends State<MapCompose> {
     final locationChanged = _lastCurrentLocation != widget.currentLocation;
     final searchResultsChanged = _lastSearchResults != widget.searchResults;
     final routeChanged = _lastRoutePoints != widget.routePoints;
+    final targetChanged = oldWidget.targetLocation != widget.targetLocation;
 
-    if (locationChanged || searchResultsChanged || routeChanged) {
+    if (locationChanged ||
+        searchResultsChanged ||
+        routeChanged ||
+        targetChanged) {
       _updateMarkers();
+      _scheduleTargetViewportSync();
+    }
+  }
+
+  /// 鸿蒙地图的原生底图加载与 Flutter 控制器回调存在时序差异。数据更新
+  /// 后延迟再次设置镜头，避免首次调用被地图初始化覆盖。
+  void _scheduleTargetViewportSync() {
+    for (final delay in const [
+      Duration(milliseconds: 200),
+      Duration(milliseconds: 700),
+      Duration(milliseconds: 1500)
+    ]) {
+      Future<void>.delayed(delay, () {
+        if (!mounted) return;
+        final controller = _mapController;
+        if (controller == null) return;
+        final target = widget.isSearchTargetLocation
+            ? (widget.targetLocation ??
+                (widget.searchResults.isNotEmpty
+                    ? widget.searchResults.first.latLng
+                    : null))
+            : widget.currentLocation;
+        _adjustMapViewToTargetLocation(controller, target);
+      });
     }
   }
 
@@ -256,9 +288,10 @@ class _MapComposeState extends State<MapCompose> {
       }
 
       // 对齐 Android adjustMapViewToTargetLocation
-      if (widget.isSearchTargetLocation && searchResults.isNotEmpty) {
+      if (widget.isSearchTargetLocation &&
+          (widget.targetLocation != null || searchResults.isNotEmpty)) {
         await _adjustMapViewToTargetLocation(
-            controller, searchResults.first.latLng);
+            controller, widget.targetLocation ?? searchResults.first.latLng);
       } else {
         await _adjustMapViewToTargetLocation(controller, currentLocation);
       }
@@ -408,10 +441,25 @@ class _MapComposeState extends State<MapCompose> {
     debugPrint('MapCompose: 设置默认的地图中心点: $target');
     if (target == null) return;
     try {
-      // 对齐 Android baiduMap.setMapStatus(MapStatusUpdateFactory.newLatLngZoom(it, 15f))
+      // Harmony 优先使用文档中支持 Harmony 的中心点接口，再设置缩放级别。
+      // setNewLatLngZoom 在 Flutter SDK 中标注为 Android 专用，部分 Harmony
+      // 版本虽然暴露了该方法，但调用结果可能不会更新可视区域。
+      final centered = await controller.setCenterCoordinate(
+        target,
+        true,
+        animateDurationMs: 500,
+      );
+      final zoomed = await controller.setZoomTo(
+        15,
+        animateDurationMs: 500,
+      );
+      if (centered && zoomed) return;
+
+      // 兼容 Android 及部分旧版 SDK，保留组合接口作为兜底。
       await controller.setNewLatLngZoom(
         coordinate: target,
         zoom: 15,
+        animateDurationMs: 500,
       );
     } catch (e) {
       debugPrint('MapCompose: 设置地图中心点失败: $e');
@@ -436,6 +484,17 @@ class _MapComposeState extends State<MapCompose> {
           }
         },
       );
+
+      // 控制器创建早于底图真正加载完成。地图加载完成后再次同步标记和
+      // 镜头，避免首次 setCenterCoordinate 被底图初始化覆盖。
+      controller.setMapDidLoadCallback(callback: () {
+        debugPrint('MapCompose: 地图加载完成，重新同步标记和镜头');
+        _lastCurrentLocation = null;
+        _lastSearchResults = const [];
+        _lastRoutePoints = const [];
+        _updateMarkers();
+        _scheduleTargetViewportSync();
+      });
     } catch (e) {
       debugPrint('MapCompose: 设置区域变化回调失败: $e');
     }
@@ -452,6 +511,7 @@ class _MapComposeState extends State<MapCompose> {
 
     // 首次创建后立即更新一次标记
     _updateMarkers();
+    _scheduleTargetViewportSync();
   }
 
   /// 缩放按钮点击：放大 - 对齐 Android map.animateMapStatus(MapStatusUpdateFactory.zoomTo(currentZoom + 1))

@@ -111,7 +111,12 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: RoutePaths.busLocationDetail,
       name: RouteNames.busLocationDetail,
-      builder: (context, state) => const BusLocationDetailPage(),
+      builder: (context, state) {
+        final extra = state.extra;
+        return BusLocationDetailPage(
+          extra: extra is Map<String, dynamic> ? extra : null,
+        );
+      },
     ),
     // 公交换乘详情页 - 对齐 Android BusRouteLineDetailActivity
     GoRoute(
@@ -126,7 +131,12 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: RoutePaths.mapNavi,
       name: RouteNames.mapNavi,
-      builder: (context, state) => const MapNaviPage(),
+      builder: (context, state) {
+        final extra = state.extra;
+        return MapNaviPage(
+          extra: extra is Map<String, dynamic> ? extra : null,
+        );
+      },
     ),
     // 步行导航页 - 对齐 Android WalkNaviActivity
     GoRoute(

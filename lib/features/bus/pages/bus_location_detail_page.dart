@@ -20,7 +20,11 @@ import '../widgets/map_compose.dart';
 /// 地点详情页 - 对齐 Android BusLocationDetailActivity
 /// 显示特定地点的详细信息和地图
 class BusLocationDetailPage extends ConsumerStatefulWidget {
-  const BusLocationDetailPage({super.key});
+  const BusLocationDetailPage({super.key, this.extra});
+
+  /// 路由参数。由 GoRoute builder 注入，避免在 initState 中通过
+  /// GoRouterState.of(context) 访问 InheritedWidget。
+  final Map<String, dynamic>? extra;
 
   @override
   ConsumerState<BusLocationDetailPage> createState() =>
@@ -32,11 +36,14 @@ class _BusLocationDetailPageState extends ConsumerState<BusLocationDetailPage> {
   void initState() {
     super.initState();
     // 对齐 Android onCreate: 从 Intent 获取 SearchResultData 并重新组装为 SearchResult
-    final extra = GoRouterState.of(context).extra;
+    final extra = widget.extra;
     BaiduSearchResultData? searchResultData;
+    BaiduSearchResult? directSearchResult;
     if (extra is Map<String, dynamic>) {
       final raw = extra['search_result'];
-      if (raw is BaiduSearchResultData) {
+      if (raw is BaiduSearchResult) {
+        directSearchResult = raw;
+      } else if (raw is BaiduSearchResultData) {
         searchResultData = raw;
       } else if (raw is Map<String, dynamic>) {
         searchResultData = BaiduSearchResultData(
@@ -49,11 +56,24 @@ class _BusLocationDetailPageState extends ConsumerState<BusLocationDetailPage> {
           distance: (raw['distance'] as String?) ?? '',
           iconUrl: (raw['iconUrl'] as String?) ?? '',
         );
+      } else if (extra.containsKey('id') || extra.containsKey('name')) {
+        // 兼容旧版 BusSearchPage 直接传递字段的格式。
+        searchResultData = BaiduSearchResultData(
+          id: (extra['id'] as String?) ?? '',
+          name: (extra['name'] as String?) ?? '',
+          description: (extra['description'] as String?) ?? '',
+          address: (extra['address'] as String?) ?? '',
+          latitude: _toDouble(extra['latitude']) ?? 0.0,
+          longitude: _toDouble(extra['longitude']) ?? 0.0,
+          distance: (extra['distance'] as String?) ?? '',
+          iconUrl: (extra['iconUrl'] as String?) ?? '',
+        );
       }
     }
 
     // 对齐 Android: val searchResult = searchResultData?.let { SearchResult(it) }
-    final searchResult = searchResultData?.toSearchResult();
+    final searchResult =
+        directSearchResult ?? searchResultData?.toSearchResult();
 
     // 对齐 Android: 提取需要的数据，设置默认值
     final locationName = searchResult?.name ?? '天安门';
@@ -110,7 +130,9 @@ class _BusLocationDetailPageState extends ConsumerState<BusLocationDetailPage> {
                 uiState: uiState,
                 onRelocateClick: () {
                   // 对齐 Android: viewModel.relocate()
-                  ref.read(busLocationDetailViewModelProvider.notifier).relocate();
+                  ref
+                      .read(busLocationDetailViewModelProvider.notifier)
+                      .relocate();
                 },
               ),
             ),
@@ -264,6 +286,9 @@ class _MapArea extends StatelessWidget {
           .toList(),
       resetLocation: uiState.shouldResetLocation,
       resetUserDrag: uiState.shouldResetDrag,
+      // 详情页进入时以搜索结果作为地图目标，而不是等待设备当前位置。
+      isSearchTargetLocation: true,
+      targetLocation: uiState.targetLocation,
       onLocationButtonClick: onRelocateClick,
     );
   }

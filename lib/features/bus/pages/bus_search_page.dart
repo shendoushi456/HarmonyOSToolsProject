@@ -15,6 +15,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../core/constants/app_assets.dart';
 import '../../../../router/route_names.dart';
+import '../models/baidu_search_result.dart';
 import '../utils/bus_theme_colors.dart';
 import '../viewmodels/bus_search_view_model.dart';
 
@@ -154,16 +155,18 @@ class _BusSearchPageState extends ConsumerState<BusSearchPage> {
       });
     } else {
       // 对齐 Android: 正常搜索模式 - 跳转 BusLocationDetailActivity
-      // 鸿蒙端: 直接用 Map 传参（Page 接收后构造 BaiduSearchResult）
+      // 鸿蒙端: 通过 GoRouter extra 传递可序列化结果。
       await GoRouter.of(context).push(
         RoutePaths.busLocationDetail,
         extra: {
-          'id': poi.uid ?? '',
-          'name': poi.name ?? '',
-          'description': poi.address ?? '',
-          'address': poi.city ?? '',
-          'latitude': latitude,
-          'longitude': longitude,
+          'search_result': BaiduSearchResultData(
+            id: poi.uid ?? '',
+            name: poi.name ?? '',
+            description: poi.address ?? '',
+            address: poi.city ?? '',
+            latitude: latitude,
+            longitude: longitude,
+          ),
         },
       );
     }

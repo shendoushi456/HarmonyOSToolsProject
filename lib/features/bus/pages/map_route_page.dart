@@ -99,10 +99,13 @@ class _MapRoutePageState extends ConsumerState<MapRoutePage> {
     ref.listen<BusRouteUiState>(busRouteViewModelProvider, (previous, next) {
       if (next.errorMessage != null &&
           next.errorMessage != previous?.errorMessage) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(next.errorMessage!)),
-        );
-        ref.read(busRouteViewModelProvider.notifier).clearError();
+        final message = next.errorMessage!;
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (!mounted) return;
+          ScaffoldMessenger.of(context)
+              .showSnackBar(SnackBar(content: Text(message)));
+          ref.read(busRouteViewModelProvider.notifier).clearError();
+        });
       }
     });
 
@@ -110,7 +113,10 @@ class _MapRoutePageState extends ConsumerState<MapRoutePage> {
     ref.listen<BusRouteUiState>(busRouteViewModelProvider, (previous, next) {
       if (next.pendingSearchRequest != null &&
           next.pendingSearchRequest != previous?.pendingSearchRequest) {
-        _handlePendingSearch(next.pendingSearchRequest!);
+        final request = next.pendingSearchRequest!;
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (mounted) _handlePendingSearch(request);
+        });
       }
     });
 
@@ -118,7 +124,10 @@ class _MapRoutePageState extends ConsumerState<MapRoutePage> {
     ref.listen<BusRouteUiState>(busRouteViewModelProvider, (previous, next) {
       if (next.pendingNaviAction != null &&
           next.pendingNaviAction != previous?.pendingNaviAction) {
-        _handlePendingNavi(next.pendingNaviAction!);
+        final action = next.pendingNaviAction!;
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (mounted) _handlePendingNavi(action);
+        });
       }
     });
 
@@ -188,7 +197,18 @@ class _MapRoutePageState extends ConsumerState<MapRoutePage> {
     if (action.type == NaviActionType.routeLineDetail) {
       // 对齐 Android: BusRouteLineDetailActivity.start(context, transitRouteLines, transitRouteResult)
       // 鸿蒙端: 路线数据通过 RouteDataManager 单例传递
-      await GoRouter.of(context).push(RoutePaths.busRouteLineDetail);
+      await GoRouter.of(context).push(
+        RoutePaths.busRouteLineDetail,
+        extra: {
+          'start_latitude': action.startPoint.latitude,
+          'start_longitude': action.startPoint.longitude,
+          'end_latitude': action.endPoint.latitude,
+          'end_longitude': action.endPoint.longitude,
+          'start_name': action.startName,
+          'end_name': action.endName,
+          'route_points': action.routePoints,
+        },
+      );
     } else {
       // 对齐 Android: MapNaviActivity.start(context, startPoint, endPoint, fromLocation, toLocation, naviStartType)
       await GoRouter.of(context).push(

@@ -352,7 +352,7 @@ class _RoutePlanningCardState extends State<_RoutePlanningCard> {
             GestureDetector(
               onTap: () => _onRoutePanelTapped(context),
               child: SizedBox(
-                height: 84,
+                height: 74,
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: Row(
@@ -407,22 +407,22 @@ class _RoutePlanningCardState extends State<_RoutePlanningCard> {
                         ),
                       ),
                       // 交换按钮 - 对齐 Android Box(size=38, clickable)
-                      GestureDetector(
-                        onTap: _swapLocations,
-                        child: SizedBox(
-                          width: 38,
-                          height: 38,
-                          child: Center(
-                            child: Text(
-                              '⇅',
-                              style: TextStyle(
-                                color: AppColors.jbcxSwapIcon,
-                                fontSize: 27,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
+                      // GestureDetector(
+                      //   onTap: _swapLocations,
+                      //   child: SizedBox(
+                      //     width: 38,
+                      //     height: 38,
+                      //     child: Center(
+                      //       child: Text(
+                      //         '⇅',
+                      //         style: TextStyle(
+                      //           color: AppColors.jbcxSwapIcon,
+                      //           fontSize: 27,
+                      //         ),
+                      //       ),
+                      //     ),
+                      //   ),
+                      // ),
                     ],
                   ),
                 ),

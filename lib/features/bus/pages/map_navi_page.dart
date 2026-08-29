@@ -11,7 +11,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_baidu_mapapi_base/flutter_baidu_mapapi_base.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 
 import '../utils/bus_theme_colors.dart';
 import '../utils/navi_plan_manager.dart';
@@ -22,7 +21,10 @@ import '../widgets/map_compose.dart';
 /// 地图导航页 - 对齐 Android MapNaviActivity
 /// 驾车/骑行/步行导航页面
 class MapNaviPage extends ConsumerStatefulWidget {
-  const MapNaviPage({super.key});
+  const MapNaviPage({super.key, this.extra});
+
+  /// 路由参数由 GoRoute 注入，避免在 initState 中访问 GoRouterState.of(context)。
+  final Map<String, dynamic>? extra;
 
   @override
   ConsumerState<MapNaviPage> createState() => _MapNaviPageState();
@@ -54,24 +56,25 @@ class _MapNaviPageState extends ConsumerState<MapNaviPage>
     // 对齐 Android onCreate: 解析 Intent 参数
     _parseRouteParams();
 
-    // 对齐 Android onCreate: viewModel.initNaviParams(naviStartType, startPoint, endPoint, startName, endName)
-    ref.read(mapNaviViewModelProvider.notifier).initNaviParams(
-          naviStartType: _routeType,
-          startPoint: _startPoint,
-          endPoint: _endPoint,
-          startName: _startName,
-          endName: _endName,
-        );
-
-    // 对齐 Android onCreate: viewModel.prepareNaviAfterPlan(this, naviStartType)
+    // Provider 写入统一延后到首帧之后，避免 initState 阶段触发
+    // "Tried to modify a provider while the widget tree was building"。
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      // 对齐 Android onCreate: viewModel.initNaviParams(...)
+      ref.read(mapNaviViewModelProvider.notifier).initNaviParams(
+            naviStartType: _routeType,
+            startPoint: _startPoint,
+            endPoint: _endPoint,
+            startName: _startName,
+            endName: _endName,
+          );
+      // 对齐 Android onCreate: viewModel.prepareNaviAfterPlan(...)
       ref
           .read(mapNaviViewModelProvider.notifier)
           .prepareNaviAfterPlan(_routeType);
+      // 对齐 Android onStart: viewModel.startNavigation()
+      ref.read(mapNaviViewModelProvider.notifier).startNavigation();
     });
-
-    // 对齐 Android onStart: viewModel.startNavigation()
-    ref.read(mapNaviViewModelProvider.notifier).startNavigation();
   }
 
   @override
@@ -108,7 +111,7 @@ class _MapNaviPageState extends ConsumerState<MapNaviPage>
 
   /// 解析路由参数 - 对齐 Android onCreate 中的参数提取
   void _parseRouteParams() {
-    final extra = GoRouterState.of(context).extra;
+    final extra = widget.extra;
     String routeTypeString = 'drive';
     if (extra is Map<String, dynamic>) {
       routeTypeString = (extra['navi_start_type'] as String?) ??

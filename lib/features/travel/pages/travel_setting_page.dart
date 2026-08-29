@@ -25,9 +25,9 @@ class TravelSettingPage extends ConsumerStatefulWidget {
 
   // 协议 URL - 对齐 Android BuildConfig.PRIVACY_URL / USER_URL
   static const String _privacyUrl =
-      'https://api.zhangshenhan1.top/agreement/bbjscx/privacy';
+      'http://api.jyhytech.top/agreement/bjqycxqxhm/privacy';
   static const String _userUrl =
-      'https://api.zhangshenhan1.top/agreement/bbjscx/user';
+      'http://api.jyhytech.top/agreement/bjqycxqxhm/user';
 
   @override
   ConsumerState<TravelSettingPage> createState() => _TravelSettingPageState();
@@ -69,6 +69,7 @@ class _TravelSettingPageState extends ConsumerState<TravelSettingPage> {
                 // 关键：去掉点击效果（Android 端 .clickable → WlWeatherActivity，鸿蒙端不跳转）
                 _TodayWeatherRow(today: today),
                 // 生活指数网格 - 对齐 Android LifeIndexGrid
+                const SizedBox(height: 10),
                 _LifeIndexGrid(today: today),
                 const SizedBox(height: 20),
                 // 设置菜单列表 - 对齐 Android SettingsMenuList
@@ -143,7 +144,7 @@ class _TopGradientSection extends StatelessWidget {
               const SizedBox(height: 10),
               // 欢迎文字 - 对齐 Android Text("欢迎使用${appName}", 18sp, SemiBold, White)
               const Text(
-                '欢迎使用瞬息天气通',
+                '欢迎使用清逸出行气象',
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.w600,
@@ -161,7 +162,7 @@ class _TopGradientSection extends StatelessWidget {
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: const Text(
-                  '软件版本V1.0.0',
+                  '软件版本V1.0.1',
                   style: TextStyle(
                     fontSize: 12,
                     color: Color(0xFFFFBE1C),
@@ -218,10 +219,10 @@ class _TodayWeatherRow extends StatelessWidget {
               ),
             ),
             // 右箭头 - 对齐 Android Image(arrow_right)
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Image.asset(AppAssets.arrowRight, width: 16, height: 16),
-            ),
+            // Padding(
+            //   padding: const EdgeInsets.symmetric(horizontal: 20),
+            //   child: Image.asset(AppAssets.arrowRight, width: 16, height: 16),
+            // ),
           ],
         ),
       ),
