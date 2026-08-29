@@ -58,15 +58,14 @@ class DocTransApiClient {
     return _sha256(signStr);
   }
 
-  /// 发送表单请求（带超时和重试）
+  /// 发送一次表单请求。
   ///
   /// 文档翻译上传 body 较大（base64 文件，可达数 MB），鸿蒙 NetStack
   /// 可能返回 2300052/2300056 错误。通过以下措施缓解：
   /// - 手动构造 form-urlencoded body（避免 Map body 内部处理的潜在问题）
   /// - 每次请求使用独立 Client（避免 keep-alive 连接复用问题）
-  /// - 120 秒超时 + 3 次指数退避重试
   /// - 捕获所有异常类型（SocketException/ClientException/TimeoutException 等）
-  Future<http.Response> _postForm(
+  Future<http.Response> _postFormOnce(
     String url,
     Map<String, String> body,
   ) async {
@@ -85,17 +84,33 @@ class DocTransApiClient {
       formBodyBytes: utf8.encode(bodyStr).length,
     );
 
+    final client = http.Client();
+    try {
+      final response = await client
+          .post(Uri.parse(url), headers: headers, body: bodyStr)
+          .timeout(const Duration(seconds: 120));
+      _logHttpResponse(_operationFromUrl(url), response);
+      return response;
+    } finally {
+      client.close();
+    }
+  }
+
+  /// 发送可重试的表单请求。
+  ///
+  /// 每次尝试都重新调用 [bodyBuilder]，用于重新生成 salt、curtime 和 sign，
+  /// 避免网络异常后重放同一组有道请求参数而触发 207。
+  Future<http.Response> _postFormWithRetry(
+    String url,
+    Map<String, String> Function() bodyBuilder,
+  ) async {
     Exception? lastError;
     for (var attempt = 0; attempt < 3; attempt++) {
-      final client = http.Client();
       try {
         debugPrint(
-            '$_logTag ${_operationFromUrl(url)} request attempt=${attempt + 1}/3');
-        final response = await client
-            .post(Uri.parse(url), headers: headers, body: bodyStr)
-            .timeout(const Duration(seconds: 120));
-        _logHttpResponse(_operationFromUrl(url), response);
-        return response;
+          '$_logTag ${_operationFromUrl(url)} request attempt=${attempt + 1}/3',
+        );
+        return await _postFormOnce(url, bodyBuilder());
       } on Exception catch (e) {
         lastError = e;
         debugPrint(
@@ -103,11 +118,8 @@ class DocTransApiClient {
           'attempt=${attempt + 1}/3, error=$e',
         );
         if (attempt < 2) {
-          // 指数退避：2秒、4秒
           await Future<void>.delayed(Duration(seconds: 2 << attempt));
         }
-      } finally {
-        client.close();
       }
     }
     throw lastError ?? Exception('请求失败');
@@ -207,21 +219,23 @@ class DocTransApiClient {
 
   /// 查询翻译状态
   Future<DocQueryResponse> queryStatus(String flownumber) async {
-    final salt = _uuid.v4();
-    final curtime = (DateTime.now().millisecondsSinceEpoch ~/ 1000).toString();
-    // 签名用 flownumber 作为 q
-    final sign = _generateSign(flownumber, salt, curtime);
-
-    final response = await _postForm(
+    final response = await _postFormWithRetry(
       _queryUrl,
-      <String, String>{
-        'flownumber': flownumber,
-        'appKey': AppConfig.youdaoDocAppId,
-        'salt': salt,
-        'curtime': curtime,
-        'sign': sign,
-        'signType': 'v3',
-        'docType': 'json',
+      () {
+        final salt = _uuid.v4();
+        final curtime =
+            (DateTime.now().millisecondsSinceEpoch ~/ 1000).toString();
+        // 签名用 flownumber 作为 q
+        final sign = _generateSign(flownumber, salt, curtime);
+        return <String, String>{
+          'flownumber': flownumber,
+          'appKey': AppConfig.youdaoDocAppId,
+          'salt': salt,
+          'curtime': curtime,
+          'sign': sign,
+          'signType': 'v3',
+          'docType': 'json',
+        };
       },
     );
 
@@ -240,22 +254,24 @@ class DocTransApiClient {
     String flownumber, {
     String downloadFileType = 'pdf',
   }) async {
-    final salt = _uuid.v4();
-    final curtime = (DateTime.now().millisecondsSinceEpoch ~/ 1000).toString();
-    // 签名用 flownumber 作为 q
-    final sign = _generateSign(flownumber, salt, curtime);
-
-    final response = await _postForm(
+    final response = await _postFormWithRetry(
       _downloadUrl,
-      <String, String>{
-        'flownumber': flownumber,
-        'downloadFileType': downloadFileType,
-        'appKey': AppConfig.youdaoDocAppId,
-        'salt': salt,
-        'curtime': curtime,
-        'sign': sign,
-        'signType': 'v3',
-        'docType': 'json',
+      () {
+        final salt = _uuid.v4();
+        final curtime =
+            (DateTime.now().millisecondsSinceEpoch ~/ 1000).toString();
+        // 签名用 flownumber 作为 q
+        final sign = _generateSign(flownumber, salt, curtime);
+        return <String, String>{
+          'flownumber': flownumber,
+          'downloadFileType': downloadFileType,
+          'appKey': AppConfig.youdaoDocAppId,
+          'salt': salt,
+          'curtime': curtime,
+          'sign': sign,
+          'signType': 'v3',
+          'docType': 'json',
+        };
       },
     );
 
@@ -265,8 +281,11 @@ class DocTransApiClient {
     if (contentType.contains('application/json')) {
       final json = jsonDecode(response.body) as Map<String, dynamic>;
       final errorCode = json['errorCode']?.toString() ?? '';
-      final errorMsg = json['msg']?.toString() ?? '未知错误';
-      throw Exception('翻译失败: $errorMsg (错误码: $errorCode)');
+      final errorMsg = json['msg']?.toString();
+      throw Exception(
+        '翻译失败: errorCode=$errorCode, msg=$errorMsg, '
+        'response=${response.body}',
+      );
     }
 
     final bytes = response.bodyBytes;
@@ -330,11 +349,30 @@ class DocTransApiClient {
   }
 
   void _logHttpResponse(String operation, http.Response response) {
+    final contentType = response.headers['content-type'] ?? '';
+    final bytes = response.bodyBytes;
+    if (_isJsonContentType(contentType)) {
+      final body = utf8.decode(bytes, allowMalformed: true);
+      debugPrint(
+        '$_logTag $operation response: '
+        'status=${response.statusCode}, headers=${response.headers}, '
+        'bodyLength=${bytes.length}, body=${_safeResponseLog(body)}',
+      );
+      return;
+    }
+
+    // 下载接口成功时返回 PDF/DOCX 等二进制文件，不能读取 response.body，
+    // 否则 package:http 会按 UTF-8 解码并可能抛出 Invalid UTF-8 异常。
     debugPrint(
       '$_logTag $operation response: '
       'status=${response.statusCode}, headers=${response.headers}, '
-      'bodyLength=${response.body.length}, body=${_safeResponseLog(response.body)}',
+      'binaryBodyLength=${bytes.length}',
     );
+  }
+
+  bool _isJsonContentType(String contentType) {
+    return contentType.toLowerCase().contains('application/json') ||
+        contentType.toLowerCase().contains('+json');
   }
 
   String _safeResponseLog(String response) {

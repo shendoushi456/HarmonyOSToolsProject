@@ -35,6 +35,9 @@ class DocTranslationNotifier extends Notifier<DocTranslationUiState> {
   /// 取消标志（控制轮询循环）
   bool _cancelled = false;
 
+  /// 防止同一个完成状态触发并发下载。
+  bool _downloadInProgress = false;
+
   @override
   DocTranslationUiState build() {
     ref.listen<GlobalLanguageState>(
@@ -209,13 +212,18 @@ class DocTranslationNotifier extends Notifier<DocTranslationUiState> {
     String flownumber,
     String fileName,
   ) async {
+    if (_downloadInProgress) {
+      debugPrint('DocTranslation download skipped: already in progress');
+      return;
+    }
+    _downloadInProgress = true;
     try {
-      await _repo.downloadAndSaveFile(flownumber, fileName);
+      final savedUri = await _repo.downloadAndSaveFile(flownumber, fileName);
       await _repo.recordUsage();
       await _checkQuota();
 
       _selectedFile = null;
-      // 保真原项目：下载成功后显示提示（原项目尝试打开文件，失败显示提示）
+      // 下载成功后展示系统下载目录中的实际保存位置。
       state = state.copyWith(
         pageState: DocPageState.upload,
         isLoading: false,
@@ -224,10 +232,12 @@ class DocTranslationNotifier extends Notifier<DocTranslationUiState> {
         fileType: '',
         flownumber: '',
         translateStatus: 0,
-        errorMessage: 'SUCCESS:翻译完成，已保存到应用目录',
+        errorMessage: 'SUCCESS:翻译完成，已保存到下载目录：$savedUri',
       );
     } catch (error) {
       _handleRequestError('下载失败', error);
+    } finally {
+      _downloadInProgress = false;
     }
   }
 

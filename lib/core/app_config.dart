@@ -26,12 +26,12 @@ class AppConfig {
   /// 有道文档翻译应用 ID（文档翻译使用独立密钥）
   ///
   /// TODO(用户): 替换为实际的有道文档翻译应用 ID
-  static const String youdaoDocAppId = '5898ed966ea1635f';
+  static const String youdaoDocAppId = '1727c4fd13d6a729';
 
   /// 有道文档翻译应用密钥
   ///
   /// TODO(用户): 替换为实际的有道文档翻译应用密钥
-  static const String youdaoDocAppSecret = 'EjuGEK9KLJerc1plkBhrgnkXx7XG6wVG';
+  static const String youdaoDocAppSecret = 'Ymg5lt2YMMim7K06HINMSl7EkSrfJSJk';
 
   /// 隐私政策 URL
   static const String privacyUrl =

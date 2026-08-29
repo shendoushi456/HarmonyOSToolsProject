@@ -109,13 +109,13 @@ class DocTranslationPage extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 18),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.08),
-            blurRadius: 4,
-            offset: const Offset(0, 2),
-          ),
-        ],
+        // boxShadow: [
+        //   BoxShadow(
+        //     color: Colors.black.withValues(alpha: 0.08),
+        //     blurRadius: 4,
+        //     offset: const Offset(0, 2),
+        //   ),
+        // ],
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(10),

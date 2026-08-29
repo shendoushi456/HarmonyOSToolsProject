@@ -1,8 +1,7 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:file_selector/file_selector.dart';
-import 'package:path_provider/path_provider.dart';
+import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../domain/doc_language_code_mapper.dart';
@@ -26,6 +25,9 @@ class DocTranslationRepository {
   static const String _keyToLanguage = 'translation_to_language';
   static const String _defaultFromLanguage = '中文';
   static const String _defaultToLanguage = '英文';
+  static const MethodChannel _documentDownloadChannel = MethodChannel(
+    'hm.ruisi.saosaole/document_download',
+  );
 
   final DocTransApiClient _apiClient = DocTransApiClient();
 
@@ -156,23 +158,43 @@ class DocTranslationRepository {
 
   /// 下载并保存翻译后的文件
   ///
-  /// 返回保存路径。使用 path_provider 的应用文档目录作为保存位置。
+  /// 返回系统下载目录中的文件 URI。
   Future<String> downloadAndSaveFile(
     String flownumber,
     String fileName, {
-    String downloadFileType = 'pdf',
+    String? downloadFileType,
   }) async {
+    final resolvedDownloadType =
+        downloadFileType ?? _downloadTypeForFileName(fileName);
     final bytes = await _apiClient.downloadFile(
       flownumber,
-      downloadFileType: downloadFileType,
+      downloadFileType: resolvedDownloadType,
     );
     final translatedName =
-        _generateTranslatedFileName(fileName, downloadFileType);
-    final dir = await getApplicationDocumentsDirectory();
-    final filePath = '${dir.path}/$translatedName';
-    final savedFile = File(filePath);
-    await savedFile.writeAsBytes(bytes);
-    return filePath;
+        _generateTranslatedFileName(fileName, resolvedDownloadType);
+    final savedUri = await _documentDownloadChannel.invokeMethod<String>(
+      'saveToDownloads',
+      <String, Object>{
+        'fileName': translatedName,
+        'bytes': Uint8List.fromList(bytes),
+      },
+    );
+    if (savedUri == null || savedUri.isEmpty) {
+      throw Exception('保存到下载目录失败：原生层未返回保存路径');
+    }
+    return savedUri;
+  }
+
+  /// 将原文档类型转换为有道下载接口要求的类型。
+  String _downloadTypeForFileName(String fileName) {
+    final fileType = SupportedFileTypes.getFileType(fileName);
+    return switch (fileType) {
+      'doc' || 'docx' => 'word',
+      'ppt' || 'pptx' => 'ppt',
+      'xlsx' => 'xlsx',
+      'pdf' => 'pdf',
+      _ => 'pdf',
+    };
   }
 
   /// 生成翻译后的文件名
