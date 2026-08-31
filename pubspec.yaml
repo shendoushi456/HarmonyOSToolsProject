@@ -1,5 +1,5 @@
 name: qingman_weather
-description: 达速上网通 - Flutter-ohos 版
+description: 乐彩绘画屋 - Flutter-ohos 版
 publish_to: 'none'
 version: 1.0.0+1
 
@@ -102,6 +102,14 @@ dependencies:
       url: https://gitcode.com/openharmony-sig/fluttertpc_file_picker.git
       ref: br_v10.3.8_ohos
 
+  # ====== NewDrawBoardFragment 涂鸦链路新增依赖（2026-08-31）======
+  # 音频播放（分类涂鸦背景音乐 + 点击音）- 纯 Dart，鸿蒙兼容
+  # 用 just_audio 而非 audioplayers：后者依赖 hosted path_provider 与项目 git 版冲突
+  just_audio: ^0.9.35
+
+  # HSV 色轮选择器（对齐 flask ColorPickerDialogBuilder）- 纯 Dart
+  flutter_colorpicker: ^1.0.3
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -111,18 +119,39 @@ dev_dependencies:
   very_good_analysis: 4.0.0
 
 # 覆盖 file_picker_ohos 对 hosted image_picker 的依赖，强制使用鸿蒙适配版
+# 同时覆盖 just_audio 等包对 hosted path_provider 的依赖，强制使用鸿蒙适配版
 dependency_overrides:
   image_picker:
     git:
       url: https://gitcode.com/openharmony-sig/flutter_packages.git
       path: packages/image_picker/image_picker
       ref: image_picker-v1.1.2-ohos-1.0.1
+  path_provider:
+    git:
+      url: https://gitcode.com/openharmony-sig/flutter_packages.git
+      path: packages/path_provider/path_provider
+      ref: br_path_provider-v2.1.5_ohos
 
 flutter:
   uses-material-design: true
   generate: true
   assets:
     - assets/images/
+    - assets/images/color_draw/
+    - assets/images/color_draw/shapes/
+    - assets/images/color_draw/trace/
+    - assets/images/coloring_book/
+    - assets/images/coloring_book/flowers/
+    - assets/images/coloring_book/cartoons/
+    - assets/images/coloring_book/animals/
+    - assets/images/coloring_book/foods/
+    - assets/images/coloring_book/transport/
+    - assets/images/coloring_book/nature/
+    - assets/images/coloring_book/fruits/
+    - assets/images/coloring_book/numbers/
+    - assets/images/coloring_book/alphabets/
+    - assets/images/coloring_book/mandala/
+    - assets/sounds/
     - assets/hot_city.json
     - assets/game/xiaoqiaomen.html   # 生活小窍门 WebView 本地资源
     - assets/game/jintianchishenme/   # 今天吃什么 WebView 本地资源

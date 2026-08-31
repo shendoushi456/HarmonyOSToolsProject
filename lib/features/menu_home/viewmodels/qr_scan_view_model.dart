@@ -13,6 +13,15 @@ class QrScanViewModel extends Notifier<QrScanState> {
     return const QrScanState();
   }
 
+  /// 进入扫码页时直接启动预览，不再展示应用内权限说明弹窗。
+  void startScan() {
+    state = state.copyWith(
+      permissionGranted: true,
+      showPermissionRationale: false,
+      clearError: true,
+    );
+  }
+
   /// 显示权限说明弹窗 - 对齐 MenuFragment.kt:802-811 QRCameraPremissDialog
   void showPermissionRationale() {
     state = state.copyWith(showPermissionRationale: true);

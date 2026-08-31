@@ -10,6 +10,7 @@ class QrScanState {
   final String? errorMessage;
 
   const QrScanState({
+    // 首帧后由页面启动扫码，避免原生平台视图通道尚未就绪时创建预览。
     this.permissionGranted = false,
     this.showPermissionRationale = false,
     this.scanResult,
@@ -28,7 +29,8 @@ class QrScanState {
   }) {
     return QrScanState(
       permissionGranted: permissionGranted ?? this.permissionGranted,
-      showPermissionRationale: showPermissionRationale ?? this.showPermissionRationale,
+      showPermissionRationale:
+          showPermissionRationale ?? this.showPermissionRationale,
       scanResult: clearResult ? null : scanResult ?? this.scanResult,
       showResultDialog: showResultDialog ?? this.showResultDialog,
       errorMessage: clearError ? null : errorMessage ?? this.errorMessage,

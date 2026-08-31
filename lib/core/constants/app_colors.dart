@@ -203,4 +203,36 @@ class AppColors {
 
   /// MenuHome 卡片阴影色(对齐 #0A000000)
   static const Color menuCardShadow = Color(0x0A000000);
+
+  // ====== NewDrawBoardFragment 首页颜色 - 对齐 fragment_new_drawboard.xml ======
+  /// 首页背景米黄(对齐 #FFF1EBD5)
+  static const Color homeBg = Color(0xFFF1EBD5);
+
+  /// 图片编辑器卡片蓝(对齐 #FF89BDE5)
+  static const Color homeImageEditorCard = Color(0xFF89BDE5);
+
+  /// 识别卡半透明白(对齐 #4DFFFFFF)
+  static const Color homeRecognitionCard = Color(0x4DFFFFFF);
+
+  /// 涂鸦卡渐变色(对齐 #FFF5F1E2)
+  static const Color homeGraffitiGradient = Color(0xFFF5F1E2);
+
+  // ====== CategoryDrawPage 17 色 - 对齐 MainActivityTwo colors.xml:93-110 ======
+  // 注意: deepPurple 保真 Bug，命名紫色但实际值是橙色 #ebab7f
+  static const Color categoryBlack = Color(0xFF000000);
+  static const Color categoryGray = Color(0xFF757575);
+  static const Color categoryBrown = Color(0xFF795548);
+  static const Color categoryDeepBlue = Color(0xFF303F9F);
+  static const Color categoryLightBlue = Color(0xFF03A9F4);
+  static const Color categoryDeepPurple = Color(0xFFEBAB7F); // 保真 Bug: 命名紫实际橙
+  static const Color categoryLightPurple = Color(0xFF9C27B0);
+  static const Color categoryRed = Color(0xFFE53935);
+  static const Color categoryLightPink = Color(0xFFFF80AB);
+  static const Color categoryDeepPink = Color(0xFFD81B60);
+  static const Color categoryDeepGreen = Color(0xFF2E7D32);
+  static const Color categoryLightGreen = Color(0xFF8BC34A);
+  static const Color categoryYellow = Color(0xFFFFEB3B);
+  static const Color categoryLightOrange = Color(0xFFFFE39F);
+  static const Color categoryDeepOrange = Color(0xFFFF9800);
+  static const Color categoryWhite = Color(0xFFFFFFFF);
 }

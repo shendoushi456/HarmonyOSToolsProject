@@ -2,15 +2,15 @@
   "string": [
     {
       "name": "module_desc",
-      "value": "达速上网通主模块"
+      "value": "乐彩绘画屋主模块"
     },
     {
       "name": "EntryAbility_desc",
-      "value": "达速上网通"
+      "value": "乐彩绘画屋"
     },
     {
       "name": "EntryAbility_label",
-      "value": "达速上网通"
+      "value": "乐彩绘画屋"
     },
     {
       "name": "permission_internet_reason",

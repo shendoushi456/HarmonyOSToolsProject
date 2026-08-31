@@ -17,7 +17,7 @@ class DrawViewModel extends Notifier<DrawState> {
     final paint = PaintData(
       color: state.mode == DrawMode.draw ? state.penColor : const Color(0x00000000),
       strokeWidth: state.mode == DrawMode.draw ? state.penSize : state.eraserSize,
-      blendMode: state.mode == DrawMode.draw ? BlendMode.src : BlendMode.clear,
+      blendMode: state.mode == DrawMode.draw ? BlendMode.srcOver : BlendMode.clear,
     );
     final info = PathDrawingInfo(Path.from(path), paint);
     final paths = [...state.paths, info];

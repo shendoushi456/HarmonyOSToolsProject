@@ -31,8 +31,12 @@ class _QrScanPageState extends ConsumerState<QrScanPage> {
   @override
   void initState() {
     super.initState();
+    // 等首帧完成后再创建原生扫码视图，确保插件通道已就绪。
+    // 这里不会显示应用内的隐私权限提示，插件仍会按需请求系统相机权限。
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      ref.read(qrScanViewModelProvider.notifier).showPermissionRationale();
+      if (mounted) {
+        ref.read(qrScanViewModelProvider.notifier).startScan();
+      }
     });
   }
 
@@ -66,22 +70,26 @@ class _QrScanPageState extends ConsumerState<QrScanPage> {
         fit: StackFit.expand,
         children: [
           if (state.permissionGranted)
-            QRView(
-              key: _qrKey,
-              onQRViewCreated: _onQrViewCreated,
-              cameraFacing: CameraFacing.back,
-              formatsAllowed: const [BarcodeFormat.qrcode],
-              onPermissionSet: (_, granted) {
-                if (!granted && mounted) {
-                  setState(() => _permissionDenied = true);
-                }
-              },
-              overlay: QrScannerOverlayShape(
-                borderColor: const Color(0xFF58C6FF),
-                borderRadius: 12,
-                borderLength: 32,
-                borderWidth: 6,
-                cutOutSize: 240,
+            Positioned.fill(
+              child: QRView(
+                key: _qrKey,
+                onQRViewCreated: _onQrViewCreated,
+                cameraFacing: CameraFacing.back,
+                formatsAllowed: const [BarcodeFormat.qrcode],
+                onPermissionSet: (_, granted) {
+                  if (!granted && mounted) {
+                    setState(() => _permissionDenied = true);
+                  }
+                },
+                // 保留扫描框边线，但不遮暗扫描框四周，让完整相机画面可见。
+                overlay: QrScannerOverlayShape(
+                  borderColor: const Color(0xFF58C6FF),
+                  borderRadius: 12,
+                  borderLength: 32,
+                  borderWidth: 6,
+                  cutOutSize: 240,
+                  overlayColor: Colors.transparent,
+                ),
               ),
             )
           else
@@ -117,52 +125,9 @@ class _QrScanPageState extends ConsumerState<QrScanPage> {
                 ),
               ),
             ),
-          if (state.showPermissionRationale)
-            _buildPermissionDialog(context, vm),
           if (state.showResultDialog && state.scanResult != null)
             _buildResultSheet(context, state, vm),
         ],
-      ),
-    );
-  }
-
-  Widget _buildPermissionDialog(BuildContext context, QrScanViewModel vm) {
-    return Material(
-      color: Colors.black54,
-      child: Center(
-        child: Container(
-          margin: const EdgeInsets.all(32),
-          padding: const EdgeInsets.all(20),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: Column(mainAxisSize: MainAxisSize.min, children: [
-            const Text('隐私权限提示',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-            const SizedBox(height: 12),
-            const Text('为了展示二维码扫描功能，我们需要使用您的相机权限。'),
-            const SizedBox(height: 20),
-            Row(children: [
-              Expanded(
-                child: OutlinedButton(
-                  onPressed: () {
-                    vm.onDenyPermission();
-                    Navigator.maybePop(context);
-                  },
-                  child: const Text('取消'),
-                ),
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: ElevatedButton(
-                  onPressed: vm.onAgreeRationale,
-                  child: const Text('同意'),
-                ),
-              ),
-            ]),
-          ]),
-        ),
       ),
     );
   }
