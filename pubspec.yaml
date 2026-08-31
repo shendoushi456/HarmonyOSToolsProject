@@ -1,5 +1,5 @@
 name: qingman_weather
-description: 晨晓气象站 - Flutter-ohos 版
+description: 风语天行 - Flutter-ohos 版
 publish_to: 'none'
 version: 1.0.0+1
 
@@ -75,5 +75,3 @@ flutter:
     - assets/ershisijieqi/css/
     - assets/ershisijieqi/images/
     - assets/ershisijieqi/js/
-    # 生活小窍门 H5（对齐 Android assets/xiaoqiaomen.html）
-    - assets/xiaoqiaomen.html

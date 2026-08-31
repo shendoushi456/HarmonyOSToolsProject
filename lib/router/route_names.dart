@@ -38,8 +38,8 @@ class RouteNames {
   /// 历史上的今天页(对齐 Android HistoryActivity)
   static const String historyToday = 'historyToday';
 
-  /// 生活小贴士 H5 页(对齐 Android WeatherWebViewActivity 加载 xiaoqiaomen.html)
-  static const String lifeTips = 'lifeTips';
+  /// 健康生活方式长文本页(对齐 Android ExtendedinformationActivity, extra: flag 0=营养/1=缓解压力)
+  static const String healthInfo = 'healthInfo';
 }
 
 class RoutePaths {
@@ -73,6 +73,6 @@ class RoutePaths {
   /// 历史上的今天页路径
   static const String historyToday = '/historyToday';
 
-  /// 生活小贴士 H5 页路径
-  static const String lifeTips = '/lifeTips';
+  /// 健康生活方式长文本页路径
+  static const String healthInfo = '/healthInfo';
 }

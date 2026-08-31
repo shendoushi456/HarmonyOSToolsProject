@@ -9,7 +9,7 @@ import '../features/setting/pages/setting_page.dart';
 import '../features/splash/pages/splash_page.dart';
 import '../features/weather/pages/city_select_page.dart';
 import '../features/weather/pages/solar_terms_page.dart';
-import '../features/calendar/pages/life_tips_page.dart';
+import '../features/calendar/pages/health_info_page.dart';
 import 'route_names.dart';
 
 final GoRouter appRouter = GoRouter(
@@ -74,11 +74,15 @@ final GoRouter appRouter = GoRouter(
       name: RouteNames.historyToday,
       builder: (context, state) => const HistoryPage(),
     ),
-    // 生活小贴士 H5 页 - 对齐 Android WeatherWebViewActivity 加载 xiaoqiaomen.html
+    // 健康生活方式长文本页 - 对齐 Android ExtendedinformationActivity(extra: flag 0=营养/1=缓解压力)
     GoRoute(
-      path: RoutePaths.lifeTips,
-      name: RouteNames.lifeTips,
-      builder: (context, state) => const LifeTipsPage(),
+      path: RoutePaths.healthInfo,
+      name: RouteNames.healthInfo,
+      builder: (context, state) {
+        final extra = state.extra as Map<String, dynamic>?;
+        final flag = extra?['flag'] as int? ?? 0;
+        return HealthInfoPage(flag: flag);
+      },
     ),
   ],
 );

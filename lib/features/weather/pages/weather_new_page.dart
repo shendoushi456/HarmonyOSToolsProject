@@ -6,7 +6,7 @@ import 'package:go_router/go_router.dart';
 import '../../../router/route_names.dart';
 import '../models/city_bean.dart';
 import '../repositories/city_repository.dart';
-import 'weather_new_child_page.dart';
+import 'weather_compose_child_page.dart';
 
 class WeatherNewPage extends ConsumerStatefulWidget {
   const WeatherNewPage({super.key});
@@ -50,18 +50,18 @@ class _WeatherNewPageState extends ConsumerState<WeatherNewPage> {
   Widget build(BuildContext context) {
     if (_isLoading) {
       return const Scaffold(
-        backgroundColor: Color(0xFFF5F8FC),
+        backgroundColor: Color(0xFF010C39),
         body: Center(child: CircularProgressIndicator()),
       );
     }
     if (_city == null) {
       return const Scaffold(
-        backgroundColor: Color(0xFFF5F8FC),
+        backgroundColor: Color(0xFF010C39),
         body: Center(child: Text('暂无城市')),
       );
     }
 
-    return WeatherNewChildPage(
+    return WeatherComposeChildPage(
       city: _city!,
       // 城市变化时强制重建,触发 WeatherViewModel.loadData 重新加载
       key: ValueKey(_city!.areaCode),

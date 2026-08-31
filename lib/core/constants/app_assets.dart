@@ -72,45 +72,50 @@ class AppAssets {
   /// 湿度图标（对齐 Android ic_feng_main_2_3，WeatherInfoCard 湿度项）
   static const String airHumidity = '$_base/ic_feng_main_2_3.png';
 
-  /// PM2.5 污染物图标（对齐 Android ic_ling_life_2_1，细颗粒物）
-  static const String pollutantPm25 = '$_base/ic_ling_life_2_1.png';
+  /// PM2.5 污染物图标（对齐 Android ic_shzn_01，细颗粒物）
+  static const String icShzn01 = '$_base/ic_shzn_01.png';
 
-  /// PM10 污染物图标（对齐 Android ic_ling_life_2_2，粗颗粒度）
-  static const String pollutantPm10 = '$_base/ic_ling_life_2_2.png';
+  /// PM10 污染物图标（对齐 Android ic_shzn_02，粗颗粒度）
+  static const String icShzn02 = '$_base/ic_shzn_02.png';
 
-  /// NO₂ 污染物图标（对齐 Android ic_ling_life_2_3，二氧化氮）
-  static const String pollutantNo2 = '$_base/ic_ling_life_2_3.png';
+  /// NO₂ 污染物图标（对齐 Android ic_shzn_03，二氧化氮）
+  static const String icShzn03 = '$_base/ic_shzn_03.png';
 
-  /// SO₂ 污染物图标（对齐 Android ic_ling_life_2_4，二氧化硫）
-  static const String pollutantSo2 = '$_base/ic_ling_life_2_4.png';
+  /// SO₂ 污染物图标（对齐 Android ic_shzn_04，二氧化硫）
+  static const String icShzn04 = '$_base/ic_shzn_04.png';
 
-  /// CO 污染物图标（对齐 Android ic_ling_life_2_5，一氧化碳）
-  static const String pollutantCo = '$_base/ic_ling_life_2_5.png';
+  /// CO 污染物图标（对齐 Android ic_shzn_05，一氧化碳）
+  static const String icShzn05 = '$_base/ic_shzn_05.png';
 
-  /// O3 污染物图标（对齐 Android ic_ling_life_2_6，臭氧）
-  static const String pollutantO3 = '$_base/ic_ling_life_2_6.png';
+  /// O3 污染物图标（对齐 Android ic_shzn_06，臭氧）
+  static const String icShzn06 = '$_base/ic_shzn_06.png';
 
-  /// 圆环中心空气质量图标（对齐 Android kqzl_iocn，注意原拼写是 iocn 不是 icon）
-  static const String airQualityCenterIcon = '$_base/kqzl_iocn.png';
+  // ====== WeatherChildFragment Compose UI 资源（对齐 Android WeatherChildFragment）======
+  /// 4 指标卡气压列图标（对齐 Android ic_feng_main_2_4，WeatherInfoCard 第4列气压）
+  /// 注意：现有 airPressure=_2_2 被 air_quality 模块复用，此处 _2_4 给天气页 WeatherInfoCard 第4列
+  static const String weatherInfoPressure = '$_base/ic_feng_main_2_4.png';
 
-  // ====== 日历新 UI 资源（对齐 Android NearbyFragment Compose UI）======
-  /// 生活小窍门图标（对齐 Android shenghxts，106dp，点击→xiaoqiaomen.html H5）
-  static const String lifeTipsIcon = '$_base/shenghxts.png';
+  /// 日出图标（对齐 Android ic_feng_main_3_1，SunriseSunsetCard2 日出行）
+  static const String sunriseIcon = '$_base/ic_feng_main_3_1.png';
 
-  /// 压力管理卡片背景图（对齐 Android llifehjyl_bg，315x165dp）
-  static const String pressureCardBg = '$_base/llifehjyl_bg.png';
+  /// 日落图标（对齐 Android ic_feng_main_3_2，SunriseSunsetCard2 日落行）
+  static const String sunsetIcon = '$_base/ic_feng_main_3_2.png';
 
-  /// 压力管理卡片插图（对齐 Android llifehjyl，90dp）
-  static const String pressureCardIllustration = '$_base/llifehjyl.png';
+  /// 日出日落进度条太阳图标（对齐 Android ic_sun.png，注意区别于日历模块的 ic_sun.webp/calendarSunIcon）
+  static const String daylightSunIcon = '$_base/ic_sun.png';
 
-  /// 日历左箭头（对齐 Android ic_arrow_left，15dp）
-  static const String calendarArrowLeft = '$_base/ic_arrow_left.png';
+  // ====== CalendarFragment 资源（对齐 Android CalendarFragment Compose UI）======
+  /// 健康生活方式卡片图标 - 营养（对齐 Android ic_jkshfs_01，NewFunctionRow1）
+  static const String icJkshfs01 = '$_base/ic_jkshfs_01.png';
 
-  /// 日历右箭头（对齐 Android ic_arrow_right，15dp）
-  static const String calendarArrowRight = '$_base/ic_arrow_right.png';
+  /// 健康生活方式卡片图标 - 如何缓解压力（对齐 Android ic_jkshfs_02，NewFunctionRow1）
+  static const String icJkshfs02 = '$_base/ic_jkshfs_02.png';
 
-  /// 日历天气占位图标（对齐 Android ic_sun.webp，gone 区域用，保真保留）
-  static const String calendarSunIcon = '$_base/ic_sun.webp';
+  /// 健康生活方式卡片图标 - 24节气（对齐 Android ic_jkshfs_03，NewFunctionRow2）
+  static const String icJkshfs03 = '$_base/ic_jkshfs_03.png';
+
+  /// 健康生活方式卡片图标 - 历史上的今天（对齐 Android ic_jkshfs_04，NewFunctionRow2）
+  static const String icJkshfs04 = '$_base/ic_jkshfs_04.png';
 
   /// WebView 标题栏返回箭头 - 黑色（对齐 Android icon_black_back）
   static const String webviewBackBlack = '$_base/icon_black_back.png';
@@ -133,29 +138,17 @@ class AppAssets {
   /// 15日天气标题图标
   static const String weatherForecastTitle = '$_base/qmtq_weather_forecast_title.png';
 
-  /// 底部导航 - 首页
-  static const String tabHomeNormal = '$_base/qmtq_tab_home_normal.png';
-  static const String tabHomeSelected = '$_base/qmtq_tab_home_selected.png';
+  /// 底部导航 - 天气（对齐 Android icon_tab_tools_1，ic_tab_1_true/false）
+  static const String tabWeatherTrue = '$_base/ic_tab_1_true.png';
+  static const String tabWeatherFalse = '$_base/ic_tab_1_false.png';
 
-  /// 底部导航 - 日历
-  static const String tabCalendarNormal = '$_base/qmtq_tab_calendar_normal.png';
-  static const String tabCalendarSelected = '$_base/qmtq_tab_calendar_selected.png';
+  /// 底部导航 - 日历（对齐 Android icon_tab_tools_2，ic_tab_2_true/false）
+  static const String tabCalendarTrue = '$_base/ic_tab_2_true.png';
+  static const String tabCalendarFalse = '$_base/ic_tab_2_false.png';
 
-  /// 底部导航 - 空气
-  static const String tabAirNormal = '$_base/qmtq_tab_air_normal.png';
-  static const String tabAirSelected = '$_base/qmtq_tab_air_selected.png';
-
-  /// 日历卡片背景(335x328)
-  static const String calendarCard = '$_base/qmtq_calendar_card.png';
-
-  /// 日历上一月箭头(28dp)
-  static const String calendarLeft = '$_base/qmtq_calendar_left.png';
-
-  /// 日历下一月箭头(28dp)
-  static const String calendarRight = '$_base/qmtq_calendar_right.png';
-
-  /// 日历选中周背景
-  static const String calendarWeekHighlight = '$_base/qmtq_calendar_week_highlight.png';
+  /// 底部导航 - 生活指南（对齐 Android icon_tab_tools_3，ic_tab_3_true/false）
+  static const String tabLifeGuideTrue = '$_base/ic_tab_3_true.png';
+  static const String tabLifeGuideFalse = '$_base/ic_tab_3_false.png';
 
   /// 城市搜索图标(16dp)
   static const String icSearch = '$_base/ic_search.webp';

@@ -1,11 +1,11 @@
 // 底部 3 Tab 容器 - 对齐 Android MainWeatherActivity
-// 首页(天气)迁移,日历/空气质量预留入口
+// 3 Tab: 天气/日历/生活指南（对齐 Android navtools_menu.xml）
+// 底部导航: 白色背景 + 黑色文字(统一,无选中/未选中区分) + ic_tab_1/2/3 图标原色(对齐 Android itemIconTint=null + itemTextColor=black)
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../calendar/pages/calendar_new_page.dart';
-import '../../air_quality/pages/air_quality_new_page.dart';
+import '../../calendar/pages/calendar_fragment.dart';
+import '../../air_quality/pages/weather_sh_child_page.dart';
 import '../../weather/pages/weather_new_page.dart';
-import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_assets.dart';
 
 /// 当前选中的 Tab 索引
@@ -20,8 +20,8 @@ class HomeShellPage extends ConsumerWidget {
 
     const pages = [
       WeatherNewPage(),
-      CalendarNewPage(),
-      AirQualityNewPage(),
+      CalendarFragment(),
+      WeatherShChildPage(),
     ];
 
     return Scaffold(
@@ -33,12 +33,14 @@ class HomeShellPage extends ConsumerWidget {
     );
   }
 
-  /// 底部导航栏 - 对齐 Android MyBottomNavView
+  /// 底部导航栏 - 对齐 Android MyBottomNavView（继承 BottomNavigationView）
+  /// 白色背景 + elevation 3dp + itemIconTint=null(图标原色) + itemTextColor=black(统一黑色)
   Widget _buildBottomNav(BuildContext context, WidgetRef ref, int currentIndex) {
     return Container(
-      height: 62,
+      // 对齐 Android Material BottomNavigationView 默认高度 ~56dp
+      height: 56,
       decoration: const BoxDecoration(
-        color: Color(0xFFF9FDFF),
+        color: Colors.white, // 对齐 Android background=white
         boxShadow: [
           BoxShadow(
             color: Color(0x0A000000),
@@ -56,27 +58,27 @@ class HomeShellPage extends ConsumerWidget {
               context,
               ref,
               index: 0,
-              label: '首页',
-              normalIcon: AppAssets.tabHomeNormal,
-              selectedIcon: AppAssets.tabHomeSelected,
+              label: '天气', // 对齐 Android navtools_menu "天气"
+              normalIcon: AppAssets.tabWeatherFalse, // ic_tab_1_false
+              selectedIcon: AppAssets.tabWeatherTrue, // ic_tab_1_true
               isSelected: currentIndex == 0,
             ),
             _buildNavItem(
               context,
               ref,
               index: 1,
-              label: '日历',
-              normalIcon: AppAssets.tabCalendarNormal,
-              selectedIcon: AppAssets.tabCalendarSelected,
+              label: '日历', // 对齐 Android navtools_menu "日历"
+              normalIcon: AppAssets.tabCalendarFalse, // ic_tab_2_false
+              selectedIcon: AppAssets.tabCalendarTrue, // ic_tab_2_true
               isSelected: currentIndex == 1,
             ),
             _buildNavItem(
               context,
               ref,
               index: 2,
-              label: '空气质量',
-              normalIcon: AppAssets.tabAirNormal,
-              selectedIcon: AppAssets.tabAirSelected,
+              label: '生活指南', // 对齐 Android navtools_menu "生活指南"
+              normalIcon: AppAssets.tabLifeGuideFalse, // ic_tab_3_false
+              selectedIcon: AppAssets.tabLifeGuideTrue, // ic_tab_3_true
               isSelected: currentIndex == 2,
             ),
           ],
@@ -86,6 +88,7 @@ class HomeShellPage extends ConsumerWidget {
   }
 
   /// 单个底部导航项
+  /// 对齐 Android: itemIconTint=null（图标用 selector 原色 PNG）+ itemTextColor=black（统一黑色,无选中/未选中区分）
   Widget _buildNavItem(
     BuildContext context,
     WidgetRef ref, {
@@ -102,17 +105,20 @@ class HomeShellPage extends ConsumerWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            // 图标 - 对齐 Android selector(checked/unchecked 切换 true/false PNG)
+            // itemIconTint=null 表示用原色,鸿蒙 Image.asset 默认原色不染色
             Image.asset(
               isSelected ? selectedIcon : normalIcon,
               width: 25,
               height: 25,
             ),
             const SizedBox(height: 2),
+            // 文字 - 对齐 Android itemTextColor=black（统一黑色,无选中/未选中区分）
             Text(
               label,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 10,
-                color: isSelected ? AppColors.qmtqBlue : const Color(0xFF999999),
+                color: Colors.black,
               ),
             ),
           ],

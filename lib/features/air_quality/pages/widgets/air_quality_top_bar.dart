@@ -1,6 +1,6 @@
-// 空气质量顶部栏 - 对齐 Android WeatherShChildFragment.TopAppBar
-// Box(height 50dp, statusBarsPadding) + Text "空气质量" 22sp SemiBold Black center
-// + Icon Settings 40dp align CenterEnd padding end 16dp → setting 路由
+// 空气质量页顶部栏 - 对齐 Android WeatherShChildFragment.TopAppBar（行 315-358）
+// 50dp 高 + 0xFF010C39 深蓝背景 + statusBarsPadding + "生活指南" 22sp White SemiBold 居中
+// 右上角设置齿轮(40dp White, padding end 16, → setting 路由)
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../router/route_names.dart';
@@ -10,31 +10,31 @@ class AirQualityTopBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // 对齐 Android Box(fillMaxWidth, statusBarsPadding, bg 0xFF010C39, height 50dp)
     return Container(
-      color: const Color(0xFFF5F8FC),
+      color: const Color(0xFF010C39),
       child: SafeArea(
+        top: true,
         bottom: false,
         child: SizedBox(
           height: 50,
           child: Stack(
+            alignment: Alignment.center,
             children: [
-              // 标题 "空气质量" - 对齐 Android Text(fillMaxWidth, align Center, 22sp SemiBold Black, lineHeight 30sp)
-              const Positioned.fill(
-                child: Center(
-                  child: Text(
-                    '空气质量',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 22,
-                      fontWeight: FontWeight.w600,
-                      height: 30 / 22,
-                    ),
+              // 标题 "生活指南" 居中 - 对齐 Android Text(22sp SemiBold White, center, lineHeight 30)
+              const Center(
+                child: Text(
+                  '生活指南',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Color(0xFFFFFFFF),
+                    fontSize: 22,
+                    fontWeight: FontWeight.w600, // SemiBold
+                    height: 30 / 22, // lineHeight 30sp
                   ),
                 ),
               ),
-              // 右侧设置图标 - 对齐 Android Icon(Settings, size 40dp, align CenterEnd, padding end 16dp)
-              // 点击 → SettSet2Activity(鸿蒙复用 setting 路由)
+              // 右上角设置齿轮 - 对齐 Android Icon(Icons.Default.Settings, 40dp White, align CenterEnd, padding end 16)
               Positioned(
                 right: 16,
                 top: 0,
@@ -42,10 +42,12 @@ class AirQualityTopBar extends StatelessWidget {
                 child: GestureDetector(
                   onTap: () => context.push(RoutePaths.setting),
                   behavior: HitTestBehavior.opaque,
-                  child: const Icon(
-                    Icons.settings,
-                    color: Colors.black,
-                    size: 40,
+                  child: const Center(
+                    child: Icon(
+                      Icons.settings,
+                      size: 40,
+                      color: Color(0xFFFFFFFF),
+                    ),
                   ),
                 ),
               ),
