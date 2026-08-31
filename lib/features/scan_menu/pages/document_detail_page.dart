@@ -57,13 +57,20 @@ class _DocumentDetailPageState extends ConsumerState<DocumentDetailPage> {
     try {
       await DocumentExportService().exportToGallery(File(widget.document.path),
           name: widget.document.name);
-      if (mounted)
+      if (mounted) {
         ScaffoldMessenger.of(context)
             .showSnackBar(const SnackBar(content: Text('已保存到系统相册')));
-    } catch (_) {
-      if (mounted)
+      }
+    } on GalleryExportException catch (error) {
+      if (mounted && !error.isCanceled) {
         ScaffoldMessenger.of(context)
-            .showSnackBar(const SnackBar(content: Text('保存到本地失败，请检查权限')));
+            .showSnackBar(SnackBar(content: Text('保存失败：${error.message}')));
+      }
+    } catch (_) {
+      if (mounted) {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(const SnackBar(content: Text('保存到本地失败，请稍后重试')));
+      }
     } finally {
       if (mounted) setState(() => _exporting = false);
     }

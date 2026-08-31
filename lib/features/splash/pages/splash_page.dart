@@ -38,7 +38,11 @@ class _SplashPageState extends State<SplashPage> {
     if (!agreed) {
       _showProtocolDialog();
     } else {
-      _toMain();
+      // 与 master_saolaisao 一致：已同意时先稳定展示启动 Logo，
+      // 给 Flutter 首帧和系统启动窗口一个连续的视觉过渡。
+      Future<void>.delayed(const Duration(seconds: 1), () {
+        if (mounted) _toMain();
+      });
     }
   }
 
@@ -72,13 +76,20 @@ class _SplashPageState extends State<SplashPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      // 与 module.json5 的 startWindowBackground 保持一致，避免原生窗口切换到
+      // Flutter 首帧时出现底色闪烁。
+      backgroundColor: const Color(0xFFFFFFFF),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             // logo 100x100 - 对齐 activity_splash.xml marginTop 150
-            Image.asset(AppAssets.appLogo, width: 100, height: 100),
+            Image.asset(
+              AppAssets.appLogo,
+              width: 100,
+              height: 100,
+              gaplessPlayback: true,
+            ),
             // 应用名 18sp bold black marginTop 50
             Padding(
               padding: const EdgeInsets.only(top: 50),
@@ -124,18 +135,17 @@ class _ProtocolDialog extends StatelessWidget {
               ),
             ),
             // "欢迎使用" 14sp #333 - 对齐行 20-27
-            _buildParagraph('欢迎使用', const Color(0xFF333333),
-                top: 20),
+            _buildParagraph('欢迎使用', const Color(0xFF333333), top: 20),
             // 说明文字 1 - 对齐行 29-37
             _buildParagraph(
-              '为了向您提供最佳的服务，我们会根据您在使用时的具体服务功能，收集必要的设备信息以及您设备的存储权限、网络权限、日历和读写等权限。',
-              const Color(0xFF333333),
-              top: 10),
+                '为了向您提供最佳的服务，我们会根据您在使用时的具体服务功能，收集必要的设备信息以及您设备的存储权限、网络权限、日历和读写等权限。',
+                const Color(0xFF333333),
+                top: 10),
             // 说明文字 2 - 对齐行 39-47
             _buildParagraph(
-              '当您在使用具体功能时、我们需要获取您与该功能相对应的权限。未经您的同意，我们不会向第三方披露、共享或者提供您的个人信息。',
-              const Color(0xFF333333),
-              top: 10),
+                '当您在使用具体功能时、我们需要获取您与该功能相对应的权限。未经您的同意，我们不会向第三方披露、共享或者提供您的个人信息。',
+                const Color(0xFF333333),
+                top: 10),
             // "您可阅读完整的" - 对齐行 49-56
             _buildParagraph('您可阅读完整的', Colors.black, top: 10),
             // 协议链接 Row - 对齐行 58-81
@@ -145,8 +155,8 @@ class _ProtocolDialog extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   GestureDetector(
-                    onTap: () => _openPolicy(
-                        context, '隐私政策', SettingUrls.policy),
+                    onTap: () =>
+                        _openPolicy(context, '隐私政策', SettingUrls.policy),
                     child: const Text(
                       '《隐私协议》',
                       style: TextStyle(
@@ -158,8 +168,8 @@ class _ProtocolDialog extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.only(left: 20),
                     child: GestureDetector(
-                      onTap: () => _openPolicy(
-                          context, '用户协议', SettingUrls.user),
+                      onTap: () =>
+                          _openPolicy(context, '用户协议', SettingUrls.user),
                       child: const Text(
                         '《用户协议》',
                         style: TextStyle(
@@ -173,8 +183,9 @@ class _ProtocolDialog extends StatelessWidget {
               ),
             ),
             // "各条款信息..." - 对齐行 83-88
-            _buildParagraph('各条款信息，来了解详细内容。如您同意，请点击“同意”开始接受我们的服务。',
-                Colors.black, top: 10),
+            _buildParagraph(
+                '各条款信息，来了解详细内容。如您同意，请点击“同意”开始接受我们的服务。', Colors.black,
+                top: 10),
             // 同意按钮 - 对齐行 91-101 (100x40, #3F5BDF 圆角, 18sp white)
             Padding(
               padding: const EdgeInsets.only(top: 20),

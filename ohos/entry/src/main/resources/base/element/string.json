@@ -2,15 +2,15 @@
   "string": [
     {
       "name": "module_desc",
-      "value": "WIFI互联通主模块"
+      "value": "达速上网通主模块"
     },
     {
       "name": "EntryAbility_desc",
-      "value": "WIFI互联通"
+      "value": "达速上网通"
     },
     {
       "name": "EntryAbility_label",
-      "value": "WIFI互联通"
+      "value": "达速上网通"
     },
     {
       "name": "permission_internet_reason",

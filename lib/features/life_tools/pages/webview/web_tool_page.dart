@@ -76,11 +76,19 @@ class _WebToolPageState extends State<WebToolPage> {
     // assetPath 如 'assets/game/jintianchishenme/index.html'
     // 提取目录名
     final parts = assetPath.split('/');
-    final dirName = parts.length > 2 ? parts[parts.length - 2] : 'web';
     final htmlName = parts.last;
 
-    final files =
-        assetPath.contains('/ershisijieqi/') ? _solarTermsFiles : _eatGameFiles;
+    final isSolar = assetPath.contains('/ershisijieqi/');
+    final isXiao = assetPath.contains('/xiaoqiaomen');
+    final files = isSolar
+        ? _solarTermsFiles
+        : isXiao
+            ? _xiaoqiaomenFiles
+            : _eatGameFiles;
+    // 单文件 H5(xiaoqiaomen) 用自身文件名作临时目录,避免与其他 game 资源混淆
+    final dirName = isXiao
+        ? htmlName.replaceAll('.html', '')
+        : (parts.length > 2 ? parts[parts.length - 2] : 'web');
     final tempDir = await getTemporaryDirectory();
     final targetDir = Directory('${tempDir.path}/$dirName');
     final indexPath = '${targetDir.path}/$htmlName';
@@ -97,6 +105,9 @@ class _WebToolPageState extends State<WebToolPage> {
     }
     _controller.loadFile(indexPath);
   }
+
+  /// 生活小窍门 H5 为单文件(内联 CSS, 无外部依赖)
+  static const _xiaoqiaomenFiles = ['xiaoqiaomen.html'];
 
   static const _eatGameFiles = [
     'index.html',

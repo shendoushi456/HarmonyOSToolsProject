@@ -1,5 +1,5 @@
 name: qingman_weather
-description: WIFI互联通 - Flutter-ohos 版
+description: 达速上网通 - Flutter-ohos 版
 publish_to: 'none'
 version: 1.0.0+1
 
@@ -124,6 +124,7 @@ flutter:
   assets:
     - assets/images/
     - assets/hot_city.json
+    - assets/game/xiaoqiaomen.html   # 生活小窍门 WebView 本地资源
     - assets/game/jintianchishenme/   # 今天吃什么 WebView 本地资源
     - assets/game/ershisijieqi/       # 二十四节气 WebView 本地资源
     - assets/game/ershisijieqi/css/       # 二十四节气 WebView 本地资源

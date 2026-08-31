@@ -88,6 +88,9 @@ class AppColors {
   static const Color settingAppName = Color(0xFF333333);
 
   // ====== WiFi 工具页颜色 - 对齐 activity_main_tool.xml + item_my_wifi_list.xml ======
+  /// WiFi 页背景灰(对齐 activity_main_tool.xml 根 #E3EEFF)
+  static const Color wifiHomeBg = Color(0xFFE3EEFF);
+
   /// WiFi 页背景灰
   static const Color wifiPageBg = Color(0xFFEDEFF9);
 

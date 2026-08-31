@@ -5,7 +5,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
 import '../../home/viewmodels/home_tab_view_model.dart';
-import '../repositories/scanned_document_repository.dart';
 import '../services/document_export_service.dart';
 import '../viewmodels/scanned_document_view_model.dart';
 
@@ -76,13 +75,20 @@ class _DocumentSavePageState extends ConsumerState<DocumentSavePage> {
     setState(() => _exporting = true);
     try {
       await DocumentExportService().exportToGallery(widget.file, name: _name);
-      if (mounted)
+      if (mounted) {
         ScaffoldMessenger.of(context)
             .showSnackBar(const SnackBar(content: Text('已保存到系统相册')));
+      }
+    } on GalleryExportException catch (error) {
+      if (mounted && !error.isCanceled) {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text('保存失败：${error.message}')));
+      }
     } catch (_) {
-      if (mounted)
-        ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('保存到本地失败，请授予图片和视频写入权限')));
+      if (mounted) {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(const SnackBar(content: Text('保存到本地失败，请稍后重试')));
+      }
     } finally {
       if (mounted) setState(() => _exporting = false);
     }
@@ -96,11 +102,14 @@ class _DocumentSavePageState extends ConsumerState<DocumentSavePage> {
           .saveCapturedDocument(widget.file, displayName: _name);
       await ref.read(scannedDocumentViewModelProvider.notifier).refresh();
       ref.read(homeTabIndexProvider.notifier).state = 1;
-      if (mounted) Navigator.pop(context, true);
+      if (mounted) {
+        Navigator.pop(context, true);
+      }
     } catch (_) {
-      if (mounted)
+      if (mounted) {
         ScaffoldMessenger.of(context)
             .showSnackBar(const SnackBar(content: Text('文档保存失败，请重试')));
+      }
     } finally {
       if (mounted) setState(() => _saving = false);
     }

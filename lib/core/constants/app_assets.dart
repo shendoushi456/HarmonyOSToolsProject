@@ -123,6 +123,9 @@ class AppAssets {
   /// WiFi 详情卡左侧 wifi 图标(114dp)
   static const String wifiTopIcon = '$_base/top_wifi_icon.png';
 
+  /// WiFi 连接卡左侧 wifi 图标(72dp, 对齐 @mipmap/wifi_icon)
+  static const String wifiIcon = '$_base/wifi_icon.png';
+
   // ====== WiFi 列表 item 资源 - 对齐 item_my_wifi_list.xml + ClearLib Adapter ======
   // 信号强度图标(5 级 × 无锁/有锁 = 10 个)。命名对齐安卓原版(_locker/_locked/_excelent 拼写)
   /// 信号 0 级 - 无锁(disabled)
@@ -168,6 +171,20 @@ class AppAssets {
 
   /// wifi 空状态图标(临时复用 wifi_disconnected，原 ic_wifi_empty 待补)
   static const String wifiEmpty = '$_base/wifi_disconnected.png';
+
+  // ====== Weather 资源 - 对齐 WeatherFragment.kt + tools_fr_weather.xml ======
+  /// 日历页设置图标(对齐 @mipmap/ic_setting)
+  static const String weatherIcSetting = '$_base/ic_setting.png';
+
+  /// 日历月份切换箭头(对齐 @mipmap/ic_arrow_left / ic_arrow_right)
+  static const String weatherIcArrowLeft = '$_base/ic_arrow_left.png';
+  static const String weatherIcArrowRight = '$_base/ic_arrow_right.png';
+
+  /// 2×2 功能按钮背景图(对齐 @mipmap/btn_01~04)
+  static const String weatherBtnJrjq = '$_base/btn_01.png';
+  static const String weatherBtnLssdjt = '$_base/btn_02.png';
+  static const String weatherBtnShxqm = '$_base/btn_03.png';
+  static const String weatherBtnShjyl = '$_base/btn_04.png';
 
   // ====== LifeTools 资源 - 对齐 LifeFragment.kt ======
   /// 入口卡片页背景图(对齐 ic_shan_main_1_1)
@@ -272,6 +289,18 @@ class AppAssets {
   static const String scanItemArrow = '$_base/clearitemjt.png';
   static const String recognitionBankIcon = '$_base/ic_tong_life_2_1.png';
   static const String recognitionBankCard = '$_base/nxtx_toolbox_bank_card.png';
+
+  // CleanMainFragment 纵向工具列表图标（从 Android 原工程迁移并独立命名）。
+  static const String cleanToolBankCard = '$_base/clean_tool_bank_card.png';
+  static const String cleanToolColourize = '$_base/clean_tool_colourize.png';
+  static const String cleanToolStyle = '$_base/clean_tool_style.png';
+  static const String cleanToolAnime = '$_base/clean_tool_anime.png';
+  static const String cleanToolQr = '$_base/clean_tool_qr.png';
+  static const String cleanToolText = '$_base/clean_tool_text.png';
+  static const String cleanShortcutPlant = '$_base/clean_shortcut_plant.png';
+  static const String cleanShortcutIngredient =
+      '$_base/clean_shortcut_ingredient.png';
+  static const String cleanShortcutAnimal = '$_base/clean_shortcut_animal.png';
 
   // NewLifeFragment 首页资源（直接取自 Android 原工程）
   static const String newLifeAddNote = '$_base/new_life_add_note.png';

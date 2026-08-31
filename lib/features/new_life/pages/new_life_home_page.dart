@@ -57,8 +57,10 @@ class _NewLifeHomePageState extends ConsumerState<NewLifeHomePage> {
   Widget build(BuildContext context) {
     final notesState = ref.watch(notebookListViewModelProvider);
     return Scaffold(
+
       backgroundColor: const Color(0xFFF2F4F5),
       body: Column(
+
         children: [
           _NewLifeTopBar(onSettingsTap: () => context.push(RoutePaths.setting)),
           Expanded(
@@ -109,7 +111,7 @@ class _NewLifeTopBar extends StatelessWidget {
       child: SafeArea(
         bottom: false,
         child: SizedBox(
-          height: 60,
+          height: 50,
           child: Stack(
             children: [
               const Positioned(

@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../scan_tools/pages/scan_tools_page.dart';
 import '../../wifi/pages/wifi_page.dart';
-import '../../new_life/pages/new_life_home_page.dart';
+import '../../weather/pages/weather_page.dart';
 import '../viewmodels/home_tab_view_model.dart';
 
 class HomeShellPage extends ConsumerWidget {
@@ -12,7 +12,7 @@ class HomeShellPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final currentIndex = ref.watch(homeTabIndexProvider);
-    const pages = [WifiPage(), ScanToolsPage(), NewLifeHomePage()];
+    const pages = [WifiPage(), ScanToolsPage(), WeatherPage()];
     return Scaffold(
       body: IndexedStack(index: currentIndex, children: pages),
       bottomNavigationBar: _buildBottomNav(ref, currentIndex),
@@ -21,9 +21,9 @@ class HomeShellPage extends ConsumerWidget {
 
   Widget _buildBottomNav(WidgetRef ref, int currentIndex) {
     const items = <_NavItem>[
-      _NavItem(Icons.wifi_outlined, Icons.wifi, 'Wi-Fi'),
-      _NavItem(Icons.grid_view_outlined, Icons.grid_view, '工具'),
-      _NavItem(Icons.margin_outlined, Icons.margin, '我的'),
+      _NavItem(Icons.wifi_tethering_rounded, Icons.wifi_tethering_rounded, 'Wi-Fi'),
+      _NavItem(Icons.table_rows_outlined, Icons.table_rows, '工具'),
+      _NavItem(Icons.grid_on_outlined, Icons.grid_on, '我的'),
     ];
     return Container(
       height: 62,
