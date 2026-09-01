@@ -5,7 +5,7 @@ class AppInfoUtil {
   AppInfoUtil._();
 
   /// 应用名(对齐 Android getApplicationLabel)
-  static const String appName = '乐彩绘画屋';
+  static const String appName = '乐熊涂画';
 
   /// 版本号(对齐 Android getVersion → "1.0.1")
   static const String version = '1.0.1';
@@ -16,8 +16,8 @@ class SettingUrls {
   SettingUrls._();
 
   /// 用户协议 URL
-  static const String user = 'http://api.jyhytech.top/agreement/bjlchhw/user';
+  static const String user = 'http://api.jyhytech.top/agreement/bjlxthhm/user';
 
   /// 隐私协议 URL
-  static const String policy = 'http://api.jyhytech.top/agreement/bjlchhw/privacy';
+  static const String policy = 'http://api.jyhytech.top/agreement/bjlxthhm/privacy';
 }

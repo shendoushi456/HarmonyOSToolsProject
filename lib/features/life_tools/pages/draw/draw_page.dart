@@ -1,15 +1,14 @@
 // 画板页 - 对齐 Android DrawActivity.java + activity_lib_draw_tool.xml
 // 顶栏"画板" + 菜单(笔粗/颜色/保存) + CustomPaint + 底部 5 个按钮(撤销/重做/画笔/橡皮擦/清除)
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:path_provider/path_provider.dart';
 import 'dart:ui' as ui;
 import '../../viewmodels/draw_state.dart';
 import '../../viewmodels/draw_view_model.dart';
 import '../widgets/tool_top_bar.dart';
 import 'widgets/palette_painter.dart';
+import '../../../scan_menu/services/document_export_service.dart';
 
 class DrawPage extends ConsumerStatefulWidget {
   const DrawPage({super.key});
@@ -59,7 +58,8 @@ class _DrawPageState extends ConsumerState<DrawPage> {
                 child: GestureDetector(
                   onPanStart: (details) {
                     _currentPath.reset();
-                    _currentPath.moveTo(details.localPosition.dx, details.localPosition.dy);
+                    _currentPath.moveTo(
+                        details.localPosition.dx, details.localPosition.dy);
                   },
                   onPanUpdate: (details) {
                     // quadTo 取中点(对齐 PaletteView.java:648)
@@ -77,15 +77,24 @@ class _DrawPageState extends ConsumerState<DrawPage> {
                   },
                   child: CustomPaint(
                     painter: PalettePainter(
-                      paths: [...state.paths, if (_currentPath.getBounds().width > 0 || _currentPath.getBounds().height > 0)
-                        PathDrawingInfo(
-                          Path.from(_currentPath),
-                          PaintData(
-                            color: state.mode == DrawMode.draw ? state.penColor : const Color(0x00000000),
-                            strokeWidth: state.mode == DrawMode.draw ? state.penSize : state.eraserSize,
-                            blendMode: state.mode == DrawMode.draw ? ui.BlendMode.src : ui.BlendMode.clear,
+                      paths: [
+                        ...state.paths,
+                        if (_currentPath.getBounds().width > 0 ||
+                            _currentPath.getBounds().height > 0)
+                          PathDrawingInfo(
+                            Path.from(_currentPath),
+                            PaintData(
+                              color: state.mode == DrawMode.draw
+                                  ? state.penColor
+                                  : const Color(0x00000000),
+                              strokeWidth: state.mode == DrawMode.draw
+                                  ? state.penSize
+                                  : state.eraserSize,
+                              blendMode: state.mode == DrawMode.draw
+                                  ? ui.BlendMode.src
+                                  : ui.BlendMode.clear,
+                            ),
                           ),
-                        ),
                       ],
                     ),
                     size: Size.infinite,
@@ -123,7 +132,8 @@ class _DrawPageState extends ConsumerState<DrawPage> {
     );
   }
 
-  Widget _buildToolBtn(IconData icon, String label, VoidCallback onTap, {bool selected = false}) {
+  Widget _buildToolBtn(IconData icon, String label, VoidCallback onTap,
+      {bool selected = false}) {
     return Expanded(
       child: GestureDetector(
         onTap: onTap,
@@ -132,9 +142,15 @@ class _DrawPageState extends ConsumerState<DrawPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(icon, size: 24, color: selected ? Colors.white : const Color(0xFF555555)),
+              Icon(icon,
+                  size: 24,
+                  color: selected ? Colors.white : const Color(0xFF555555)),
               const SizedBox(height: 2),
-              Text(label, style: TextStyle(fontSize: 10, color: selected ? Colors.white : const Color(0xFF555555))),
+              Text(label,
+                  style: TextStyle(
+                      fontSize: 10,
+                      color:
+                          selected ? Colors.white : const Color(0xFF555555))),
             ],
           ),
         ),
@@ -143,10 +159,17 @@ class _DrawPageState extends ConsumerState<DrawPage> {
   }
 
   /// 颜色选择 - 对齐 DrawActivity 颜色选择
-  Future<void> _pickColor(BuildContext context, DrawViewModel vm, Color current) async {
+  Future<void> _pickColor(
+      BuildContext context, DrawViewModel vm, Color current) async {
     final colors = [
-      Colors.black, Colors.red, Colors.orange, Colors.yellow,
-      Colors.green, Colors.blue, Colors.indigo, Colors.purple,
+      Colors.black,
+      Colors.red,
+      Colors.orange,
+      Colors.yellow,
+      Colors.green,
+      Colors.blue,
+      Colors.indigo,
+      Colors.purple,
     ];
     final color = await showDialog<Color>(
       context: context,
@@ -155,10 +178,16 @@ class _DrawPageState extends ConsumerState<DrawPage> {
         children: [
           Wrap(
             alignment: WrapAlignment.center,
-            children: colors.map((c) => GestureDetector(
-              onTap: () => Navigator.pop(ctx, c),
-              child: Container(width: 40, height: 40, margin: const EdgeInsets.all(8), color: c),
-            )).toList(),
+            children: colors
+                .map((c) => GestureDetector(
+                      onTap: () => Navigator.pop(ctx, c),
+                      child: Container(
+                          width: 40,
+                          height: 40,
+                          margin: const EdgeInsets.all(8),
+                          color: c),
+                    ))
+                .toList(),
           ),
         ],
       ),
@@ -166,28 +195,29 @@ class _DrawPageState extends ConsumerState<DrawPage> {
     if (color != null) vm.setPenColor(color);
   }
 
-  /// 保存 PNG - 对齐 DrawActivity.java:175-230 Util.SaveImage
-  /// 写入应用文档目录(对齐 /工具箱/简易画板/)
+  /// 保存 PNG 到鸿蒙系统图库。
   Future<void> _savePng() async {
-    final boundary = _repaintKey.currentContext?.findRenderObject() as RenderRepaintBoundary?;
+    final boundary = _repaintKey.currentContext?.findRenderObject()
+        as RenderRepaintBoundary?;
     if (boundary == null) return;
     final image = await boundary.toImage(pixelRatio: 2.0);
     final byteData = await image.toByteData(format: ui.ImageByteFormat.png);
     if (byteData == null) return;
     final bytes = byteData.buffer.asUint8List();
-    final now = DateTime.now();
-    final fileName = 'Image-${now.hour.toString().padLeft(2, '0')}-${now.minute.toString().padLeft(2, '0')}-${now.second.toString().padLeft(2, '0')}.png';
     try {
-      final dir = await getApplicationDocumentsDirectory();
-      final saveDir = Directory('${dir.path}/工具箱/简易画板');
-      if (!await saveDir.exists()) {
-        await saveDir.create(recursive: true);
-      }
-      final file = File('${saveDir.path}/$fileName');
-      await file.writeAsBytes(bytes);
+      await DocumentExportService().exportBytesToGallery(
+        bytes,
+        name: '简易画板-${DateTime.now().millisecondsSinceEpoch}',
+      );
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('已保存: ${file.path}')),
+          const SnackBar(content: Text('已保存到系统相册')),
+        );
+      }
+    } on GalleryExportException catch (error) {
+      if (context.mounted && !error.isCanceled) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('保存失败：${error.message}')),
         );
       }
     } catch (e) {

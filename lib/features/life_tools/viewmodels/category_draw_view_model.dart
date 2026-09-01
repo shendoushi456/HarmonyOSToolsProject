@@ -1,8 +1,6 @@
 // CategoryDrawViewModel - 分类涂鸦填色页 ViewModel
 // 对齐 Android MainActivityTwo.java 的业务逻辑
-// 内建 FloodFill（scanline flood fill）+ 撤销（到空重启）+ 保存
-import 'dart:ui' as ui;
-
+// 内建 FloodFill（scanline flood fill）+ 位图快照撤销 + 保存
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/services.dart';
@@ -11,6 +9,11 @@ import 'package:image/image.dart' as img;
 import 'category_draw_state.dart';
 
 class CategoryDrawViewModel extends Notifier<CategoryDrawState> {
+  // 每个快照均为独立 Uint8List，避免后续图片编解码或状态替换改变历史内容。
+  final _undoSnapshots = <Uint8List>[];
+  final _redoSnapshots = <Uint8List>[];
+  final _redoOperations = <DrawnPoint>[];
+
   @override
   CategoryDrawState build() => const CategoryDrawState();
 
@@ -24,12 +27,19 @@ class CategoryDrawViewModel extends Notifier<CategoryDrawState> {
       if (decoded == null) {
         throw StateError('线稿解码失败: $assetPath');
       }
-      final normalized = Uint8List.fromList(img.encodePng(decoded));
+      // 素材混用了 WebP 与索引色 PNG。索引色图片直接 setPixelRgba 时实际
+      // 修改的是 palette index，会导致选色退化为黑色；统一烘焙为 4 通道 RGBA。
+      final rgba = decoded.convert(numChannels: 4, withPalette: false);
+      final normalized = Uint8List.fromList(img.encodePng(rgba));
+      _undoSnapshots.clear();
+      _redoSnapshots.clear();
+      _redoOperations.clear();
       state = state.copyWith(
         initialBytes: normalized,
         currentBytes: Uint8List.fromList(normalized),
-        imageWidth: decoded.width,
-        imageHeight: decoded.height,
+        imageWidth: rgba.width,
+        imageHeight: rgba.height,
+        drawnPoints: const [],
         code: code,
         position: position,
       );
@@ -54,7 +64,6 @@ class CategoryDrawViewModel extends Notifier<CategoryDrawState> {
 
     state = state.copyWith(isFilling: true);
     try {
-      final oldColor = _pixelColor(initialBytes, x, y);
       final result = await compute(
         _floodFill,
         _FillRequest(
@@ -67,14 +76,16 @@ class CategoryDrawViewModel extends Notifier<CategoryDrawState> {
           (state.currentColor.b * 255).round(),
         ),
       );
-      if (result != null) {
-        final newDrawnPoints = [
-          ...state.drawnPoints,
-          DrawnPoint(x: x, y: y, oldColor: oldColor)
-        ];
+      // 点击已是目标色的区域不产生新历史记录。
+      if (result != null && !listEquals(result, currentBytes)) {
+        final operation = DrawnPoint(x: x, y: y);
+        // 在替换当前帧之前做深拷贝，撤销无需重新执行 flood-fill。
+        _pushSnapshot(_undoSnapshots, currentBytes);
+        _redoSnapshots.clear();
+        _redoOperations.clear();
         state = state.copyWith(
           currentBytes: result,
-          drawnPoints: newDrawnPoints,
+          drawnPoints: [...state.drawnPoints, operation],
         );
       }
     } finally {
@@ -82,45 +93,41 @@ class CategoryDrawViewModel extends Notifier<CategoryDrawState> {
     }
   }
 
-  /// 撤销 - 对齐 MainActivityTwo.undoMethod:524-566
-  /// 用 drawnPoints 取上一个点，填回 TRANSPARENT（即恢复原始）
-  /// 保真 Bug 4：撤销到空时重启 Activity（返回 true 让 Page pushReplacement）
-  /// 返回 true 表示需要重启，false 表示正常撤销
+  /// 从完整图片快照恢复上一步，保留透明像素，避免撤销时填回黑色。
+  /// 保留 bool 返回值以兼容页面调用；快照策略下无需重建页面，恒为 false。
   Future<bool> undo() async {
-    if (state.drawnPoints.isEmpty || state.isFilling) return false;
-    final lastPoint = state.drawnPoints.last;
-    final initialBytes = state.initialBytes;
-    final currentBytes = state.currentBytes;
-    if (initialBytes == null || currentBytes == null) return false;
-
-    state = state.copyWith(isFilling: true);
-    try {
-      // 对齐 MainActivityTwo: 用 TRANSPARENT 替换回原色（恢复原始线稿）
-      final result = await compute(
-        _floodFill,
-        _FillRequest(
-          currentBytes,
-          initialBytes,
-          lastPoint.x,
-          lastPoint.y,
-          (lastPoint.oldColor.r * 255).round(),
-          (lastPoint.oldColor.g * 255).round(),
-          (lastPoint.oldColor.b * 255).round(),
-        ),
-      );
-      if (result != null) {
-        state = state.copyWith(
-          currentBytes: result,
-          drawnPoints: [...state.drawnPoints]..removeLast(),
-        );
-      }
-    } finally {
-      state = state.copyWith(isFilling: false);
+    if (_undoSnapshots.isEmpty ||
+        state.drawnPoints.isEmpty ||
+        state.isFilling) {
+      return false;
     }
+    final currentBytes = state.currentBytes;
+    if (currentBytes == null) return false;
 
-    // 保真 Bug 4：撤销到空时重启 Activity
-    // 对齐 MainActivityTwo:559-563 counter<=0 时 recreate()
-    return state.drawnPoints.isEmpty;
+    final operation = state.drawnPoints.last;
+    _pushSnapshot(_redoSnapshots, currentBytes);
+    _redoOperations.add(operation);
+    final previous = _undoSnapshots.removeLast();
+    state = state.copyWith(
+      currentBytes: Uint8List.fromList(previous),
+      drawnPoints: [...state.drawnPoints]..removeLast(),
+    );
+    return false;
+  }
+
+  /// 重做：与撤销一样直接恢复完整图片快照。
+  Future<void> redo() async {
+    if (_redoSnapshots.isEmpty || state.isFilling) return;
+    final currentBytes = state.currentBytes;
+    if (currentBytes == null) return;
+
+    _pushSnapshot(_undoSnapshots, currentBytes);
+    final restored = _redoSnapshots.removeLast();
+    final operation = _redoOperations.removeLast();
+    state = state.copyWith(
+      currentBytes: Uint8List.fromList(restored),
+      drawnPoints: [...state.drawnPoints, operation],
+    );
   }
 
   /// 设置颜色 - 对齐 MainActivityTwo.onClick 17 色按钮
@@ -133,17 +140,8 @@ class CategoryDrawViewModel extends Notifier<CategoryDrawState> {
     state = state.copyWith(bgMusicOn: !state.bgMusicOn);
   }
 
-  /// 取像素颜色 - 用于记录撤销原色
-  ui.Color _pixelColor(Uint8List bytes, int x, int y) {
-    final image = img.decodeImage(bytes);
-    if (image == null) return const Color(0x00000000);
-    final pixel = image.getPixel(x, y);
-    return Color.fromARGB(
-      pixel.a.toInt(),
-      pixel.r.toInt(),
-      pixel.g.toInt(),
-      pixel.b.toInt(),
-    );
+  void _pushSnapshot(List<Uint8List> target, Uint8List bytes) {
+    target.add(Uint8List.fromList(bytes));
   }
 
   /// 根据 code + position 解析素材路径

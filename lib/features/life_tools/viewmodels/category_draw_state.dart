@@ -1,18 +1,15 @@
 // CategoryDrawState - 分类涂鸦填色页状态
 // 对齐 Android MainActivityTwo.java 的数据状态
-import 'dart:typed_data';
 import 'dart:ui';
-
 import 'package:flutter/foundation.dart';
 
-/// 撤销点记录 - 对齐 MainActivityTwo.drawnPoints
-/// 记录每次填色的坐标和原色，用于撤销时恢复
+/// 填色操作记录。
+/// 像素数据由 ViewModel 的历史快照保存；这里仅用于页面的撤销可用状态。
 @immutable
 class DrawnPoint {
-  const DrawnPoint({required this.x, required this.y, required this.oldColor});
+  const DrawnPoint({required this.x, required this.y});
   final int x;
   final int y;
-  final Color oldColor;
 }
 
 @immutable

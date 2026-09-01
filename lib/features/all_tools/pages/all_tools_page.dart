@@ -1,315 +1,226 @@
-// AllToolsFragment Flutter 迁移版 - 工具聚合页
-// 对齐 Android fragment_all_tools.xml：图像风格转换大卡片 + 2x3 网格
-// 替换 HomeShellPage 的 Tab[2]（原 WeatherPage）
-// 排除放大镜入口（fdjModule）
+// toolbox_c AllToolsFragment 迁移版。
+// 特效图、隐藏图按迁移要求排除；其余入口复用 Flutter 已有功能和数据层。
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../core/constants/app_assets.dart';
-import '../../../core/constants/app_colors.dart';
 import '../../../router/route_names.dart';
 import '../../image_process/models/image_process_type.dart';
 import '../../image_process/pages/image_process_page.dart';
 import '../../life_tools/pages/blur/blur_page.dart';
 import '../../life_tools/pages/checklist/checklist_page.dart';
-import '../../life_tools/pages/tally/tally_page.dart';
-import '../../life_tools/pages/webview/web_tool_page.dart';
-import '../../portable_tools/pages/pixel_image_page.dart';
+import '../../life_tools/pages/color_drawing_studio_page.dart';
+import '../../life_tools/pages/compass/compass_page.dart';
 
 class AllToolsPage extends StatelessWidget {
   const AllToolsPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.homeBg,
-      body: SafeArea(
-        bottom: false,
-        child: Column(
-          children: [
-            _buildTopBar(context),
+  Widget build(BuildContext context) => Scaffold(
+        backgroundColor: const Color(0xFFFFF2F2F4),
+        body: SafeArea(
+          bottom: false,
+          child: Column(children: [
+            _TopBar(onSettings: () => context.push(RoutePaths.setting)),
             Expanded(
               child: SingleChildScrollView(
                 padding: const EdgeInsets.only(bottom: 20),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    _buildStyleTransferCard(context),
-                    _buildToolsGrid(context),
-                  ],
-                ),
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const _SectionTitle('绘画工具'),
+                      _PaintingGrid(),
+                      const _SectionTitle('其他工具'),
+                      _OtherTools(),
+                    ]),
               ),
             ),
-          ],
+          ]),
         ),
-      ),
-    );
-  }
+      );
+}
 
-  /// 顶栏（对齐 fragment_all_tools.xml:27-49）
-  /// "涂鸦"标题居中 + 设置按钮右对齐
-  Widget _buildTopBar(BuildContext context) {
-    return SizedBox(
-      height: 50,
-      child: Row(
-        children: [
-          // 设置图标占位保持标题居中（对齐 RelativeLayout TextView gravity center）
+class _TopBar extends StatelessWidget {
+  const _TopBar({required this.onSettings});
+  final VoidCallback onSettings;
+
+  @override
+  Widget build(BuildContext context) => SizedBox(
+        height: 50,
+        child: Row(children: [
           const SizedBox(width: 50),
           const Expanded(
             child: Center(
-              child: Text(
-                '涂鸦',
-                style: TextStyle(fontSize: 22, color: Colors.black),
-              ),
+              child: Text('工具列表',
+                  style: TextStyle(fontSize: 22, color: Colors.black)),
             ),
           ),
-          // 设置按钮（对齐 settingClick alignParentRight marginRight 20）
           Padding(
             padding: const EdgeInsets.only(right: 20),
-            child: GestureDetector(
-              onTap: () => context.push(RoutePaths.setting),
-              child: Image.asset(AppAssets.allToolsSetting,
-                  width: 30, height: 30),
+            child: InkResponse(
+              onTap: onSettings,
+              child:
+                  Image.asset(AppAssets.toolboxSettings, width: 30, height: 30),
             ),
           ),
-        ],
-      ),
-    );
-  }
+        ]),
+      );
+}
 
-  /// 图像风格转换大卡片（对齐 :60-124 txdmhModule）
-  /// 渐变 #FF76FCF7→#FF89BDEC，圆角 16dp
-  Widget _buildStyleTransferCard(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.fromLTRB(20, 10, 20, 25),
-      padding: const EdgeInsets.symmetric(horizontal: 26, vertical: 30),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topRight,
-          end: Alignment.bottomLeft,
-          colors: [
-            const Color(0xFF76FCF7),
-            const Color(0xFF89BDEC),
-          ],
-        ),
-        borderRadius: BorderRadius.circular(16),
-      ),
-      child: Column(
-        children: [
-          Row(
-            children: [
-              // 左侧文字（对齐 :81-103）
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
-                    Padding(
-                      padding: EdgeInsets.only(top: 9),
-                      child: Text(
-                        '图像风格转换',
-                        style: TextStyle(
-                          fontSize: 23,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(top: 8),
-                      child: Text(
-                        '换种风格\n解锁图像新模样',
-                        style: TextStyle(
-                          fontSize: 13,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              // 右侧大图（对齐 :104-108 mtoolsl_dmh 126x126）
-              Image.asset(AppAssets.allToolsStyleTransfer,
-                  width: 126, height: 126, fit: BoxFit.fill),
-            ],
-          ),
-          // "点击转换"按钮（对齐 :111-122）
-          GestureDetector(
-            onTap: () => Navigator.push(
+class _SectionTitle extends StatelessWidget {
+  const _SectionTitle(this.text);
+  final String text;
+
+  @override
+  Widget build(BuildContext context) => Padding(
+        padding: const EdgeInsets.fromLTRB(20, 30, 20, 13),
+        child: Text(text,
+            style: const TextStyle(fontSize: 16, color: Color(0xFF333333))),
+      );
+}
+
+class _PaintingGrid extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final entries = <_PaintingEntry>[
+      _PaintingEntry('马赛克', '保护隐私更安全', AppAssets.toolboxMosaic,
+          const Color(0xFFE68FEF), () => BlurPage.push(context)),
+      _PaintingEntry(
+          '黑白上色',
+          '一键轻松还原照片颜色',
+          AppAssets.toolboxColorize,
+          const Color(0xFFFCB569),
+          () => Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (_) => const ImageProcessPage(
-                    type: ImageProcessType.styleTransfer),
-              ),
-            ),
-            child: Container(
-              margin: const EdgeInsets.only(top: 28),
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 68, vertical: 8),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(100),
-              ),
-              child: const Text(
-                '点击转换',
-                style: TextStyle(fontSize: 18, color: Colors.black),
-              ),
-            ),
-          ),
-        ],
-      ),
+                  builder: (_) => const ImageProcessPage(
+                      type: ImageProcessType.colourize)))),
+      _PaintingEntry(
+          '跟图绘画',
+          '参照图片随意临摹',
+          AppAssets.toolboxTrace,
+          const Color(0xFF74CCF3),
+          () => ColorDrawingStudioPage.push(context, ColorDrawingMode.trace)),
+      _PaintingEntry(
+          '形状绘画',
+          '根据形状随意绘制',
+          AppAssets.toolboxShape,
+          const Color(0xFF5ADFD3),
+          () => ColorDrawingStudioPage.push(context, ColorDrawingMode.shape)),
+    ];
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: Column(children: [
+        Row(children: [
+          Expanded(child: _PaintingCard(entry: entries[0])),
+          const SizedBox(width: 20),
+          Expanded(child: _PaintingCard(entry: entries[1])),
+        ]),
+        const SizedBox(height: 16),
+        Row(children: [
+          Expanded(child: _PaintingCard(entry: entries[2])),
+          const SizedBox(width: 20),
+          Expanded(child: _PaintingCard(entry: entries[3])),
+        ]),
+      ]),
     );
   }
+}
 
-  /// 2x3 网格 + 第四行单卡（对齐 :126-411）
-  /// 排除放大镜 fdjModule，第四行只留字体放大
-  Widget _buildToolsGrid(BuildContext context) {
-    return Column(
-      children: [
-        // 第一行：二十四节气 + 马赛克（对齐 :134-201）
-        Padding(
-          padding: const EdgeInsets.only(bottom: 12),
-          child: Row(
-            children: [
-              Expanded(
-                child: _buildToolCard(
-                  context,
-                  icon: AppAssets.allToolsSolarTerms,
-                  title: '二十四节气',
-                  onTap: () => WebToolPage.push(
-                    context,
-                    title: '24节气',
-                    url: 'assets/game/ershisijieqi/index.html',
-                  ),
-                ),
-              ),
-              Expanded(
-                child: _buildToolCard(
-                  context,
-                  icon: AppAssets.allToolsMosaic,
-                  title: '马赛克',
-                  onTap: () => BlurPage.push(context),
-                ),
-              ),
-            ],
-          ),
-        ),
-        // 第二行：旅行清单 + 花费记账（对齐 :202-270）
-        Padding(
-          padding: const EdgeInsets.only(bottom: 12),
-          child: Row(
-            children: [
-              Expanded(
-                child: _buildToolCard(
-                  context,
-                  icon: AppAssets.allToolsTravelList,
-                  title: '旅行清单',
-                  onTap: () => ChecklistPage.push(context),
-                ),
-              ),
-              Expanded(
-                child: _buildToolCard(
-                  context,
-                  icon: AppAssets.allToolsTally,
-                  title: '花费记账',
-                  onTap: () => TallyPage.push(context),
-                ),
-              ),
-            ],
-          ),
-        ),
-        // 第三行：像素图 + 黑白上色（对齐 :271-341）
-        Padding(
-          padding: const EdgeInsets.only(bottom: 12),
-          child: Row(
-            children: [
-              Expanded(
-                child: _buildToolCard(
-                  context,
-                  icon: AppAssets.allToolsPixel,
-                  title: '像素图',
-                  onTap: () => PixelImagePage.push(context),
-                ),
-              ),
-              Expanded(
-                child: _buildToolCard(
-                  context,
-                  icon: AppAssets.allToolsColorize,
-                  title: '黑白上色',
-                  onTap: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) => const ImageProcessPage(
-                          type: ImageProcessType.colourize),
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-        // 第四行：字体放大（放大镜排除，对齐 :342-411 只留 ztfd）
-        // Padding(
-        //   padding: const EdgeInsets.only(bottom: 12),
-        //   child: Row(
-        //     children: [
-        //       Expanded(
-        //         child: _buildToolCard(
-        //           context,
-        //           icon: AppAssets.allToolsTextSize,
-        //           title: '字体放大',
-        //           onTap: () => _showPlaceholder(context, '字体放大'),
-        //         ),
-        //       ),
-        //       const Expanded(child: SizedBox()),
-        //     ],
-        //   ),
-        // ),
-      ],
-    );
-  }
+class _PaintingEntry {
+  const _PaintingEntry(
+      this.title, this.subtitle, this.asset, this.color, this.onTap);
+  final String title;
+  final String subtitle;
+  final String asset;
+  final Color color;
+  final VoidCallback onTap;
+}
 
-  /// 小卡片（对齐 fragment_all_tools.xml 各 ShapeLinearLayout）
-  /// 白底圆角 12dp elevation 2dp，图标 40x40 + 文字 16sp #FF566EC2
-  Widget _buildToolCard(
-    BuildContext context, {
-    required String icon,
-    required String title,
-    required VoidCallback onTap,
-  }) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 5, vertical: 3),
-        padding: const EdgeInsets.fromLTRB(10, 20, 10, 20),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(12),
-          boxShadow: const [
-            BoxShadow(
-              color: Color(0x33000000),
-              blurRadius: 2,
-              offset: Offset(0, 1),
-            ),
-          ],
-        ),
-        child: Row(
-          children: [
-            Image.asset(icon, width: 40, height: 40, fit: BoxFit.fill),
-            const SizedBox(width: 12),
-            Text(
-              title,
-              style: const TextStyle(fontSize: 16, color: Color(0xFF566EC2)),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
+class _PaintingCard extends StatelessWidget {
+  const _PaintingCard({required this.entry});
+  final _PaintingEntry entry;
 
-  /// 占位入口提示
-  void _showPlaceholder(BuildContext context, String name) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('$name 功能开发中')),
-    );
-  }
+  @override
+  Widget build(BuildContext context) => Material(
+        color: entry.color,
+        borderRadius: BorderRadius.circular(15),
+        child: InkWell(
+          onTap: entry.onTap,
+          borderRadius: BorderRadius.circular(15),
+          child: SizedBox(
+            height: 192,
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(8, 30, 8, 20),
+              child: Column(children: [
+                Image.asset(entry.asset,
+                    width: 50, height: 50, fit: BoxFit.fill),
+                const Spacer(),
+                Text(entry.title,
+                    style: const TextStyle(fontSize: 20, color: Colors.white)),
+                const SizedBox(height: 3),
+                Text(entry.subtitle,
+                    textAlign: TextAlign.center,
+                    maxLines: 2,
+                    style: const TextStyle(fontSize: 12, color: Colors.white)),
+              ]),
+            ),
+          ),
+        ),
+      );
+}
+
+class _OtherTools extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) => Padding(
+        padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
+        child: Row(children: [
+          Expanded(
+            child: _OtherToolCard(
+              title: '指南针',
+              asset: AppAssets.toolboxCompass,
+              onTap: () => CompassPage.push(context),
+            ),
+          ),
+          const SizedBox(width: 16),
+          Expanded(
+            child: _OtherToolCard(
+              title: '旅行清单',
+              asset: AppAssets.toolboxTravel,
+              onTap: () => ChecklistPage.push(context),
+            ),
+          ),
+        ]),
+      );
+}
+
+class _OtherToolCard extends StatelessWidget {
+  const _OtherToolCard(
+      {required this.title, required this.asset, required this.onTap});
+  final String title;
+  final String asset;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) => Material(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: BorderRadius.circular(20),
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(12, 12, 8, 12),
+            child: Row(children: [
+              Image.asset(asset, width: 55, height: 55, fit: BoxFit.fill),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Text(title,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(fontSize: 15, color: Colors.black)),
+              ),
+            ]),
+          ),
+        ),
+      );
 }

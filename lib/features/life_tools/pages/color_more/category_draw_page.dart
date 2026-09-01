@@ -100,18 +100,7 @@ class _CategoryDrawPageState extends ConsumerState<CategoryDrawPage> {
   }
 
   void _undo() async {
-    // 保真 Bug 4：撤销到空时重启 Activity（对齐 MainActivityTwo:559-563）
-    final needRestart =
-        await ref.read(categoryDrawViewModelProvider.notifier).undo();
-    if (needRestart && mounted) {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (_) =>
-              CategoryDrawPage(code: widget.code, position: widget.position),
-        ),
-      );
-    }
+    await ref.read(categoryDrawViewModelProvider.notifier).undo();
   }
 
   Future<void> _save() async {

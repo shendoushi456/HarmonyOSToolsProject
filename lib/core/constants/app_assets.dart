@@ -312,55 +312,77 @@ class AppAssets {
   // ====== NewDrawBoardFragment 首页资源 - 对齐 fragment_new_drawboard.xml ======
   /// 图片编辑器卡片箭头（jiantou_right_icon）
   static const String homeArrowRight = '$_base/jiantou_right_icon.png';
+
   /// 图片编辑器卡片大图（zpbjq_icon）
   static const String homeImageEditorIcon = '$_base/zpbjq_icon.png';
+
   /// 花草识别图标（newhomehcsb）
   static const String homePlantIcon = '$_base/newhomehcsb.png';
+
   /// 果蔬识别图标（newhomegssb）
   static const String homeFruitIcon = '$_base/newhomegssb.png';
+
   /// 动物识别图标（newhomedwsb）
   static const String homeAnimalIcon = '$_base/newhomedwsb.png';
+
   /// 特效图图标（newhometxt）
   static const String homeEffectIcon = '$_base/newhometxt.png';
+
   /// 马赛克图标（newhomemsk）
   static const String homeMosaicIcon = '$_base/newhomemsk.png';
+
   /// LED灯图标（newhomeled）
   static const String homeLedIcon = '$_base/newhomeled.png';
+
   /// 扫码识别图标（newhomesmsb）
   static const String homeQrScanIcon = '$_base/newhomesmsb.png';
+
   /// 涂鸦卡片右上箭头（xiejt_icon）
   static const String homeGraffitiArrow = '$_base/xiejt_icon.png';
+
   /// 分类涂鸦卡片大图（flty_icon）
   static const String homeCategoryGraffitiIcon = '$_base/flty_icon.png';
+
   /// 离线涂鸦卡片大图（lxty_icon）
   static const String homeOfflineGraffitiIcon = '$_base/lxty_icon.png';
 
   // ====== TuyaActivity 分流页资源 - 对齐 activity_tuya.xml ======
   /// 返回按钮（iv_back）
   static const String tuyaBack = '$_base/iv_back.png';
+
   /// 水果分类图标（newtoolssg）
   static const String tuyaFruit = '$_base/newtoolssg.png';
+
   /// 字母分类图标（newtoolszm）
   static const String tuyaLetter = '$_base/newtoolszm.png';
+
   /// 数字分类图标（newtoolssz）
   static const String tuyaNumber = '$_base/newtoolssz.png';
+
   /// 曼茶罗分类图标（newtoolsmcl）
   static const String tuyaMandala = '$_base/newtoolsmcl.png';
+
   /// 卡通分类图标（cartoon）
   static const String tuyaCartoon = '$_base/cartoon.png';
+
   /// 动物分类图标（animal）
   static const String tuyaAnimal = '$_base/animal.png';
+
   /// 食物分类图标（food）
   static const String tuyaFood = '$_base/food.png';
+
   /// 交通分类图标（traffic）
   static const String tuyaTraffic = '$_base/traffic.png';
+
   /// 自然分类图标（nature）
   static const String tuyaNature = '$_base/nature.png';
+
   /// 鲜花分类图标（flower）
   static const String tuyaFlower = '$_base/flower.png';
 
   // ====== 底部 Tab 图标（对齐 master_lingganhuasebao color_draw） ======
-  static const String colorTabHomeNormal = '$_base/color_draw/icon_tab_tuse.png';
+  static const String colorTabHomeNormal =
+      '$_base/color_draw/icon_tab_tuse.png';
   static const String colorTabHomeSelected =
       '$_base/color_draw/icon_tab_tuse2.png';
   static const String colorTabBoardNormal = '$_base/color_draw/icon_tab_hb.png';
@@ -396,44 +418,105 @@ class AppAssets {
   // ====== AllToolsFragment 工具页资源 - 对齐 fragment_all_tools.xml ======
   /// 设置按钮（shezhi）
   static const String allToolsSetting = '$_base/shezhi.webp';
+
   /// 图像风格转换大图（mtoolsl_dmh）
   static const String allToolsStyleTransfer = '$_base/mtoolsl_dmh.png';
+
   /// 二十四节气图标（jrjq_icon）
   static const String allToolsSolarTerms = '$_base/jrjq_icon.png';
+
   /// 马赛克图标（msk_icon）
   static const String allToolsMosaic = '$_base/msk_icon.png';
+
   /// 旅行清单图标（mtoolsl_lxqd）
   static const String allToolsTravelList = '$_base/mtoolsl_lxqd.png';
+
   /// 花费记账图标（hfjz_icon）
   static const String allToolsTally = '$_base/hfjz_icon.png';
+
   /// 像素图图标（xst_icon）
   static const String allToolsPixel = '$_base/xst_icon.png';
+
   /// 黑白上色图标（newhomehbss）
   static const String allToolsColorize = '$_base/newhomehbss.png';
+
   /// 字体放大图标（ztfd_icon）
   static const String allToolsTextSize = '$_base/ztfd_icon.png';
 
   // ====== NewDrawkFragment 画板页资源 - 对齐 fragment_new_draw_tool.xml ======
   /// 保存按钮（iv_save2）
   static const String drawkSave = '$_base/iv_save2.png';
+
   /// 画笔大小图标（lhbdxicon）
   static const String drawkPenSize = '$_base/lhbdxicon.png';
+
   /// 画笔颜色图标（lhbysicon）
   static const String drawkPenColor = '$_base/lhbysicon.png';
+
   /// 撤销图标（lcxicon）
   static const String drawkUndo = '$_base/lcxicon.png';
+
   /// 重做图标（lqjicon）
   static const String drawkRedo = '$_base/lqjicon.png';
+
   /// 清空图标（lqcicon）
   static const String drawkClear = '$_base/lqcicon.png';
+
   /// 画板大图（mtoolsl_hb_icon）
   static const String drawkBoardIcon = '$_base/mtoolsl_hb_icon.png';
+
   /// 跟图绘画图标（newhomegthhdraw）
   static const String drawkTraceDraw = '$_base/newhomegthhdraw.png';
+
   /// 形状绘画图标（newhomexzhhdraw）
   static const String drawkShapeDraw = '$_base/newhomexzhhdraw.png';
+
   /// 画笔图标（lhbicon）
   static const String drawkPen = '$_base/lhbicon.png';
+
   /// 橡皮图标（lxpcicon）
   static const String drawkEraser = '$_base/lxpcicon.png';
+
+  // ====== toolbox_c ScanMenuActivity 迁移资源 ======
+  // 独立目录避免与工程既有同名资源发生覆盖或误引用。
+  static const String _toolboxMigration = '$_base/toolbox_migration';
+
+  static const String toolboxBoardHero = '$_toolboxMigration/mtoolsl_hb.png';
+  static const String toolboxFruit = '$_toolboxMigration/fruit.png';
+  static const String toolboxLetter = '$_toolboxMigration/letter.png';
+  static const String toolboxNumber = '$_toolboxMigration/number.png';
+  static const String toolboxMandala = '$_toolboxMigration/mandala.png';
+  static const String toolboxCartoon = '$_toolboxMigration/cartoon.png';
+  static const String toolboxAnimal = '$_toolboxMigration/animal.png';
+  static const String toolboxFood = '$_toolboxMigration/food.png';
+  static const String toolboxTraffic = '$_toolboxMigration/traffic.png';
+  static const String toolboxNature = '$_toolboxMigration/nature.png';
+  static const String toolboxFlower = '$_toolboxMigration/flower.png';
+
+  static const String toolboxPlantRecognition =
+      '$_toolboxMigration/newhomehcsb.png';
+  static const String toolboxFruitRecognition =
+      '$_toolboxMigration/newhomegssb.png';
+  static const String toolboxAnimalRecognition =
+      '$_toolboxMigration/newhomedwsb.png';
+  static const String toolboxMosaic = '$_toolboxMigration/newhomemsk.png';
+  static const String toolboxColorize = '$_toolboxMigration/newhomehbss.png';
+  static const String toolboxTrace = '$_toolboxMigration/newhomegthh.png';
+  static const String toolboxShape = '$_toolboxMigration/newhomexzhh.png';
+  static const String toolboxCompass = '$_toolboxMigration/mtoolsl_znz.png';
+  static const String toolboxTravel = '$_toolboxMigration/mtoolsl_lxqd.png';
+  static const String toolboxSettings = '$_toolboxMigration/shezhi.webp';
+
+  static const String toolboxTabHomeNormal =
+      '$_toolboxMigration/ic_su_tab_1_false.webp';
+  static const String toolboxTabHomeSelected =
+      '$_toolboxMigration/ic_su_tab_1_true.webp';
+  static const String toolboxTabListNormal =
+      '$_toolboxMigration/ic_su_tab_2_false.webp';
+  static const String toolboxTabListSelected =
+      '$_toolboxMigration/ic_su_tab_2_true.webp';
+  static const String toolboxTabToolsNormal =
+      '$_toolboxMigration/ic_su_tab_3_false.webp';
+  static const String toolboxTabToolsSelected =
+      '$_toolboxMigration/ic_su_tab_3_true.webp';
 }

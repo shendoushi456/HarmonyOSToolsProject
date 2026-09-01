@@ -170,7 +170,7 @@ class _OfflineDrawPageState extends State<OfflineDrawPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: ToolTopBar(title: '涂鸦创作', actions: [
+      appBar: ToolTopBar(title: '涂鸦创作    ', actions: [
         IconButton(
             icon: const Icon(Icons.undo),
             onPressed: _history.isEmpty ? null : _undo),

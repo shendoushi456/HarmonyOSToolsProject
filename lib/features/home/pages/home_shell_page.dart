@@ -7,7 +7,7 @@ import '../../../core/constants/app_assets.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../all_tools/pages/all_tools_page.dart';
 import '../../new_draw_board/pages/new_draw_board_page.dart';
-import '../../new_draw_board/pages/new_drawk_page.dart';
+import '../../toolbox_migration/pages/tools_fragment_page.dart';
 import '../viewmodels/home_tab_view_model.dart';
 
 class HomeShellPage extends ConsumerWidget {
@@ -16,7 +16,8 @@ class HomeShellPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final currentIndex = ref.watch(homeTabIndexProvider);
-    const pages = [NewDrawBoardPage(), NewDrawkPage(), AllToolsPage()];
+    // Android nav_tools_menu.xml 顺序：首页(NewDrawBoard) / 工具(Tools) / 工具列表(AllTools)。
+    const pages = [NewDrawBoardPage(), ToolsFragmentPage(), AllToolsPage()];
     return Scaffold(
       body: IndexedStack(index: currentIndex, children: pages),
       bottomNavigationBar: _buildBottomNav(ref, currentIndex),
@@ -25,33 +26,33 @@ class HomeShellPage extends ConsumerWidget {
 
   Widget _buildBottomNav(WidgetRef ref, int currentIndex) {
     const items = <_NavItem>[
-      // Tab[0] 首页 - 用 toolbox_c colorTabHome 图片资源
+      // toolbox_c drawable/icon_tab_tuse.xml -> ic_su_tab_1。
       _NavItem(
         normalIcon: _IconKind.asset,
-        normalAsset: AppAssets.colorTabHomeNormal,
+        normalAsset: AppAssets.toolboxTabHomeNormal,
         selectedIcon: _IconKind.asset,
-        selectedAsset: AppAssets.colorTabHomeSelected,
+        selectedAsset: AppAssets.toolboxTabHomeSelected,
         label: '首页',
       ),
-      // Tab[1] 画板 - 用 colorTabMore 图片（与涂鸦互换后）
+      // toolbox_c drawable/icon_tab_tools.xml -> ic_su_tab_3。
       _NavItem(
         normalIcon: _IconKind.asset,
-        normalAsset: AppAssets.colorTabMoreNormal,
+        normalAsset: AppAssets.toolboxTabToolsNormal,
         selectedIcon: _IconKind.asset,
-        selectedAsset: AppAssets.colorTabMoreSelected,
-        label: '画板',
+        selectedAsset: AppAssets.toolboxTabToolsSelected,
+        label: '工具',
       ),
-      // Tab[2] 涂鸦 - 用 colorTabBoard 图片（与画板互换后）
+      // toolbox_c drawable/icon_tab_home.xml -> ic_su_tab_2。
       _NavItem(
         normalIcon: _IconKind.asset,
-        normalAsset: AppAssets.colorTabBoardNormal,
+        normalAsset: AppAssets.toolboxTabListNormal,
         selectedIcon: _IconKind.asset,
-        selectedAsset: AppAssets.colorTabBoardSelected,
-        label: '涂鸦',
+        selectedAsset: AppAssets.toolboxTabListSelected,
+        label: '更多',
       ),
     ];
     return Container(
-      height: 62,
+      height: 58,
       decoration: const BoxDecoration(
         color: Color(0xFFF9FDFF),
         boxShadow: [
@@ -95,13 +96,13 @@ class HomeShellPage extends ConsumerWidget {
     if (item.normalIcon == _IconKind.asset) {
       return Image.asset(
         isSelected ? item.selectedAsset! : item.normalAsset!,
-        width: 25,
-        height: 25,
+        width: 30,
+        height: 30,
       );
     }
     return Icon(
       isSelected ? item.selectedIconData! : item.normalIconData!,
-      size: 25,
+      size: 30,
       color: isSelected ? AppColors.qmtqBlue : const Color(0xFF999999),
     );
   }

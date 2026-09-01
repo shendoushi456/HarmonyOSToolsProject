@@ -1,5 +1,5 @@
 name: qingman_weather
-description: 乐彩绘画屋 - Flutter-ohos 版
+description: 乐熊涂画 - Flutter-ohos 版
 publish_to: 'none'
 version: 1.0.0+1
 
@@ -137,6 +137,7 @@ flutter:
   generate: true
   assets:
     - assets/images/
+    - assets/images/toolbox_migration/
     - assets/images/color_draw/
     - assets/images/color_draw/shapes/
     - assets/images/color_draw/trace/
