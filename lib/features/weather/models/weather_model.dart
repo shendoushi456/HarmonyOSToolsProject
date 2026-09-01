@@ -85,6 +85,7 @@ class HomeForecast {
   final String tempMax;
   final String tempMin;
   final String condition;
+  final String iconDay;
   final String windDir;
   final String windScale;
   final String airCategory;
@@ -95,6 +96,7 @@ class HomeForecast {
     required this.tempMax,
     required this.tempMin,
     required this.condition,
+    this.iconDay = '',
     required this.windDir,
     required this.windScale,
     required this.airCategory,

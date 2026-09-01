@@ -58,6 +58,7 @@ class WifiViewModel extends Notifier<WifiState> {
       // 2. 当前连接信息 + 运营商名
       String ssid = '';
       String carrier = '';
+      int rssi = state.currentRssi;
       // Wi-Fi 开关状态与默认网络类型独立：Wi-Fi 开着但未连接时，
       // 仍应显示扫描入口，而不是误报“请先开启 WiFi”。
       final wifiEnabled = await _repository.isWifiEnabled();
@@ -65,6 +66,7 @@ class WifiViewModel extends Notifier<WifiState> {
       if (netType == NetworkType.wifi) {
         final conn = await _repository.getCurrentConnection();
         ssid = conn?.ssid ?? '';
+        rssi = conn?.rssi ?? rssi;
         // 鸿蒙 API 12+ 无位置权限时 SSID 返回 <unknown ssid>
         if (conn != null && conn.isUnknownSsid) {
           ssidUnknown = true;
@@ -98,6 +100,7 @@ class WifiViewModel extends Notifier<WifiState> {
         networkType: netType,
         isWifiEnabled: wifiEnabled,
         isSsidUnknown: ssidUnknown,
+        currentRssi: rssi,
         uploadBytes: txDiff,
         downloadBytes: rxDiff,
         uploadSpeed: up.value,

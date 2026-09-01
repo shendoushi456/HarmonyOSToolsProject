@@ -23,13 +23,10 @@ class WifiListSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 25),
-      child: WifiListView(
-        isWifiEnabled: isWifiEnabled,
-        wifiList: wifiList,
-        onItemClick: onItemClick,
-      ),
+    return WifiListView(
+      isWifiEnabled: isWifiEnabled,
+      wifiList: wifiList,
+      onItemClick: onItemClick,
     );
   }
 }

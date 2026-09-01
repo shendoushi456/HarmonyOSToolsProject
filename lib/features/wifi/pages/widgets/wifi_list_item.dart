@@ -1,11 +1,8 @@
-// WiFi 列表 item - 对齐 item_my_wifi_list.xml + MyWifiListAdapter.bind()
-// 一列横向白卡: 白底 + radius 10dp + 阴影 5dp #C3C2C2, padding H16 V16, gravity center_vertical
-// 左: mlwifiicon 16dp(已连接 lwifiylj / 未连接 lwifiwlj) + 12dp 间距
-// 中: lmwifiname 14sp 单行省略(已连接 #3C3C3C / 未连接 #A8A8A8)
-// 右: 已连接 → lmwifiylj "已连接" 12sp #8CE189; 未连接 → lmwifijt 箭头 8dp
+// toolbox_c item_my_wifi_list.xml 的 Flutter 实现。
 import 'package:flutter/material.dart';
 import '../../../../core/constants/app_assets.dart';
 import '../../models/wifi_scan_result.dart';
+import '../../models/wifi_signal_strength.dart';
 
 class WifiListItem extends StatelessWidget {
   final WifiScanResult wifi;
@@ -15,62 +12,65 @@ class WifiListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bool connected = wifi.isConnected;
+    final connected = wifi.isConnected;
     return GestureDetector(
       onTap: onTap,
       behavior: HitTestBehavior.opaque,
       child: Container(
-        // 对齐 ShapeLinearLayout: solidColor white + radius 10 + shadowSize 5dp #C3C2C2
-        // XML 无 layout_margin, RecyclerView 无 ItemDecoration → 一列无间距堆叠
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+        padding: const EdgeInsets.symmetric(vertical: 12),
         decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(10),
-          // boxShadow: const [
-          //   BoxShadow(
-          //     color: Color(0xFFC3C2C2),
-          //     blurRadius: 5,
-          //     spreadRadius: 1,
-          //   ),
-          // ],
-        ),
+            color: Colors.white, borderRadius: BorderRadius.circular(10)),
         child: Row(
           children: [
-            // mlwifiicon: isConnected → lwifiylj / 否则 lwifiwlj
             Image.asset(
-              connected
-                  ? AppAssets.wifiConnected
-                  : AppAssets.wifiDisconnected,
-              width: 16,
-              height: 16,
-            ),
-            // 信息区 marginLeft 12dp
+                connected
+                    ? AppAssets.toolboxWifiConnected
+                    : AppAssets.toolboxWifiDisconnected,
+                width: 26,
+                height: 26),
             const SizedBox(width: 12),
-            // lmwifiname: 14sp singleLine ellipsize end
             Expanded(
-              child: Text(
-                wifi.ssid,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(
-                  fontSize: 14,
-                  color: connected
-                      ? const Color(0xFF3C3C3C)
-                      : const Color(0xFFA8A8A8),
-                ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(wifi.ssid,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                          fontSize: 16,
+                          color: connected
+                              ? const Color(0xFF3674EB)
+                              : const Color(0xFF3C3C3C))),
+                  const SizedBox(height: 2),
+                  Text(_signalText(wifi.signalLevel),
+                      style: const TextStyle(
+                          fontSize: 10, color: Color(0xFF2A9DF8))),
+                ],
               ),
             ),
-            // lmwifiylj "已连接"(仅已连接) / lmwifijt 箭头(仅未连接), XML 中均无额外间距
-            if (connected)
-              const Text(
-                '已连接',
-                style: TextStyle(fontSize: 12, color: Color(0xFF8CE189)),
-              )
-            else
-              Image.asset(AppAssets.wifiArrow, width: 8, height: 8),
+            if (!connected)
+              Padding(
+                  padding: const EdgeInsets.only(left: 12),
+                  child: Image.asset(AppAssets.toolboxWifiArrow,
+                      width: 10, height: 10)),
           ],
         ),
       ),
     );
+  }
+
+  String _signalText(WifiSignalStrength level) {
+    switch (level) {
+      case WifiSignalStrength.disabled:
+        return '信号强度：无';
+      case WifiSignalStrength.low:
+        return '信号强度：弱';
+      case WifiSignalStrength.medium:
+        return '信号强度：中';
+      case WifiSignalStrength.high:
+        return '信号强度：强';
+      case WifiSignalStrength.excellent:
+        return '信号强度：极强';
+    }
   }
 }

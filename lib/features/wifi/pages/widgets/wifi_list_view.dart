@@ -45,20 +45,20 @@ class WifiListView extends StatelessWidget {
         if (wifiList.isEmpty)
           _emptyView(emptyText)
         else
-          Expanded(
-            child: ListView.separated(
-              // 为白色列表卡片保留呼吸感，避免相邻圆角卡片视觉粘连。
-              padding: const EdgeInsets.only(top: 20, bottom: 30),
-              itemCount: wifiList.length,
-              separatorBuilder: (_, __) => const SizedBox(height: 10),
-              itemBuilder: (ctx, i) {
-                final item = wifiList[i];
-                return WifiListItem(
-                  wifi: item,
-                  onTap: () => onItemClick?.call(item),
-                );
-              },
-            ),
+          ListView.separated(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            // 为白色列表卡片保留呼吸感，避免相邻圆角卡片视觉粘连。
+            padding: const EdgeInsets.only(top: 20, bottom: 30),
+            itemCount: wifiList.length,
+            separatorBuilder: (_, __) => const SizedBox(height: 10),
+            itemBuilder: (ctx, i) {
+              final item = wifiList[i];
+              return WifiListItem(
+                wifi: item,
+                onTap: () => onItemClick?.call(item),
+              );
+            },
           ),
       ],
     );

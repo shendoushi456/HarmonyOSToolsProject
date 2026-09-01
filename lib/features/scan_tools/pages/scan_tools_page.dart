@@ -1,228 +1,317 @@
-// CleanMainFragment 的 Flutter 迁移页：上方识别快捷入口和下方纵向工具列表。
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-
 import '../../../core/constants/app_assets.dart';
+import '../../../core/utils/weather_icon_util.dart';
 import '../../../router/route_names.dart';
-import '../../image_process/models/clean_tool_item.dart';
+import '../../image_process/models/image_process_type.dart';
 import '../../image_process/pages/image_process_page.dart';
-import '../../image_process/viewmodels/clean_tools_view_model.dart';
-import '../../menu_home/pages/qr_scan_page.dart';
-import '../../recognition/models/recognition_type.dart';
+import '../../life_tools/pages/checklist/checklist_page.dart';
+import '../../life_tools/pages/compass/compass_page.dart';
+import '../../life_tools/pages/tally/tally_page.dart';
+import '../../portable_tools/pages/magnifier_camera_page.dart';
+import '../../portable_tools/pages/watermark_image_page.dart';
+import '../../scan_menu/pages/currency_converter_page.dart';
+import '../../weather/models/city_bean.dart';
+import '../../weather/repositories/city_repository.dart';
+import '../../weather/viewmodels/weather_view_model.dart';
 
-/// Android item_tab_clear_layout.xml 的六项列表版式。
-class ScanToolsPage extends ConsumerWidget {
+class ScanToolsPage extends ConsumerStatefulWidget {
   const ScanToolsPage({super.key});
+  @override
+  ConsumerState<ScanToolsPage> createState() => _ScanToolsPageState();
+}
+
+class _ScanToolsPageState extends ConsumerState<ScanToolsPage> {
+  final _cityRepository = CityRepository();
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final tools = ref.watch(cleanToolsProvider);
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) => _loadSavedCity());
+  }
+
+  Future<void> _loadSavedCity() async {
+    final cities = await _cityRepository.loadCities();
+    if (!mounted) return;
+    await ref
+        .read(weatherViewModelProvider.notifier)
+        .loadData(cities.isEmpty ? CityBean.defaultCity() : cities.first);
+  }
+
+  Future<void> _changeCity() async {
+    final changed = await context.push<bool>(RoutePaths.citySelect);
+    if (changed != true || !mounted) return;
+    await _loadSavedCity();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final w = ref.watch(weatherViewModelProvider), t = w.today;
     return Scaffold(
-      backgroundColor: const Color(0xFFE3EEFF),
-      body: Stack(
-        children: [
+        backgroundColor: Colors.white,
+        body: Stack(children: [
           Positioned.fill(
-            child: Image.asset(AppAssets.wifiTopBg, fit: BoxFit.fill),
-          ),
+              child:
+                  Image.asset(AppAssets.toolboxYzsmHomeBg, fit: BoxFit.fill)),
           SafeArea(
-            bottom: false,
-            child: Column(
-              children: [
-                const Padding(
-                  padding: EdgeInsets.only(top: 20, bottom: 25),
-                  child: Text(
-                    '工具',
-                    style: TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold,
-                      color: Color(0xFF1E1E1E),
-                    ),
-                  ),
-                ),
+              bottom: false,
+              child: Column(children: [
+                _StatusBar(
+                    city: w.cityName.isEmpty ? '北京市' : w.cityName,
+                    temperature:
+                        '${t?.tempMin ?? '18'}°-${t?.tempMax ?? '26'}°',
+                    weatherIcon: WeatherIconUtil.toolboxDayIcon(
+                        t?.iconDay ?? '', t?.textDay ?? '晴'),
+                    onCity: _changeCity,
+                    onWeather: () => context.push(RoutePaths.weather)),
                 Expanded(
-                  child: ListView(
-                    padding: const EdgeInsets.only(bottom: 20),
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: _RecognitionShortcut(
-                                iconAsset: AppAssets.cleanShortcutPlant,
-                                title: '花草识别',
-                                onTap: () => _openRecognition(
-                                  context,
-                                  RecognitionType.plant,
-                                ),
-                              ),
-                            ),
-                            const SizedBox(width: 14),
-                            Expanded(
-                              child: _RecognitionShortcut(
-                                iconAsset: AppAssets.cleanShortcutIngredient,
-                                title: '果蔬识别',
-                                onTap: () => _openRecognition(
-                                  context,
-                                  RecognitionType.ingredient,
-                                ),
-                              ),
-                            ),
-                            const SizedBox(width: 14),
-                            Expanded(
-                              child: _RecognitionShortcut(
-                                iconAsset: AppAssets.cleanShortcutAnimal,
-                                title: '动物识别',
-                                onTap: () => _openRecognition(
-                                  context,
-                                  RecognitionType.animal,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Container(
-                        margin: const EdgeInsets.fromLTRB(20, 25, 20, 0),
-                        padding: const EdgeInsets.symmetric(horizontal: 17),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(30),
-                        ),
-                        child: ListView.separated(
-                          padding: const EdgeInsets.symmetric(vertical: 8),
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemCount: tools.length,
-                          separatorBuilder: (_, __) =>
-                              const SizedBox(height: 6),
-                          itemBuilder: (_, index) => _CleanToolListItem(
-                            item: tools[index],
-                            onTap: () => _openTool(context, tools[index]),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
+                    child: SingleChildScrollView(
+                        padding: const EdgeInsets.only(bottom: 45),
+                        child: Column(children: [
+                          _Banner(
+                              title: '图像动漫化',
+                              subtitle: '拥有专属动漫形象',
+                              image: AppAssets.toolboxYzsmCartoon,
+                              color: const Color(0xFFFFE4E9),
+                              onTap: () => _openImage(
+                                  context, ImageProcessType.selfieAnime)),
+                          _Banner(
+                              title: '图像风格转换',
+                              subtitle: '一键切换图片风格',
+                              image: AppAssets.toolboxYzsmStyle,
+                              color: const Color(0xFFE7FFCD),
+                              onTap: () => _openImage(
+                                  context, ImageProcessType.styleTransfer)),
+                          _GridRow(children: [
+                            _Utility(
+                                title: '指南针',
+                                subtitle: '精准辨向出行无忧',
+                                icon: AppAssets.toolboxYzsmCompass,
+                                top: const Color(0xFFE6FDFD),
+                                accent: const Color(0xFF19D2D2),
+                                onTap: () => CompassPage.push(context)),
+                            _Utility(
+                                title: '汇率换算',
+                                subtitle: '实时汇率一键换算',
+                                icon: AppAssets.toolboxYzsmExchange,
+                                top: const Color(0xFFFFF3E9),
+                                accent: const Color(0xFFE09E66),
+                                onTap: () =>
+                                    CurrencyConverterPage.push(context))
+                          ]),
+                          _GridRow(children: [
+                            _Utility(
+                                title: '花费记账',
+                                subtitle: '日常开销一键记账',
+                                icon: AppAssets.toolboxYzsmExpense,
+                                top: const Color(0xFFFFE9E9),
+                                accent: const Color(0xFFF28888),
+                                onTap: () => TallyPage.push(context)),
+                            _Utility(
+                                title: '旅行清单',
+                                subtitle: '出行清单一键备齐',
+                                icon: AppAssets.toolboxYzsmTravel,
+                                top: const Color(0xFFE3EEFF),
+                                accent: const Color(0xFF6193E3),
+                                onTap: () => ChecklistPage.push(context))
+                          ]),
+                          _GridRow(children: [
+                            _Utility(
+                                title: '放大镜',
+                                subtitle: '清晰放大查看细节',
+                                icon: AppAssets.toolboxYzsmMagnifier,
+                                top: const Color(0xFFF3F0FF),
+                                accent: const Color(0xFF8B80F7),
+                                onTap: () => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (_) =>
+                                            const MagnifierCameraPage()))),
+                            _Utility(
+                                title: '添加水印',
+                                subtitle: '一键添加水印安全无忧',
+                                icon: AppAssets.toolboxYzsmWatermark,
+                                top: const Color(0xFFE7FFF0),
+                                accent: const Color(0xFF4DD98C),
+                                onTap: () => WatermarkImagePage.push(context))
+                          ]),
+                        ])))
+              ]))
+        ]));
+  }
+
+  void _openImage(BuildContext c, ImageProcessType type) => Navigator.push(
+      c, MaterialPageRoute(builder: (_) => ImageProcessPage(type: type)));
+}
+
+class _StatusBar extends StatelessWidget {
+  final String city, temperature, weatherIcon;
+  final VoidCallback onCity, onWeather;
+  const _StatusBar(
+      {required this.city,
+      required this.temperature,
+      required this.weatherIcon,
+      required this.onCity,
+      required this.onWeather});
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 64,
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(20, 12, 20, 0),
+        child: Row(children: [
+          Expanded(
+              child: GestureDetector(
+                  behavior: HitTestBehavior.opaque,
+                  onTap: onCity,
+                  child: Row(children: [
+                    Image.asset(AppAssets.toolboxYzsmLocation,
+                        width: 18, height: 18),
+                    const SizedBox(width: 4),
+                    Flexible(
+                        child: Text(city,
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(fontSize: 14)))
+                  ]))),
+          const Expanded(
+              child: Center(
+                  child: Text('常用工具',
+                      style: TextStyle(
+                          fontSize: 22, fontWeight: FontWeight.w500)))),
+          Expanded(
+              child: GestureDetector(
+                  onTap: onWeather,
+                  child:
+                      Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+                    Text(temperature, style: const TextStyle(fontSize: 14)),
+                    const SizedBox(width: 5),
+                    Image.asset(weatherIcon, width: 20, height: 20)
+                  ]))),
+        ]),
       ),
     );
   }
-
-  void _openTool(BuildContext context, CleanToolItem item) {
-    switch (item.action) {
-      case CleanToolAction.bankCard:
-        context.push(RoutePaths.recognition, extra: RecognitionType.bankCard);
-        return;
-      case CleanToolAction.textRecognition:
-        context.push(RoutePaths.recognition, extra: RecognitionType.text);
-        return;
-      case CleanToolAction.qrScan:
-        QrScanPage.push(context);
-        return;
-      case CleanToolAction.imageProcess:
-        Navigator.push<void>(
-          context,
-          MaterialPageRoute(
-            builder: (_) => ImageProcessPage(type: item.imageProcessType!),
-          ),
-        );
-        return;
-    }
-  }
-
-  void _openRecognition(BuildContext context, RecognitionType type) {
-    context.push(RoutePaths.recognition, extra: type);
-  }
 }
 
-/// 对齐 Android CleanMainFragment 的三列 102dp 识别入口。
-class _RecognitionShortcut extends StatelessWidget {
-  const _RecognitionShortcut({
-    required this.iconAsset,
-    required this.title,
-    required this.onTap,
-  });
-
-  final String iconAsset;
-  final String title;
+class _Banner extends StatelessWidget {
+  final String title, subtitle, image;
+  final Color color;
   final VoidCallback onTap;
-
+  const _Banner(
+      {required this.title,
+      required this.subtitle,
+      required this.image,
+      required this.color,
+      required this.onTap});
   @override
-  Widget build(BuildContext context) => Material(
-        color: Colors.transparent,
-        child: InkWell(
-          borderRadius: BorderRadius.circular(12),
+  Widget build(BuildContext context) => Padding(
+      padding: const EdgeInsets.only(bottom: 10),
+      child: InkWell(
           onTap: onTap,
-          child: Column(
-            children: [
-              Image.asset(iconAsset, width: 102, height: 102),
-              const SizedBox(height: 8),
-              Text(title,
-                  style: const TextStyle(
-                    color: Color(0xFF353535),
-                    fontSize: 12,
-                  )),
-            ],
-          ),
+          borderRadius: BorderRadius.circular(12),
+          child: Container(
+              width: 335,
+              height: 84,
+              decoration: BoxDecoration(
+                  color: color, borderRadius: BorderRadius.circular(12)),
+              child: Row(children: [
+                SizedBox(
+                    width: 84,
+                    height: 52,
+                    child: Padding(
+                        padding: const EdgeInsets.only(left: 14),
+                        child: Image.asset(image, fit: BoxFit.contain))),
+                const SizedBox(width: 10),
+                Expanded(
+                    child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                      Text(title,
+                          style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                              color: Color(0xFF3C3C3C))),
+                      const SizedBox(height: 4),
+                      Text(subtitle,
+                          style: const TextStyle(
+                              fontSize: 10, color: Color(0xFF9F9F9F)))
+                    ])),
+                Padding(
+                    padding: const EdgeInsets.only(right: 12),
+                    child: Image.asset(AppAssets.toolboxYzsmArrow,
+                        width: 20, height: 20))
+              ]))));
+}
+
+class _GridRow extends StatelessWidget {
+  final List<Widget> children;
+  const _GridRow({required this.children});
+  @override
+  Widget build(BuildContext context) => Padding(
+        padding: const EdgeInsets.only(top: 12),
+        child: SizedBox(
+          width: 335,
+          child: Row(children: [
+            Expanded(child: children[0]),
+            const SizedBox(width: 15),
+            Expanded(child: children[1]),
+          ]),
         ),
       );
 }
 
-class _CleanToolListItem extends StatelessWidget {
-  const _CleanToolListItem({required this.item, required this.onTap});
-
-  final CleanToolItem item;
+class _Utility extends StatelessWidget {
+  final String title, subtitle, icon;
+  final Color top, accent;
   final VoidCallback onTap;
-
+  const _Utility(
+      {required this.title,
+      required this.subtitle,
+      required this.icon,
+      required this.top,
+      required this.accent,
+      required this.onTap});
   @override
-  Widget build(BuildContext context) {
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        borderRadius: BorderRadius.circular(12),
+  Widget build(BuildContext context) => InkWell(
         onTap: onTap,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 12),
-          child: Row(
-            children: [
-              Image.asset(item.iconAsset, width: 52, height: 52),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      item.title,
-                      style: const TextStyle(
-                        color: Color(0xFF1E1E1E),
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 5),
-                    Text(
-                      item.subtitle,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
-                        color: Color(0xFF848484),
-                        fontSize: 10,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Image.asset(AppAssets.scanItemArrow, width: 13, height: 13),
-            ],
+        borderRadius: BorderRadius.circular(15),
+        child: Container(
+          height: 160,
+          padding: const EdgeInsets.fromLTRB(16, 16, 10, 0),
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+                colors: [top, Colors.white],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter),
+            borderRadius: BorderRadius.circular(15),
           ),
+          child:
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            Image.asset(icon, width: 36, height: 36),
+            const SizedBox(height: 8),
+            Text(title,
+                style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                    color: Color(0xFF333333))),
+            const SizedBox(height: 4),
+            Text(subtitle,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(fontSize: 12, color: Color(0xFF757575))),
+            const SizedBox(height: 13),
+            Container(
+                width: 60,
+                height: 22,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                    color: accent.withValues(alpha: .12),
+                    borderRadius: BorderRadius.circular(28)),
+                child: Text('点击使用',
+                    style: TextStyle(fontSize: 10, color: accent))),
+          ]),
         ),
-      ),
-    );
-  }
+      );
 }

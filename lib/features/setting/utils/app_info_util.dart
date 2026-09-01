@@ -5,7 +5,7 @@ class AppInfoUtil {
   AppInfoUtil._();
 
   /// 应用名(对齐 Android getApplicationLabel)
-  static const String appName = '达速上网通';
+  static const String appName = '畅随WiFi精灵';
 
   /// 版本号(对齐 Android getVersion → "1.0.1")
   static const String version = '1.0.1';
@@ -16,8 +16,8 @@ class SettingUrls {
   SettingUrls._();
 
   /// 用户协议 URL
-  static const String user = 'http://api.jyhytech.top/agreement/bjdsswt/user';
+  static const String user = 'http://api.jyhytech.top/agreement/bjcswfjl/user';
 
   /// 隐私协议 URL
-  static const String policy = 'http://api.jyhytech.top/agreement/bjdsswt/privacy';
+  static const String policy = 'http://api.jyhytech.top/agreement/bjcswfjl/privacy';
 }

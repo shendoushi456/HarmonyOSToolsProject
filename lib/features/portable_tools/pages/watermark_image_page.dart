@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../life_tools/pages/widgets/tool_top_bar.dart';
+import '../../scan_menu/services/document_export_service.dart';
 import '../viewmodels/image_tool_view_model.dart';
 
 /// 对齐 Android ToolsWaterMarkActivity：文字、密度、大小、角度、透明度和保存。
@@ -27,6 +28,7 @@ class _WatermarkImagePageState extends ConsumerState<WatermarkImagePage> {
   double _alpha = 150;
   int _color = 0xFFFFFFFF;
   int _spacing = 36;
+  bool _saving = false;
 
   @override
   void dispose() {
@@ -46,7 +48,7 @@ class _WatermarkImagePageState extends ConsumerState<WatermarkImagePage> {
                 IconButton(
                     tooltip: '保存图片',
                     icon: const Icon(Icons.download_outlined),
-                    onPressed: () => _save(vm))
+                    onPressed: _saving ? null : _save)
               ]
             : null,
       ),
@@ -203,11 +205,33 @@ class _WatermarkImagePageState extends ConsumerState<WatermarkImagePage> {
         spacing: _spacing);
   }
 
-  Future<void> _save(WatermarkImageToolViewModel vm) async {
-    final file = await vm.save();
-    if (mounted && file != null) {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text('已保存到 ${file.path}')));
+  Future<void> _save() async {
+    final bytes = ref.read(watermarkImageToolViewModelProvider).resultBytes;
+    if (bytes == null || _saving) return;
+    setState(() => _saving = true);
+    try {
+      await DocumentExportService().exportBytesToGallery(bytes, name: '水印魔法');
+      if (mounted) {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(const SnackBar(content: Text('已保存到系统相册')));
+      }
+    } on GalleryExportException catch (error) {
+      if (mounted && !error.isCanceled) {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text('保存失败：${error.message}')));
+      }
+    } on FileSystemException catch (error) {
+      if (mounted) {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text('保存失败：${error.message}')));
+      }
+    } catch (error) {
+      if (mounted) {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text('保存失败：$error')));
+      }
+    } finally {
+      if (mounted) setState(() => _saving = false);
     }
   }
 }

@@ -2,10 +2,10 @@
 // 对齐 ClearLib MWifiListBean.SignalStrength + item_my_wifi_list 图标
 // 安卓 5 级图标: disabled/low/med/high/excellent(安卓拼写 excelent)
 enum WifiSignalStrength {
-  disabled,  // 0 级
-  low,       // 1 级
-  medium,    // 2 级
-  high,      // 3 级
+  disabled, // 0 级
+  low, // 1 级
+  medium, // 2 级
+  high, // 3 级
   excellent, // 4 级
   ;
 

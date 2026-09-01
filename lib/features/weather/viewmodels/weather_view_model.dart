@@ -77,6 +77,7 @@ class WeatherViewModel extends Notifier<WeatherState> {
         tempMax: weather.tempMax,
         tempMin: weather.tempMin,
         condition: weather.textDay,
+        iconDay: weather.iconDay,
         windDir: weather.windDirDay,
         windScale: weather.windScaleDay,
         airCategory: state.airQuality?.category ?? '优',

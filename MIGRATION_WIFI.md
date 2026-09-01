@@ -8,7 +8,7 @@ This migration ports the user-facing `ToolsWifiHomeFragment` flow into Flutter w
 
 - Android header background, title, connection card, SSID/operator/no-network states.
 - Wi-Fi scan cache loading, scan-complete event refresh, de-duplication and RSSI sorting.
-- Two-column Wi-Fi cards, signal/security assets, connected-state styling and system Wi-Fi settings handoff.
+- Single-column Wi-Fi cards, signal/security assets, connected-state styling and system Wi-Fi settings handoff.
 - One-second network and traffic polling, including the Android 1024-based byte unit formatting.
 - HarmonyOS runtime location authorization for real SSID and nearby scan results.
 
@@ -17,7 +17,7 @@ This migration ports the user-facing `ToolsWifiHomeFragment` flow into Flutter w
 - The Android "优化提速"/accelerator flow and its activities, as requested.
 - Android-only Activities, Fragments, RecyclerView adapters, Volley calls and ProGuard configuration.
 - `build/`, `.appanalyzer/`, `.DS_Store`, `junkcode` and mapping outputs. These are ignored and are not migration inputs.
-- Android resource names are not copied into the Flutter asset namespace. Wi-Fi assets are referenced only through `AppAssets` to avoid resource collisions.
+- Android Wi-Fi assets are copied with a `toolbox_` prefix and referenced only through `AppAssets` to avoid resource collisions.
 
 ## Dependency policy
 

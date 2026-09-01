@@ -119,6 +119,25 @@ class AppAssets {
 
   /// WiFi 页顶部背景
   static const String wifiTopBg = '$_base/wifi_top_bg.png';
+  static const String toolboxWifiBg = '$_base/toolbox_wifi_bg.png';
+  static const String toolboxWifiMain = '$_base/toolbox_wifi_main.png';
+
+  // YzsmHomeFragment 常用工具首页原始资源
+  static const String toolboxYzsmHomeBg = '$_base/toolbox_yzsm_home_bg.png';
+  static const String toolboxYzsmLocation = '$_base/toolbox_yzsm_location.png';
+  static const String toolboxYzsmArrow = '$_base/toolbox_yzsm_arrow.png';
+  static const String toolboxYzsmCartoon = '$_base/toolbox_yzsm_cartoon.png';
+  static const String toolboxYzsmStyle = '$_base/toolbox_yzsm_style.png';
+  static const String toolboxYzsmCompass = '$_base/toolbox_yzsm_compass.png';
+  static const String toolboxYzsmExchange = '$_base/toolbox_yzsm_exchange.png';
+  static const String toolboxYzsmExpense = '$_base/toolbox_yzsm_expense.png';
+  static const String toolboxYzsmTravel = '$_base/toolbox_yzsm_travel.png';
+  static const String toolboxYzsmMagnifier =
+      '$_base/toolbox_yzsm_magnifier.png';
+  static const String toolboxYzsmWatermark =
+      '$_base/toolbox_yzsm_watermark.png';
+  static const String toolboxYzsmTo2Language =
+      '$_base/toolbox_yzsm_to2_language.png';
 
   /// WiFi 详情卡左侧 wifi 图标(114dp)
   static const String wifiTopIcon = '$_base/top_wifi_icon.png';
@@ -168,6 +187,11 @@ class AppAssets {
 
   /// wifi 列表项右箭头(原 clearitemjt)
   static const String wifiArrow = '$_base/wifi_arrow.png';
+  static const String toolboxWifiConnected =
+      '$_base/toolbox_wifi_connected.png';
+  static const String toolboxWifiDisconnected =
+      '$_base/toolbox_wifi_disconnected.png';
+  static const String toolboxWifiArrow = '$_base/toolbox_wifi_arrow.png';
 
   /// wifi 空状态图标(临时复用 wifi_disconnected，原 ic_wifi_empty 待补)
   static const String wifiEmpty = '$_base/wifi_disconnected.png';
@@ -185,6 +209,48 @@ class AppAssets {
   static const String weatherBtnLssdjt = '$_base/btn_02.png';
   static const String weatherBtnShxqm = '$_base/btn_03.png';
   static const String weatherBtnShjyl = '$_base/btn_04.png';
+
+  // toolbox_c WeatherChildFragment 原始资源（统一 toolbox_ 前缀避免命名冲突）
+  static const String toolboxWeatherTopBg =
+      '$_base/toolbox_icondt_weather_top_bg.png';
+  static const String toolboxWeatherNowIcon =
+      '$_base/toolbox_icondt_weather_now_icon.png';
+  static const String toolboxWeatherSunrise =
+      '$_base/toolbox_icondt_weather_sunrise.png';
+  static const String toolboxWeatherSunset =
+      '$_base/toolbox_icondt_weather_sunset.png';
+  static const String toolboxWeatherProgressTrack =
+      '$_base/toolbox_icondt_weather_progress_track.png';
+  static const String toolboxWeatherProgressSun =
+      '$_base/toolbox_icondt_weather_progress_sun.png';
+  static const String toolboxWeatherForecastNormal =
+      '$_base/toolbox_icondt_weather_forecast_normal.png';
+  static const String toolboxWeatherForecastToday =
+      '$_base/toolbox_icondt_weather_forecast_today.png';
+  static const String toolboxWeatherLocation = '$_base/toolbox_ic_loc.png';
+  static const String toolboxWeatherSetting = '$_base/toolbox_ic_setting.png';
+  static const String toolboxWeatherIcon0d = '$_base/toolbox_ic_0d.png';
+  static const String toolboxWeatherIcon1a = '$_base/toolbox_ic_1a.png';
+  static const String toolboxWeatherIcon1b = '$_base/toolbox_ic_1b.png';
+  static const String toolboxWeatherIcon2a = '$_base/toolbox_ic_2a.png';
+  static const String toolboxWeatherIcon2b = '$_base/toolbox_ic_2b.png';
+  static const String toolboxWeatherIcon3a = '$_base/toolbox_ic_3a.png';
+  static const String toolboxWeatherIcon3b = '$_base/toolbox_ic_3b.png';
+  static const String toolboxWeatherIcon4a = '$_base/toolbox_ic_4a.png';
+  static const String toolboxWeatherIcon4b = '$_base/toolbox_ic_4b.png';
+  static const String toolboxWeatherIcon5a = '$_base/toolbox_ic_5a.png';
+  static const String toolboxWeatherIcon5b = '$_base/toolbox_ic_5b.png';
+  static const String toolboxWeatherIcon6a = '$_base/toolbox_ic_6a.png';
+  static const String toolboxWeatherIcon6b = '$_base/toolbox_ic_6b.png';
+  static const String toolboxWeatherIcon7a = '$_base/toolbox_ic_7a.png';
+  static const String toolboxWeatherIcon7b = '$_base/toolbox_ic_7b.png';
+  static const String toolboxWeatherIcon8a = '$_base/toolbox_ic_8a.png';
+  static const String toolboxWeatherIcon8b = '$_base/toolbox_ic_8b.png';
+
+  static const String toolboxWeatherBarOrange =
+      '$_base/toolbox_icondt_weather_bar_orange.png';
+  static const String toolboxWeatherDotYellow =
+      '$_base/toolbox_icondt_weather_dot_yellow.png';
 
   // ====== LifeTools 资源 - 对齐 LifeFragment.kt ======
   /// 入口卡片页背景图(对齐 ic_shan_main_1_1)

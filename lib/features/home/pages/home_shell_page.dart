@@ -1,10 +1,12 @@
 // 主壳页：对齐 MainWeatherActivity.kt 的三 Tab 结构。
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../core/constants/app_assets.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../scan_tools/pages/scan_tools_page.dart';
 import '../../wifi/pages/wifi_page.dart';
-import '../../weather/pages/weather_page.dart';
+import '../../weather/pages/weather_child_page.dart';
+import '../../weather/models/city_bean.dart';
 import '../viewmodels/home_tab_view_model.dart';
 
 class HomeShellPage extends ConsumerWidget {
@@ -12,7 +14,11 @@ class HomeShellPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final currentIndex = ref.watch(homeTabIndexProvider);
-    const pages = [WifiPage(), ScanToolsPage(), WeatherPage()];
+    const pages = [
+      WifiPage(),l
+      ScanToolsPage(),
+      WeatherChildPage(city: CityBean(areaCode: '1', cityName: '北京')),
+    ];
     return Scaffold(
       body: IndexedStack(index: currentIndex, children: pages),
       bottomNavigationBar: _buildBottomNav(ref, currentIndex),
@@ -21,9 +27,9 @@ class HomeShellPage extends ConsumerWidget {
 
   Widget _buildBottomNav(WidgetRef ref, int currentIndex) {
     const items = <_NavItem>[
-      _NavItem(Icons.wifi_tethering_rounded, Icons.wifi_tethering_rounded, 'Wi-Fi'),
-      _NavItem(Icons.table_rows_outlined, Icons.table_rows, '工具'),
-      _NavItem(Icons.grid_on_outlined, Icons.grid_on, '我的'),
+      _NavItem(Icons.home_outlined, Icons.home, '首页'),
+      _NavItem(Icons.work_outline, Icons.work, '常用工具'),
+      _NavItem(Icons.grid_on_outlined, Icons.grid_on, '天气'),
     ];
     return Container(
       height: 62,
@@ -48,14 +54,23 @@ class HomeShellPage extends ConsumerWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(
-                          currentIndex == i
-                              ? items[i].selected
-                              : items[i].normal,
-                          size: 25,
-                          color: currentIndex == i
-                              ? AppColors.qmtqBlue
-                              : const Color(0xFF999999)),
+                      i == 2
+                          ? Image.asset(
+                              currentIndex == i
+                                  ? AppAssets.tabAirSelected
+                                  : AppAssets.tabAirNormal,
+                              width: 25,
+                              height: 25,
+                            )
+                          : Icon(
+                              currentIndex == i
+                                  ? items[i].selected
+                                  : items[i].normal,
+                              size: 25,
+                              color: currentIndex == i
+                                  ? AppColors.qmtqBlue
+                                  : const Color(0xFF999999),
+                            ),
                       const SizedBox(height: 2),
                       Text(items[i].label,
                           style: TextStyle(

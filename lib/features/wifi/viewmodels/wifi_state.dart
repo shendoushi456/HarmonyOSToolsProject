@@ -14,14 +14,19 @@ class WifiState {
   // ====== 网络连接信息(1 秒轮询更新) ======
   /// 当前 wifi SSID(WIFI 时)或 ''(非 WIFI)
   final String currentSsid;
+
   /// 移动网络运营商名(MOBILE 时)或 ''
   final String carrierName;
+
   /// 当前网络类型
   final NetworkType networkType;
+
   /// wifi 是否已开启
   final bool isWifiEnabled;
+
   /// SSID 是否因位置权限缺失返回 <unknown ssid>(UI 提示授权位置)
   final bool isSsidUnknown;
+  final int currentRssi;
 
   // ====== 流量统计(1 秒差值,UI 隐藏但状态保留,对齐 mRunnable) ======
   final int uploadBytes;
@@ -42,6 +47,7 @@ class WifiState {
     this.networkType = NetworkType.none,
     this.isWifiEnabled = false,
     this.isSsidUnknown = false,
+    this.currentRssi = -60,
     this.uploadBytes = 0,
     this.downloadBytes = 0,
     this.uploadSpeed = 0,
@@ -59,6 +65,7 @@ class WifiState {
     NetworkType? networkType,
     bool? isWifiEnabled,
     bool? isSsidUnknown,
+    int? currentRssi,
     int? uploadBytes,
     int? downloadBytes,
     double? uploadSpeed,
@@ -76,6 +83,7 @@ class WifiState {
       networkType: networkType ?? this.networkType,
       isWifiEnabled: isWifiEnabled ?? this.isWifiEnabled,
       isSsidUnknown: isSsidUnknown ?? this.isSsidUnknown,
+      currentRssi: currentRssi ?? this.currentRssi,
       uploadBytes: uploadBytes ?? this.uploadBytes,
       downloadBytes: downloadBytes ?? this.downloadBytes,
       uploadSpeed: uploadSpeed ?? this.uploadSpeed,
