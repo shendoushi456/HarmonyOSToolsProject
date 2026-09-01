@@ -20,16 +20,38 @@ class OutdoorDashboardViewModel extends Notifier<OutdoorDashboardState> {
   final WeatherRepository _weatherRepository = WeatherRepository();
   final HeadingPlatformService _headingService = const HeadingPlatformService();
   StreamSubscription<double>? _headingSubscription;
+  Future<void> _headingTransition = Future<void>.value();
+  bool _isHeadingEnabled = false;
 
   @override
   OutdoorDashboardState build() {
-    _headingSubscription = _headingService.headingStream.listen(
-      (heading) => state = state.copyWith(heading: heading),
-      onError: (_) => state = state.copyWith(isHeadingUnavailable: true),
-    );
-    ref.onDispose(() => _headingSubscription?.cancel());
+    ref.onDispose(() {
+      _isHeadingEnabled = false;
+      _headingTransition = _headingTransition.then((_) async {
+        await _headingSubscription?.cancel();
+        _headingSubscription = null;
+      });
+    });
     Future<void>.microtask(load);
     return const OutdoorDashboardState();
+  }
+
+  /// 指南针在应用前台时启用方向传感器；底部 Tab 切换不会停止它。
+  ///
+  /// 操作串行化，确保旧订阅的 stopHeading 完成后才建立新订阅，避免
+  /// 快速前后台切换时旧订阅意外停止新的原生传感器监听。
+  void setHeadingEnabled(bool enabled) {
+    if (_isHeadingEnabled == enabled) return;
+    _isHeadingEnabled = enabled;
+    _headingTransition = _headingTransition.then((_) async {
+      await _headingSubscription?.cancel();
+      _headingSubscription = null;
+      if (!_isHeadingEnabled) return;
+      _headingSubscription = _headingService.headingStream.listen(
+        (heading) => state = state.copyWith(heading: heading),
+        onError: (_) => state = state.copyWith(isHeadingUnavailable: true),
+      );
+    });
   }
 
   Future<void> load() async {

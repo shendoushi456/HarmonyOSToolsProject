@@ -13,7 +13,40 @@ class CompassPage extends ConsumerStatefulWidget {
   ConsumerState<CompassPage> createState() => _CompassPageState();
 }
 
-class _CompassPageState extends ConsumerState<CompassPage> {
+class _CompassPageState extends ConsumerState<CompassPage>
+    with WidgetsBindingObserver {
+  late AppLifecycleState _lifecycleState;
+
+  @override
+  void initState() {
+    super.initState();
+    _lifecycleState =
+        WidgetsBinding.instance.lifecycleState ?? AppLifecycleState.resumed;
+    WidgetsBinding.instance.addObserver(this);
+    _syncHeadingActivity();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    _lifecycleState = state;
+    _syncHeadingActivity();
+  }
+
+  void _syncHeadingActivity() {
+    ref
+        .read(outdoorDashboardViewModelProvider.notifier)
+        .setHeadingEnabled(_lifecycleState == AppLifecycleState.resumed);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    ref
+        .read(outdoorDashboardViewModelProvider.notifier)
+        .setHeadingEnabled(false);
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(outdoorDashboardViewModelProvider);

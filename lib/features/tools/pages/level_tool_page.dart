@@ -11,34 +11,76 @@ class LevelToolPage extends StatefulWidget {
   State<LevelToolPage> createState() => _LevelToolPageState();
 }
 
-class _LevelToolPageState extends State<LevelToolPage> {
+class _LevelToolPageState extends State<LevelToolPage>
+    with WidgetsBindingObserver {
   static const _channel = MethodChannel('com.p.a_b/toolbox_heading');
   Timer? _timer;
   double _roll = 0;
   double _pitch = 0;
+  bool _isPolling = false;
+  bool _isReadInFlight = false;
+  late AppLifecycleState _lifecycleState;
 
   @override
   void initState() {
     super.initState();
-    _timer = Timer.periodic(const Duration(milliseconds: 120), (_) async {
-      try {
-        final data =
-            await _channel.invokeMapMethod<String, dynamic>('getOrientation');
-        if (!mounted || data == null) return;
-        setState(() {
-          _roll = _number(data['gamma']);
-          _pitch = _number(data['beta']);
-        });
-      } on PlatformException {
-        // 设备没有姿态传感器时保持零度，页面仍可展示。
-      }
-    });
+    _lifecycleState =
+        WidgetsBinding.instance.lifecycleState ?? AppLifecycleState.resumed;
+    WidgetsBinding.instance.addObserver(this);
+    _syncPolling();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    _lifecycleState = state;
+    _syncPolling();
+  }
+
+  void _syncPolling() {
+    if (_lifecycleState == AppLifecycleState.resumed) {
+      _startPolling();
+    } else {
+      _stopPolling();
+    }
+  }
+
+  void _startPolling() {
+    if (_isPolling) return;
+    _isPolling = true;
+    _readOrientation();
+    _timer = Timer.periodic(
+        const Duration(milliseconds: 120), (_) => _readOrientation());
+  }
+
+  void _stopPolling() {
+    _isPolling = false;
+    _timer?.cancel();
+    _timer = null;
+    _channel.invokeMethod<void>('stopHeading');
+  }
+
+  Future<void> _readOrientation() async {
+    if (!_isPolling || _isReadInFlight) return;
+    _isReadInFlight = true;
+    try {
+      final data =
+          await _channel.invokeMapMethod<String, dynamic>('getOrientation');
+      if (!mounted || !_isPolling || data == null) return;
+      setState(() {
+        _roll = _number(data['gamma']);
+        _pitch = _number(data['beta']);
+      });
+    } on PlatformException {
+      // 设备没有姿态传感器时保持零度，页面仍可展示。
+    } finally {
+      _isReadInFlight = false;
+    }
   }
 
   @override
   void dispose() {
-    _timer?.cancel();
-    _channel.invokeMethod<void>('stopHeading');
+    WidgetsBinding.instance.removeObserver(this);
+    _stopPolling();
     super.dispose();
   }
 

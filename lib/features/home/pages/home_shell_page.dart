@@ -21,7 +21,6 @@ class HomeShellPage extends ConsumerWidget {
 
     const pages = [
       AltitudePage(),
-      CompassPage(),
       WeatherPage(),
       ToolsBoxPage(),
     ];
@@ -29,7 +28,12 @@ class HomeShellPage extends ConsumerWidget {
     return Scaffold(
       body: IndexedStack(
         index: currentIndex,
-        children: pages,
+        children: [
+          pages[0],
+          const CompassPage(),
+          pages[1],
+          pages[2],
+        ],
       ),
       bottomNavigationBar: _buildBottomNav(context, ref, currentIndex),
     );
