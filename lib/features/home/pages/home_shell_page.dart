@@ -15,7 +15,7 @@ class HomeShellPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final currentIndex = ref.watch(homeTabIndexProvider);
     const pages = [
-      WifiPage(),l
+      WifiPage(),
       ScanToolsPage(),
       WeatherChildPage(city: CityBean(areaCode: '1', cityName: '北京')),
     ];
