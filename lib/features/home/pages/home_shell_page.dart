@@ -3,10 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/constants/app_assets.dart';
 import '../../../core/constants/app_colors.dart';
-import '../../scan_tools/pages/scan_tools_page.dart';
 import '../../wifi/pages/wifi_page.dart';
-import '../../weather/pages/weather_child_page.dart';
-import '../../weather/models/city_bean.dart';
+import '../../tools_home/pages/tools_home_page.dart';
+import '../../weather_calendar/pages/weather_calendar_page.dart';
 import '../viewmodels/home_tab_view_model.dart';
 
 class HomeShellPage extends ConsumerWidget {
@@ -16,8 +15,8 @@ class HomeShellPage extends ConsumerWidget {
     final currentIndex = ref.watch(homeTabIndexProvider);
     const pages = [
       WifiPage(),
-      ScanToolsPage(),
-      WeatherChildPage(city: CityBean(areaCode: '1', cityName: '北京')),
+      ToolsHomePage(),
+      WeatherCalendarPage(),
     ];
     return Scaffold(
       body: IndexedStack(index: currentIndex, children: pages),
@@ -29,7 +28,7 @@ class HomeShellPage extends ConsumerWidget {
     const items = <_NavItem>[
       _NavItem(Icons.home_outlined, Icons.home, '首页'),
       _NavItem(Icons.work_outline, Icons.work, '常用工具'),
-      _NavItem(Icons.grid_on_outlined, Icons.grid_on, '天气'),
+      _NavItem(Icons.calendar_month_outlined, Icons.calendar_month, '日历'),
     ];
     return Container(
       height: 62,
@@ -54,15 +53,17 @@ class HomeShellPage extends ConsumerWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      i == 2
-                          ? Image.asset(
-                              currentIndex == i
-                                  ? AppAssets.tabAirSelected
-                                  : AppAssets.tabAirNormal,
-                              width: 25,
-                              height: 25,
-                            )
-                          : Icon(
+                      // i == 2
+                      //     ? Image.asset(
+                      //         // 对齐安卓 navtools_menu.xml tab_3"日历" icon_tab_tools_2
+                      //         currentIndex == i
+                      //             ? AppAssets.weatherCalendarTabSelected
+                      //             : AppAssets.weatherCalendarTabNormal,
+                      //         width: 25,
+                      //         height: 25,
+                      //       )
+                      //     :
+                      Icon(
                               currentIndex == i
                                   ? items[i].selected
                                   : items[i].normal,

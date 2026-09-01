@@ -122,6 +122,9 @@ class AppAssets {
   static const String toolboxWifiBg = '$_base/toolbox_wifi_bg.png';
   static const String toolboxWifiMain = '$_base/toolbox_wifi_main.png';
 
+  /// WiFi 页底部列表区背景(对齐 @mipmap/homebottomyjbg)
+  static const String wifiHomeBottomBg = '$_base/homebottomyjbg.png';
+
   // YzsmHomeFragment 常用工具首页原始资源
   static const String toolboxYzsmHomeBg = '$_base/toolbox_yzsm_home_bg.png';
   static const String toolboxYzsmLocation = '$_base/toolbox_yzsm_location.png';
@@ -252,6 +255,21 @@ class AppAssets {
   static const String toolboxWeatherDotYellow =
       '$_base/toolbox_icondt_weather_dot_yellow.png';
 
+  // ====== WeatherCalendar(日历页)资源 - 对齐 WeatherFragment.kt + tools_fr_weather.xml ======
+  /// 日历 tab 图标 - 普通(对齐 @mipmap/tools_icon_tab_2_def)
+  static const String weatherCalendarTabNormal =
+      '$_base/tools_icon_tab_2_def.png';
+
+  /// 日历 tab 图标 - 选中(对齐 @mipmap/tools_icon_tab_2_true)
+  static const String weatherCalendarTabSelected =
+      '$_base/tools_icon_tab_2_true.png';
+
+  /// 节日节气标题图标(对齐 @mipmap/toolsrljq)
+  static const String weatherCalendarJieQiIcon = '$_base/toolsrljq.png';
+
+  /// 历史上的今天标题图标(对齐 @mipmap/toolsrltoday)
+  static const String weatherCalendarTodayIcon = '$_base/toolsrltoday.png';
+
   // ====== LifeTools 资源 - 对齐 LifeFragment.kt ======
   /// 入口卡片页背景图(对齐 ic_shan_main_1_1)
   static const String lifeBg = '$_base/ic_shan_main_1_1.png';
@@ -374,4 +392,29 @@ class AppAssets {
       '$_base/new_life_calendar_previous.png';
   static const String newLifeCalendarNext = '$_base/new_life_calendar_next.png';
   static const String newLifeSettings = '$_base/new_life_settings.png';
+
+  // ====== ToolsHome(常用工具合并页)资源 - 对齐 ScanToolsFragment.kt + MenuFragment.kt ======
+  /// 花费记账图标(对齐 @mipmap/mtoolsl_jz)
+  static const String toolsHomeExpense = '$_base/mtoolsl_jz.png';
+
+  /// 银行卡识别图标(对齐 @mipmap/mtoolsl_yhksb)
+  static const String toolsHomeBankCard = '$_base/mtoolsl_yhksb.png';
+
+  /// 文字识别图标(对齐 @drawable/icon_wzsb)
+  static const String toolsHomeTextOcr = '$_base/icon_wzsb.png';
+
+  /// 扫描二维码图标(对齐 @drawable/icon_smewm)
+  static const String toolsHomeQrScan = '$_base/icon_smewm.png';
+
+  /// 二维码生成图标(对齐 @drawable/icon_scewm)
+  static const String toolsHomeQrGenerate = '$_base/icon_scewm.png';
+
+  /// 花草识别图标(对齐 @drawable/ic_plant)
+  static const String toolsHomePlant = '$_base/ic_plant.png';
+
+  /// 果蔬识别图标(对齐 @drawable/ic_vegetable)
+  static const String toolsHomeVegetable = '$_base/ic_vegetable.png';
+
+  /// 动物识别图标(对齐 @drawable/ic_animal)
+  static const String toolsHomeAnimal = '$_base/ic_animal.png';
 }
