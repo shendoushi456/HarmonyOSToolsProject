@@ -15,6 +15,7 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/constants/app_assets.dart';
 import '../../../../router/route_names.dart';
 import '../utils/bus_theme_colors.dart';
+import '../utils/route_data_manager.dart';
 import '../viewmodels/bus_route_view_model.dart';
 import '../widgets/flow_row.dart';
 
@@ -196,7 +197,11 @@ class _MapRoutePageState extends ConsumerState<MapRoutePage> {
   Future<void> _handlePendingNavi(PendingNaviAction action) async {
     if (action.type == NaviActionType.routeLineDetail) {
       // 对齐 Android: BusRouteLineDetailActivity.start(context, transitRouteLines, transitRouteResult)
-      // 鸿蒙端: 路线数据通过 RouteDataManager 单例传递
+      // 百度路线对象不可安全序列化到 GoRouter extra，先写入单例供详情页读取。
+      // 与 BusRoutePage 保持相同的数据交接，防止从地图路线入口复现空列表。
+      RouteDataManager.instance.setTransitRouteLines(action.transitRouteLines);
+      RouteDataManager.instance
+          .setTransitRouteResult(action.transitRouteResult);
       await GoRouter.of(context).push(
         RoutePaths.busRouteLineDetail,
         extra: {

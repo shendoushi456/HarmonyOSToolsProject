@@ -1,13 +1,10 @@
-// 底部 3 Tab 容器 - 对齐 Android MainWeatherActivity
-// 首页(天气)+畅行(对齐 Android HomeFragment)+空气质量
+// 底部四项导航 - 对齐 Android MainWeatherActivity / navtools_menu.xml。
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../air_quality/pages/air_quality_page.dart';
 import '../../bus/pages/bus_home_fragment_page.dart';
 import '../../nearby/pages/nearby_fragment_page.dart';
 import '../../travel/pages/travel_setting_page.dart';
 import '../../travel/pages/viewpoint_fragment_page.dart';
-import '../../weather/pages/weather_page.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_assets.dart';
 
@@ -38,7 +35,8 @@ class HomeShellPage extends ConsumerWidget {
   }
 
   /// 底部导航栏 - 对齐 Android MyBottomNavView
-  Widget _buildBottomNav(BuildContext context, WidgetRef ref, int currentIndex) {
+  Widget _buildBottomNav(
+      BuildContext context, WidgetRef ref, int currentIndex) {
     return Container(
       height: 62,
       decoration: const BoxDecoration(
@@ -61,35 +59,35 @@ class HomeShellPage extends ConsumerWidget {
               ref,
               index: 0,
               label: '首页',
-              normalIcon: AppAssets.tabHomeNormal,
-              selectedIcon: AppAssets.tabHomeSelected,
+              normalIcon: AppAssets.toolboxTab1Normal,
+              selectedIcon: AppAssets.toolboxTab1Selected,
               isSelected: currentIndex == 0,
             ),
             _buildNavItem(
               context,
               ref,
               index: 1,
-              label: '畅行',
-              normalIcon: AppAssets.tabCalendarNormal,
-              selectedIcon: AppAssets.tabCalendarSelected,
+              label: '附近',
+              normalIcon: AppAssets.toolboxTab2Normal,
+              selectedIcon: AppAssets.toolboxTab2Selected,
               isSelected: currentIndex == 1,
             ),
             _buildNavItem(
               context,
               ref,
               index: 2,
-              label: '旅行',
-              normalIcon: AppAssets.tabAirNormal,
-              selectedIcon: AppAssets.tabAirSelected,
+              label: '热门景点',
+              normalIcon: AppAssets.toolboxTab3Normal,
+              selectedIcon: AppAssets.toolboxTab3Selected,
               isSelected: currentIndex == 2,
             ),
             _buildNavItem(
               context,
               ref,
               index: 3,
-              label: '我的',
-              normalIcon: AppAssets.tabAirNormal,
-              selectedIcon: AppAssets.tabAirSelected,
+              label: '个人中心',
+              normalIcon: AppAssets.toolboxTab4Normal,
+              selectedIcon: AppAssets.toolboxTab4Selected,
               isSelected: currentIndex == 3,
             ),
           ],
@@ -117,15 +115,17 @@ class HomeShellPage extends ConsumerWidget {
           children: [
             Image.asset(
               isSelected ? selectedIcon : normalIcon,
-              width: 25,
-              height: 25,
+              width: 24,
+              height: 24,
             ),
             const SizedBox(height: 2),
             Text(
               label,
               style: TextStyle(
                 fontSize: 10,
-                color: isSelected ? AppColors.qmtqBlue : const Color(0xFF999999),
+                color: isSelected
+                    ? AppColors.toolboxBottomNavSelected
+                    : AppColors.toolboxBottomNavNormal,
               ),
             ),
           ],

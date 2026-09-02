@@ -47,7 +47,8 @@ class AppAssets {
   static const String weatherThunder = '$_base/qmtq_weather_thunder.png';
 
   /// 15日天气标题图标
-  static const String weatherForecastTitle = '$_base/qmtq_weather_forecast_title.png';
+  static const String weatherForecastTitle =
+      '$_base/qmtq_weather_forecast_title.png';
 
   /// 底部导航 - 首页
   static const String tabHomeNormal = '$_base/qmtq_tab_home_normal.png';
@@ -55,7 +56,8 @@ class AppAssets {
 
   /// 底部导航 - 日历
   static const String tabCalendarNormal = '$_base/qmtq_tab_calendar_normal.png';
-  static const String tabCalendarSelected = '$_base/qmtq_tab_calendar_selected.png';
+  static const String tabCalendarSelected =
+      '$_base/qmtq_tab_calendar_selected.png';
 
   /// 底部导航 - 空气
   static const String tabAirNormal = '$_base/qmtq_tab_air_normal.png';
@@ -71,7 +73,8 @@ class AppAssets {
   static const String calendarRight = '$_base/qmtq_calendar_right.png';
 
   /// 日历选中周背景
-  static const String calendarWeekHighlight = '$_base/qmtq_calendar_week_highlight.png';
+  static const String calendarWeekHighlight =
+      '$_base/qmtq_calendar_week_highlight.png';
 
   /// 城市搜索图标(16dp)
   static const String icSearch = '$_base/ic_search.webp';
@@ -106,7 +109,8 @@ class AppAssets {
   static const String settingAboutIcon = '$_base/setting_4_about_icon.webp';
 
   /// 意见反馈图标
-  static const String settingFeedbackIcon = '$_base/setting_4_feedback_icon.webp';
+  static const String settingFeedbackIcon =
+      '$_base/setting_4_feedback_icon.webp';
 
   // ====== 畅行（bus）模块资源 - 对齐 Android jbcx_* 系列 ======
   /// 畅行无标题图（128dp 宽）
@@ -152,18 +156,149 @@ class AppAssets {
   static const String icBusStopGo = '$_base/ic_bus_stop_go.webp';
 
   /// 交换位置图标（20x19dp）
-  static const String icBusRouteCommutation = '$_base/ic_bus_route_commutation.png';
+  static const String icBusRouteCommutation =
+      '$_base/ic_bus_route_commutation.png';
+
+  // ====== Android RoutenquiryFragment 迁移资源 ======
+  // 独立目录避免与既有 jbcx_* 资源及其他马甲包资源同名冲突。
+  static const String toolboxRouteCar =
+      '$_base/toolbox_route/xxx_route_car.png';
+  static const String toolboxRouteBus =
+      '$_base/toolbox_route/xxx_route_bus.png';
+  static const String toolboxRouteBike =
+      '$_base/toolbox_route/xxx_route_bike.png';
+  static const String toolboxRouteWalk =
+      '$_base/toolbox_route/xxx_route_walk.png';
+  static const String toolboxRouteSearch =
+      '$_base/toolbox_route/xxx_ic_search.png';
+  static const String toolboxAddressHome =
+      '$_base/toolbox_route/xxx_ic_home.png';
+  static const String toolboxAddressCompany =
+      '$_base/toolbox_route/xxx_ic_company.png';
+  static const String toolboxAddressSchool =
+      '$_base/toolbox_route/xxx_ic_school.png';
+  static const String toolboxAddressBar =
+      '$_base/toolbox_route/xxx_address_bar.png';
+  static const String toolboxNearbyMall =
+      '$_base/toolbox_route/xxx_ic_mall.png';
+  static const String toolboxNearbyToilet =
+      '$_base/toolbox_route/xxx_ic_toilet.png';
+  static const String toolboxArrow = '$_base/toolbox_route/xxx_ic_arrow.png';
+  static const String toolboxVr1 = '$_base/toolbox_route/ic_scenic_vr_1.webp';
+  static const String toolboxVr2 = '$_base/toolbox_route/ic_scenic_vr_2.webp';
+  static const String toolboxVr3 = '$_base/toolbox_route/ic_scenic_vr_3.webp';
+  static const String toolboxVr4 = '$_base/toolbox_route/ic_scenic_vr_4.webp';
+  static const String toolboxVr5 = '$_base/toolbox_route/ic_scenic_vr_5.webp';
+  static const String toolboxVr6 = '$_base/toolbox_route/ic_scenic_vr_6.webp';
+  static const String toolboxVr7 = '$_base/toolbox_route/ic_scenic_vr_7.webp';
+  static const String toolboxVr8 = '$_base/toolbox_route/ic_scenic_vr_8.webp';
+  static const String toolboxVr9 = '$_base/toolbox_route/ic_scenic_vr_9.webp';
+  static const String toolboxVr10 = '$_base/toolbox_route/ic_scenic_vr_10.webp';
+
+  // ====== Android NearbyFragment 迁移资源 ======
+  // 单独目录管理，避免与此前版本的 nearby_* 资源和后续马甲资源混用。
+  static const String toolboxNearbySupermarket =
+      '$_base/toolbox_nearby/icondd_func_supermarket.png';
+  static const String toolboxNearbyEntertainment =
+      '$_base/toolbox_nearby/icondd_func_entertainment.png';
+  static const String toolboxNearbyFood =
+      '$_base/toolbox_nearby/icondd_func_food.png';
+  static const String toolboxNearbySubway =
+      '$_base/toolbox_nearby/icondd_func_subway.png';
+  static const String toolboxNearbyHotel =
+      '$_base/toolbox_nearby/icondd_func_hotel.png';
+  static const String toolboxNearbyScenic =
+      '$_base/toolbox_nearby/icondd_func_scenic.png';
+  static const String toolboxNearbyFood2 =
+      '$_base/toolbox_nearby/icondd_func_food2.png';
+  static const String toolboxNearbyBus =
+      '$_base/toolbox_nearby/icondd_func_bus.png';
+
+  // ====== Android TravelSettingFragment 迁移资源 ======
+  // 独立目录避免与旧设置页图标以及其他马甲包资源同名冲突。
+  static const String toolboxProfileLocation =
+      '$_base/toolbox_profile/llocation.png';
+  static const String toolboxProfileWeather =
+      '$_base/toolbox_profile/icond_weather_icon.png';
+  static const String toolboxProfileAvatar =
+      '$_base/toolbox_profile/icond_avatar.png';
+  static const String toolboxProfilePrivacy =
+      '$_base/toolbox_profile/icond_privacy.png';
+  static const String toolboxProfileAgreement =
+      '$_base/toolbox_profile/icond_agreement.png';
+  static const String toolboxProfileAbout =
+      '$_base/toolbox_profile/icond_about.png';
+  static const String toolboxProfileFeedback =
+      '$_base/toolbox_profile/icond_feedback.png';
+
+  // ====== Android ViewpointFragment 迁移资源 ======
+  static const String toolboxViewpointTopBackground =
+      '$_base/toolbox_viewpoint/icondv_top_bg.png';
+  static const String toolboxViewpointArrow =
+      '$_base/toolbox_viewpoint/icondv_arrow.png';
+  static const String toolboxViewpointArrowExpanded =
+      '$_base/toolbox_viewpoint/icondv_arrow_item.png';
+  static const String toolboxViewpoint1 =
+      '$_base/toolbox_viewpoint/ic_scenic_vp_1.webp';
+  static const String toolboxViewpoint2 =
+      '$_base/toolbox_viewpoint/ic_scenic_vp_2.webp';
+  static const String toolboxViewpoint3 =
+      '$_base/toolbox_viewpoint/ic_scenic_vp_3.webp';
+  static const String toolboxViewpoint4 =
+      '$_base/toolbox_viewpoint/ic_scenic_vp_4.webp';
+  static const String toolboxViewpoint5 =
+      '$_base/toolbox_viewpoint/ic_scenic_vp_5.webp';
+  static const String toolboxViewpoint6 =
+      '$_base/toolbox_viewpoint/ic_scenic_vp_6.webp';
+  static const String toolboxViewpoint7 =
+      '$_base/toolbox_viewpoint/ic_scenic_vp_7.webp';
+  static const String toolboxViewpoint8 =
+      '$_base/toolbox_viewpoint/ic_scenic_vp_8.webp';
+  static const String toolboxViewpoint9 =
+      '$_base/toolbox_viewpoint/ic_scenic_vp_9.webp';
+  static const String toolboxViewpoint10 =
+      '$_base/toolbox_viewpoint/ic_scenic_vp_10.webp';
+  static const String toolboxHongKongDisneyGate =
+      '$_base/toolbox_viewpoint/dishini_h_menpai.webp';
+  static const String toolboxHongKongDisneyPark =
+      '$_base/toolbox_viewpoint/dishini_h_leyuan.webp';
+  static const String toolboxHongKongDisneyFood =
+      '$_base/toolbox_viewpoint/dishini_h_meishi.webp';
+  static const String toolboxHongKongDisneyBack =
+      '$_base/toolbox_viewpoint/ic_back_gray_white.webp';
+
+  // ====== Android MainWeatherActivity 底部导航资源 ======
+  static const String toolboxTab1Normal =
+      '$_base/toolbox_bottom_nav/ic_tab_1_false.webp';
+  static const String toolboxTab1Selected =
+      '$_base/toolbox_bottom_nav/ic_tab_1_true.webp';
+  static const String toolboxTab2Normal =
+      '$_base/toolbox_bottom_nav/ic_tab_2_false.webp';
+  static const String toolboxTab2Selected =
+      '$_base/toolbox_bottom_nav/ic_tab_2_true.webp';
+  static const String toolboxTab3Normal =
+      '$_base/toolbox_bottom_nav/ic_tab_3_false.webp';
+  static const String toolboxTab3Selected =
+      '$_base/toolbox_bottom_nav/ic_tab_3_true.webp';
+  static const String toolboxTab4Normal =
+      '$_base/toolbox_bottom_nav/ic_tab_4_false.webp';
+  static const String toolboxTab4Selected =
+      '$_base/toolbox_bottom_nav/ic_tab_4_true.webp';
 
   // ====== 旅行规划（travel）模块资源 - 对齐 Android ViewpointFragment ======
   /// 旅行卡片图（9 张，154dp 高）
   static const String travelDisney = '$_base/jbcx_travel_disney.webp';
   static const String travelBund = '$_base/jbcx_travel_bund.webp';
-  static const String travelForbiddenCity = '$_base/jbcx_travel_forbidden_city.png';
-  static const String travelUniversalBeijing = '$_base/jbcx_travel_universal_beijing.png';
+  static const String travelForbiddenCity =
+      '$_base/jbcx_travel_forbidden_city.png';
+  static const String travelUniversalBeijing =
+      '$_base/jbcx_travel_universal_beijing.png';
   static const String travelGreatWall = '$_base/jbcx_travel_great_wall.png';
-  static const String travelTerracottaWarriors = '$_base/jbcx_travel_terracotta_warriors.png';
+  static const String travelTerracottaWarriors =
+      '$_base/jbcx_travel_terracotta_warriors.png';
   static const String travelHuanglong = '$_base/jbcx_travel_huanglong.png';
-  static const String travelLeshanBuddha = '$_base/jbcx_travel_leshan_buddha.png';
+  static const String travelLeshanBuddha =
+      '$_base/jbcx_travel_leshan_buddha.png';
   static const String travelWestLake = '$_base/jbcx_travel_west_lake.png';
 
   // ====== 景点详情页资源 - 对齐 Android hotSceniclib ======

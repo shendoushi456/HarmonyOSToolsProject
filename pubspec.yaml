@@ -1,5 +1,5 @@
 name: qingman_weather
-description: 清逸出行气象 - Flutter-ohos 版
+description: 星程出行 - Flutter-ohos 版
 publish_to: 'none'
 version: 1.0.1+1
 
@@ -52,6 +52,8 @@ dependencies:
     git:
       url: https://gitcode.com/Chyuning/webview_flutter_ohos.git
       ref: main
+  # 直接使用鸿蒙 WebView 的平台控制器类型。
+  webview_flutter_platform_interface: ^2.14.0
 
   # 存储（需 ohos 适配，从 gitcode.com/openharmony-tpc/flutter_packages 获取）
   # 主包内部已声明对 *_ohos 适配包的依赖，无需显式引入 _ohos 包
@@ -79,4 +81,14 @@ flutter:
   generate: true
   assets:
     - assets/images/
+    # Flutter 目录资源声明不递归包含子目录；迁移的 Android 畅行资源需单独声明。
+    - assets/images/toolbox_route/
+    # Android NearbyFragment 使用的地图模式功能图标。
+    - assets/images/toolbox_nearby/
+    # Android TravelSettingFragment 的原始头像、天气和功能图标。
+    - assets/images/toolbox_profile/
+    # Android ViewpointFragment 的顶部背景、展开箭头和景点原图。
+    - assets/images/toolbox_viewpoint/
+    # Android MainWeatherActivity 四项底部导航的原始状态图标。
+    - assets/images/toolbox_bottom_nav/
     - assets/hot_city.json

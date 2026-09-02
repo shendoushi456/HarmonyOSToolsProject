@@ -2,15 +2,15 @@
   "string": [
     {
       "name": "module_desc",
-      "value": "清逸出行气象主模块"
+      "value": "星程出行主模块"
     },
     {
       "name": "EntryAbility_desc",
-      "value": "清逸出行气象"
+      "value": "星程出行"
     },
     {
       "name": "EntryAbility_label",
-      "value": "清逸出行气象"
+      "value": "星程出行"
     },
     {
       "name": "permission_internet_reason",

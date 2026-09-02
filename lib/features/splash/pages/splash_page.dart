@@ -1,8 +1,10 @@
-// 启动页 - 对齐 Android SplashActivity.java
-// 检查隐私协议同意状态,未同意显示弹框,已同意跳转主页
-import 'dart:io';
+// 启动页 - 结构参考 master_saolaisao，同时复用当前项目的品牌、存储和协议路由。
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
+
 import '../../../core/constants/app_assets.dart';
 import '../../../core/storage/prefs_storage.dart';
 import '../../../router/route_names.dart';
@@ -16,72 +18,191 @@ class SplashPage extends StatefulWidget {
 }
 
 class _SplashPageState extends State<SplashPage> {
+  bool? _hasAgreed;
+  Timer? _navigationTimer;
+
   @override
   void initState() {
     super.initState();
-    // 延迟到首帧后检查,确保 context 可用
-    WidgetsBinding.instance.addPostFrameCallback((_) => _checkAgreement());
+    WidgetsBinding.instance.addPostFrameCallback((_) => _loadAgreement());
   }
 
-  /// 检查隐私协议同意状态 - 对齐 SplashActivity.onCreate 行 23-28
-  void _checkAgreement() {
+  @override
+  void dispose() {
+    _navigationTimer?.cancel();
+    super.dispose();
+  }
+
+  void _loadAgreement() {
     if (!mounted) return;
-    final agreed = PrefsStorage.loadIsAgressment();
-    if (!agreed) {
-      _showProtocolDialog();
-    } else {
-      _toMain();
-    }
+    final hasAgreed = PrefsStorage.loadIsAgressment();
+    setState(() => _hasAgreed = hasAgreed);
+    if (hasAgreed) _scheduleMainNavigation();
   }
 
-  /// 跳转主页 - 对齐 SplashActivity.toMain
-  void _toMain() {
-    context.go(RoutePaths.weather);
+  void _scheduleMainNavigation() {
+    _navigationTimer?.cancel();
+    _navigationTimer = Timer(const Duration(seconds: 1), () {
+      if (mounted) context.go(RoutePaths.weather);
+    });
   }
 
-  /// 显示隐私协议弹框 - 对齐 SplashActivity.showProtocolDialog
-  void _showProtocolDialog() {
-    showDialog(
-      context: context,
-      barrierDismissible: false, // 对齐 setCanceledOnTouchOutside(false)
-      builder: (dialogContext) => _ProtocolDialog(
-        onAgree: () async {
-          await PrefsStorage.saveIsAgressment(true);
-          if (dialogContext.mounted) Navigator.of(dialogContext).pop();
-          _toMain();
-        },
-        onRefuse: () {
-          Navigator.of(dialogContext).pop();
-          // 退出应用进程 - 对齐 Android SplashActivity refuse→finish()
-          // ohos 上 SystemNavigator.pop 可能不生效,用 exit(0) 确保真正退出
-          // isAgressment 不保存(仍为 false),下次打开会重新显示弹框
-          exit(0);
-        },
-      ),
-    );
+  Future<void> _agree() async {
+    await PrefsStorage.saveIsAgressment(true);
+    if (mounted) context.go(RoutePaths.weather);
+  }
+
+  void _openPolicy(String title, String url) {
+    context.push(RoutePaths.policy, extra: {'title': title, 'url': url});
   }
 
   @override
   Widget build(BuildContext context) {
+    final Widget content;
+    if (_hasAgreed == null) {
+      content = const Center(child: CircularProgressIndicator());
+    } else if (_hasAgreed!) {
+      content = const _SplashLogo();
+    } else {
+      content = _PrivacyAgreementScreen(
+        onAgree: _agree,
+        onDisagree: SystemNavigator.pop,
+        onUserAgreementClick: () => _openPolicy('用户协议', SettingUrls.user),
+        onPrivacyPolicyClick: () => _openPolicy('隐私协议', SettingUrls.policy),
+      );
+    }
+
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Center(
+      body: content,
+    );
+  }
+}
+
+/// 已同意时展示的启动 Logo，整体结构与 master_saolaisao 保持一致。
+class _SplashLogo extends StatelessWidget {
+  const _SplashLogo();
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          ClipOval(
+            child: Image.asset(
+              AppAssets.appLogo,
+              width: 80,
+              height: 80,
+              fit: BoxFit.cover,
+            ),
+          ),
+          const SizedBox(height: 12),
+          const Text(
+            AppInfoUtil.appName,
+            style: TextStyle(
+              fontSize: 22,
+              color: Color(0xFF1E1E1E),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// 未同意时展示的整页协议说明，避免 Dialog 被原生启动窗口或安全区遮挡。
+class _PrivacyAgreementScreen extends StatelessWidget {
+  const _PrivacyAgreementScreen({
+    required this.onAgree,
+    required this.onDisagree,
+    required this.onUserAgreementClick,
+    required this.onPrivacyPolicyClick,
+  });
+
+  final Future<void> Function() onAgree;
+  final VoidCallback onDisagree;
+  final VoidCallback onUserAgreementClick;
+  final VoidCallback onPrivacyPolicyClick;
+
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 60),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // logo 100x100 - 对齐 activity_splash.xml marginTop 150
-            Image.asset(AppAssets.appLogo, width: 100, height: 100),
-            // 应用名 18sp bold black marginTop 50
-            Padding(
-              padding: const EdgeInsets.only(top: 50),
-              child: Text(
-                AppInfoUtil.appName,
-                style: const TextStyle(
-                  color: Colors.black,
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
+            Center(
+              child: ClipOval(
+                child: Image.asset(
+                  AppAssets.appLogo,
+                  width: 80,
+                  height: 80,
+                  fit: BoxFit.cover,
                 ),
               ),
+            ),
+            const SizedBox(height: 16),
+            const Center(
+              child: Text(
+                AppInfoUtil.appName,
+                style: TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.w600,
+                  color: Color(0xFF1E1E1E),
+                ),
+              ),
+            ),
+            const SizedBox(height: 30),
+            _AgreementIntro(
+              onUserAgreementClick: onUserAgreementClick,
+              onPrivacyPolicyClick: onPrivacyPolicyClick,
+            ),
+            const SizedBox(height: 20),
+            const Text(
+              '申请权限说明',
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+                color: Color(0xFF1E1E1E),
+              ),
+            ),
+            const SizedBox(height: 8),
+            const Text(
+              '为了保障出行服务的正常运行，我们可能会申请以下权限：\n'
+              '• 位置权限：用于定位当前城市和出行导航\n'
+              '• 存储权限：用于保存必要的服务数据\n'
+              '• 网络权限：用于获取天气、地图和出行服务',
+              style: TextStyle(
+                fontSize: 12,
+                color: Color(0xFF616161),
+                height: 1.8,
+              ),
+            ),
+            const SizedBox(height: 40),
+            Row(
+              children: [
+                Expanded(
+                  child: _AgreementButton(
+                    label: '不同意',
+                    onTap: onDisagree,
+                    backgroundColor: const Color(0xFFE0E0E0),
+                    textColor: const Color(0xFF616161),
+                  ),
+                ),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: _AgreementButton(
+                    label: '同意并继续',
+                    onTap: onAgree,
+                    gradient: const LinearGradient(
+                      colors: [Color(0xFF728CF1), Color(0xFF3F5BDF)],
+                    ),
+                    textColor: Colors.white,
+                  ),
+                ),
+              ],
             ),
           ],
         ),
@@ -90,137 +211,103 @@ class _SplashPageState extends State<SplashPage> {
   }
 }
 
-/// 隐私协议弹框 - 对齐 Android ProtocolDialog + dialog_protocol_layout.xml
-class _ProtocolDialog extends StatelessWidget {
-  final Future<void> Function() onAgree;
-  final VoidCallback onRefuse;
+class _AgreementIntro extends StatelessWidget {
+  const _AgreementIntro({
+    required this.onUserAgreementClick,
+    required this.onPrivacyPolicyClick,
+  });
 
-  const _ProtocolDialog({required this.onAgree, required this.onRefuse});
+  final VoidCallback onUserAgreementClick;
+  final VoidCallback onPrivacyPolicyClick;
 
   @override
   Widget build(BuildContext context) {
-    return Dialog(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 10),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            // 应用名 22sp #121212 - 对齐行 10-18
-            Text(
-              AppInfoUtil.appName,
-              style: const TextStyle(
-                color: Color(0xFF121212),
-                fontSize: 22,
-              ),
+    const baseStyle = TextStyle(
+      fontSize: 14,
+      color: Color(0xFF1E1E1E),
+      height: 1.6,
+    );
+    const linkStyle = TextStyle(color: Color(0xFF3F5BDF), fontSize: 14);
+
+    return RichText(
+      text: TextSpan(
+        style: baseStyle,
+        children: [
+          const TextSpan(text: '欢迎您使用${AppInfoUtil.appName}。在使用本应用前，请您仔细阅读并了解'),
+          WidgetSpan(
+            alignment: PlaceholderAlignment.baseline,
+            baseline: TextBaseline.alphabetic,
+            child: GestureDetector(
+              onTap: onUserAgreementClick,
+              child: const Text('《用户协议》', style: linkStyle),
             ),
-            // "欢迎使用" 14sp #333 - 对齐行 20-27
-            _buildParagraph('欢迎使用', const Color(0xFF333333),
-                top: 20),
-            // 说明文字 1 - 对齐行 29-37
-            _buildParagraph(
-              '为了向您提供最佳的服务，我们会根据您在使用时的具体服务功能，收集必要的设备信息以及您设备的存储权限、网络权限、日历和读写等权限。',
-              const Color(0xFF333333),
-              top: 10),
-            // 说明文字 2 - 对齐行 39-47
-            _buildParagraph(
-              '当您在使用具体功能时、我们需要获取您与该功能相对应的权限。未经您的同意，我们不会向第三方披露、共享或者提供您的个人信息。',
-              const Color(0xFF333333),
-              top: 10),
-            // "您可阅读完整的" - 对齐行 49-56
-            _buildParagraph('您可阅读完整的', Colors.black, top: 10),
-            // 协议链接 Row - 对齐行 58-81
-            Padding(
-              padding: const EdgeInsets.only(top: 10),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  GestureDetector(
-                    onTap: () => _openPolicy(
-                        context, '隐私政策', SettingUrls.policy),
-                    child: const Text(
-                      '《隐私协议》',
-                      style: TextStyle(
-                        color: Color(0xFF3F5BDF),
-                        fontSize: 14,
-                      ),
+          ),
+          const TextSpan(text: '和'),
+          WidgetSpan(
+            alignment: PlaceholderAlignment.baseline,
+            baseline: TextBaseline.alphabetic,
+            child: GestureDetector(
+              onTap: onPrivacyPolicyClick,
+              child: const Text('《隐私协议》', style: linkStyle),
+            ),
+          ),
+          const TextSpan(text: '。我们将严格按照法律法规要求，保护您的个人信息。'),
+        ],
+      ),
+    );
+  }
+}
+
+class _AgreementButton extends StatelessWidget {
+  const _AgreementButton({
+    required this.label,
+    required this.onTap,
+    required this.textColor,
+    this.backgroundColor,
+    this.gradient,
+  });
+
+  final String label;
+  final VoidCallback onTap;
+  final Color textColor;
+  final Color? backgroundColor;
+  final Gradient? gradient;
+
+  @override
+  Widget build(BuildContext context) {
+    return Semantics(
+      button: true,
+      label: label,
+      child: GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: onTap,
+        child: Container(
+          height: 42,
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+            color: backgroundColor,
+            gradient: gradient,
+            borderRadius: BorderRadius.circular(15),
+            boxShadow: gradient == null
+                ? null
+                : const [
+                    BoxShadow(
+                      color: Color(0x26000000),
+                      blurRadius: 4,
+                      offset: Offset(0, 2),
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 20),
-                    child: GestureDetector(
-                      onTap: () => _openPolicy(
-                          context, '用户协议', SettingUrls.user),
-                      child: const Text(
-                        '《用户协议》',
-                        style: TextStyle(
-                          color: Color(0xFF3F5BDF),
-                          fontSize: 14,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+                  ],
+          ),
+          child: Text(
+            label,
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w500,
+              color: textColor,
             ),
-            // "各条款信息..." - 对齐行 83-88
-            _buildParagraph('各条款信息，来了解详细内容。如您同意，请点击“同意”开始接受我们的服务。',
-                Colors.black, top: 10),
-            // 同意按钮 - 对齐 Android agreen(match_parent, marginHorizontal=50dp, height=40dp, #3F5BDF 圆角, 18sp white)
-            Padding(
-              padding: const EdgeInsets.only(top: 20, left: 50, right: 50),
-              child: GestureDetector(
-                onTap: onAgree,
-                child: Container(
-                  width: double.infinity,
-                  height: 40,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    color: const Color(0xFF3F5BDF),
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: const Text(
-                    '同意',
-                    style: TextStyle(color: Colors.white, fontSize: 18),
-                  ),
-                ),
-              ),
-            ),
-            // 拒绝 - 对齐行 103-113 (14sp #aaaaaa)
-            Padding(
-              padding: const EdgeInsets.only(top: 20, bottom: 20),
-              child: GestureDetector(
-                onTap: onRefuse,
-                child: const Text(
-                  '拒绝',
-                  style: TextStyle(color: Color(0xFFAAAAAA), fontSize: 14),
-                ),
-              ),
-            ),
-          ],
+          ),
         ),
       ),
-    );
-  }
-
-  /// 段落文字(宽 300) - 对齐 dialog_protocol_layout 的 300dp 宽 TextView
-  Widget _buildParagraph(String text, Color color, {double top = 0}) {
-    return Container(
-      width: 300,
-      padding: EdgeInsets.only(top: top, left: 15, right: 15),
-      child: Text(
-        text,
-        style: TextStyle(color: color, fontSize: 14),
-      ),
-    );
-  }
-
-  /// 打开协议页 - 对齐 ProtocolDialog 的 XieYiActivity 跳转
-  void _openPolicy(BuildContext context, String title, String url) {
-    context.push(
-      RoutePaths.policy,
-      extra: {'title': title, 'url': url},
     );
   }
 }

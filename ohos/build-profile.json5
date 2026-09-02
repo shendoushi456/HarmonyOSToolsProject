@@ -5,13 +5,13 @@
         "name": "default",
         "type": "HarmonyOS",
         "material": {
-          "storeFile": "/Users/zhuanzmima0000/鸿蒙签名/湖南睿思/hunanruisi.p12",
-          "storePassword": "0000001A4A8C991F38FB1E153A7BDD0B72056B822B8FBDD1B8FF0912D560CFD8046FEE610E5E003AAE56",
-          "keyAlias": "hunanruisi",
-          "keyPassword": "0000001A92C76CBBC9E90019719B146F4925CF6F148344A3F45C8A01E1FEAD59EFD3BF78E88C05135EDF",
+          "storeFile": "/Users/zhuanzmima0000/鸿蒙签名/beijinglexionghongyun.p12",
+          "storePassword": "0000001CABCBF44088B9C233738199B86E16F622D45930B0290FEB08467598FB4867CF8D9A67FCB31749DD51",
+          "keyAlias": "beijinglexionghongyun",
+          "keyPassword": "0000001CD2A21760460561D51B096106358E378DA5098A3FFB18F226381901328E5BB3D114540EAE8AEF3A10",
           "signAlg": "SHA256withECDSA",
-          "profile": "/Users/zhuanzmima0000/鸿蒙签名/qingyichuxingqixiangRelease.p7b",
-          "certpath": "/Users/zhuanzmima0000/鸿蒙签名/湖南睿思/hunanruisi.cer"
+          "profile": "/Users/zhuanzmima0000/鸿蒙签名/xingchengchuxingDebugDebug.p7b",
+          "certpath": "/Users/zhuanzmima0000/鸿蒙签名/北京乐熊鸿运/beijinglexionghongyunDebug.cer"
         }
       }
     ],

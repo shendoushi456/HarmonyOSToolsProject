@@ -20,6 +20,9 @@ class RouteNames {
   /// 城市选择页(单选模式) - 对齐 Android AddCityActivity
   static const String citySelect = 'citySelect';
 
+  /// 单城市天气详情页（对齐 Android WlWeatherActivity）
+  static const String weatherDetail = 'weatherDetail';
+
   /// 设置页(对齐 Android Setting4Activity)
   static const String setting = 'setting';
 
@@ -57,6 +60,9 @@ class RouteNames {
   /// 步行导航页(对齐 Android WalkNaviActivity)
   static const String walkNavi = 'walkNavi';
 
+  /// VR 全景页（对齐 Android WeatherWebViewActivity）
+  static const String vrWebView = 'vrWebView';
+
   /// 迪士尼攻略页(对齐 Android DisneyShangHaiScenicDetailActivity)
   static const String disneyScenic = 'disneyScenic';
 
@@ -65,6 +71,9 @@ class RouteNames {
 
   /// 乐山峨眉攻略页(对齐 Android LeShanScenicDetailActivity)
   static const String leShanScenic = 'leShanScenic';
+
+  /// 香港迪士尼攻略页（对齐 Android DisneyHongKongDetailActivity）
+  static const String hongKongDisneyScenic = 'hongKongDisneyScenic';
 }
 
 class RoutePaths {
@@ -79,6 +88,9 @@ class RoutePaths {
 
   /// 城市选择页路径
   static const String citySelect = '/citySelect';
+
+  /// 单城市天气详情页路径
+  static const String weatherDetail = '/weatherDetail';
 
   /// 设置页路径
   static const String setting = '/setting';
@@ -117,6 +129,9 @@ class RoutePaths {
   /// 步行导航页路径
   static const String walkNavi = '/walkNavi';
 
+  /// VR 全景页路径
+  static const String vrWebView = '/vrWebView';
+
   // ====== 旅行规划（travel）模块路由路径 ======
   /// 迪士尼攻略页路径
   static const String disneyScenic = '/disneyScenic';
@@ -126,4 +141,7 @@ class RoutePaths {
 
   /// 乐山峨眉攻略页路径
   static const String leShanScenic = '/leShanScenic';
+
+  /// 香港迪士尼攻略页路径
+  static const String hongKongDisneyScenic = '/hongKongDisneyScenic';
 }

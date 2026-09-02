@@ -8,9 +8,11 @@ import '../features/bus/pages/bus_search_page.dart';
 import '../features/bus/pages/map_navi_page.dart';
 import '../features/bus/pages/map_route_page.dart';
 import '../features/bus/pages/walk_navi_page.dart';
+import '../features/bus/pages/vr_web_view_page.dart';
 import '../features/travel/pages/disney_scenic_detail_page.dart';
 import '../features/travel/pages/editor_pic_tips_page.dart';
 import '../features/travel/pages/leshan_scenic_detail_page.dart';
+import '../features/travel/pages/hong_kong_disney_detail_page.dart';
 import '../features/home/pages/home_shell_page.dart';
 import '../features/setting/pages/about_page.dart';
 import '../features/setting/pages/feedback_page.dart';
@@ -18,6 +20,7 @@ import '../features/setting/pages/policy_page.dart';
 import '../features/setting/pages/setting_page.dart';
 import '../features/splash/pages/splash_page.dart';
 import '../features/weather/pages/city_select_page.dart';
+import '../features/weather/pages/weather_page.dart';
 import 'route_names.dart';
 
 final GoRouter appRouter = GoRouter(
@@ -39,6 +42,12 @@ final GoRouter appRouter = GoRouter(
       path: RoutePaths.citySelect,
       name: RouteNames.citySelect,
       builder: (context, state) => const CitySelectPage(),
+    ),
+    // 独立详情入口 - 供“我的”页天气区跳转，避免回到带底部导航的 HomeShell。
+    GoRoute(
+      path: RoutePaths.weatherDetail,
+      name: RouteNames.weatherDetail,
+      builder: (context, state) => const WeatherPage(),
     ),
     // 设置页 - 对齐 Android Setting4Activity
     GoRoute(
@@ -144,6 +153,18 @@ final GoRouter appRouter = GoRouter(
       name: RouteNames.walkNavi,
       builder: (context, state) => const WalkNaviPage(),
     ),
+    // VR 全景页 - 对齐 Android WeatherWebViewActivity(extra: title + url)
+    GoRoute(
+      path: RoutePaths.vrWebView,
+      name: RouteNames.vrWebView,
+      builder: (context, state) {
+        final extra = state.extra as Map<String, String>? ?? {};
+        return VrWebViewPage(
+          title: extra['title'] ?? '',
+          url: extra['url'] ?? '',
+        );
+      },
+    ),
     // ====== 旅行规划（travel）模块路由 - 对齐 Android hotSceniclib Activity ======
     // 迪士尼攻略页 - 对齐 Android DisneyShangHaiScenicDetailActivity
     GoRoute(
@@ -165,6 +186,11 @@ final GoRouter appRouter = GoRouter(
       path: RoutePaths.leShanScenic,
       name: RouteNames.leShanScenic,
       builder: (context, state) => const LeShanScenicDetailPage(),
+    ),
+    GoRoute(
+      path: RoutePaths.hongKongDisneyScenic,
+      name: RouteNames.hongKongDisneyScenic,
+      builder: (context, state) => const HongKongDisneyDetailPage(),
     ),
   ],
 );

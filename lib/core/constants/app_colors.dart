@@ -89,7 +89,7 @@ class AppColors {
 
   // ====== 畅行（bus）模块颜色 - 对齐 Android bus/utils/BusThemeColors + HomeFragment.kt ======
   /// 畅行主题色（对齐 Android BusThemeColors.PRIMARY_COLOR = 0xFF31C580）
-  static const Color busPrimary = Color(0xFF31C580);
+  static const Color busPrimary = Color(0xFF6A85F0);
 
   /// 畅行主题色上的对比色（对齐 Android BusThemeColors.ON_PRIMARY_COLOR）
   static const Color busOnPrimary = Color(0xFFFFFFFF);
@@ -132,4 +132,34 @@ class AppColors {
 
   /// 畅行交换图标色（对齐 Android MapRouteActivity.kt 0xFF333333）
   static const Color jbcxSwapIcon = Color(0xFF333333);
+
+  // ====== Android RoutenquiryFragment 迁移页面颜色 ======
+  static const Color routeEnquiryBlue = Color(0xFF6A85F0);
+  static const Color routeEnquiryButtonTop = Color(0xFFA9DCF6);
+  static const Color routeEnquiryButtonBottom = Color(0xFF5882F6);
+  static const Color routeEnquirySearchButton = Color(0xFF667FF0);
+  static const Color routeEnquiryText = Color(0xFF1E1E1E);
+  static const Color routeEnquiryTitle = Color(0xFF333333);
+  static const Color routeEnquirySubtitle = Color(0xFF929292);
+  static const Color routeEnquiryVrBarPink = Color(0xFFDBACA0);
+  static const Color routeEnquiryVrBarTeal = Color(0xFF97DCD4);
+  static const Color routeEnquiryVrBarBlue = Color(0xFFA0CCDB);
+
+  // ====== Android NearbyFragment 迁移页面颜色 ======
+  static const Color nearbyGradientTop = Color(0xFF6A85F0);
+  static const Color nearbyFunctionText = Color(0xFF333333);
+
+  // ====== Android TravelSettingFragment 迁移页面颜色 ======
+  static const Color toolboxProfileBlue = Color(0xFF748DF1);
+  static const Color toolboxProfileText = Color(0xFF1E1E1E);
+  static const Color toolboxProfileFunctionText = Color(0xFF333333);
+  static const Color toolboxProfileVersion = Color(0xFF2B3841);
+
+  // ====== Android ViewpointFragment 迁移页面颜色 ======
+  static const Color toolboxViewpointHeader = Color(0xFF6A85F0);
+  static const Color toolboxViewpointDescription = Color(0xFF898989);
+
+  // ====== Android MainWeatherActivity 底部导航文字色 ======
+  static const Color toolboxBottomNavSelected = Color(0xFF6171C7);
+  static const Color toolboxBottomNavNormal = Color(0xFFBFBFBF);
 }

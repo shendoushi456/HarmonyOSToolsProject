@@ -13,7 +13,7 @@ class BaiduSdkInitializer {
   BaiduSdkInitializer._();
 
   /// 鸿蒙端百度地图 AK（CODEBUDDY.md 指定，用户确认为鸿蒙端 AK）
-  static const String _harmonyAk = 'lryPVHPiTucUqNhDFv2n7AfcGPOF4Bm6';
+  static const String _harmonyAk = 'AbTaq45kyZ8Ky4WhM9JUV5xnyBce25EI';
 
   /// 定位插件单例（对齐 Android LocationClient 单例语义）
   static final LocationFlutterPlugin _locationPlugin = LocationFlutterPlugin();
