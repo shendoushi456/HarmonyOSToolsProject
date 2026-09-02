@@ -4,7 +4,9 @@ import 'package:dio/dio.dart';
 import '../../../core/network/dio_client.dart';
 import '../../../core/constants/api_config.dart';
 import '../models/weather_dto.dart';
+import '../models/hourly_weather.dart';
 import '../models/weather_city_dto.dart';
+import '../models/weather_warning.dart';
 
 /// 天气异常 - 错误分类
 class WeatherException implements Exception {
@@ -52,6 +54,25 @@ class WeatherService {
     return _getWeather(ApiConfig.pathWeather7d, cityId);
   }
 
+  /// 实时天气 - GET /v7/weather/now
+  Future<WeatherBeanInfoDTO> getWeatherNow(String cityId) async {
+    return _getWeather(ApiConfig.pathWeatherNow, cityId);
+  }
+
+  /// 24 小时天气预报，对齐 Android getWeather24H。
+  Future<List<HourlyWeather>> getWeather24h(String cityId) async {
+    try {
+      final response = await _dio.get(
+        ApiConfig.pathWeather24h,
+        queryParameters: {'location': cityId},
+      );
+      return hourlyWeatherFromJson(response.toString());
+    } on DioException catch (e) {
+      throw WeatherException('24小时天气查询失败: ${e.message}',
+          code: e.response?.statusCode);
+    }
+  }
+
   /// 实时空气质量 - GET /v7/air/now
   Future<WeatherBeanInfoDTO> getAirNow(String cityId) async {
     try {
@@ -69,6 +90,23 @@ class WeatherService {
         '空气质量查询失败: ${e.message}',
         code: e.response?.statusCode,
       );
+    }
+  }
+
+  /// 获取指定经纬度的生效预警，对齐 Android doWeatherAlertGet。
+  Future<List<WeatherWarning>> getWeatherAlerts({
+    required String latitude,
+    required String longitude,
+  }) async {
+    try {
+      final response = await _dio.get(
+        '${ApiConfig.pathWeatherAlert}/$latitude/$longitude',
+      );
+      return WeatherWarningResponse.fromJsonString(response.toString())
+          .activeWarnings;
+    } on DioException catch (e) {
+      throw WeatherException('预警查询失败: ${e.message}',
+          code: e.response?.statusCode);
     }
   }
 

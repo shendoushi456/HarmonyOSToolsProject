@@ -27,9 +27,15 @@ class AirQualityPollutantsCard extends StatelessWidget {
     // 6 个污染物项 - 对齐 Android AirQualityCard 的 3 行
     final row1 = [
       _AirQualityItem(
-          icon: AppAssets.pollutantPm25, title: '细颗粒物', name: 'PM2.5', value: pm25),
+          icon: AppAssets.pollutantPm25,
+          title: '细颗粒物',
+          name: 'PM2.5',
+          value: pm25),
       _AirQualityItem(
-          icon: AppAssets.pollutantPm10, title: '粗颗粒度', name: 'PM10', value: pm10),
+          icon: AppAssets.pollutantPm10,
+          title: '粗颗粒度',
+          name: 'PM10',
+          value: pm10),
     ];
     final row2 = [
       _AirQualityItem(

@@ -1,5 +1,5 @@
 name: qingman_weather
-description: 晨晓气象站 - Flutter-ohos 版
+description: 瞬变天讯 - Flutter-ohos 版
 publish_to: 'none'
 version: 1.0.0+1
 
@@ -69,6 +69,15 @@ flutter:
   generate: true
   assets:
     - assets/images/
+    # Flutter 的目录声明不会递归收录子目录；显式登记迁入的 toolbox 天气资源。
+    - assets/images/toolbox_weather/
+    # LifeFragment 迁入资源使用独立命名空间，避免马甲 UI 资源同名冲突。
+    - assets/images/toolbox_life/
+    # NongyeFragment 与长途规划使用 Android 原图，分别隔离命名空间。
+    - assets/images/toolbox_agriculture/
+    - assets/images/toolbox_long_trip/
+    # AirQualityFragment 的 Android 原始背景、天气和污染物图标。
+    - assets/images/toolbox_air_quality/
     - assets/hot_city.json
     # 二十四节气 H5 资源目录（对齐 Android assets/ershisijieqi/）
     - assets/ershisijieqi/

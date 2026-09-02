@@ -64,11 +64,20 @@ class PrefsStorage {
       _instance.getBool(keySaveCurrentItem) ?? false;
 
   /// 读取是否同意隐私协议 - 对齐 Android SPUtil "isAgressment"
-  static bool loadIsAgressment() =>
-      _instance.getBool(keyIsAgressment) ?? false;
+  static bool loadIsAgressment() => _instance.getBool(keyIsAgressment) ?? false;
 
   /// 保存是否同意隐私协议
   static Future<void> saveIsAgressment(bool value) async {
     await _instance.setBool(keyIsAgressment, value);
   }
+
+  /// 功能模块私有 JSON 存储；避免将农业/长途规划数据混入城市配置。
+  static String? getString(String key) => _instance.getString(key);
+
+  /// 返回底层存储是否实际写入成功，调用方不能把失败误报为“已保存”。
+  static Future<bool> setString(String key, String value) =>
+      _instance.setString(key, value);
+
+  /// 重新向平台读取最新值，避免只用当前进程内缓存判断保存是否成功。
+  static Future<void> reload() => _instance.reload();
 }

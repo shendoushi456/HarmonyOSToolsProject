@@ -17,8 +17,18 @@ class ApiConfig {
   /// 15天预报 - /v7/weather/15d
   static const String pathWeather15d = '/v7/weather/15d';
 
+  /// 24 小时预报（NongyeFragment 的降水预警数据源）
+  static const String pathWeather24h = '/v7/weather/24h';
+
+  /// 实时天气。空气质量页按 Android AirQualityChildFragment 的方式，
+  /// 独立读取当前温度和天气现象，不能用日预报的最高温替代。
+  static const String pathWeatherNow = '/v7/weather/now';
+
   /// 实时空气质量 - /v7/air/now
   static const String pathAirNow = '/v7/air/now';
+
+  /// 实时气象灾害预警。路径使用城市经纬度，而非 location id。
+  static const String pathWeatherAlert = '/weatheralert/v1/current';
 
   /// 网络超时时间(秒) - 对齐 Android 端 120s
   static const int connectTimeout = 120;

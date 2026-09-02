@@ -63,7 +63,8 @@ class AirHeader extends StatelessWidget {
                 width: 44,
                 height: 44,
                 alignment: Alignment.center,
-                child: const Icon(Icons.settings, color: Colors.white, size: 25),
+                child:
+                    const Icon(Icons.settings, color: Colors.white, size: 25),
               ),
             ),
           ),
@@ -80,7 +81,10 @@ class AirHeader extends StatelessWidget {
                 gradient: const LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
-                  colors: [AppColors.airGradientStart, AppColors.airGradientEnd],
+                  colors: [
+                    AppColors.airGradientStart,
+                    AppColors.airGradientEnd
+                  ],
                 ),
               ),
               child: Row(

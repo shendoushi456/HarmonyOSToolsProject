@@ -38,11 +38,15 @@ class CityLocationDTO {
   final String name;
   final String id;
   final String fxLink;
+  final String latitude;
+  final String longitude;
 
   const CityLocationDTO({
     required this.name,
     required this.id,
     required this.fxLink,
+    required this.latitude,
+    required this.longitude,
   });
 
   factory CityLocationDTO.fromJson(Map<String, dynamic> json) {
@@ -50,6 +54,8 @@ class CityLocationDTO {
       name: json['name']?.toString() ?? '',
       id: json['id']?.toString() ?? '',
       fxLink: json['fxLink']?.toString() ?? '',
+      latitude: json['lat']?.toString() ?? '',
+      longitude: json['lon']?.toString() ?? '',
     );
   }
 }

@@ -1,11 +1,11 @@
-// 底部 3 Tab 容器 - 对齐 Android MainWeatherActivity
-// 首页(天气)迁移,日历/空气质量预留入口
+// 底部 4 Tab 容器：首位为 toolbox_c 迁入的天气页，保留既有首页/日历/空气质量。
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../calendar/pages/calendar_new_page.dart';
+import '../../agriculture/pages/agriculture_page.dart';
 import '../../air_quality/pages/air_quality_new_page.dart';
-import '../../weather/pages/weather_new_page.dart';
-import '../../../core/constants/app_colors.dart';
+import '../../weather/pages/toolbox_weather_page.dart';
+import 'life_home_page.dart';
 import '../../../core/constants/app_assets.dart';
 
 /// 当前选中的 Tab 索引
@@ -19,33 +19,35 @@ class HomeShellPage extends ConsumerWidget {
     final currentIndex = ref.watch(homeTabIndexProvider);
 
     const pages = [
-      WeatherNewPage(),
-      CalendarNewPage(),
+      ToolboxWeatherPage(),
+      LifeHomePage(),
+      AgriculturePage(),
       AirQualityNewPage(),
     ];
 
-    return Scaffold(
-      body: IndexedStack(
-        index: currentIndex,
-        children: pages,
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      // 四个一级页面均为深色底，状态栏文字固定使用白色。
+      value: SystemUiOverlayStyle.light.copyWith(
+        statusBarColor: Colors.transparent,
+        systemNavigationBarColor: const Color(0xFF0A0D0E),
       ),
-      bottomNavigationBar: _buildBottomNav(context, ref, currentIndex),
+      child: Scaffold(
+        body: IndexedStack(
+          index: currentIndex,
+          children: pages,
+        ),
+        bottomNavigationBar: _buildBottomNav(context, ref, currentIndex),
+      ),
     );
   }
 
   /// 底部导航栏 - 对齐 Android MyBottomNavView
-  Widget _buildBottomNav(BuildContext context, WidgetRef ref, int currentIndex) {
+  Widget _buildBottomNav(
+      BuildContext context, WidgetRef ref, int currentIndex) {
     return Container(
-      height: 62,
+      height: 72,
       decoration: const BoxDecoration(
-        color: Color(0xFFF9FDFF),
-        boxShadow: [
-          BoxShadow(
-            color: Color(0x0A000000),
-            blurRadius: 4,
-            offset: Offset(0, -1),
-          ),
-        ],
+        color: Color(0xFF0A0D0E),
       ),
       child: SafeArea(
         top: false,
@@ -56,9 +58,9 @@ class HomeShellPage extends ConsumerWidget {
               context,
               ref,
               index: 0,
-              label: '首页',
-              normalIcon: AppAssets.tabHomeNormal,
-              selectedIcon: AppAssets.tabHomeSelected,
+              label: '天气',
+              normalIcon: AppAssets.toolboxNavWeatherNormal,
+              selectedIcon: AppAssets.toolboxNavWeatherSelected,
               isSelected: currentIndex == 0,
             ),
             _buildNavItem(
@@ -66,18 +68,27 @@ class HomeShellPage extends ConsumerWidget {
               ref,
               index: 1,
               label: '日历',
-              normalIcon: AppAssets.tabCalendarNormal,
-              selectedIcon: AppAssets.tabCalendarSelected,
+              normalIcon: AppAssets.toolboxNavCalendarNormal,
+              selectedIcon: AppAssets.toolboxNavCalendarSelected,
               isSelected: currentIndex == 1,
             ),
             _buildNavItem(
               context,
               ref,
               index: 2,
-              label: '空气质量',
-              normalIcon: AppAssets.tabAirNormal,
-              selectedIcon: AppAssets.tabAirSelected,
+              label: '农业',
+              normalIcon: AppAssets.toolboxNavAgricultureNormal,
+              selectedIcon: AppAssets.toolboxNavAgricultureSelected,
               isSelected: currentIndex == 2,
+            ),
+            _buildNavItem(
+              context,
+              ref,
+              index: 3,
+              label: '生活指南',
+              normalIcon: AppAssets.toolboxNavLifeGuideNormal,
+              selectedIcon: AppAssets.toolboxNavLifeGuideSelected,
+              isSelected: currentIndex == 3,
             ),
           ],
         ),
@@ -104,15 +115,15 @@ class HomeShellPage extends ConsumerWidget {
           children: [
             Image.asset(
               isSelected ? selectedIcon : normalIcon,
-              width: 25,
-              height: 25,
+              width: 24,
+              height: 24,
             ),
-            const SizedBox(height: 2),
+            const SizedBox(height: 3),
             Text(
               label,
               style: TextStyle(
-                fontSize: 10,
-                color: isSelected ? AppColors.qmtqBlue : const Color(0xFF999999),
+                fontSize: 12,
+                color: Colors.white,
               ),
             ),
           ],

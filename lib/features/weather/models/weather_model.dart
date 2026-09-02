@@ -78,6 +78,14 @@ class AirQuality {
   });
 }
 
+/// 实时天气（空气质量页头部温度与天气图标的数据源）。
+class CurrentWeather {
+  final String temperature;
+  final String text;
+
+  const CurrentWeather({required this.temperature, required this.text});
+}
+
 /// 15日预报 UI 展示模型 - 对应 Android HomeForecast
 class HomeForecast {
   final String dayLabel;

@@ -64,6 +64,12 @@ class WeatherViewModel extends Notifier<WeatherState> {
     }
   }
 
+  /// 强制刷新当前城市。用于原 Android Fragment 的 onResume 对应场景。
+  Future<void> refresh(CityBean city) async {
+    state = state.copyWith(isFirst: true);
+    await loadData(city);
+  }
+
   /// 构建 15 日预报列表 - 对齐 populateForecasts + buildForecasts
   List<HomeForecast> buildForecasts(WeatherInfo? info) {
     if (info == null || info.daily.isEmpty) return [];

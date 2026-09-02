@@ -2,15 +2,15 @@
   "string": [
     {
       "name": "module_desc",
-      "value": "晨晓气象站主模块"
+      "value": "瞬变天讯主模块"
     },
     {
       "name": "EntryAbility_desc",
-      "value": "晨晓气象站"
+      "value": "瞬变天讯"
     },
     {
       "name": "EntryAbility_label",
-      "value": "晨晓气象站"
+      "value": "瞬变天讯"
     },
     {
       "name": "permission_internet_reason",

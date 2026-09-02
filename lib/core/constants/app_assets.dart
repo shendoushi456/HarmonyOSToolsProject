@@ -60,7 +60,199 @@ class AppAssets {
   static const String weatherDayRain = '$_base/ic_six_7day_rain.png';
 
   /// 七日预报 - 雷雨图标（对齐 Android ic_six_7day_thunderstorm，保真保留未启用）
-  static const String weatherDayThunderstorm = '$_base/ic_six_7day_thunderstorm.png';
+  static const String weatherDayThunderstorm =
+      '$_base/ic_six_7day_thunderstorm.png';
+
+  // ====== Toolbox 天气页资源 ======
+  // 这些资源从 toolbox_c 的 WeatherChildFragment 当前 Compose 页面迁入，
+  // 独立放在 toolbox_weather 命名空间，避免与现有马甲 UI 资源重名。
+  static const String _toolboxWeatherBase = '$_base/toolbox_weather';
+
+  static const String toolboxWeatherBackground =
+      '$_toolboxWeatherBase/ic_six_weather_bg.png';
+  static const String toolboxWeatherMainCard =
+      '$_toolboxWeatherBase/ic_shun_main_1_1.png';
+  static const String toolboxWeatherSunriseCard =
+      '$_toolboxWeatherBase/ic_shun_main_1_2.png';
+  static const String toolboxWeatherWind =
+      '$_toolboxWeatherBase/ic_shun_main_2_1.png';
+  static const String toolboxWeatherPressure =
+      '$_toolboxWeatherBase/ic_shun_main_2_2.png';
+  static const String toolboxWeatherHumidity =
+      '$_toolboxWeatherBase/ic_shun_main_2_3.png';
+  static const String toolboxWeatherSunrise =
+      '$_toolboxWeatherBase/ic_shun_main_3_1.png';
+  static const String toolboxWeatherSunset =
+      '$_toolboxWeatherBase/ic_shun_main_3_2.png';
+  static const String toolboxWeatherBigSun =
+      '$_toolboxWeatherBase/ic_six_7day_big_sun.png';
+  static const String toolboxWeatherBigCloudy =
+      '$_toolboxWeatherBase/ic_six_7day_big_cloudy.png';
+  static const String toolboxWeatherBigRain =
+      '$_toolboxWeatherBase/ic_six_7day_big_rain.png';
+  static const String toolboxWeatherBigThunderstorm =
+      '$_toolboxWeatherBase/ic_six_7day_big_thunderstorm.png';
+  static const String toolboxWeatherLongTrip =
+      '$_toolboxWeatherBase/waetopbg.png';
+  static const String toolboxWeatherSolarTerms =
+      '$_toolboxWeatherBase/llifejq.png';
+  static const String toolboxWeatherHistoryToday =
+      '$_toolboxWeatherBase/llifetoday.png';
+  static const String toolboxWeatherArrowRight =
+      '$_toolboxWeatherBase/arrow_right_ic.png';
+  static const String toolboxTabWeatherSelected =
+      '$_toolboxWeatherBase/ic_six_tab_1_true.png';
+  static const String toolboxTabWeatherNormal =
+      '$_toolboxWeatherBase/ic_six_tab_1_false.png';
+  static const String toolboxTabHomeSelected =
+      '$_toolboxWeatherBase/ic_six_tab_2_true.png';
+  static const String toolboxTabHomeNormal =
+      '$_toolboxWeatherBase/ic_six_tab_2_false.png';
+  static const String toolboxTabAirSelected =
+      '$_toolboxWeatherBase/ic_six_tab_3_true.png';
+  static const String toolboxTabAirNormal =
+      '$_toolboxWeatherBase/ic_six_tab_3_false.png';
+
+  // MainWeatherActivity 的 MyBottomNavView 四项图标，来自 navtools_menu.xml。
+  static const String toolboxNavWeatherNormal =
+      '$_toolboxWeatherBase/ic_tab_1_false.png';
+  static const String toolboxNavWeatherSelected =
+      '$_toolboxWeatherBase/ic_tab_1_true.png';
+  static const String toolboxNavCalendarNormal =
+      '$_toolboxWeatherBase/ic_tab_2_false.png';
+  static const String toolboxNavCalendarSelected =
+      '$_toolboxWeatherBase/ic_tab_2_true.png';
+  static const String toolboxNavAgricultureNormal =
+      '$_toolboxWeatherBase/ic_tab_3_false.png';
+  static const String toolboxNavAgricultureSelected =
+      '$_toolboxWeatherBase/ic_tab_3_true.png';
+  static const String toolboxNavLifeGuideNormal =
+      '$_toolboxWeatherBase/ic_tab_4_false.png';
+  static const String toolboxNavLifeGuideSelected =
+      '$_toolboxWeatherBase/ic_tab_4_true.png';
+
+  // ====== Toolbox AirQualityFragment 资源 ======
+  // 与其它迁入页面分目录，避免覆写 HarmonyOS 工程中已有的空气质量资源。
+  static const String _toolboxAirQualityBase = '$_base/toolbox_air_quality';
+  static const String toolboxAirQualityBackground =
+      '$_toolboxAirQualityBase/weather_home_shap_airbox_bg.png';
+  static const String toolboxAirQualityLocation =
+      '$_toolboxAirQualityBase/ic_airbox_loc.png';
+  static const String toolboxAirQualitySun =
+      '$_toolboxAirQualityBase/icon_day_airbox_big_sun.png';
+  static const String toolboxAirQualityCloudy =
+      '$_toolboxAirQualityBase/icon_day_airbox_big_cloudy.png';
+  static const String toolboxAirQualityRain =
+      '$_toolboxAirQualityBase/icon_day_airbox_big_rain.png';
+  static const String toolboxAirQualityThunderstorm =
+      '$_toolboxAirQualityBase/icon_day_airbox_big_thunderstorm.png';
+  static const String toolboxAirQualityPm25 =
+      '$_toolboxAirQualityBase/icon_air_airbox_menu1.png';
+  static const String toolboxAirQualityPm10 =
+      '$_toolboxAirQualityBase/icon_air_airbox_menu2.png';
+  static const String toolboxAirQualityNo2 =
+      '$_toolboxAirQualityBase/icon_air_airbox_menu3.png';
+  static const String toolboxAirQualitySo2 =
+      '$_toolboxAirQualityBase/icon_air_airbox_menu4.png';
+  static const String toolboxAirQualityCo =
+      '$_toolboxAirQualityBase/icon_air_airbox_menu5.png';
+  static const String toolboxAirQualityO3 =
+      '$_toolboxAirQualityBase/icon_air_airbox_menu6.png';
+  static const String toolboxAirHealthHero =
+      '$_toolboxAirQualityBase/ic_shun_health_1_1.png';
+  static const String toolboxAirHealthFood =
+      '$_toolboxAirQualityBase/ic_shun_health_2_1.png';
+  static const String toolboxAirHealthCard =
+      '$_toolboxAirQualityBase/ic_shun_health_1_2.png';
+  static const String toolboxAirHealthCardIcon =
+      '$_toolboxAirQualityBase/ic_shun_health_3_1.png';
+  static const String toolboxAirHumidity =
+      '$_toolboxAirQualityBase/ic_shun_health_4_1.png';
+  static const String toolboxAirPressure =
+      '$_toolboxAirQualityBase/ic_shun_health_4_2.png';
+  static const String toolboxAirVisibility =
+      '$_toolboxAirQualityBase/ic_shun_health_4_3.png';
+  static const String toolboxAirUv =
+      '$_toolboxAirQualityBase/ic_shun_health_4_4.png';
+  static const String toolboxAirPrecip =
+      '$_toolboxAirQualityBase/ic_shun_health_4_5.png';
+  static const String toolboxAirWindDir =
+      '$_toolboxAirQualityBase/ic_shun_health_4_6.png';
+  static const String toolboxAirWindSpeed =
+      '$_toolboxAirQualityBase/ic_shun_health_4_7.png';
+  static const String toolboxAirWindScale =
+      '$_toolboxAirQualityBase/ic_shun_health_4_8.png';
+  static const String toolboxTabAirQualityNormal =
+      '$_toolboxAirQualityBase/ic_six_tab_3_false.png';
+  static const String toolboxTabAirQualitySelected =
+      '$_toolboxAirQualityBase/ic_six_tab_3_true.png';
+
+  // ====== Toolbox LifeFragment 资源 ======
+  static const String _toolboxLifeBase = '$_base/toolbox_life';
+  static const String toolboxLifeSolarCard =
+      '$_toolboxLifeBase/ic_shun_life_1_1.png';
+  static const String toolboxLifeHistoryCard =
+      '$_toolboxLifeBase/ic_shun_life_1_2.png';
+  static const String toolboxLifeSolarIcon =
+      '$_toolboxLifeBase/ic_shun_life_2_1.png';
+  static const String toolboxLifeHistoryIcon =
+      '$_toolboxLifeBase/ic_shun_life_2_2.png';
+
+  // ====== Toolbox NongyeFragment / 长途规划资源 ======
+  static const String _toolboxAgricultureBase = '$_base/toolbox_agriculture';
+  static const String agricultureRecordBoard =
+      '$_toolboxAgricultureBase/fyzn_ny_new_record_board.png';
+  static const String agricultureSunshine =
+      '$_toolboxAgricultureBase/icon_ny_rz.png';
+  static const String agricultureWind =
+      '$_toolboxAgricultureBase/icon_ny_fl.png';
+  static const String agricultureUv = '$_toolboxAgricultureBase/ic_uv.png';
+  static const String agricultureHumidity =
+      '$_toolboxAgricultureBase/ic_humidity.png';
+  static const String agricultureWarning =
+      '$_toolboxAgricultureBase/ic_weather_warning.png';
+  static const String agricultureCategoryGrain =
+      '$_toolboxAgricultureBase/fyzn_ny_new_category_grain.png';
+  static const String agricultureCategoryFruitVegetable =
+      '$_toolboxAgricultureBase/fyzn_ny_new_category_fruit_vegetable.png';
+  static const String agricultureCategoryGreenhouse =
+      '$_toolboxAgricultureBase/fyzn_ny_new_category_greenhouse.png';
+  static const String agricultureCategoryForest =
+      '$_toolboxAgricultureBase/fyzn_ny_new_category_forest.png';
+  static const String agricultureCategoryOil =
+      '$_toolboxAgricultureBase/fyzn_ny_new_category_oil.png';
+  static const String agricultureCategoryList =
+      '$_toolboxAgricultureBase/fyzn_ny_new_category_list.png';
+  static const String agricultureAddRecord =
+      '$_toolboxAgricultureBase/fyzn_ny_new_add_record.png';
+  static const String agricultureDeleteRecord =
+      '$_toolboxAgricultureBase/fyzn_ny_new_delete_record.png';
+  static const String agricultureSaveRecord =
+      '$_toolboxAgricultureBase/fyzn_ny_new_save_record.png';
+  static const String agricultureBack =
+      '$_toolboxAgricultureBase/fyzn_ny_new_back_button.png';
+
+  static const String _toolboxLongTripBase = '$_base/toolbox_long_trip';
+  static const String longTripHomeIcon =
+      '$_toolboxLongTripBase/fyzn_ny_tjd_home_route_icon.png';
+  static const String longTripEmpty =
+      '$_toolboxLongTripBase/fyzn_ny_tjd_empty_route.png';
+  static const String longTripRouteBackground =
+      '$_toolboxLongTripBase/yttqyj_icon.png';
+  static const String longTripStart =
+      '$_toolboxLongTripBase/fyzn_ny_tjd_draft_start_weather.png';
+  static const String longTripWaypoint =
+      '$_toolboxLongTripBase/fyzn_ny_tjd_draft_waypoint_weather.png';
+  static const String longTripEnd =
+      '$_toolboxLongTripBase/fyzn_ny_tjd_draft_end_weather.png';
+  static const String longTripRemove =
+      '$_toolboxLongTripBase/fyzn_ny_tjd_draft_remove.png';
+  static const String longTripAlert =
+      '$_toolboxLongTripBase/fyzn_ny_tjd_alert_triangle.png';
+  static const String longTripSuggestionRoute =
+      '$_toolboxLongTripBase/fyzn_ny_tjd_suggestion_route.png';
+  static const String longTripSuggestionSupply =
+      '$_toolboxLongTripBase/fyzn_ny_tjd_suggestion_supply.png';
 
   // ====== 空气质量新 UI 资源（对齐 Android WeatherShChildFragment Compose UI）======
   /// 风速图标（对齐 Android ic_feng_main_2_1，WeatherInfoCard 风速项）
@@ -131,7 +323,8 @@ class AppAssets {
   static const String weatherThunder = '$_base/qmtq_weather_thunder.png';
 
   /// 15日天气标题图标
-  static const String weatherForecastTitle = '$_base/qmtq_weather_forecast_title.png';
+  static const String weatherForecastTitle =
+      '$_base/qmtq_weather_forecast_title.png';
 
   /// 底部导航 - 首页
   static const String tabHomeNormal = '$_base/qmtq_tab_home_normal.png';
@@ -139,7 +332,8 @@ class AppAssets {
 
   /// 底部导航 - 日历
   static const String tabCalendarNormal = '$_base/qmtq_tab_calendar_normal.png';
-  static const String tabCalendarSelected = '$_base/qmtq_tab_calendar_selected.png';
+  static const String tabCalendarSelected =
+      '$_base/qmtq_tab_calendar_selected.png';
 
   /// 底部导航 - 空气
   static const String tabAirNormal = '$_base/qmtq_tab_air_normal.png';
@@ -155,7 +349,8 @@ class AppAssets {
   static const String calendarRight = '$_base/qmtq_calendar_right.png';
 
   /// 日历选中周背景
-  static const String calendarWeekHighlight = '$_base/qmtq_calendar_week_highlight.png';
+  static const String calendarWeekHighlight =
+      '$_base/qmtq_calendar_week_highlight.png';
 
   /// 城市搜索图标(16dp)
   static const String icSearch = '$_base/ic_search.webp';
@@ -190,5 +385,6 @@ class AppAssets {
   static const String settingAboutIcon = '$_base/setting_4_about_icon.webp';
 
   /// 意见反馈图标
-  static const String settingFeedbackIcon = '$_base/setting_4_feedback_icon.webp';
+  static const String settingFeedbackIcon =
+      '$_base/setting_4_feedback_icon.webp';
 }

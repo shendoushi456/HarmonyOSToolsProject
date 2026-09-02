@@ -51,4 +51,8 @@ class WeatherMapper {
       so2: dto.so2,
     );
   }
+
+  static CurrentWeather toCurrentWeather(AirbeanDTO dto) {
+    return CurrentWeather(temperature: dto.temp, text: dto.text);
+  }
 }

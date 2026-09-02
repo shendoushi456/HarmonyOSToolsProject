@@ -10,6 +10,7 @@ import '../features/splash/pages/splash_page.dart';
 import '../features/weather/pages/city_select_page.dart';
 import '../features/weather/pages/solar_terms_page.dart';
 import '../features/calendar/pages/life_tips_page.dart';
+import '../features/long_trip/pages/long_trip_page.dart';
 import 'route_names.dart';
 
 final GoRouter appRouter = GoRouter(
@@ -79,6 +80,11 @@ final GoRouter appRouter = GoRouter(
       path: RoutePaths.lifeTips,
       name: RouteNames.lifeTips,
       builder: (context, state) => const LifeTipsPage(),
+    ),
+    GoRoute(
+      path: RoutePaths.longTrip,
+      name: RouteNames.longTrip,
+      builder: (context, state) => const LongTripPage(),
     ),
   ],
 );
