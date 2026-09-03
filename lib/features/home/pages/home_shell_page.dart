@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../life_tools/pages/color_draw_page.dart';
 import '../../setting/pages/more_page.dart';
+import '../../new_tools/pages/new_tools_page.dart';
 import '../../wifi/pages/wifi_page.dart';
 import '../../../core/constants/app_assets.dart';
 
@@ -19,6 +20,7 @@ class HomeShellPage extends ConsumerWidget {
     const pages = [
       WifiPage(),
       ColorDrawPage(),
+      NewToolsPage(),
       MorePage(),
     ];
 
@@ -73,10 +75,19 @@ class HomeShellPage extends ConsumerWidget {
               context,
               ref,
               index: 2,
+              label: '工具',
+              normalIcon: AppAssets.toolsTabNormal,
+              selectedIcon: AppAssets.toolsTabSelected,
+              isSelected: currentIndex == 2,
+            ),
+            _buildNavItem(
+              context,
+              ref,
+              index: 3,
               label: '更多',
               normalIcon: AppAssets.colorTabMoreNormal,
               selectedIcon: AppAssets.colorTabMoreSelected,
-              isSelected: currentIndex == 2,
+              isSelected: currentIndex == 3,
             ),
           ],
         ),
@@ -101,11 +112,24 @@ class HomeShellPage extends ConsumerWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset(
-              isSelected ? selectedIcon : normalIcon,
-              width: 25,
-              height: 25,
-            ),
+            if (index == 2 && isSelected)
+              ColorFiltered(
+                colorFilter: const ColorFilter.mode(
+                  Color(0xFF352570),
+                  BlendMode.srcIn,
+                ),
+                child: Image.asset(
+                  selectedIcon,
+                  width: 25,
+                  height: 25,
+                ),
+              )
+            else
+              Image.asset(
+                isSelected ? selectedIcon : normalIcon,
+                width: 25,
+                height: 25,
+              ),
             const SizedBox(height: 2),
             Text(
               label,

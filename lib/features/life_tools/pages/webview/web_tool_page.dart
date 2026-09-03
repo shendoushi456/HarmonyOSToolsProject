@@ -20,7 +20,8 @@ class WebToolPage extends StatefulWidget {
   final String title;
   final String url;
 
-  static Future<void> push(BuildContext context, {
+  static Future<void> push(
+    BuildContext context, {
     required String title,
     required String url,
   }) {
@@ -75,17 +76,59 @@ class _WebToolPageState extends State<WebToolPage> {
     // assetPath 如 'assets/game/jintianchishenme/index.html'
     // 提取目录名
     final parts = assetPath.split('/');
-    final dirName = parts.length > 2 ? parts[parts.length - 2] : 'web';
     final htmlName = parts.last;
+    final isSolar = assetPath.contains('/ershisijieqi/');
+    final dirName = parts.length > 2 ? parts[parts.length - 2] : 'web';
 
     // 需要拷贝的文件清单(对齐 assets/game/jintianchishenme/ 5 文件)
-    const files = [
+    const eatFiles = [
       'index.html',
       'style/css/eat-min.css',
       'style/css/img/bg.jpg',
       'style/img/logo.png',
       'style/js/jquery-1.11.1.min.js',
     ];
+    const solarFiles = [
+      'index.html',
+      'css/jquery-weui.min.css',
+      'css/solar.css',
+      'css/weui.min.css',
+      'js/calendar.js',
+      'js/dayjs.min.js',
+      'js/jquery.min.js',
+      'js/underscore-min.js',
+      'images/0.png',
+      'images/1.png',
+      'images/2.png',
+      'images/3.png',
+      'images/4.png',
+      'images/5.png',
+      'images/6.png',
+      'images/7.png',
+      'images/8.png',
+      'images/9.png',
+      'images/10.png',
+      'images/11.png',
+      'images/12.png',
+      'images/13.png',
+      'images/14.png',
+      'images/15.png',
+      'images/16.png',
+      'images/17.png',
+      'images/18.png',
+      'images/19.png',
+      'images/20.png',
+      'images/21.png',
+      'images/22.png',
+      'images/23.png',
+      'images/autumn_bg.png',
+      'images/date_bg.png',
+      'images/solar_bg.png',
+      'images/spring_bg.png',
+      'images/summer_bg.png',
+      'images/winter_bg.png',
+    ];
+    final files = isSolar ? solarFiles : eatFiles;
 
     final tempDir = await getTemporaryDirectory();
     final targetDir = Directory('${tempDir.path}/$dirName');
@@ -95,7 +138,8 @@ class _WebToolPageState extends State<WebToolPage> {
     final indexFile = File(indexPath);
     if (!await indexFile.exists()) {
       await targetDir.create(recursive: true);
-      final assetBase = assetPath.substring(0, assetPath.length - htmlName.length);
+      final assetBase =
+          assetPath.substring(0, assetPath.length - htmlName.length);
       for (final f in files) {
         final data = await rootBundle.load('$assetBase$f');
         final file = File('${targetDir.path}/$f');

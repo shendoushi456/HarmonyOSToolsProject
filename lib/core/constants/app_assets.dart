@@ -258,4 +258,15 @@ class AppAssets {
 
   /// 扫描二维码图标(对齐 ic_tong_life_2_2)
   static const String icQrScan = '$_base/ic_tong_life_2_2.png';
+
+  // NewToolsFragment 识别/图片处理工具图标
+  static const String cleanToolBankCard = '$_base/new_tools/relatives.png';
+  static const String cleanToolColourize = '$_base/new_tools/colourize.png';
+  static const String cleanToolStyle = '$_base/new_tools/style.png';
+  static const String cleanToolAnime = '$_base/new_tools/anime.png';
+  static const String cleanToolQr = '$_base/new_tools/magnifier.png';
+  static const String cleanToolText = '$_base/new_tools/plant.png';
+  static const String toolsTabNormal = '$_base/new_tools/icon_tab_5_false.png';
+  static const String toolsTabSelected =
+      '$_base/new_tools/icon_tab_5_false.png';
 }

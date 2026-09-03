@@ -31,6 +31,13 @@ dependencies:
   # 网络（纯 Dart，无需 ohos 适配）
   dio: 5.4.0
 
+  # 相机预览/拍照（鸿蒙适配）
+  camera:
+    git:
+      url: https://gitcode.com/openharmony-sig/flutter_packages.git
+      path: packages/camera/camera
+      ref: camera-v0.11.1-ohos-1.0.1
+
   # 打开协议 URL（系统浏览器）
   url_launcher: 6.1.11
 
@@ -128,3 +135,10 @@ flutter:
     - assets/images/coloring_book/fruits/
     - assets/hot_city.json
     - assets/game/jintianchishenme/   # 今天吃什么 WebView 本地资源
+    - assets/images/new_tools/
+    - assets/images/menu_fragment/
+    - assets/images/other_scan_tools/
+    - assets/game/ershisijieqi/
+    - assets/game/ershisijieqi/css/
+    - assets/game/ershisijieqi/js/
+    - assets/game/ershisijieqi/images/

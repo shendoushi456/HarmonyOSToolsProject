@@ -1,13 +1,12 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image/image.dart' as img;
-import 'package:path_provider/path_provider.dart';
 
 import '../widgets/tool_top_bar.dart';
+import '../../../scan_menu/services/document_export_service.dart';
 
 /// 离线涂鸦：点击封闭区域进行油漆桶填色（对齐 Android PaintActivity）。
 class OfflineDrawPage extends StatefulWidget {
@@ -143,14 +142,20 @@ class _OfflineDrawPageState extends State<OfflineDrawPage> {
   Future<void> _save() async {
     final bytes = _currentBytes;
     if (bytes == null || _filling) return;
-    final dir = await getApplicationDocumentsDirectory();
-    final out = Directory('${dir.path}/工具箱/离线涂鸦');
-    await out.create(recursive: true);
-    final path = '${out.path}/涂鸦-${DateTime.now().millisecondsSinceEpoch}.png';
-    await File(path).writeAsBytes(bytes);
-    if (mounted) {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text('已保存到 $path')));
+    try {
+      await DocumentExportService().exportBytesToGallery(
+        bytes,
+        name: '离线涂鸦-${DateTime.now().millisecondsSinceEpoch}',
+      );
+      if (mounted) {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(const SnackBar(content: Text('已保存到系统相册')));
+      }
+    } on GalleryExportException catch (error) {
+      if (mounted && !error.isCanceled) {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text('保存失败：${error.message}')));
+      }
     }
   }
 

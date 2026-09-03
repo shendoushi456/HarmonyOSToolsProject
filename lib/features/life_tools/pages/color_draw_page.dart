@@ -1,16 +1,15 @@
 // ColorDrawFragment Flutter 版：简易画板。
 // 排除 Android 中已注释的“跟图绘画”和“形状绘画”，保留画笔、橡皮擦、撤销/恢复、清除、保存。
-import 'dart:io';
 import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:path_provider/path_provider.dart';
 
 import '../../../core/constants/app_assets.dart';
 import '../viewmodels/draw_state.dart';
 import '../viewmodels/draw_view_model.dart';
+import '../../scan_menu/services/document_export_service.dart';
 
 class ColorDrawPage extends ConsumerStatefulWidget {
   const ColorDrawPage({super.key});
@@ -310,15 +309,20 @@ class _ColorDrawPageState extends ConsumerState<ColorDrawPage> {
     if (data == null) {
       return;
     }
-    final dir = await getApplicationDocumentsDirectory();
-    final saveDir = Directory('${dir.path}/工具箱/简易画板');
-    await saveDir.create(recursive: true);
-    final file = File(
-        '${saveDir.path}/Image-${DateTime.now().millisecondsSinceEpoch}.png');
-    await file.writeAsBytes(data.buffer.asUint8List());
-    if (mounted) {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text('保存成功：${file.path}')));
+    try {
+      await DocumentExportService().exportBytesToGallery(
+        data.buffer.asUint8List(),
+        name: '简易画板-${DateTime.now().millisecondsSinceEpoch}',
+      );
+      if (mounted) {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(const SnackBar(content: Text('已保存到系统相册')));
+      }
+    } on GalleryExportException catch (error) {
+      if (mounted && !error.isCanceled) {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text('保存失败：${error.message}')));
+      }
     }
   }
 }

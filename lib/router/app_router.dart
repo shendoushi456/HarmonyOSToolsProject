@@ -7,6 +7,8 @@ import '../features/setting/pages/policy_page.dart';
 import '../features/setting/pages/setting_page.dart';
 import '../features/splash/pages/splash_page.dart';
 import '../features/weather/pages/city_select_page.dart';
+import '../features/recognition/pages/recognition_page.dart';
+import '../features/recognition/models/recognition_type.dart';
 import 'route_names.dart';
 
 final GoRouter appRouter = GoRouter(
@@ -58,6 +60,13 @@ final GoRouter appRouter = GoRouter(
       path: RoutePaths.feedback,
       name: RouteNames.feedback,
       builder: (context, state) => const FeedbackPage(),
+    ),
+    GoRoute(
+      path: RoutePaths.recognition,
+      name: RouteNames.recognition,
+      builder: (context, state) => RecognitionPage(
+        type: state.extra as RecognitionType? ?? RecognitionType.plant,
+      ),
     ),
   ],
 );
