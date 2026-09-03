@@ -28,12 +28,15 @@ class _PixelImagePageState extends ConsumerState<PixelImagePage> {
     final state = ref.watch(pixelImageToolViewModelProvider);
     final vm = ref.read(pixelImageToolViewModelProvider.notifier);
     return Scaffold(
-      appBar: const ToolTopBar(title: '图片像素化'),
+      appBar: const ToolTopBar(
+        title: '图片像素化',
+        backgroundColor: Color(0xFF9B79FF),
+      ),
       body: Column(children: [
         Expanded(
           child: Container(
             width: double.infinity,
-            color: const Color(0xFFF4F5F6),
+            color: const Color(0xFFEFEFEF),
             child: state.isProcessing
                 ? const Center(child: CircularProgressIndicator())
                 : state.hasResult

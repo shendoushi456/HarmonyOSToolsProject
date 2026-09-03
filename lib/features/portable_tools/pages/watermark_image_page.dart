@@ -41,6 +41,7 @@ class _WatermarkImagePageState extends ConsumerState<WatermarkImagePage> {
     return Scaffold(
       appBar: ToolTopBar(
         title: '水印魔法',
+        backgroundColor: const Color(0xFF9B79FF),
         actions: state.hasResult
             ? [
                 IconButton(
@@ -54,7 +55,7 @@ class _WatermarkImagePageState extends ConsumerState<WatermarkImagePage> {
         Expanded(
           child: Container(
             width: double.infinity,
-            color: const Color(0xFFF4F5F6),
+            color: const Color(0xFFEFEFEF),
             child: state.isProcessing
                 ? const Center(child: CircularProgressIndicator())
                 : state.hasResult

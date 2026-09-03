@@ -2,6 +2,7 @@
 // 顶栏 #F0FFB8 "收支管理" + "添加"按钮 + 表头 + ListView + 弹层 dialog_add
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../../core/constants/app_assets.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../viewmodels/tally_view_model.dart';
 import '../widgets/tool_top_bar.dart';
@@ -30,7 +31,8 @@ class TallyPage extends ConsumerWidget {
         actions: [
           TextButton(
             onPressed: vm.showAddDialog,
-            child: const Text('添加', style: TextStyle(fontSize: 18, color: Color(0xFF101112))),
+            child: const Text('添加',
+                style: TextStyle(fontSize: 18, color: Color(0xFF101112))),
           ),
         ],
       ),
@@ -38,11 +40,21 @@ class TallyPage extends ConsumerWidget {
         children: [
           Column(
             children: [
-              // 表头(对齐 activity_manage.xml 表头 日期/类型/金额/说明)
+              // 原 activity_manage.xml 在表头前展示 income_1 插图。
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                padding: const EdgeInsets.only(top: 20),
+                child: Image.asset(
+                  AppAssets.menuFragmentTallyHeader,
+                  height: 200,
+                  width: double.infinity,
+                  fit: BoxFit.cover,
+                ),
+              ),
+              // 表头(对齐 activity_manage.xml 表头 日期/类型/金额/说明)
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
                 child: Row(
-                  children: const [
+                  children: [
                     Expanded(flex: 15, child: _HeaderText('日期')),
                     Expanded(flex: 10, child: _HeaderText('类型')),
                     Expanded(flex: 10, child: _HeaderText('金额')),
@@ -65,7 +77,8 @@ class TallyPage extends ConsumerWidget {
                               return TallyListItem(
                                 tally: t,
                                 onTap: () => vm.showEditDialog(t),
-                                onLongPress: () => _confirmDelete(context, vm, t.id!),
+                                onLongPress: () =>
+                                    _confirmDelete(context, vm, t.id!),
                               );
                             },
                           ),
@@ -73,7 +86,7 @@ class TallyPage extends ConsumerWidget {
             ],
           ),
           // 弹层 dialog_add
-          if (state.isDialogVisible) TallyEditDialog(),
+          if (state.isDialogVisible) const TallyEditDialog(),
         ],
       ),
     );
@@ -91,8 +104,12 @@ class TallyPage extends ConsumerWidget {
         title: const Text('提示'),
         content: const Text('是否删除此项?'),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(ctx, false), child: const Text('取消')),
-          TextButton(onPressed: () => Navigator.pop(ctx, true), child: const Text('确定')),
+          TextButton(
+              onPressed: () => Navigator.pop(ctx, false),
+              child: const Text('取消')),
+          TextButton(
+              onPressed: () => Navigator.pop(ctx, true),
+              child: const Text('确定')),
         ],
       ),
     );

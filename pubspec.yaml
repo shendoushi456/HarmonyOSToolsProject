@@ -1,5 +1,5 @@
 name: qingman_weather
-description: 达速上网通 - Flutter-ohos 版
+description: 智拍速扫 - Flutter-ohos 版
 publish_to: 'none'
 version: 1.0.0+1
 
@@ -123,9 +123,19 @@ flutter:
   generate: true
   assets:
     - assets/images/
+    - assets/images/menu_fragment/
+    - assets/images/other_scan_tools/
+    - assets/images/favorite/
+    - assets/images/bottom_navigation/
     - assets/hot_city.json
     - assets/game/xiaoqiaomen.html   # 生活小窍门 WebView 本地资源
-    - assets/game/jintianchishenme/   # 今天吃什么 WebView 本地资源
+    # HarmonyOS Flutter 构建不会递归收录此目录；WebToolPage 会逐项从
+    # rootBundle 复制到临时目录，故将 HTML 的全部相对依赖显式声明。
+    - assets/game/jintianchishenme/index.html
+    - assets/game/jintianchishenme/style/css/eat-min.css
+    - assets/game/jintianchishenme/style/css/img/bg.jpg
+    - assets/game/jintianchishenme/style/img/logo.png
+    - assets/game/jintianchishenme/style/js/jquery-1.11.1.min.js
     - assets/game/ershisijieqi/       # 二十四节气 WebView 本地资源
     - assets/game/ershisijieqi/css/       # 二十四节气 WebView 本地资源
     - assets/game/ershisijieqi/js/       # 二十四节气 WebView 本地资源

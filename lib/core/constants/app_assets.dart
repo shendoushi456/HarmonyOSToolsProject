@@ -221,6 +221,44 @@ class AppAssets {
   /// MenuHome 入口背景图(对齐 ic_shan_main_1_1, 复用 lifeBg)
   static const String menuHomeBg = '$_base/ic_shan_main_1_1.png';
 
+  // ====== MenuFragment 首页资源 - 直接来自 toolbox_c MenuFragment ======
+  static const String menuFragmentQrGenerateBanner =
+      '$_base/menu_fragment/qr_generate_banner.png';
+  static const String menuFragmentQuickTextRecognition =
+      '$_base/menu_fragment/quick_text_recognition.png';
+  static const String menuFragmentQuickQrRecognition =
+      '$_base/menu_fragment/quick_qr_recognition.png';
+  static const String menuFragmentQuickPlantRecognition =
+      '$_base/menu_fragment/quick_plant_recognition.png';
+  static const String menuFragmentQuickIngredientRecognition =
+      '$_base/menu_fragment/quick_ingredient_recognition.png';
+  static const String menuFragmentQuickAnimalRecognition =
+      '$_base/menu_fragment/quick_animal_recognition.png';
+  static const String menuFragmentToolWatermark =
+      '$_base/menu_fragment/tool_watermark.png';
+  static const String menuFragmentToolMosaic =
+      '$_base/menu_fragment/tool_mosaic.png';
+  static const String menuFragmentToolMagnifier =
+      '$_base/menu_fragment/tool_magnifier.png';
+  static const String menuFragmentToolTally =
+      '$_base/menu_fragment/tool_tally.png';
+  static const String menuFragmentSettings =
+      '$_base/menu_fragment/settings.png';
+  static const String menuFragmentSettingUserAgreement =
+      '$_base/menu_fragment/setting_user_agreement.png';
+  static const String menuFragmentSettingPrivacy =
+      '$_base/menu_fragment/setting_privacy.webp';
+  static const String menuFragmentSettingAbout =
+      '$_base/menu_fragment/setting_about.webp';
+  static const String menuFragmentSettingFeedback =
+      '$_base/menu_fragment/setting_feedback.png';
+  static const String menuFragmentSettingArrowRight =
+      '$_base/menu_fragment/setting_arrow_right.png';
+  static const String menuFragmentSettingBack =
+      '$_base/menu_fragment/setting_back.png';
+  static const String menuFragmentTallyHeader =
+      '$_base/menu_fragment/tally_header.jpg';
+
   /// PDF 转图片图标(对齐 ic_shan_main_4_1)
   static const String icPdfToImage = '$_base/ic_shan_main_4_1.png';
 
@@ -308,4 +346,72 @@ class AppAssets {
       '$_base/new_life_calendar_previous.png';
   static const String newLifeCalendarNext = '$_base/new_life_calendar_next.png';
   static const String newLifeSettings = '$_base/new_life_settings.png';
+
+  // ====== OtherSaoMiaoFrgment 工具页资源 - 直接来自 toolbox_c Android 源码 ======
+  static const String otherScanPixel =
+      '$_base/other_scan_tools/ic_xiangsutu.png';
+  static const String otherScanStyle =
+      '$_base/other_scan_tools/ic_texiaotu.png';
+  static const String otherScanAnime = '$_base/other_scan_tools/cartoon.png';
+  static const String otherScanColourize =
+      '$_base/other_scan_tools/ic_heibaitu.png';
+  static const String otherScanRelatives =
+      '$_base/other_scan_tools/ic_qinqiguanxi.png';
+  static const String otherScanCurrency =
+      '$_base/other_scan_tools/ic_huilv.png';
+  static const String otherScanDate = '$_base/other_scan_tools/ic_riqi.png';
+  static const String otherScanBase = '$_base/other_scan_tools/ic_jinzhi.png';
+  static const String otherScanEat =
+      '$_base/other_scan_tools/ic_jintianchishenm.png';
+  static const String otherScanNotebook = '$_base/ic_shan_main_4_8.png';
+  static const String otherScanChecklist = '$_base/ic_tong_life_3_3.png';
+  static const String otherScanRandom =
+      '$_base/other_scan_tools/ic_suijisu.png';
+
+  // ====== FavoriteListFragment 收藏页资源 - 直接来自 toolbox_c Android 源码 ======
+  static const String favoriteEmpty = '$_base/favorite/ic_fac_flag.png';
+  static const String favoriteEdit = '$_base/favorite/ic_favour_btn.png';
+  static const String favoriteDone = '$_base/favorite/ic_bianji_wancheng.png';
+  static const String favoriteQrScan = '$_base/favorite/s_qrcode.png';
+  static const String favoriteQrGenerate = '$_base/favorite/s_erweima.png';
+  static const String favoriteTextRecognition =
+      '$_base/favorite/s_wenzishibie.png';
+  static const String favoritePlantRecognition =
+      '$_base/favorite/s_zhihuinongye.png';
+  static const String favoriteIngredientRecognition =
+      '$_base/favorite/s_guoshu.png';
+  static const String favoriteAnimalRecognition =
+      '$_base/favorite/s_dongwu.png';
+  static const String favoriteWatermark = '$_base/favorite/s_tjsy.png';
+  static const String favoriteMosaic = '$_base/favorite/s_msk.png';
+  static const String favoriteMagnifier = '$_base/favorite/s_fdj.png';
+  static const String favoriteTally = '$_base/menu_fragment/tool_tally.png';
+  static const String favoritePixel = '$_base/favorite/s_xst.png';
+  static const String favoriteStyle = '$_base/favorite/s_txt.png';
+  static const String favoriteAnime = '$_base/favorite/s_yincangtu.png';
+  static const String favoriteColourize = '$_base/favorite/s_hbss.png';
+  static const String favoriteRelatives = '$_base/favorite/s_qqgx.png';
+  static const String favoriteCurrency = '$_base/favorite/s_hlhs.png';
+  static const String favoriteDate = '$_base/favorite/s_rqjs.png';
+  static const String favoriteBase = '$_base/favorite/s_jzzhq.png';
+  static const String favoriteEat = '$_base/favorite/s_jtcsm.png';
+  static const String favoriteNotebook = '$_base/favorite/notebook.webp';
+  static const String favoriteChecklist = '$_base/ic_tong_life_3_3.png';
+  static const String favoriteRandom = '$_base/favorite/s_sjs.png';
+  static const String favoriteTileBackground =
+      '$_base/favorite/bg_favorite_unsec.png';
+
+  // ====== ScanMenuActivity 底部导航资源 - toolbox_c 原始状态图标 ======
+  static const String bottomHomeNormal =
+      '$_base/bottom_navigation/icon_tab_1_def.png';
+  static const String bottomHomeSelected =
+      '$_base/bottom_navigation/icon_tab_1_true.png';
+  static const String bottomToolsNormal =
+      '$_base/bottom_navigation/main_tab_2.png';
+  static const String bottomToolsSelected =
+      '$_base/bottom_navigation/main_tab_add1.png';
+  static const String bottomFavoriteNormal =
+      '$_base/bottom_navigation/icon_tools_tab_3_def.png';
+  static const String bottomFavoriteSelected =
+      '$_base/bottom_navigation/icon_tools_tab_3_true.png';
 }

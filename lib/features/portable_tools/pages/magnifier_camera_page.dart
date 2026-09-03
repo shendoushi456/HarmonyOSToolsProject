@@ -11,6 +11,11 @@ import 'package:flutter/services.dart';
 class MagnifierCameraPage extends StatefulWidget {
   const MagnifierCameraPage({super.key});
 
+  static Future<void> push(BuildContext context) => Navigator.push(
+        context,
+        MaterialPageRoute(builder: (_) => const MagnifierCameraPage()),
+      );
+
   @override
   State<MagnifierCameraPage> createState() => _MagnifierCameraPageState();
 }
