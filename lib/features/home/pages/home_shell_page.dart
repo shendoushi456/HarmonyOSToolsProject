@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../agriculture/pages/agriculture_page.dart';
-import '../../air_quality/pages/air_quality_new_page.dart';
+import '../../calendar/pages/calendar_new_page.dart';
+import '../../weather/pages/life_index_page.dart';
 import '../../weather/pages/toolbox_weather_page.dart';
-import 'life_home_page.dart';
 import '../../../core/constants/app_assets.dart';
 
 /// 当前选中的 Tab 索引
@@ -20,14 +20,14 @@ class HomeShellPage extends ConsumerWidget {
 
     const pages = [
       ToolboxWeatherPage(),
-      LifeHomePage(),
+      LifeIndexPage(),
+      CalendarNewPage(),
       AgriculturePage(),
-      AirQualityNewPage(),
     ];
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
       // 四个一级页面均为深色底，状态栏文字固定使用白色。
-      value: SystemUiOverlayStyle.light.copyWith(
+      value: SystemUiOverlayStyle.dark.copyWith(
         statusBarColor: Colors.transparent,
         systemNavigationBarColor: const Color(0xFF0A0D0E),
       ),
@@ -47,7 +47,7 @@ class HomeShellPage extends ConsumerWidget {
     return Container(
       height: 72,
       decoration: const BoxDecoration(
-        color: Color(0xFF0A0D0E),
+        color: Color(0xFFFFFFFF),
       ),
       child: SafeArea(
         top: false,
@@ -59,35 +59,35 @@ class HomeShellPage extends ConsumerWidget {
               ref,
               index: 0,
               label: '天气',
-              normalIcon: AppAssets.toolboxNavWeatherNormal,
-              selectedIcon: AppAssets.toolboxNavWeatherSelected,
+              normalIcon: AppAssets.zyytTabWeatherNormal,
+              selectedIcon: AppAssets.zyytTabWeatherSelected,
               isSelected: currentIndex == 0,
             ),
             _buildNavItem(
               context,
               ref,
               index: 1,
-              label: '日历',
-              normalIcon: AppAssets.toolboxNavCalendarNormal,
-              selectedIcon: AppAssets.toolboxNavCalendarSelected,
+              label: '生活指数',
+              normalIcon: AppAssets.zyytTabLifeNormal,
+              selectedIcon: AppAssets.zyytTabLifeSelected,
               isSelected: currentIndex == 1,
             ),
             _buildNavItem(
               context,
               ref,
               index: 2,
-              label: '农业',
-              normalIcon: AppAssets.toolboxNavAgricultureNormal,
-              selectedIcon: AppAssets.toolboxNavAgricultureSelected,
+              label: '日历',
+              normalIcon: AppAssets.zyytTabCalendarNormal,
+              selectedIcon: AppAssets.zyytTabCalendarSelected,
               isSelected: currentIndex == 2,
             ),
             _buildNavItem(
               context,
               ref,
               index: 3,
-              label: '生活指南',
-              normalIcon: AppAssets.toolboxNavLifeGuideNormal,
-              selectedIcon: AppAssets.toolboxNavLifeGuideSelected,
+              label: '农业',
+              normalIcon: AppAssets.zyytTabAgricultureNormal,
+              selectedIcon: AppAssets.zyytTabAgricultureSelected,
               isSelected: currentIndex == 3,
             ),
           ],
@@ -123,7 +123,7 @@ class HomeShellPage extends ConsumerWidget {
               label,
               style: TextStyle(
                 fontSize: 12,
-                color: Colors.white,
+                color: Colors.grey,
               ),
             ),
           ],

@@ -7,6 +7,7 @@ class StandardPageHeader extends StatelessWidget {
   final Widget leading;
   final Widget? trailing;
   final double height;
+  final Color titleColor;
 
   const StandardPageHeader({
     super.key,
@@ -14,6 +15,7 @@ class StandardPageHeader extends StatelessWidget {
     required this.leading,
     this.trailing,
     this.height = 72,
+    this.titleColor = Colors.white,
   });
 
   @override
@@ -27,8 +29,8 @@ class StandardPageHeader extends StatelessWidget {
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   textAlign: TextAlign.center,
-                  style: const TextStyle(
-                      color: Colors.white,
+                  style: TextStyle(
+                      color: titleColor,
                       fontSize: 22,
                       fontWeight: FontWeight.w500)),
             ),

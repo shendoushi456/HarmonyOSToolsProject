@@ -15,10 +15,20 @@ class HourlyWeather {
   });
 }
 
-List<HourlyWeather> hourlyWeatherFromJson(String source) {
+/// 24 小时接口的原始响应。保留业务状态码，避免把接口失败误当成“无降水”。
+class HourlyWeatherResponse {
+  final String code;
+  final List<HourlyWeather> hourly;
+
+  const HourlyWeatherResponse({required this.code, required this.hourly});
+}
+
+HourlyWeatherResponse? hourlyWeatherResponseFromJson(Object? source) {
   try {
-    final root = jsonDecode(source) as Map<String, dynamic>;
-    return (root['hourly'] as List? ?? const [])
+    final decoded = source is String ? jsonDecode(source) : source;
+    if (decoded is! Map) return null;
+    final root = Map<String, dynamic>.from(decoded);
+    final hourly = (root['hourly'] as List? ?? const [])
         .whereType<Map<String, dynamic>>()
         .map(
           (item) => HourlyWeather(
@@ -29,7 +39,11 @@ List<HourlyWeather> hourlyWeatherFromJson(String source) {
           ),
         )
         .toList();
+    return HourlyWeatherResponse(
+      code: root['code']?.toString() ?? '',
+      hourly: hourly,
+    );
   } catch (_) {
-    return const [];
+    return null;
   }
 }

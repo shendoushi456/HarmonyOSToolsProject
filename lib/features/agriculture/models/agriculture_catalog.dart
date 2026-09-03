@@ -8,7 +8,7 @@ const agricultureCategories = <CropCategory>[
     title: '粮食作物',
     selectionText: '粮食作物（小麦、水稻、玉米、大豆）',
     inputHint: '请输入你的粮食',
-    iconAsset: AppAssets.agricultureCategoryGrain,
+    iconAsset: AppAssets.agricultureZyytCategoryGrain,
     guides: [
       DisasterGuide(
           title: '干热风',
@@ -38,7 +38,7 @@ const agricultureCategories = <CropCategory>[
     title: '果蔬作物',
     selectionText: '果蔬经济作物（果树、露天蔬菜、瓜果）',
     inputHint: '请输入你的果蔬作物',
-    iconAsset: AppAssets.agricultureCategoryFruitVegetable,
+    iconAsset: AppAssets.agricultureZyytCategoryProduce,
     guides: [
       DisasterGuide(
           title: '霜冻',
@@ -68,7 +68,7 @@ const agricultureCategories = <CropCategory>[
     title: '大棚作物',
     selectionText: '大棚设施农业（大棚蔬菜、花卉、育苗）',
     inputHint: '请输入你的大棚作物',
-    iconAsset: AppAssets.agricultureCategoryGreenhouse,
+    iconAsset: AppAssets.agricultureZyytCategoryGreenhouse,
     guides: [
       DisasterGuide(
           title: '暴雪',
@@ -98,7 +98,7 @@ const agricultureCategories = <CropCategory>[
     title: '林木作物',
     selectionText: '林果林木（果树、苗木、山林经济作物）',
     inputHint: '请输入林木作物',
-    iconAsset: AppAssets.agricultureCategoryForest,
+    iconAsset: AppAssets.agricultureZyytCategoryForest,
     guides: [
       DisasterGuide(
           title: '森林火险',
@@ -128,7 +128,7 @@ const agricultureCategories = <CropCategory>[
     title: '油料作物',
     selectionText: '油料 / 经济大田作物（花生、油菜、棉花）',
     inputHint: '请输入你的油料作物',
-    iconAsset: AppAssets.agricultureCategoryOil,
+    iconAsset: AppAssets.agricultureZyytCategoryOil,
     guides: [
       DisasterGuide(
           title: '干旱',

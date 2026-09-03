@@ -1,606 +1,510 @@
-// toolbox_c AirQualityFragment / AirQualityChildFragment 的 Flutter 迁入页。
-// 视图只消费独立的 ToolboxAirQualityViewModel，便于后续替换整套马甲 UI。
-import 'dart:math' as math;
-
+// NongyeFragment Flutter 视图。页面只消费 AgricultureViewModel，方便整体替换 UI。
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
-
 import '../../../core/constants/app_assets.dart';
-import '../../../router/route_names.dart';
 import '../../weather/models/weather_model.dart';
+import '../../weather/models/hourly_weather.dart';
+import '../../weather/models/weather_warning.dart';
 import '../../weather/viewmodels/toolbox_weather_view_model.dart';
-import '../viewmodels/toolbox_air_quality_view_model.dart';
+import '../../agriculture/pages/crop_category_page.dart';
+import '../../agriculture/viewmodels/agriculture_view_model.dart';
+
+const _pageBackground = Color(0xFF0A0D0E);
 
 class AirQualityNewPage extends ConsumerWidget {
   const AirQualityNewPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final state = ref.watch(toolboxAirQualityViewModelProvider);
-
+    final state = ref.watch(agricultureViewModelProvider);
+    ref.listen<String?>(
+      toolboxWeatherPageViewModelProvider
+          .select((value) => value.city?.cityName),
+      (previous, cityName) {
+        if (cityName != null && cityName != previous) {
+          ref.read(agricultureViewModelProvider.notifier).loadForCity(cityName);
+        }
+      },
+    );
+    final today = state.forecasts.isEmpty ? null : state.forecasts.first;
     return Scaffold(
-      backgroundColor: const Color(0xFF111111),
-      body: Stack(
-        children: [
-          Positioned.fill(
-            child: Image.asset(
-              AppAssets.toolboxAirQualityBackground,
-              fit: BoxFit.cover,
-              alignment: Alignment.topCenter,
-            ),
-          ),
-          SafeArea(
-            bottom: false,
-            child: RefreshIndicator(
-              color: const Color(0xFFFFDE80),
-              onRefresh: () => ref
-                  .read(toolboxAirQualityViewModelProvider.notifier)
-                  .refresh(),
-              child: ListView(
-                physics: const AlwaysScrollableScrollPhysics(),
-                padding: const EdgeInsets.fromLTRB(28, 30, 28, 42),
-                children: [
-                  const Center(
-                    child: Text(
-                      '生活指南',
+      backgroundColor: _pageBackground,
+      body: SafeArea(
+        bottom: false,
+        child: RefreshIndicator(
+          color: const Color(0xFF1BCACD),
+          onRefresh: () =>
+              ref.read(agricultureViewModelProvider.notifier).load(),
+          child: ListView(
+            physics: const AlwaysScrollableScrollPhysics(),
+            padding: const EdgeInsets.fromLTRB(20, 0, 20, 32),
+            children: [
+              const SizedBox(height: 12),
+              const Center(
+                  child: Text('农业',
                       style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 22),
-                  _Location(
-                    cityName: state.cityName,
-                    onTap: () async {
-                      final changed =
-                          await context.push<bool>(RoutePaths.citySelect);
-                      if (changed == true && context.mounted) {
-                        await ref
-                            .read(toolboxWeatherPageViewModelProvider.notifier)
-                            .loadCity();
-                      }
-                    },
-                  ),
-                  const SizedBox(height: 40),
-                  _CurrentWeather(currentWeather: state.currentWeather),
-                  const SizedBox(height: 36),
-                  _AirSummary(air: state.air),
-                  const SizedBox(height: 42),
-                  _PollutantGrid(air: state.air),
-                  const SizedBox(height: 36),
-                  const _HealthSuggestions(),
-                  const SizedBox(height: 32),
-                  _LifeIndexGrid(weather: state.dailyWeather),
-                  if (state.loading) ...[
-                    const SizedBox(height: 38),
-                    const Center(
-                      child: SizedBox(
-                        width: 22,
-                        height: 22,
-                        child: CircularProgressIndicator(
-                          strokeWidth: 2.5,
                           color: Colors.white,
-                        ),
-                      ),
-                    ),
-                  ],
-                  if (state.errorMessage != null) ...[
-                    const SizedBox(height: 24),
-                    Text(
-                      state.errorMessage!,
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(
-                          color: Color(0xFFE3E3E3), fontSize: 13),
-                    ),
-                  ],
-                ],
-              ),
-            ),
+                          fontSize: 20,
+                          fontWeight: FontWeight.w500))),
+              const SizedBox(height: 22),
+              if (state.cityName.isNotEmpty)
+                Center(
+                    child: Text('${state.cityName}农业气象',
+                        style: const TextStyle(
+                            color: Colors.white70, fontSize: 12))),
+              if (state.cityName.isNotEmpty) const SizedBox(height: 10),
+              _PrecipitationCard(hourlyWeather: state.hourlyWeather),
+              const SizedBox(height: 20),
+              const Text('农业气象指标',
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600)),
+              const SizedBox(height: 3),
+              const Text('关键田间环境实时监测',
+                  style: TextStyle(color: Colors.white, fontSize: 12)),
+              const SizedBox(height: 16),
+              _MetricGrid(today: today),
+              const SizedBox(height: 16),
+              GestureDetector(
+                  onTap: () => Navigator.of(context).push(MaterialPageRoute(
+                      builder: (_) =>
+                          CropCategoryPage(warnings: state.warnings))),
+                  child: Image.asset(AppAssets.agricultureRecordBoard,
+                      fit: BoxFit.fill)),
+              const SizedBox(height: 25),
+              _WarningCenter(warnings: state.warnings),
+              const SizedBox(height: 30),
+              const Center(
+                  child: Text('十五日农业天气',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                          fontWeight: FontWeight.w600))),
+              const SizedBox(height: 28),
+              _ForecastList(
+                  forecasts: state.forecasts,
+                  isLoading: state.loading,
+                  errorMessage: state.errorMessage),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
 }
 
-class _HealthSuggestions extends StatelessWidget {
-  const _HealthSuggestions();
-
-  @override
-  Widget build(BuildContext context) => Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // const Text('健康建议',
-          //     style: TextStyle(
-          //         color: Colors.white,
-          //         fontSize: 16,
-          //         fontWeight: FontWeight.w600)),
-          // const SizedBox(height: 14),
-          // ClipRRect(
-          //   borderRadius: BorderRadius.circular(10),
-          //   child: SizedBox(
-          //     height: 300,
-          //     child: Stack(
-          //       fit: StackFit.expand,
-          //       children: [
-          //         Image.asset(AppAssets.toolboxAirHealthHero,
-          //             fit: BoxFit.cover),
-          //         Align(
-          //           alignment: Alignment.bottomCenter,
-          //           child: Padding(
-          //             padding: const EdgeInsets.fromLTRB(16, 0, 16, 14),
-          //             child: Column(
-          //               mainAxisSize: MainAxisSize.min,
-          //               children: [
-          //                 SizedBox(
-          //                   height: 104,
-          //                   width: double.infinity,
-          //                   child: Stack(
-          //                     fit: StackFit.expand,
-          //                     children: [
-          //                       Image.asset(AppAssets.toolboxAirHealthFood,
-          //                           fit: BoxFit.cover),
-          //                       const Align(
-          //                         alignment: Alignment.bottomLeft,
-          //                         child: Padding(
-          //                           padding: EdgeInsets.all(8),
-          //                           child: Text('今日的均衡膳食，是明日的活力之源。',
-          //                               style: TextStyle(
-          //                                   color: Colors.white, fontSize: 10)),
-          //                         ),
-          //                       ),
-          //                     ],
-          //                   ),
-          //                 ),
-          //                 const SizedBox(height: 12),
-          //                 const Text(
-          //                     '注意：健康建议并非规范建议，也不具备法律效力，在任何时候，如有身体不适者应立即就医并遵医嘱。',
-          //                     style: TextStyle(
-          //                         color: Color(0xFFFF6161), fontSize: 10)),
-          //               ],
-          //             ),
-          //           ),
-          //         ),
-          //       ],
-          //     ),
-          //   ),
-          // ),
-          // const SizedBox(height: 26),
-          const Text('健康建议',
-              style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 18,
-                  fontWeight: FontWeight.w500)),
-          const SizedBox(height: 10),
-          SizedBox(
-            height: 90,
-            child: ListView(
-              scrollDirection: Axis.horizontal,
-              children: const [
-                _SuggestionCard(title: '营养建议', text: '适合多吃富含维生素C的水果,增强免疫力'),
-                SizedBox(width: 15),
-                _SuggestionCard(title: '缓解压力', text: '适当进行户外运动,呼吸新鲜空气放松身心'),
-              ],
-            ),
-          ),
-        ],
-      );
-}
-
-class _SuggestionCard extends StatelessWidget {
-  final String title;
-  final String text;
-  const _SuggestionCard({required this.title, required this.text});
-
-  @override
-  Widget build(BuildContext context) => SizedBox(
-        width: 232,
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(8),
-          child: Stack(
-            fit: StackFit.expand,
-            children: [
-              Image.asset(AppAssets.toolboxAirHealthCard, fit: BoxFit.cover),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(20, 12, 20, 14),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(children: [
-                      Image.asset(AppAssets.toolboxAirHealthCardIcon,
-                          width: 16, height: 16),
-                      const SizedBox(width: 8),
-                      Text(title,
-                          style: const TextStyle(
-                              color: Colors.white, fontSize: 14))
-                    ]),
-                    const SizedBox(height: 10),
-                    Text(text,
-                        style:
-                            const TextStyle(color: Colors.white, fontSize: 12),
-                        maxLines: 2),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-      );
-}
-
-class _LifeIndexGrid extends StatelessWidget {
-  final DailyWeather? weather;
-  const _LifeIndexGrid({this.weather});
-
+class _PrecipitationCard extends StatelessWidget {
+  final List<HourlyWeather> hourlyWeather;
+  const _PrecipitationCard({required this.hourlyWeather});
   @override
   Widget build(BuildContext context) {
-    final items = [
-      _LifeMetric(AppAssets.toolboxAirHumidity, '湿度',
-          weather == null ? '--' : '${weather!.humidity}%'),
-      _LifeMetric(AppAssets.toolboxAirPressure, '气压',
-          weather == null ? '--' : '${weather!.pressure}hPa'),
-      _LifeMetric(AppAssets.toolboxAirVisibility, '能见度',
-          weather == null ? '--' : '${weather!.vis}公里'),
-      _LifeMetric(
-          AppAssets.toolboxAirUv, '紫外线强度', _uvDescription(weather?.uvIndex)),
-      _LifeMetric(AppAssets.toolboxAirPrecip, '降雨量',
-          weather == null ? '--' : '${weather!.precip}mm'),
-      _LifeMetric(
-          AppAssets.toolboxAirWindDir, '风向', weather?.windDirDay ?? '--'),
-      _LifeMetric(AppAssets.toolboxAirWindSpeed, '风速',
-          weather == null ? '--' : '${weather!.windSpeedDay}km/h'),
-      _LifeMetric(
-          AppAssets.toolboxAirWindScale, '风力', weather?.windScaleDay ?? '--'),
-    ];
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text('生活指数',
+    final samples = hourlyWeather.take(24).toList();
+    final precip = samples.fold<double>(
+        0, (total, item) => total + (double.tryParse(item.precipitation) ?? 0));
+    final peak = samples.fold<int>(
+        0,
+        (value, item) =>
+            value > (int.tryParse(item.precipitationProbability) ?? 0)
+                ? value
+                : (int.tryParse(item.precipitationProbability) ?? 0));
+    final bars = List<double>.generate(
+        24,
+        (index) => index < samples.length
+            ? ((double.tryParse(samples[index].precipitationProbability) ?? 0) /
+                    100)
+                .clamp(0, 1)
+                .toDouble()
+            : 0.0);
+    return Container(
+      height: 251,
+      padding: const EdgeInsets.fromLTRB(16, 20, 16, 13),
+      decoration: BoxDecoration(
+          color: Colors.white.withValues(alpha: .3),
+          borderRadius: BorderRadius.circular(15)),
+      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        const Text('24小时降水预警',
             style: TextStyle(
                 color: Colors.white,
                 fontSize: 18,
-                fontWeight: FontWeight.w500)),
-        const SizedBox(height: 12),
-        for (var i = 0; i < items.length; i += 2) ...[
-          Row(children: [
-            Expanded(child: _LifeMetricCard(item: items[i])),
-            const SizedBox(width: 15),
-            Expanded(child: _LifeMetricCard(item: items[i + 1]))
-          ]),
-          if (i < items.length - 2) const SizedBox(height: 12),
-        ],
+                fontWeight: FontWeight.bold)),
+        const SizedBox(height: 6),
+        Text('预计累计${precip.toStringAsFixed(1)}mm，降水概率峰值$peak%',
+            style: const TextStyle(color: Colors.white, fontSize: 12)),
+        const SizedBox(height: 17),
+        Expanded(child: _RainBars(values: bars)),
+      ]),
+    );
+  }
+}
+
+class _RainBars extends StatelessWidget {
+  final List<double> values;
+  const _RainBars({required this.values});
+  @override
+  Widget build(BuildContext context) => Column(children: [
+        Expanded(
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: values
+                .map(
+                  (value) => Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 1.2),
+                      child: Stack(
+                        alignment: Alignment.bottomCenter,
+                        children: [
+                          Container(
+                            height: double.infinity,
+                            color: Colors.white.withValues(alpha: .94),
+                          ),
+                          FractionallySizedBox(
+                            heightFactor: value,
+                            child: Container(color: const Color(0xFF00CFD0)),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                )
+                .toList(),
+          ),
+        ),
+        const SizedBox(height: 6),
+        const Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+          Text('0点', style: TextStyle(color: Colors.white, fontSize: 11)),
+          Text('12点', style: TextStyle(color: Colors.white, fontSize: 11)),
+          Text('0点', style: TextStyle(color: Colors.white, fontSize: 11))
+        ]),
+      ]);
+}
+
+class _MetricGrid extends StatelessWidget {
+  final DailyWeather? today;
+  const _MetricGrid({this.today});
+  @override
+  Widget build(BuildContext context) {
+    final daylight = _daylight(today?.sunrise, today?.sunset);
+    final humidity = int.tryParse(today?.humidity ?? '');
+    return GridView.count(
+      crossAxisCount: 2,
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      mainAxisSpacing: 16,
+      crossAxisSpacing: 15,
+      childAspectRatio: 1.75,
+      children: [
+        _MetricCard(
+            title: '日照时数',
+            icon: AppAssets.agricultureSunshine,
+            value: daylight == null ? '--' : '${daylight}h',
+            unit: '/日照时长',
+            description: daylight == null ? '日照数据暂缺' : '日出至日落预计${daylight}h',
+            color: const Color(0xFFFFB400)),
+        _MetricCard(
+            title: '阵风风力',
+            icon: AppAssets.agricultureWind,
+            value: today?.windScaleDay.isNotEmpty == true
+                ? today!.windScaleDay
+                : '--',
+            unit: '级',
+            description:
+                '${today?.windDirDay.isNotEmpty == true ? today!.windDirDay : '未来时段'}风力较强',
+            color: const Color(0xFF169DD6)),
+        _MetricCard(
+            title: '紫外线',
+            icon: AppAssets.agricultureUv,
+            value: today?.uvIndex.isNotEmpty == true ? today!.uvIndex : '--',
+            unit: _uvDescription(today?.uvIndex),
+            description: '防护建议：${_uvAdvice(today?.uvIndex)}',
+            color: const Color(0xFFF4AC1C)),
+        _MetricCard(
+            title: '相对湿度',
+            icon: AppAssets.agricultureHumidity,
+            value: today?.humidity.isNotEmpty == true ? today!.humidity : '--',
+            unit: humidity == null ? '' : '%',
+            description: humidity == null
+                ? '湿度数据暂缺'
+                : humidity < 40
+                    ? '当前空气较干燥'
+                    : humidity <= 70
+                        ? '当前湿度较适宜'
+                        : '当前空气较湿润',
+            color: const Color(0xFF1CDBF4)),
       ],
     );
   }
-
-  static String _uvDescription(String? value) {
-    final uv = int.tryParse(value ?? '');
-    if (uv == null) return '--';
-    if (uv <= 2) return '最弱';
-    if (uv <= 5) return '中等';
-    if (uv <= 7) return '强';
-    if (uv <= 10) return '很强';
-    return '极强';
-  }
 }
 
-class _LifeMetric {
-  final String icon;
-  final String title;
-  final String value;
-  const _LifeMetric(this.icon, this.title, this.value);
-}
-
-class _LifeMetricCard extends StatelessWidget {
-  final _LifeMetric item;
-  const _LifeMetricCard({required this.item});
-
+class _MetricCard extends StatelessWidget {
+  final String title, icon, value, unit, description;
+  final Color color;
+  const _MetricCard(
+      {required this.title,
+      required this.icon,
+      required this.value,
+      required this.unit,
+      required this.description,
+      required this.color});
   @override
-  Widget build(BuildContext context) => Card(
-        color: const Color(0xFF272A2B),
-        margin: EdgeInsets.zero,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-        child: SizedBox(
-          height: 76,
-          child: Row(
-            children: [
-              const SizedBox(width: 16),
-              Image.asset(item.icon, width: 38, height: 35),
-              const SizedBox(width: 12),
-              Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+  Widget build(BuildContext context) => Container(
+        padding: const EdgeInsets.fromLTRB(11, 10, 8, 12),
+        decoration: BoxDecoration(
+            color: Colors.white.withValues(alpha: .3),
+            borderRadius: BorderRadius.circular(10)),
+        child: Stack(children: [
+          Padding(
+              padding: const EdgeInsets.only(right: 31),
+              child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(item.title,
-                        style:
-                            const TextStyle(color: Colors.white, fontSize: 12)),
-                    const SizedBox(height: 4),
-                    Text(item.value,
-                        style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600)),
-                  ]),
-            ],
-          ),
-        ),
+                    Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 8, vertical: 2),
+                        decoration: BoxDecoration(
+                            color: color,
+                            borderRadius: BorderRadius.circular(5)),
+                        child: Text(title,
+                            style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 13,
+                                fontWeight: FontWeight.w500))),
+                    const SizedBox(height: 7),
+                    RichText(
+                        text: TextSpan(children: [
+                      TextSpan(
+                          text: value,
+                          style: TextStyle(
+                              color: color,
+                              fontSize: 19,
+                              fontWeight: FontWeight.w500)),
+                      TextSpan(
+                          text: unit,
+                          style: TextStyle(color: color, fontSize: 10))
+                    ])),
+                    const Spacer(),
+                    Text(description,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(color: color, fontSize: 10))
+                  ])),
+          Positioned(
+              top: 0, right: 0, child: Image.asset(icon, width: 33, height: 33))
+        ]),
       );
 }
 
-class _Location extends StatelessWidget {
-  final String cityName;
-  final VoidCallback onTap;
-
-  const _Location({required this.cityName, required this.onTap});
-
+class _WarningCenter extends StatelessWidget {
+  final List<WeatherWarning> warnings;
+  const _WarningCenter({required this.warnings});
   @override
-  Widget build(BuildContext context) {
-    return Align(
-      alignment: Alignment.centerLeft,
-      child: Semantics(
-        button: true,
-        label: '选择城市',
-        child: InkWell(
-          onTap: onTap,
-          borderRadius: BorderRadius.circular(22),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 3, horizontal: 2),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Image.asset(
-                  AppAssets.toolboxAirQualityLocation,
-                  width: 15,
-                  height: 22,
-                  fit: BoxFit.contain,
-                ),
-                const SizedBox(width: 7),
-                Text(
-                  cityName.isEmpty ? '正在定位城市' : cityName,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w400,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class _CurrentWeather extends StatelessWidget {
-  final CurrentWeather? currentWeather;
-
-  const _CurrentWeather({this.currentWeather});
-
-  @override
-  Widget build(BuildContext context) {
-    final temperature = currentWeather?.temperature;
-    final condition = currentWeather?.text ?? '';
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Image.asset(
-          _weatherAsset(condition),
-          width: 72,
-          height: 72,
-          fit: BoxFit.contain,
-        ),
-        const SizedBox(width: 18),
-        if (temperature != null && temperature.isNotEmpty) ...[
-          Text(
-            temperature,
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 50,
-              height: 1,
-              fontWeight: FontWeight.w700,
-            ),
-          ),
-          const Padding(
-            padding: EdgeInsets.only(left: 2, bottom: 21),
-            child: Text(
-              '°C',
-              style: TextStyle(color: Colors.white, fontSize: 20),
-            ),
-          ),
-        ] else
-          const Text(
-            '--',
+  Widget build(BuildContext context) =>
+      Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        const Text('农业灾害预警中心',
             style: TextStyle(
-              color: Colors.white70,
-              fontSize: 42,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-      ],
-    );
-  }
-
-  String _weatherAsset(String text) {
-    if (text.contains('雷')) return AppAssets.toolboxAirQualityThunderstorm;
-    if (text.contains('雨') || text.contains('雪')) {
-      return AppAssets.toolboxAirQualityRain;
-    }
-    if (text.contains('云') || text.contains('阴') || text.contains('雾')) {
-      return AppAssets.toolboxAirQualityCloudy;
-    }
-    return AppAssets.toolboxAirQualitySun;
-  }
+                color: Colors.white,
+                fontSize: 18,
+                fontWeight: FontWeight.bold)),
+        const SizedBox(height: 4),
+        const Text('颜色与等级表示灾害影响程度',
+            style: TextStyle(color: Colors.white70, fontSize: 12)),
+        const SizedBox(height: 14),
+        if (warnings.isEmpty)
+          const Text('当前暂无生效农业气象预警',
+              style: TextStyle(color: Colors.white70, fontSize: 13))
+        else
+          ...warnings.map(_WarningCard.new),
+      ]);
 }
 
-class _AirSummary extends StatelessWidget {
-  final AirQuality? air;
+class _WarningCard extends StatefulWidget {
+  final WeatherWarning warning;
+  const _WarningCard(this.warning);
+  @override
+  State<_WarningCard> createState() => _WarningCardState();
+}
 
-  const _AirSummary({this.air});
-
+class _WarningCardState extends State<_WarningCard> {
+  var expanded = false;
   @override
   Widget build(BuildContext context) {
-    final aqi = air?.aqi;
-    final category = air?.category;
-    return Center(
-      child: SizedBox(
-        width: 166,
-        height: 166,
-        child: Stack(
-          alignment: Alignment.center,
-          children: [
-            CustomPaint(
-              size: const Size(166, 166),
-              painter: _AqiArcPainter(aqi),
-            ),
-            Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  aqi == null ? '--' : '$aqi',
-                  style: const TextStyle(
-                    color: Color(0xFFFFDE80),
-                    fontSize: 38,
-                    height: 1.1,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-                const SizedBox(height: 6),
-                Text(
-                  category == null || category.isEmpty
-                      ? '空气质量：--'
-                      : '空气质量：$category',
-                  style: const TextStyle(
-                    color: Color(0xFFFFDE80),
-                    fontSize: 13,
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
+    final warning = widget.warning;
+    final color = _warningColor(warning);
+    final impact =
+        warning.description.isEmpty ? warning.criteria : warning.description;
+    return Padding(
+        padding: const EdgeInsets.only(bottom: 12),
+        child: GestureDetector(
+            onTap: () => setState(() => expanded = !expanded),
+            child: Container(
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border(left: BorderSide(color: color, width: 7))),
+                padding: const EdgeInsets.fromLTRB(14, 11, 14, 11),
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(children: [
+                        Image.asset(AppAssets.agricultureWarning,
+                            width: 20, height: 20),
+                        const SizedBox(width: 7),
+                        Expanded(
+                            child: Text(
+                                warning.eventName.isEmpty
+                                    ? warning.headline
+                                    : warning.eventName,
+                                style: const TextStyle(
+                                    color: Color(0xFF26343E),
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold)))
+                      ]),
+                      const SizedBox(height: 8),
+                      Text('严重程度：${_severity(warning.severity)}',
+                          style: const TextStyle(
+                              color: Color(0xFF59636B), fontSize: 12)),
+                      const SizedBox(height: 4),
+                      Text('影响：$impact',
+                          maxLines: expanded ? null : 1,
+                          overflow: expanded ? null : TextOverflow.ellipsis,
+                          style: const TextStyle(
+                              color: Color(0xFF59636B), fontSize: 12)),
+                      const SizedBox(height: 4),
+                      Text(
+                          '行动：${warning.instruction.isEmpty ? '请关注预警信息并采取防范措施' : warning.instruction}',
+                          maxLines: expanded ? null : 1,
+                          overflow: expanded ? null : TextOverflow.ellipsis,
+                          style: TextStyle(
+                              color: color,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w500)),
+                      if (expanded && warning.senderName.isNotEmpty)
+                        Padding(
+                            padding: const EdgeInsets.only(top: 6),
+                            child: Text('发布单位：${warning.senderName}',
+                                style: const TextStyle(
+                                    color: Color(0xFF59636B), fontSize: 12)))
+                    ]))));
   }
 }
 
-class _AqiArcPainter extends CustomPainter {
-  final int? aqi;
-
-  const _AqiArcPainter(this.aqi);
-
+class _ForecastList extends StatelessWidget {
+  final List<DailyWeather> forecasts;
+  final bool isLoading;
+  final String? errorMessage;
+  const _ForecastList(
+      {required this.forecasts, required this.isLoading, this.errorMessage});
   @override
-  void paint(Canvas canvas, Size size) {
-    const width = 12.0;
-    final rect = Rect.fromCircle(
-      center: Offset(size.width / 2, size.height / 2),
-      radius: (size.shortestSide - width) / 2,
-    );
-    final background = Paint()
-      ..color = Colors.white.withValues(alpha: .38)
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = width
-      ..strokeCap = StrokeCap.round;
-    final foreground = Paint()
-      ..color = const Color(0xFFFFDE80)
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = width
-      ..strokeCap = StrokeCap.round;
-    const start = -math.pi * 0.78;
-    const sweep = math.pi * 1.56;
-    canvas.drawArc(rect, start, sweep, false, background);
-    if (aqi != null) {
-      canvas.drawArc(
-          rect, start, sweep * (aqi! / 500).clamp(0.0, 1.0), false, foreground);
-    }
-  }
-
-  @override
-  bool shouldRepaint(covariant _AqiArcPainter oldDelegate) =>
-      oldDelegate.aqi != aqi;
+  Widget build(BuildContext context) => SizedBox(
+      height: 170,
+      child: forecasts.isEmpty
+          ? Center(
+              child: Text(isLoading ? '正在加载十五日农业天气…' : errorMessage ?? '暂无预报数据',
+                  style: const TextStyle(color: Colors.white70)))
+          : ListView.separated(
+              scrollDirection: Axis.horizontal,
+              itemCount: forecasts.length > 15 ? 15 : forecasts.length,
+              separatorBuilder: (_, __) => const SizedBox(width: 22),
+              itemBuilder: (_, index) {
+                final item = forecasts[index];
+                return SizedBox(
+                    width: 42,
+                    child: Column(children: [
+                      Text(index == 0 ? '今天' : _week(item.fxDate),
+                          style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500)),
+                      const SizedBox(height: 18),
+                      Icon(_weatherIcon(item.textDay),
+                          color: Colors.white, size: 28),
+                      const SizedBox(height: 14),
+                      Text(item.tempMax,
+                          style: const TextStyle(
+                              color: Colors.white, fontSize: 12)),
+                      const SizedBox(height: 10),
+                      Text(item.tempMin,
+                          style: const TextStyle(
+                              color: Colors.white, fontSize: 12)),
+                      const SizedBox(height: 10),
+                      Text(item.textDay,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(
+                              color: Colors.white, fontSize: 12))
+                    ]));
+              }));
 }
 
-class _PollutantGrid extends StatelessWidget {
-  final AirQuality? air;
-
-  const _PollutantGrid({this.air});
-
-  @override
-  Widget build(BuildContext context) {
-    final items = [
-      _Pollutant(AppAssets.toolboxAirQualityPm25, air?.pm2p5, '细颗粒物'),
-      _Pollutant(AppAssets.toolboxAirQualityPm10, air?.pm10, '粗颗粒物'),
-      _Pollutant(AppAssets.toolboxAirQualityNo2, air?.no2, '二氧化氮'),
-      _Pollutant(AppAssets.toolboxAirQualitySo2, air?.so2, '二氧化硫'),
-      _Pollutant(AppAssets.toolboxAirQualityCo, air?.co, '一氧化碳'),
-      _Pollutant(AppAssets.toolboxAirQualityO3, air?.o3, '臭氧'),
-    ];
-    return Column(
-      children: [
-        for (var index = 0; index < items.length; index += 2) ...[
-          Row(
-            children: [
-              Expanded(child: _PollutantItem(item: items[index])),
-              const SizedBox(width: 26),
-              Expanded(child: _PollutantItem(item: items[index + 1])),
-            ],
-          ),
-          if (index < items.length - 2) const SizedBox(height: 31),
-        ],
-      ],
-    );
-  }
+String? _daylight(String? sunrise, String? sunset) {
+  final a = _minutes(sunrise);
+  final b = _minutes(sunset);
+  if (a == null || b == null || b < a) return null;
+  final result = (b - a) / 60;
+  return result == result.roundToDouble()
+      ? result.toStringAsFixed(0)
+      : result.toStringAsFixed(1);
 }
 
-class _Pollutant {
-  final String icon;
-  final String? value;
-  final String label;
-
-  const _Pollutant(this.icon, this.value, this.label);
+int? _minutes(String? text) {
+  final p = text?.split(':');
+  if (p == null || p.length != 2) return null;
+  final h = int.tryParse(p[0]);
+  final m = int.tryParse(p[1]);
+  return h == null || m == null ? null : h * 60 + m;
 }
 
-class _PollutantItem extends StatelessWidget {
-  final _Pollutant item;
-
-  const _PollutantItem({required this.item});
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        SizedBox(
-          width: 32,
-          height: 32,
-          child: Image.asset(item.icon, fit: BoxFit.contain),
-        ),
-        const SizedBox(width: 8),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                item.value?.isNotEmpty == true ? item.value! : '--',
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: const TextStyle(
-                    color: Colors.white, fontSize: 20, height: 1.05),
-              ),
-              const SizedBox(height: 3),
-              Text(
-                item.label,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: const TextStyle(color: Color(0xFFE3E3E3), fontSize: 12),
-              ),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
+String _uvDescription(String? value) {
+  final n = int.tryParse(value ?? '');
+  if (n == null) return '';
+  return n <= 2
+      ? '弱'
+      : n <= 5
+          ? '中等'
+          : n <= 7
+              ? '强'
+              : '很强';
 }
+
+String _uvAdvice(String? value) {
+  final n = int.tryParse(value ?? '');
+  if (n == null) return '紫外线数据暂缺';
+  return n <= 2
+      ? '可正常户外活动'
+      : n <= 5
+          ? '建议适当防晒'
+          : '请做好防晒防护';
+}
+
+Color _warningColor(WeatherWarning warning) =>
+    warning.red != null && warning.green != null && warning.blue != null
+        ? Color.fromARGB(255, warning.red!, warning.green!, warning.blue!)
+        : {
+              'red': const Color(0xFFFF3F46),
+              'orange': const Color(0xFFFF8A3D),
+              'yellow': const Color(0xFFFFB21A),
+              'blue': const Color(0xFF3C9DF2)
+            }[warning.colorCode.toLowerCase()] ??
+            const Color(0xFF4C7DFF);
+String _severity(String value) =>
+    {
+      'extreme': '特别严重',
+      'severe': '严重',
+      'moderate': '较重',
+      'minor': '一般'
+    }[value.toLowerCase()] ??
+    '--';
+String _week(String date) {
+  final value = DateTime.tryParse(date);
+  return value == null
+      ? date
+      : const ['周一', '周二', '周三', '周四', '周五', '周六', '周日'][value.weekday - 1];
+}
+
+IconData _weatherIcon(String text) => text.contains('雷')
+    ? Icons.thunderstorm
+    : text.contains('雨') || text.contains('雪')
+        ? Icons.umbrella
+        : text.contains('云') || text.contains('阴')
+            ? Icons.cloud
+            : Icons.wb_sunny;

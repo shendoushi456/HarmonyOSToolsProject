@@ -17,17 +17,17 @@ class CropRecordListPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(agricultureViewModelProvider);
     return Scaffold(
-      backgroundColor: const Color(0xFF0A0D0E),
+      backgroundColor: const Color(0xFFE4F6FF),
       body: SafeArea(
         bottom: false,
         child: Column(children: [
           StandardPageHeader(
             title: '农作物记录列表',
+            titleColor: const Color(0xFF1E1E1E),
             leading: IconButton(
                 tooltip: '返回',
                 onPressed: () => Navigator.of(context).pop(),
-                icon: Image.asset(AppAssets.agricultureBack,
-                    width: 28, height: 28)),
+                icon: Image.asset(AppAssets.zyytBack, width: 28, height: 28)),
           ),
           Expanded(
             child: Stack(children: [
@@ -35,7 +35,7 @@ class CropRecordListPage extends ConsumerWidget {
                 const Center(
                     child: Text('请添加您的农作物',
                         style: TextStyle(
-                            color: Colors.white,
+                            color: Color(0xFF1E1E1E),
                             fontSize: 22,
                             fontWeight: FontWeight.w500)))
               else
@@ -58,7 +58,7 @@ class CropRecordListPage extends ConsumerWidget {
                   // 修复 Android CropRecordListActivity 的 onAdd = finish()：
                   // 此处直接进入添加页面，不返回类别页。
                   onTap: () => _openCategoryPicker(context),
-                  child: Image.asset(AppAssets.agricultureAddRecord,
+                  child: Image.asset(AppAssets.agricultureZyytAdd,
                       width: 48, height: 48),
                 ),
               ),

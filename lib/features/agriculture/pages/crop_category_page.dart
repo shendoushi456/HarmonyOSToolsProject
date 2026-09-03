@@ -1,48 +1,48 @@
-// 对齐 Android CropCategoryActivity：类别选择 → 添加页，顶部入口 → 统一记录列表。
+// Android CropCategoryActivity 的 Zyyt 版 UI：两列 160dp 作物卡片。
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/constants/app_assets.dart';
-import '../../../core/widgets/standard_page_header.dart';
 import '../../weather/models/weather_warning.dart';
 import '../models/agriculture_catalog.dart';
 import '../models/agriculture_models.dart';
-import 'crop_record_list_page.dart';
 import 'crop_record_editor_page.dart';
+import 'crop_record_list_page.dart';
 
-const _agricultureBackground = Color(0xFF0A0D0E);
+const _agriPageBackground = Color(0xFFE4F6FF);
+const _agriText = Color(0xFF1E1E1E);
 
-class CropCategoryPage extends ConsumerWidget {
+class CropCategoryPage extends StatelessWidget {
   final List<WeatherWarning> warnings;
-
   const CropCategoryPage({super.key, required this.warnings});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) => Scaffold(
-        backgroundColor: _agricultureBackground,
+  Widget build(BuildContext context) => Scaffold(
+        backgroundColor: _agriPageBackground,
         body: SafeArea(
           bottom: false,
           child: Column(children: [
-            StandardPageHeader(
-              title: '农作物类别选择',
+            _Header(
+              title: '农作物列表选择',
               leading: IconButton(
-                  tooltip: '返回',
-                  onPressed: () => Navigator.of(context).pop(),
-                  icon: Image.asset(AppAssets.agricultureBack,
-                      width: 28, height: 28)),
+                onPressed: () => Navigator.of(context).pop(),
+                icon: Image.asset(AppAssets.zyytBack, width: 27, height: 27),
+              ),
               trailing: IconButton(
-                tooltip: '农作物记录列表',
                 onPressed: () => Navigator.of(context).push(MaterialPageRoute(
                     builder: (_) => CropRecordListPage(warnings: warnings))),
-                icon: Image.asset(AppAssets.agricultureCategoryList,
-                    width: 27, height: 27),
+                icon: Image.asset(AppAssets.agricultureZyytCategoryList,
+                    width: 24, height: 24),
               ),
             ),
-            const SizedBox(height: 37),
             Expanded(
-              child: ListView.separated(
-                padding: const EdgeInsets.fromLTRB(20, 0, 20, 32),
+              child: GridView.builder(
+                padding: const EdgeInsets.fromLTRB(20, 22, 20, 28),
                 itemCount: agricultureCategories.length,
-                separatorBuilder: (_, __) => const SizedBox(height: 16),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  mainAxisSpacing: 18,
+                  crossAxisSpacing: 15,
+                  mainAxisExtent: 160,
+                ),
                 itemBuilder: (_, index) => _CategoryCard(
                   category: agricultureCategories[index],
                   onTap: () => Navigator.of(context).push(MaterialPageRoute(
@@ -59,52 +59,85 @@ class CropCategoryPage extends ConsumerWidget {
       );
 }
 
+class _Header extends StatelessWidget {
+  final String title;
+  final Widget leading;
+  final Widget trailing;
+  const _Header(
+      {required this.title, required this.leading, required this.trailing});
+
+  @override
+  Widget build(BuildContext context) => SizedBox(
+        height: 72,
+        child: Stack(children: [
+          Center(
+              child: Text(title,
+                  style: const TextStyle(
+                      color: _agriText,
+                      fontSize: 23,
+                      fontWeight: FontWeight.w500))),
+          Positioned(
+              left: 8,
+              top: 12,
+              child: SizedBox(width: 48, height: 48, child: leading)),
+          Positioned(
+              right: 8,
+              top: 12,
+              child: SizedBox(width: 48, height: 48, child: trailing)),
+        ]),
+      );
+}
+
 class _CategoryCard extends StatelessWidget {
   final CropCategory category;
   final VoidCallback onTap;
   const _CategoryCard({required this.category, required this.onTap});
 
   @override
-  Widget build(BuildContext context) => GestureDetector(
+  Widget build(BuildContext context) {
+    final copy = _copy(category.id);
+    return Material(
+      color: const Color(0xFFF1FAFF),
+      borderRadius: BorderRadius.circular(20),
+      elevation: 3,
+      child: InkWell(
         onTap: onTap,
-        child: SizedBox(
-          height: 76,
-          child: Stack(children: [
-            Positioned(
-              left: 0,
-              right: 0,
-              bottom: 0,
-              child: Container(
-                height: 54,
-                padding: const EdgeInsets.only(left: 102, right: 8),
-                alignment: Alignment.centerLeft,
-                decoration: BoxDecoration(
-                  color: Colors.white.withValues(alpha: .3),
-                  borderRadius: BorderRadius.circular(10),
-                  boxShadow: const [
-                    BoxShadow(color: Color(0x33000000), blurRadius: 4)
-                  ],
-                ),
-                child: Text(category.selectionText,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(color: Colors.white, fontSize: 12)),
-              ),
-            ),
-            Positioned(
-              left: 20,
-              top: 0,
-              child: Container(
-                width: 62,
-                height: 62,
-                decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    border: Border.all(color: Colors.black)),
-                child: ClipOval(
-                    child: Image.asset(category.iconAsset, fit: BoxFit.cover)),
-              ),
-            ),
+        borderRadius: BorderRadius.circular(20),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 13),
+          child: Column(children: [
+            Image.asset(category.iconAsset, width: 82, height: 82),
+            Text(copy.title,
+                maxLines: 1,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    color: _agriText,
+                    fontSize: category.id == 'oil_field' ? 15 : 16,
+                    fontWeight: FontWeight.w600)),
+            const SizedBox(height: 8),
+            Text(copy.subtitle,
+                maxLines: 1,
+                textAlign: TextAlign.center,
+                style: const TextStyle(color: Color(0xFF242424), fontSize: 11)),
           ]),
         ),
-      );
+      ),
+    );
+  }
+
+  _CategoryCopy _copy(String id) =>
+      {
+        'grain': const _CategoryCopy('粮食作物', '(小麦、水稻、玉米、大豆)'),
+        'fruit_vegetable': const _CategoryCopy('果蔬经济作物', '(果树、露天蔬菜、瓜果)'),
+        'greenhouse': const _CategoryCopy('大棚设施产业', '(大棚蔬菜、花卉、育苗)'),
+        'forest': const _CategoryCopy('林果林木', '(果树、苗木、山林经济作物)'),
+        'oil_field': const _CategoryCopy('油料、经济大田作物', '(花生、油菜、棉花)'),
+      }[id] ??
+      _CategoryCopy(category.title, '');
+}
+
+class _CategoryCopy {
+  final String title;
+  final String subtitle;
+  const _CategoryCopy(this.title, this.subtitle);
 }

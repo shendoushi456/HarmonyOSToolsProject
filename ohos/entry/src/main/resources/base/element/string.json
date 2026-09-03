@@ -2,15 +2,15 @@
   "string": [
     {
       "name": "module_desc",
-      "value": "瞬变天讯主模块"
+      "value": "智雨云图主模块"
     },
     {
       "name": "EntryAbility_desc",
-      "value": "瞬变天讯"
+      "value": "智雨云图"
     },
     {
       "name": "EntryAbility_label",
-      "value": "瞬变天讯"
+      "value": "智雨云图"
     },
     {
       "name": "permission_internet_reason",

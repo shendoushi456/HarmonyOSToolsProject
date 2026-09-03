@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import '../../../core/constants/app_assets.dart';
-import '../../../core/widgets/standard_page_header.dart';
 import '../../weather/models/weather_warning.dart';
 import '../models/long_trip_models.dart';
 import '../viewmodels/long_trip_view_model.dart';
@@ -23,17 +22,11 @@ class _LongTripPageState extends ConsumerState<LongTripPage> {
     final state = ref.watch(longTripViewModelProvider);
     final warnings = _visibleWarnings(state.plans, state.weatherByCity);
     return Scaffold(
-      backgroundColor: const Color(0xFF0A0D0E),
+      backgroundColor: const Color(0xFFE4F6FF),
       body: SafeArea(
         bottom: false,
         child: Column(children: [
-          StandardPageHeader(
-              title: '沿途天气预警',
-              leading: IconButton(
-                  tooltip: '返回',
-                  onPressed: () => Navigator.of(context).maybePop(),
-                  icon: const Icon(Icons.arrow_back_ios_new,
-                      color: Colors.white, size: 22))),
+          _LongTripHeader(onBack: () => Navigator.of(context).maybePop()),
           _RouteSelector(draft: state.draft, onTap: _addPoint),
           const SizedBox(height: 8),
           Expanded(
@@ -141,62 +134,110 @@ class _RouteSelector extends StatelessWidget {
   final ValueChanged<LongTripPointRole> onTap;
   const _RouteSelector({required this.draft, required this.onTap});
   @override
-  Widget build(BuildContext context) => SizedBox(
-      height: 96,
-      child: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-        for (final role in LongTripPointRole.values)
-          _RouteAction(
-              role: role,
-              hasValue: role == LongTripPointRole.start
-                  ? draft.start != null
-                  : role == LongTripPointRole.end
-                      ? draft.end != null
-                      : draft.waypoints.isNotEmpty,
-              onTap: () => onTap(role))
-      ]));
+  Widget build(BuildContext context) => Card(
+      margin: const EdgeInsets.symmetric(horizontal: 20),
+      elevation: 4,
+      color: const Color(0xFFFFFFFF),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+      child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 7),
+          child: Column(children: [
+            for (final role in LongTripPointRole.values)
+              _RouteAction(
+                  role: role,
+                  hasValue: role == LongTripPointRole.start
+                      ? draft.start != null
+                      : role == LongTripPointRole.end
+                          ? draft.end != null
+                          : draft.waypoints.isNotEmpty,
+                  label: role == LongTripPointRole.start
+                      ? draft.start?.cityName
+                      : role == LongTripPointRole.end
+                          ? draft.end?.cityName
+                          : draft.waypoints.lastOrNull?.cityName,
+                  onTap: () => onTap(role))
+          ])));
 }
 
 class _RouteAction extends StatelessWidget {
   final LongTripPointRole role;
   final bool hasValue;
+  final String? label;
   final VoidCallback onTap;
   const _RouteAction(
-      {required this.role, required this.hasValue, required this.onTap});
+      {required this.role,
+      required this.hasValue,
+      this.label,
+      required this.onTap});
   @override
   Widget build(BuildContext context) => GestureDetector(
       onTap: onTap,
       child: SizedBox(
-          width: 72,
-          child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+          height: 36,
+          child: Row(children: [
             Container(
-                width: role == LongTripPointRole.waypoint ? 44 : 58,
-                height: 44,
-                alignment: Alignment.center,
+                width: 14,
+                height: 14,
                 decoration: BoxDecoration(
-                    color: role == LongTripPointRole.waypoint
-                        ? Colors.white
-                        : const Color(0xFF1BCACD),
-                    border: role == LongTripPointRole.waypoint
-                        ? Border.all(color: const Color(0xFF1BCACD))
-                        : null,
-                    borderRadius: BorderRadius.circular(
-                        role == LongTripPointRole.waypoint ? 22 : 8)),
-                child: Text('+',
-                    style: TextStyle(
-                        color: role == LongTripPointRole.waypoint
-                            ? const Color(0xFF1BCACD)
-                            : Colors.white,
-                        fontSize:
-                            role == LongTripPointRole.waypoint ? 27 : 16))),
-            const SizedBox(height: 7),
-            Text(role.label,
-                style: TextStyle(
-                    color: hasValue
-                        ? const Color(0xFF1E293B)
-                        : const Color(0xFF94A3B8),
-                    fontSize: 13,
-                    fontWeight: FontWeight.w600))
+                    color: _roleColor(role), shape: BoxShape.circle),
+                child: const Center(
+                    child: CircleAvatar(
+                        radius: 3, backgroundColor: Colors.white))),
+            Expanded(
+                child: Padding(
+                    padding: const EdgeInsets.only(left: 12),
+                    child: Text(label ?? role.label,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                            color: hasValue
+                                ? const Color(0xFF1E1E1E)
+                                : const Color(0xFF94A3B8),
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600)))),
+            Container(
+                width: 28,
+                height: 28,
+                alignment: Alignment.center,
+                decoration: const BoxDecoration(
+                    color: Color(0xFF5686F1), shape: BoxShape.circle),
+                child: const Text('+',
+                    style: TextStyle(color: Colors.white, fontSize: 18)))
           ])));
+}
+
+Color _roleColor(LongTripPointRole role) {
+  switch (role) {
+    case LongTripPointRole.start:
+      return const Color(0xFF55B843);
+    case LongTripPointRole.waypoint:
+      return const Color(0xFFE8C321);
+    case LongTripPointRole.end:
+      return const Color(0xFFDF423B);
+  }
+}
+
+class _LongTripHeader extends StatelessWidget {
+  final VoidCallback onBack;
+  const _LongTripHeader({required this.onBack});
+  @override
+  Widget build(BuildContext context) => SizedBox(
+      height: 72,
+      child: Row(children: [
+        SizedBox(
+            width: 56,
+            child: IconButton(
+                onPressed: onBack,
+                icon: Image.asset(AppAssets.zyytBack, width: 27, height: 27))),
+        const Expanded(
+            child: Center(
+                child: Text('沿途天气预警',
+                    style: TextStyle(
+                        color: Color(0xFF1E1E1E),
+                        fontSize: 22,
+                        fontWeight: FontWeight.w500)))),
+        const SizedBox(width: 56)
+      ]));
 }
 
 class _EmptyContent extends StatelessWidget {
@@ -209,13 +250,13 @@ class _EmptyContent extends StatelessWidget {
         const SizedBox(height: 18),
         const Text('暂无长途记录',
             style: TextStyle(
-                color: Colors.white,
+                color: const Color(0xFF1E1E1E),
                 fontSize: 20,
                 fontWeight: FontWeight.w500)),
         const SizedBox(height: 8),
         const Text('请选择起点和终点，生成沿途天气预警',
             textAlign: TextAlign.center,
-            style: TextStyle(color: Colors.white, fontSize: 14))
+            style: TextStyle(color: const Color(0xFF1E1E1E), fontSize: 14))
       ]));
 }
 
@@ -237,7 +278,8 @@ class _DraftEditor extends StatelessWidget {
               padding: EdgeInsets.only(bottom: 14),
               child: Text('请先选择起点，再添加途径点或选择终点',
                   textAlign: TextAlign.center,
-                  style: TextStyle(color: Colors.white, fontSize: 14))),
+                  style:
+                      TextStyle(color: const Color(0xFF1E1E1E), fontSize: 14))),
         if (draft.start != null)
           _DraftPoint(
               title: '起点',
@@ -289,7 +331,7 @@ class _DraftPoint extends StatelessWidget {
         Text(title,
             textAlign: TextAlign.center,
             style: const TextStyle(
-                color: Colors.white,
+                color: const Color(0xFF1E1E1E),
                 fontSize: 12,
                 fontWeight: FontWeight.w600)),
         const SizedBox(height: 3),
@@ -297,7 +339,8 @@ class _DraftPoint extends StatelessWidget {
             height: 73,
             padding: const EdgeInsets.symmetric(horizontal: 16),
             decoration: BoxDecoration(
-                color: Colors.white, borderRadius: BorderRadius.circular(10)),
+                color: const Color(0xFFFFFFFF),
+                borderRadius: BorderRadius.circular(10)),
             child: Row(children: [
               Image.asset(image, width: 34, height: 34),
               const SizedBox(width: 10),
@@ -332,11 +375,12 @@ class _PlanTitle extends StatelessWidget {
   Widget build(BuildContext context) => const Row(children: [
         Text('长途规划列表',
             style: TextStyle(
-                color: Colors.white,
+                color: const Color(0xFF1E1E1E),
                 fontSize: 16,
                 fontWeight: FontWeight.bold)),
         Spacer(),
-        Text('自动避开恶劣天气  ◉', style: TextStyle(color: Colors.white, fontSize: 12))
+        Text('自动避开恶劣天气  ◉',
+            style: TextStyle(color: Color(0xFF1E1E1E), fontSize: 12))
       ]);
 }
 
@@ -386,12 +430,13 @@ class _SavedPlanCard extends StatelessWidget {
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 style: const TextStyle(
-                                    color: Colors.white,
+                                    color: const Color(0xFF1E1E1E),
                                     fontSize: 17,
                                     fontWeight: FontWeight.bold)),
                             Text(_date(point.date),
                                 style: const TextStyle(
-                                    color: Colors.white, fontSize: 11)),
+                                    color: const Color(0xFF1E1E1E),
+                                    fontSize: 11)),
                             const SizedBox(height: 8),
                             Container(
                                 padding: const EdgeInsets.symmetric(
@@ -412,7 +457,8 @@ class _SavedPlanCard extends StatelessWidget {
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 style: const TextStyle(
-                                    color: Colors.white, fontSize: 12))
+                                    color: const Color(0xFF1E1E1E),
+                                    fontSize: 12))
                           ]));
                 })
           ])));
@@ -425,7 +471,7 @@ class _TravelSuggestions extends StatelessWidget {
       const Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Text('出行防灾建议',
             style: TextStyle(
-                color: Colors.white,
+                color: const Color(0xFF1E1E1E),
                 fontSize: 16,
                 fontWeight: FontWeight.bold)),
         SizedBox(height: 10),
@@ -592,7 +638,7 @@ class _PointDialogState extends State<_PointDialog> {
                         borderRadius: BorderRadius.circular(18)),
                     child: const Text('选择',
                         style: TextStyle(
-                            color: Colors.white,
+                            color: const Color(0xFF1E1E1E),
                             fontSize: 13,
                             fontWeight: FontWeight.w600)),
                   ),

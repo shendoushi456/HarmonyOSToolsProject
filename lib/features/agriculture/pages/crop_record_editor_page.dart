@@ -48,17 +48,17 @@ class _CropRecordEditorPageState extends ConsumerState<CropRecordEditorPage> {
     final guides = [...widget.category.guides]..sort((left, right) =>
         (_hasWarning(right) ? 1 : 0).compareTo(_hasWarning(left) ? 1 : 0));
     return Scaffold(
-      backgroundColor: const Color(0xFF0A0D0E),
+      backgroundColor: const Color(0xFFE4F6FF),
       body: SafeArea(
         bottom: false,
         child: Column(children: [
           StandardPageHeader(
             title: widget.category.title,
+            titleColor: const Color(0xFF1E1E1E),
             leading: IconButton(
                 tooltip: '返回',
                 onPressed: () => Navigator.of(context).pop(),
-                icon: Image.asset(AppAssets.agricultureBack,
-                    width: 28, height: 28)),
+                icon: Image.asset(AppAssets.zyytBack, width: 28, height: 28)),
             trailing: IconButton(
               tooltip: '保存',
               onPressed: _saving ? null : _save,
@@ -67,8 +67,8 @@ class _CropRecordEditorPageState extends ConsumerState<CropRecordEditorPage> {
                       width: 20,
                       height: 20,
                       child: CircularProgressIndicator(
-                          strokeWidth: 2, color: Colors.white))
-                  : Image.asset(AppAssets.agricultureSaveRecord,
+                          strokeWidth: 2, color: Color(0xFF234F78)))
+                  : Image.asset(AppAssets.agricultureZyytSave,
                       width: 28, height: 28),
             ),
           ),
@@ -125,7 +125,7 @@ class _CropRecordEditorPageState extends ConsumerState<CropRecordEditorPage> {
                   padding: EdgeInsets.only(left: 10, top: 19, bottom: 8),
                   child: Text('重点高危预警',
                       style: TextStyle(
-                          color: Colors.white,
+                          color: Color(0xFF1E1E1E),
                           fontSize: 18,
                           fontWeight: FontWeight.w600)),
                 ),

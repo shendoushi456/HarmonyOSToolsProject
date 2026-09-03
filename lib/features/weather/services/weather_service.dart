@@ -66,7 +66,14 @@ class WeatherService {
         ApiConfig.pathWeather24h,
         queryParameters: {'location': cityId},
       );
-      return hourlyWeatherFromJson(response.toString());
+      final payload = hourlyWeatherResponseFromJson(response.data);
+      if (payload == null) {
+        throw WeatherException('24小时天气数据解析失败');
+      }
+      if (payload.code != ApiConfig.codeSuccess) {
+        throw WeatherException('24小时天气接口返回异常: ${payload.code}');
+      }
+      return payload.hourly;
     } on DioException catch (e) {
       throw WeatherException('24小时天气查询失败: ${e.message}',
           code: e.response?.statusCode);

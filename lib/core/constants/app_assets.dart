@@ -100,6 +100,73 @@ class AppAssets {
       '$_toolboxWeatherBase/llifetoday.png';
   static const String toolboxWeatherArrowRight =
       '$_toolboxWeatherBase/arrow_right_ic.png';
+
+  // ZyytHomeScreen 原始 Android 资源（与通用天气资源隔离）。
+  static const String zyytHomeClouds =
+      '$_toolboxWeatherBase/zyyt_home_clouds.png';
+  static const String zyytLongTripBanner =
+      '$_toolboxWeatherBase/zyyt_long_trip_banner.png';
+  static const String zyytHomeSun = '$_toolboxWeatherBase/zyyt_home_sun.png';
+  static const String zyytBack = '$_toolboxWeatherBase/zyyt_back.png';
+  static const String zyytWeatherSunny =
+      '$_toolboxWeatherBase/zyyt_weather_sunny.png';
+  static const String zyytWeatherPartlyCloudy =
+      '$_toolboxWeatherBase/zyyt_weather_partly_cloudy.png';
+  static const String zyytWeatherThunder =
+      '$_toolboxWeatherBase/zyyt_weather_thunder.png';
+  static const String zyytWeatherFog =
+      '$_toolboxWeatherBase/zyyt_weather_fog.png';
+  static const String zyytMetricHumidity =
+      '$_toolboxWeatherBase/zyyt_metric_humidity.png';
+  static const String zyytMetricPressure =
+      '$_toolboxWeatherBase/zyyt_metric_pressure.png';
+  static const String zyytMetricVisibility =
+      '$_toolboxWeatherBase/zyyt_metric_visibility.png';
+  static const String zyytMetricUv = '$_toolboxWeatherBase/zyyt_metric_uv.png';
+  static const String zyytMetricRainfall =
+      '$_toolboxWeatherBase/zyyt_metric_rainfall.png';
+  static const String zyytMetricWindDirection =
+      '$_toolboxWeatherBase/zyyt_metric_wind_direction.png';
+  static const String zyytMetricWindSpeed =
+      '$_toolboxWeatherBase/zyyt_metric_wind_speed.png';
+  static const String zyytMetricWindForce =
+      '$_toolboxWeatherBase/zyyt_metric_wind_force.png';
+  static const String zyytTabWeatherSelected =
+      '$_toolboxWeatherBase/zyyt_tab_weather_selected.png';
+  static const String zyytTabWeatherNormal =
+      '$_toolboxWeatherBase/zyyt_tab_weather_unselected.png';
+  static const String zyytTabLifeSelected =
+      '$_toolboxWeatherBase/zyyt_tab_life_selected.png';
+  static const String zyytTabLifeNormal =
+      '$_toolboxWeatherBase/zyyt_tab_life_unselected.png';
+  static const String zyytTabCalendarSelected =
+      '$_toolboxWeatherBase/zyyt_tab_calendar_selected.png';
+  static const String zyytTabCalendarNormal =
+      '$_toolboxWeatherBase/zyyt_tab_calendar_unselected.png';
+  static const String zyytTabAgricultureSelected =
+      '$_toolboxWeatherBase/zyyt_tab_agriculture_selected.png';
+  static const String zyytTabAgricultureNormal =
+      '$_toolboxWeatherBase/zyyt_tab_agriculture_unselected.png';
+  static const String zyytCalendarProfile =
+      '$_toolboxWeatherBase/zyyt_calendar_profile.png';
+  static const String zyytCalendarTripBanner =
+      '$_toolboxWeatherBase/zyyt_calendar_trip_banner.png';
+  static const String zyytCalendarNutrition =
+      '$_toolboxWeatherBase/zyyt_calendar_nutrition.png';
+  static const String zyytCalendarStress =
+      '$_toolboxWeatherBase/zyyt_calendar_stress.png';
+  static const String zyytCalendarSolarTerm =
+      '$_toolboxWeatherBase/zyyt_calendar_solar_term.png';
+  static const String zyytCalendarHistory =
+      '$_toolboxWeatherBase/zyyt_calendar_history.png';
+  static const String zyytAgriCropBanner =
+      '$_toolboxWeatherBase/zyyt_agri_crop_banner.png';
+  static const String zyytAgriSunHours =
+      '$_toolboxWeatherBase/zyyt_agri_sun_hours.png';
+  static const String zyytAgriGust = '$_toolboxWeatherBase/zyyt_agri_gust.png';
+  static const String zyytAgriUv = '$_toolboxWeatherBase/zyyt_agri_uv.png';
+  static const String zyytAgriHumidity =
+      '$_toolboxWeatherBase/zyyt_agri_humidity.png';
   static const String toolboxTabWeatherSelected =
       '$_toolboxWeatherBase/ic_six_tab_1_true.png';
   static const String toolboxTabWeatherNormal =
@@ -187,6 +254,27 @@ class AppAssets {
   static const String toolboxTabAirQualitySelected =
       '$_toolboxAirQualityBase/ic_six_tab_3_true.png';
 
+  // ====== WeatherShFragment 生活指数页资源 ======
+  static const String toolboxLifeBanner =
+      '$_toolboxWeatherBase/zyyt_life_banner.png';
+  static const String toolboxLifeSport =
+      '$_toolboxWeatherBase/zyyt_life_sport.png';
+  static const String toolboxLifeCar = '$_toolboxWeatherBase/zyyt_life_car.png';
+  static const String toolboxLifeClothing =
+      '$_toolboxWeatherBase/zyyt_life_clothing.png';
+  static const String toolboxLifePollutantPm25 =
+      '$_toolboxWeatherBase/zyyt_pollutant_pm25.png';
+  static const String toolboxLifePollutantPm10 =
+      '$_toolboxWeatherBase/zyyt_pollutant_pm10.png';
+  static const String toolboxLifePollutantNo2 =
+      '$_toolboxWeatherBase/zyyt_pollutant_no2.png';
+  static const String toolboxLifePollutantSo2 =
+      '$_toolboxWeatherBase/zyyt_pollutant_so2.png';
+  static const String toolboxLifePollutantCo =
+      '$_toolboxWeatherBase/zyyt_pollutant_co.png';
+  static const String toolboxLifePollutantO3 =
+      '$_toolboxWeatherBase/zyyt_pollutant_o3.png';
+
   // ====== Toolbox LifeFragment 资源 ======
   static const String _toolboxLifeBase = '$_base/toolbox_life';
   static const String toolboxLifeSolarCard =
@@ -231,6 +319,24 @@ class AppAssets {
       '$_toolboxAgricultureBase/fyzn_ny_new_save_record.png';
   static const String agricultureBack =
       '$_toolboxAgricultureBase/fyzn_ny_new_back_button.png';
+  static const String agricultureSetting =
+      '$_toolboxAgricultureBase/setting_black_icon.png';
+  static const String agricultureZyytAdd =
+      '$_toolboxAgricultureBase/zyyt_add.png';
+  static const String agricultureZyytCategoryList =
+      '$_toolboxAgricultureBase/zyyt_category_list.png';
+  static const String agricultureZyytSave =
+      '$_toolboxAgricultureBase/zyyt_save.png';
+  static const String agricultureZyytCategoryGrain =
+      '$_toolboxAgricultureBase/zyyt_category_grain.png';
+  static const String agricultureZyytCategoryProduce =
+      '$_toolboxAgricultureBase/zyyt_category_produce.png';
+  static const String agricultureZyytCategoryGreenhouse =
+      '$_toolboxAgricultureBase/zyyt_category_greenhouse.png';
+  static const String agricultureZyytCategoryForest =
+      '$_toolboxAgricultureBase/zyyt_category_forest.png';
+  static const String agricultureZyytCategoryOil =
+      '$_toolboxAgricultureBase/zyyt_category_oil.png';
 
   static const String _toolboxLongTripBase = '$_base/toolbox_long_trip';
   static const String longTripHomeIcon =

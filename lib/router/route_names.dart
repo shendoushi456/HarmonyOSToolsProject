@@ -41,6 +41,12 @@ class RouteNames {
   /// 生活小贴士 H5 页(对齐 Android WeatherWebViewActivity 加载 xiaoqiaomen.html)
   static const String lifeTips = 'lifeTips';
 
+  /// 营养知识详情页
+  static const String nutrition = 'nutrition';
+
+  /// 缓解压力详情页
+  static const String stress = 'stress';
+
   /// 长途规划（对齐 Android LongTripPlanActivity）
   static const String longTrip = 'longTrip';
 }
@@ -78,6 +84,9 @@ class RoutePaths {
 
   /// 生活小贴士 H5 页路径
   static const String lifeTips = '/lifeTips';
+
+  static const String nutrition = '/nutrition';
+  static const String stress = '/stress';
 
   static const String longTrip = '/longTrip';
 }
