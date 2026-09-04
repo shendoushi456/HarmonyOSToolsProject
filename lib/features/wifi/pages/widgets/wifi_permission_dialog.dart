@@ -24,7 +24,7 @@ class WifiPermissionDialog extends StatelessWidget {
       content: const Text(
         '为了扫描和显示附近的Wi-Fi网络，需要获取以下权限：\n\n'
         '• Wi-Fi状态权限（查看当前Wi-Fi连接）\n'
-        '• 位置权限（鸿蒙系统用于扫描附近 Wi-Fi）\n'
+        '• 位置权限（Android 10+需要，用于扫描Wi-Fi）\n'
         '• 网络状态权限（检测网络连接）\n\n'
         '这些权限仅用于Wi-Fi管理和网络诊断功能。',
         style: TextStyle(fontSize: 13),

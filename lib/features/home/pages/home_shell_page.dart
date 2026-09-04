@@ -1,49 +1,49 @@
-// 主壳页：对齐 MainWeatherActivity.kt 的三 Tab 结构。
+// 底部 3 Tab 容器：WiFi / 工具 / 更多
+// 对齐 master_quannengwifi 分支 HomeShellPage，provider 保留在本项目 viewmodels 层
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../life_tools/pages/life_tools_page.dart';
+import '../../setting/pages/more_page.dart';
+import '../../wifi/pages/wifi_page.dart';
+import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_assets.dart';
-import '../../menu_fragment/pages/menu_fragment_page.dart';
-import '../../other_scan_tools/pages/other_scan_tools_page.dart';
-import '../../favorite/pages/favorite_list_page.dart';
 import '../viewmodels/home_tab_view_model.dart';
 
 class HomeShellPage extends ConsumerWidget {
   const HomeShellPage({super.key});
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final currentIndex = ref.watch(homeTabIndexProvider);
+
     const pages = [
-      MenuFragmentPage(),
-      OtherScanToolsPage(),
-      FavoriteListPage(),
+      WifiPage(),
+      LifeToolsPage(),
+      MorePage(),
     ];
+
     return Scaffold(
-      body: IndexedStack(index: currentIndex, children: pages),
-      bottomNavigationBar: _buildBottomNav(ref, currentIndex),
+      body: IndexedStack(
+        index: currentIndex,
+        children: pages,
+      ),
+      bottomNavigationBar: _buildBottomNav(context, ref, currentIndex),
     );
   }
 
-  Widget _buildBottomNav(WidgetRef ref, int currentIndex) {
-    const items = <_NavItem>[
-      _NavItem(AppAssets.bottomHomeNormal, AppAssets.bottomHomeSelected, '首页'),
-      _NavItem(
-          AppAssets.bottomToolsNormal, AppAssets.bottomToolsSelected, '工具'),
-      _NavItem(
-        AppAssets.bottomFavoriteNormal,
-        AppAssets.bottomFavoriteSelected,
-        '收藏',
-      ),
-    ];
+  /// 底部导航栏 - 对齐 Android MyBottomNavView
+  Widget _buildBottomNav(
+      BuildContext context, WidgetRef ref, int currentIndex) {
     return Container(
-      height: 68,
+      height: 62,
       decoration: const BoxDecoration(
-        color: Colors.white,
+        color: Color(0xFFF9FDFF),
         boxShadow: [
           BoxShadow(
-            color: Color(0x26000000),
-            blurRadius: 3,
+            color: Color(0x0A000000),
+            blurRadius: 4,
             offset: Offset(0, -1),
-          )
+          ),
         ],
       ),
       child: SafeArea(
@@ -51,45 +51,88 @@ class HomeShellPage extends ConsumerWidget {
         bottom: false,
         child: Row(
           children: [
-            for (var i = 0; i < items.length; i++)
-              Expanded(
-                child: GestureDetector(
-                  behavior: HitTestBehavior.opaque,
-                  onTap: () =>
-                      ref.read(homeTabIndexProvider.notifier).state = i,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Image.asset(
-                        currentIndex == i
-                            ? items[i].selectedAsset
-                            : items[i].normalAsset,
-                        width: i == 1 ? 30 : 26,
-                        height: i == 1 ? 30 : 26,
-                        fit: BoxFit.contain,
-                      ),
-                      const SizedBox(height: 1),
-                      Text(items[i].label,
-                          style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w500,
-                              color: currentIndex == i
-                                  ? const Color(0xFF7357F6)
-                                  : const Color(0xFF8E8E8E))),
-                    ],
-                  ),
-                ),
-              ),
+            _buildNavItem(
+              context,
+              ref,
+              index: 0,
+              label: 'WiFi',
+              normalIcon: AppAssets.tabWifiNormal,
+              selectedIcon: AppAssets.tabWifiSelected,
+              isSelected: currentIndex == 0,
+            ),
+            _buildNavItem(
+              context,
+              ref,
+              index: 1,
+              label: '工具',
+              normalIcon: AppAssets.tabHomeNormal,
+              selectedIcon: AppAssets.tabHomeSelected,
+              isSelected: currentIndex == 1,
+              useMaterialIcon: true,
+              materialIcon: Icons.grid_view_outlined,
+              materialSelectedIcon: Icons.grid_view,
+            ),
+            _buildNavItem(
+              context,
+              ref,
+              index: 2,
+              label: '更多',
+              normalIcon: AppAssets.tabAirNormal,
+              selectedIcon: AppAssets.tabAirSelected,
+              isSelected: currentIndex == 2,
+              useMaterialIcon: true,
+              materialIcon: Icons.settings_outlined,
+              materialSelectedIcon: Icons.settings,
+            ),
           ],
         ),
       ),
     );
   }
-}
 
-class _NavItem {
-  final String normalAsset;
-  final String selectedAsset;
-  final String label;
-  const _NavItem(this.normalAsset, this.selectedAsset, this.label);
+  /// 单个底部导航项
+  Widget _buildNavItem(
+    BuildContext context,
+    WidgetRef ref, {
+    required int index,
+    required String label,
+    required String normalIcon,
+    required String selectedIcon,
+    required bool isSelected,
+    bool useMaterialIcon = false,
+    IconData? materialIcon,
+    IconData? materialSelectedIcon,
+  }) {
+    final color = isSelected ? AppColors.qmtqBlue : const Color(0xFF999999);
+    return Expanded(
+      child: GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: () => ref.read(homeTabIndexProvider.notifier).state = index,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            if (useMaterialIcon)
+              Icon(
+                isSelected
+                    ? materialSelectedIcon ?? materialIcon
+                    : materialIcon,
+                size: 25,
+                color: color,
+              )
+            else
+              Image.asset(
+                isSelected ? selectedIcon : normalIcon,
+                width: 25,
+                height: 25,
+              ),
+            const SizedBox(height: 2),
+            Text(
+              label,
+              style: TextStyle(fontSize: 10, color: color),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 }

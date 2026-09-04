@@ -5,13 +5,15 @@
 import 'package:flutter/material.dart';
 import '../../../../core/constants/app_assets.dart';
 import '../../../../core/constants/app_colors.dart';
-import 'blur/blur_page.dart';
+import 'package:qingman_weather/features/image_process/models/image_process_type.dart';
+import 'package:qingman_weather/features/image_process/pages/image_process_page.dart';
+import 'package:qingman_weather/features/other_scan_tools/pages/currency_converter_page.dart';
+import 'package:qingman_weather/features/portable_tools/pages/calculator_page.dart';
+import 'package:qingman_weather/features/portable_tools/pages/pixel_image_page.dart';
+import 'package:qingman_weather/features/portable_tools/pages/watermark_image_page.dart';
 import 'checklist/checklist_page.dart';
-import 'compass/compass_page.dart';
-import 'draw/draw_page.dart';
 import 'notebook/notebook_list_page.dart';
 import 'tally/tally_page.dart';
-import 'webview/web_tool_page.dart';
 import 'widgets/route_item.dart';
 
 class LifeToolsPage extends StatelessWidget {
@@ -85,7 +87,7 @@ class LifeToolsPage extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 10),
-          // 第一组卡片:旅行清单 + 指南针(对齐 LifeFragment.kt:263-300)
+          // 第一组卡片:旅行清单 + 计算器 / 花费记账 + 汇率换算
           _buildCardContainer(
             children: [
               Row(
@@ -101,16 +103,16 @@ class LifeToolsPage extends StatelessWidget {
                   const SizedBox(width: 12),
                   Expanded(
                     child: RouteItem(
-                      icon: AppAssets.icCompass,
-                      iconBackgroundColor: AppColors.cardCompassIconBg,
-                      label: '指南针',
-                      onTap: () => CompassPage.push(context),
+                      icon: AppAssets.portableToolsCalculator,
+                      iconBackgroundColor: const Color(0xFFA4E1F1),
+                      label: '计算器',
+                      onTap: () => CalculatorPage.push(context),
                     ),
                   ),
                 ],
               ),
               const SizedBox(height: 12),
-              // 第二行:花费记账(原版右侧银行卡识别已排除,留空占位)
+              // 第二行:花费记账 + 汇率换算(原版右侧银行卡识别已排除)
               Row(
                 children: [
                   Expanded(
@@ -122,23 +124,30 @@ class LifeToolsPage extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(width: 12),
-                  const Expanded(child: SizedBox()),
+                  Expanded(
+                    child: RouteItem(
+                      icon: AppAssets.otherScanCurrency,
+                      iconBackgroundColor: const Color(0xFFD2D2FF),
+                      label: '汇率换算',
+                      onTap: () => OtherCurrencyConverterPage.push(context),
+                    ),
+                  ),
                 ],
               ),
             ],
           ),
           const SizedBox(height: 20),
-          // 第二组卡片:今天吃什么 / json编辑器 / 画板 / 马赛克(对齐 LifeFragment.kt:372-454)
+          // 第二组卡片:今天吃什么(注释占位) / 图片水印 / 图像风格转换 / 人像动漫化
           _buildCardContainer(
             children: [
               Row(
                 children: [
                   Expanded(
                     child: RouteItem(
-                      icon: AppAssets.icBlur,
-                      iconBackgroundColor: AppColors.cardBlurIconBg,
-                      label: '马赛克',
-                      onTap: () => BlurPage.push(context),
+                      icon: AppAssets.otherScanPixel,
+                      iconBackgroundColor: const Color(0xFFFAC85C),
+                      label: '像素图',
+                      onTap: () => PixelImagePage.push(context),
                     ),
                   ),
                   // Expanded(
@@ -157,14 +166,10 @@ class LifeToolsPage extends StatelessWidget {
                   const SizedBox(width: 12),
                   Expanded(
                     child: RouteItem(
-                      icon: AppAssets.icJson,
-                      iconBackgroundColor: AppColors.cardJsonIconBg,
-                      label: 'json编辑器',
-                      onTap: () => WebToolPage.push(
-                        context,
-                        title: 'json编辑器',
-                        url: 'https://ol.woobx.cn/tool/json-editor',
-                      ),
+                      icon: AppAssets.menuFragmentToolWatermark,
+                      iconBackgroundColor: const Color(0xFFF0EDFD),
+                      label: '图片水印',
+                      onTap: () => WatermarkImagePage.push(context),
                     ),
                   ),
                 ],
@@ -174,14 +179,35 @@ class LifeToolsPage extends StatelessWidget {
                 children: [
                   Expanded(
                     child: RouteItem(
-                      icon: AppAssets.icDraw,
-                      iconBackgroundColor: AppColors.cardDrawIconBg,
-                      label: '画板',
-                      onTap: () => DrawPage.push(context),
+                      icon: AppAssets.otherScanStyle,
+                      iconBackgroundColor: const Color(0xFFD2D2FF),
+                      label: '图像风格转换',
+                      onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => const ImageProcessPage(
+                            type: ImageProcessType.styleTransfer,
+                          ),
+                        ),
+                      ),
                     ),
                   ),
                   const SizedBox(width: 12),
-
+                  Expanded(
+                    child: RouteItem(
+                      icon: AppAssets.otherScanAnime,
+                      iconBackgroundColor: const Color(0xFFACCFD6),
+                      label: '人像动漫化',
+                      onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => const ImageProcessPage(
+                            type: ImageProcessType.selfieAnime,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ],
