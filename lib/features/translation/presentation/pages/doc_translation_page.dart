@@ -80,7 +80,7 @@ class DocTranslationPage extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: SizedBox(
-        height: 350,
+        height: 370,
         child: Stack(
           children: [
             Positioned.fill(

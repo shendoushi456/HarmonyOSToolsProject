@@ -54,9 +54,16 @@ dependencies:
   # SVG/字体（CODEBUDDY.md 规定）
   flutter_svg: 2.0.5
   # WebView（隐私政策/用户协议展示）— ohos 适配版
-  webview_flutter: ^4.10.0
+  webview_flutter:
+    git:
+      url: https://gitcode.com/openharmony-tpc/flutter_packages.git
+      ref: 5a9d0055772c7973712c0eaaf2de0e5f0749f8b9
+      path: packages/webview_flutter/webview_flutter
   webview_flutter_ohos:
-    path: /Users/zhuanzmima0000/PUB/git/webview_flutter_ohos-bbb23a3426dbe4645e3181f6c6257a336cc7158f
+    git:
+      url: https://gitcode.com/openharmony-tpc/flutter_packages.git
+      ref: 5a9d0055772c7973712c0eaaf2de0e5f0749f8b9
+      path: packages/webview_flutter/webview_flutter_ohos
   # 应用信息（关于我们版本号）
   package_info_plus: ^8.0.0
   # 二维码扫描（OpenHarmony 适配版）
