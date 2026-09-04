@@ -17,6 +17,9 @@ class ScannedDocumentRepository {
     return directory;
   }
 
+  /// 扫描件存储目录(供 ImageGalleryService 共享路径约定)。
+  Future<Directory> documentsDirectory() => _documentsDirectory();
+
   Future<List<ScannedDocument>> loadDocuments({
     required bool newestFirst,
   }) async {

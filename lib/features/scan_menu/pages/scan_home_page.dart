@@ -8,7 +8,6 @@ import '../../life_tools/pages/webview/web_tool_page.dart';
 import '../../menu_home/pages/qr_generate_page.dart';
 import '../../menu_home/pages/qr_scan_page.dart';
 import 'currency_converter_page.dart';
-import 'document_camera_page.dart';
 import 'document_capture_preview_page.dart';
 
 /// 指定 MenuFragment 功能的首页，不混入原项目其余工具入口。
@@ -82,14 +81,8 @@ class _ScanHomePageState extends State<ScanHomePage> {
   }
 
   Future<void> _capture(BuildContext context) async {
-    final file = await DocumentCameraPage.capture(context);
-    if (file != null && context.mounted) {
-      await Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (_) => DocumentCapturePreviewPage(file: file)),
-      );
-    }
+    // 相机拍照 → 拍照后预览页(裁剪/重拍/水印/下一步)
+    await DocumentCapturePreviewPage.startFlow(context, title: '拍照存档');
   }
 }
 

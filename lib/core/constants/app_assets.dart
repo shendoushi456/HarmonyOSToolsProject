@@ -300,6 +300,61 @@ class AppAssets {
   static const String scanRetake = '$_base/scan_retake.png';
   static const String scanWatermark = '$_base/scan_watermark.png';
 
+  // ====== toolbox_c MenuFragment 资源(从 toolsbox 复制) ======
+  static const String _tbcBase = '$_base/menu_fragment_toolbox_c';
+  static const String tbcShapTopbarBg = '$_tbcBase/bg_shap_topbar.png';
+  static const String tbcBannerSmartScan = '$_tbcBase/banner_smart_scan.png';
+  static const String tbcIcFlower = '$_tbcBase/ic_flower.png';
+  static const String tbcIcVegetable = '$_tbcBase/ic_vegetable.png';
+  static const String tbcIcAnimal = '$_tbcBase/ic_animal.png';
+  static const String tbcBgTextExtract = '$_tbcBase/bg_text_extract.png';
+  static const String tbcIcTextExtract = '$_tbcBase/ic_text_extract.png';
+  static const String tbcBgQrScan = '$_tbcBase/bg_qr_scan.png';
+  static const String tbcIcQrScanSmall = '$_tbcBase/ic_qr_scan_small.png';
+  static const String tbcIcQrCodeLarge = '$_tbcBase/ic_qr_code_large.png';
+  static const String tbcIcArrowRightWhite = '$_tbcBase/ic_arrow_right_white.png';
+  static const String tbcIcArrowRightBlack = '$_tbcBase/ic_arrow_right_black.png';
+  static const String tbcIcOcrDocument = '$_tbcBase/ic_ocr_document.png';
+  static const String tbcIcCaijian = '$_tbcBase/ic_caijian.png';
+  static const String tbcIcChongpai = '$_tbcBase/ic_chongpai.png';
+  static const String tbcIcShuiyin = '$_tbcBase/ic_shuiyin.png';
+  static const String tbcIconBlackBack = '$_tbcBase/icon_black_back.png';
+
+  // ====== toolbox_c ImageGalleryFragment 资源(从 toolsbox 复制) ======
+  static const String _igBase = '$_base/image_gallery_toolbox_c';
+  static const String igIcSort = '$_igBase/ic_sort.png';
+  static const String igSortOne = '$_igBase/sort_one.png';
+  static const String igEmptyIc = '$_igBase/empty_ic.png';
+  static const String igShapeCardWhite = '$_igBase/shape_card_white.png';
+  static const String igIcBlackEnter = '$_igBase/ic_black_enter.png';
+  static const String igSaveLocalIc = '$_igBase/save_local_ic.png';
+  static const String igDeleteIc = '$_igBase/delete_ic.png';
+
+  // ====== toolbox_c ScanToolsFragment 资源(从 toolsbox 复制) ======
+  static const String _stBase = '$_base/scan_tools_toolbox_c';
+  static const String stBgToolCategoryContainer =
+      '$_stBase/bg_tool_category_container.png';
+  static const String stIcPixelate = '$_stBase/ic_pixelate.png';
+  static const String stIcSpecialEffects = '$_stBase/ic_special_effects.png';
+  static const String stIcHideImage = '$_stBase/ic_hide_image.png';
+  static const String stIcColorize = '$_stBase/ic_colorize.png';
+  static const String stIcRelationshipCalculator =
+      '$_stBase/ic_relationship_calculator.png';
+  static const String stIcBaseConverter = '$_stBase/ic_base_converter.png';
+  static const String stIcExchangeRate = '$_stBase/ic_exchange_rate.png';
+  static const String stIcSpeedTest = '$_stBase/ic_speed_test.png';
+  static const String stIcRandomNumber = '$_stBase/ic_random_number.png';
+  static const String stIcWhatToEat = '$_stBase/ic_what_to_eat.png';
+
+  // ====== toolbox_c ScanMenuActivity 底部导航图标(从 toolsbox 复制) ======
+  static const String _bnBase = '$_base/bottom_nav_toolbox_c';
+  static const String bnTab1True = '$_bnBase/icon_tab_1_true.png';
+  static const String bnTab1False = '$_bnBase/icon_tab_1_false.png';
+  static const String bnTab2True = '$_bnBase/icon_tab_2_true.png';
+  static const String bnTab2False = '$_bnBase/icon_tab_2_false.png';
+  static const String bnTab3True = '$_bnBase/icon_tab_3_true.png';
+  static const String bnTab3False = '$_bnBase/icon_tab_3_false.png';
+
   // ====== 便携工具资源 - 对齐 BianxieToolsFragment ======
   static const String portableToolsHomeBg = '$_base/portable_tools_home_bg.png';
   static const String portableToolsClearCamera =

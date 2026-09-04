@@ -17,6 +17,7 @@ import '../../recognition/models/recognition_type.dart';
 import '../../other_scan_tools/pages/base_conversion_page.dart';
 import '../../other_scan_tools/pages/currency_converter_page.dart';
 import '../../other_scan_tools/pages/relatives_calculator_page.dart';
+import '../../scan_menu/pages/document_capture_preview_page.dart';
 import '../models/tool_definition.dart';
 
 /// The only place that converts a catalogue destination into a Flutter route.
@@ -26,7 +27,16 @@ class ToolNavigationService {
   ToolNavigationService._();
 
   static Future<void> open(BuildContext context, ToolDefinition tool) {
-    switch (tool.destination) {
+    return openDestination(context, tool.destination);
+  }
+
+  /// 仅按目的地跳转，方便不依赖 [ToolDefinition] 的页面(例如 toolbox_c
+  /// ScanToolsFragment 风格的工具页)直接复用现有跳转表。
+  static Future<void> openDestination(
+    BuildContext context,
+    ToolDestination destination,
+  ) {
+    switch (destination) {
       case ToolDestination.qrGenerate:
         return QrGeneratePage.push(context);
       case ToolDestination.recognitionText:
@@ -81,6 +91,8 @@ class ToolNavigationService {
           title: '随机数生成',
           url: 'https://ol.woobx.cn/tool/random-number',
         );
+      case ToolDestination.documentScan:
+        return DocumentCapturePreviewPage.startFlow(context, title: '拍照存档');
     }
   }
 

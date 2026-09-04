@@ -5,7 +5,7 @@ class AppInfoUtil {
   AppInfoUtil._();
 
   /// 应用名(对齐 Android getApplicationLabel)
-  static const String appName = '智拍速扫';
+  static const String appName = '易扫拍客';
 
   /// 版本号(对齐 Android getVersion → "1.0.1")
   static const String version = '1.0.1';
@@ -16,8 +16,8 @@ class SettingUrls {
   SettingUrls._();
 
   /// 用户协议 URL
-  static const String user = 'http://api.jyhytech.top/agreement/bjzpss/user';
+  static const String user = 'http://api.jyhytech.top/agreement/bjyspk/user';
 
   /// 隐私协议 URL
-  static const String policy = 'http://api.jyhytech.top/agreement/bjzpss/privacy';
+  static const String policy = 'http://api.jyhytech.top/agreement/bjyspk/privacy';
 }

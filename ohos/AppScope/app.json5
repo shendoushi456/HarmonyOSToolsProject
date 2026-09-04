@@ -1,7 +1,7 @@
 {
   "app": {
-    "bundleName": "hm.lxhy.zhipaisusao",
-    "vendor": "rsy",
+    "bundleName": "hm.hyxin.yisaopaike",
+    "vendor": "hyxin",
     "versionCode": 1000000,
     "versionName": "1.0.1",
     "icon": "$media:app_icon",

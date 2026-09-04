@@ -1,5 +1,5 @@
 name: qingman_weather
-description: 智拍速扫 - Flutter-ohos 版
+description: 易扫拍客 - Flutter-ohos 版
 publish_to: 'none'
 version: 1.0.0+1
 
@@ -124,6 +124,10 @@ flutter:
   assets:
     - assets/images/
     - assets/images/menu_fragment/
+    - assets/images/menu_fragment_toolbox_c/
+    - assets/images/image_gallery_toolbox_c/
+    - assets/images/scan_tools_toolbox_c/
+    - assets/images/bottom_nav_toolbox_c/
     - assets/images/other_scan_tools/
     - assets/images/favorite/
     - assets/images/bottom_navigation/

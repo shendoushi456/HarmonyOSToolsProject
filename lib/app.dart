@@ -9,7 +9,7 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
-      title: '智拍速扫',
+      title: '易扫拍客',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         useMaterial3: false,
