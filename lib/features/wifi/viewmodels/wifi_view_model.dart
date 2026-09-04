@@ -13,7 +13,8 @@ class FormattedSpeed {
   const FormattedSpeed(this.value, this.unit);
 }
 
-class WifiViewModel extends Notifier<WifiState> {
+// AutoDisposeNotifier: 配合 NotifierProvider.autoDispose,页面移除后自动取消轮询
+class WifiViewModel extends AutoDisposeNotifier<WifiState> {
   final WifiRepository _repository = WifiRepository();
   Timer? _timer;
   int _lastRxBytes = 0;
@@ -159,5 +160,6 @@ class WifiViewModel extends Notifier<WifiState> {
 }
 
 /// WiFi 主页 ViewModel Provider
+/// autoDispose: 页面移除后自动取消 1 秒轮询 Timer,避免不可见时持续轮询耗电
 final wifiViewModelProvider =
-    NotifierProvider<WifiViewModel, WifiState>(WifiViewModel.new);
+    NotifierProvider.autoDispose<WifiViewModel, WifiState>(WifiViewModel.new);

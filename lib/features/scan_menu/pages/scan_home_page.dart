@@ -57,14 +57,14 @@ class _ScanHomePageState extends State<ScanHomePage> {
                 _ToolGrid(items: [
                   _Tool('旅行清单', AppAssets.icTravel,
                       () => ChecklistPage.push(context)),
-                  _Tool(
-                      'JSON编辑器',
-                      AppAssets.icJson,
-                      () => WebToolPage.push(
-                            context,
-                            title: 'JSON编辑器',
-                            url: 'https://ol.woobx.cn/tool/json-editor',
-                          )),
+                  // _Tool(
+                  //     'JSON编辑器',
+                  //     AppAssets.icJson,
+                  //     () => WebToolPage.push(
+                  //           context,
+                  //           title: 'JSON编辑器',
+                  //           url: 'https://ol.woobx.cn/tool/json-editor',
+                  //         )),
                   _Tool('指南针', AppAssets.icCompass,
                       () => CompassPage.push(context)),
                   _Tool(

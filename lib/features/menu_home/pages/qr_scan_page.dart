@@ -39,6 +39,9 @@ class _QrScanPageState extends ConsumerState<QrScanPage> {
   @override
   void dispose() {
     _scanSubscription?.cancel();
+    // 插件 QRViewController.dispose 在 ohos 端不会停止相机,
+    // 显式 stopCamera 确保页面退出后相机立即停止,避免退出后仍在预览/逐帧识别耗电
+    _controller?.stopCamera();
     _controller?.dispose();
     super.dispose();
   }

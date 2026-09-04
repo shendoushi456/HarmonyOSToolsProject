@@ -6,7 +6,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../repositories/wifi_repository.dart';
 import 'wifi_list_state.dart';
 
-class WifiListViewModel extends Notifier<WifiListState> {
+// AutoDisposeNotifier: 配合 NotifierProvider.autoDispose,页面移除后自动取消扫描事件订阅
+class WifiListViewModel extends AutoDisposeNotifier<WifiListState> {
   final WifiRepository _repository = WifiRepository();
   StreamSubscription<dynamic>? _scanSub;
 
@@ -51,5 +52,7 @@ class WifiListViewModel extends Notifier<WifiListState> {
 }
 
 /// WiFi 列表 ViewModel Provider
+/// autoDispose: 页面移除后自动取消扫描事件订阅,避免不可见时持续活动
 final wifiListViewModelProvider =
-    NotifierProvider<WifiListViewModel, WifiListState>(WifiListViewModel.new);
+    NotifierProvider.autoDispose<WifiListViewModel, WifiListState>(
+        WifiListViewModel.new);
