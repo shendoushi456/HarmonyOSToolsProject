@@ -1,6 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:harmonyos_flutter_empty/shared/audio/audio_player_service.dart';
 import 'package:harmonyos_flutter_empty/features/translation/data/translation_repository.dart';
 import 'package:harmonyos_flutter_empty/features/translation/data/youdao_api_client.dart';
 import 'package:harmonyos_flutter_empty/features/translation/domain/domain_type.dart';
@@ -87,14 +86,6 @@ final Provider<YoudaoApiClient> youdaoApiClientProvider =
   return YoudaoApiClient();
 });
 
-/// 音频播放服务 Provider（单例，自动释放）
-final Provider<AudioPlayerService> audioPlayerServiceProvider =
-    Provider<AudioPlayerService>((Ref ref) {
-  final service = AudioPlayerService();
-  ref.onDispose(service.release);
-  return service;
-});
-
 /// 翻译 Notifier
 ///
 /// 对应原 Android `TranslationViewModel`，保真方法签名与行为。
@@ -122,8 +113,6 @@ class TranslationNotifier extends Notifier<TranslationUiState> {
   }
 
   YoudaoApiClient get _apiClient => ref.read(youdaoApiClientProvider);
-  AudioPlayerService get _audio => ref.read(audioPlayerServiceProvider);
-
   /// 重新读取持久化语言设置（供应用恢复时使用）。
   Future<void> reloadLanguages() async {
     await ref.read(globalLanguageProvider.notifier).reload();
@@ -137,11 +126,6 @@ class TranslationNotifier extends Notifier<TranslationUiState> {
   /// 设置目标语言
   Future<void> setToLanguage(String language) {
     return ref.read(globalLanguageProvider.notifier).setToLanguage(language);
-  }
-
-  /// 设置 TTS 严格模式
-  void setTtsVoiceStrict(bool strict) {
-    state = state.copyWith(ttsVoiceStrict: strict);
   }
 
   /// 执行翻译
@@ -183,8 +167,6 @@ class TranslationNotifier extends Notifier<TranslationUiState> {
         createTime: DateTime.now().millisecondsSinceEpoch,
         query: response.query ?? inputText,
         translation: response.translation.join('\n'),
-        speakUrl: response.speakUrl,
-        tSpeakUrl: response.tSpeakUrl,
       );
 
       state = state.copyWith(
@@ -208,36 +190,6 @@ class TranslationNotifier extends Notifier<TranslationUiState> {
   /// 清除选中的翻译结果
   void clearSelectedData() {
     state = state.copyWith(selectedTranslateData: null);
-  }
-
-  /// 播放语音（TTS）
-  Future<void> playVoice(String? speakUrl) async {
-    if (speakUrl == null || !speakUrl.startsWith('http')) {
-      state = state.copyWith(errorMessage: '无效的语音URL');
-      return;
-    }
-
-    state = state.copyWith(playingUrl: speakUrl, isPlaying: true);
-
-    await _audio.startPlayVoice(
-      speakUrl,
-      onPlayOver: () {
-        state = state.copyWith(playingUrl: null, isPlaying: false);
-      },
-      onError: (error) {
-        state = state.copyWith(
-          playingUrl: null,
-          isPlaying: false,
-          errorMessage: '播放失败: $error',
-        );
-      },
-    );
-  }
-
-  /// 停止播放
-  Future<void> stopVoice() async {
-    await _audio.stop();
-    state = state.copyWith(playingUrl: null, isPlaying: false);
   }
 
   /// 清除错误消息

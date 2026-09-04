@@ -8,8 +8,6 @@ class YoudaoTranslationResponse {
     this.query,
     this.translation = const [],
     this.l,
-    this.speakUrl,
-    this.tSpeakUrl,
   });
 
   factory YoudaoTranslationResponse.fromJson(Map<String, dynamic> json) {
@@ -21,8 +19,6 @@ class YoudaoTranslationResponse {
               .toList() ??
           [],
       l: json['l'] as String?,
-      speakUrl: json['speakUrl'] as String?,
-      tSpeakUrl: json['tSpeakUrl'] as String?,
     );
   }
 
@@ -37,12 +33,6 @@ class YoudaoTranslationResponse {
 
   /// 源语言和目标语言（如 "EN2zh-CHS"）
   final String? l;
-
-  /// 原文发音地址
-  final String? speakUrl;
-
-  /// 译文发音地址
-  final String? tSpeakUrl;
 
   /// 是否成功
   bool get isSuccess => errorCode == '0';

@@ -12,9 +12,6 @@ class TranslationUiState {
     this.selectedTranslateData,
     this.fromLanguage = '自动',
     this.toLanguage = '中文',
-    this.ttsVoiceStrict = false,
-    this.playingUrl,
-    this.isPlaying = false,
   });
 
   /// 是否正在加载
@@ -35,15 +32,6 @@ class TranslationUiState {
   /// 目标语言（中文名）
   final String toLanguage;
 
-  /// TTS 严格模式
-  final bool ttsVoiceStrict;
-
-  /// 当前正在播放的 URL
-  final String? playingUrl;
-
-  /// 播放状态
-  final bool isPlaying;
-
   TranslationUiState copyWith({
     bool? isLoading,
     String? errorMessage,
@@ -51,9 +39,6 @@ class TranslationUiState {
     TranslateData? selectedTranslateData,
     String? fromLanguage,
     String? toLanguage,
-    bool? ttsVoiceStrict,
-    String? playingUrl,
-    bool? isPlaying,
   }) {
     return TranslationUiState(
       isLoading: isLoading ?? this.isLoading,
@@ -62,9 +47,6 @@ class TranslationUiState {
       selectedTranslateData: selectedTranslateData ?? this.selectedTranslateData,
       fromLanguage: fromLanguage ?? this.fromLanguage,
       toLanguage: toLanguage ?? this.toLanguage,
-      ttsVoiceStrict: ttsVoiceStrict ?? this.ttsVoiceStrict,
-      playingUrl: playingUrl,
-      isPlaying: isPlaying ?? this.isPlaying,
     );
   }
 }

@@ -44,8 +44,6 @@ final GoRouter router = GoRouter(
           translatedText: extra['translatedText'] as String? ?? '',
           sourceLanguage: extra['sourceLanguage'] as String? ?? '中文',
           targetLanguage: extra['targetLanguage'] as String? ?? '英语',
-          sourceSpeakUrl: extra['sourceSpeakUrl'] as String?,
-          translatedSpeakUrl: extra['translatedSpeakUrl'] as String?,
           singleText: extra['singleText'] as String? ?? '',
           title: extra['title'] as String? ?? '原文',
         );

@@ -46,8 +46,6 @@ class _TextTranslationPageState extends ConsumerState<TextTranslationPage> {
       'translatedText': latest.translates().trim(),
       'sourceLanguage': uiState.fromLanguage,
       'targetLanguage': uiState.toLanguage,
-      'sourceSpeakUrl': latest.speakUrl,
-      'translatedSpeakUrl': latest.tSpeakUrl,
     });
   }
 

@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:harmonyos_flutter_empty/core/theme/app_colors.dart';
-import 'package:harmonyos_flutter_empty/features/translation/domain/tts_support_languages.dart';
 import 'package:harmonyos_flutter_empty/features/translation/presentation/providers/translation_provider.dart';
 import 'package:harmonyos_flutter_empty/features/translation/presentation/states/lang_switch_ui_state.dart';
 
@@ -233,13 +232,11 @@ class _LangSwitchTranslationPageState
       itemBuilder: (context, index) {
         final language = languages[index];
         final isSelected = language == selectedLanguage;
-        final supportsTts = TtsSupportLanguages.isTtsSupported(language);
         return Padding(
           padding: const EdgeInsets.only(bottom: 20),
           child: _LanguageItem(
             language: language,
             isSelected: isSelected,
-            supportsTts: supportsTts,
             onTap: () => _onLanguageSelected(language),
           ),
         );
@@ -253,13 +250,11 @@ class _LanguageItem extends StatelessWidget {
   const _LanguageItem({
     required this.language,
     required this.isSelected,
-    required this.supportsTts,
     required this.onTap,
   });
 
   final String language;
   final bool isSelected;
-  final bool supportsTts;
   final VoidCallback onTap;
 
   @override
@@ -282,17 +277,6 @@ class _LanguageItem extends StatelessWidget {
                       : AppColors.langSwitchUnselected,
                 ),
               ),
-              if (supportsTts) ...[
-                const SizedBox(width: 4),
-                Image.asset(
-                  isSelected
-                      ? 'assets/images/ic_trans_mic.png'
-                      : 'assets/images/ic_trans_mic_no.png',
-                  width: 14,
-                  height: 14,
-                  fit: BoxFit.fitWidth,
-                ),
-              ],
             ],
           ),
           if (isSelected)

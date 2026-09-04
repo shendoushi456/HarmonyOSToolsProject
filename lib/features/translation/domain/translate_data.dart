@@ -8,8 +8,6 @@ class TranslateData {
     required this.createTime,
     required this.query,
     required this.translation,
-    this.speakUrl,
-    this.tSpeakUrl,
   });
 
   /// 创建时间（毫秒）
@@ -20,12 +18,6 @@ class TranslateData {
 
   /// 译文（多条用 `\n` 连接）
   final String translation;
-
-  /// 原文发音 URL
-  final String? speakUrl;
-
-  /// 译文发音 URL
-  final String? tSpeakUrl;
 
   /// 获取查询内容（保真原 `getQuery()`）
   String getQuery() => query;
