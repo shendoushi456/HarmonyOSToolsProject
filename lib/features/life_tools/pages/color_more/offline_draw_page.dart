@@ -49,14 +49,17 @@ class _OfflineDrawPageState extends State<OfflineDrawPage> {
       if (decoded == null) {
         throw StateError('图片解码失败');
       }
-      // 统一为 PNG，避免 JPG 素材填色前后出现扩展名与实际编码不一致。
-      final normalized = Uint8List.fromList(img.encodePng(decoded));
+      // 统一转换为非调色板 RGBA，再编码为 PNG。
+      // 字母、数字、曼茶罗素材多为索引色 PNG；若直接 setPixelRgba，
+      // image 包会把像素数据当作调色板索引写入，导致选色偏差或变黑。
+      final rgba = decoded.convert(numChannels: 4, withPalette: false);
+      final normalized = Uint8List.fromList(img.encodePng(rgba));
       if (mounted) {
         setState(() {
           _initialBytes = normalized;
           _currentBytes = Uint8List.fromList(normalized);
-          _imageWidth = decoded.width;
-          _imageHeight = decoded.height;
+          _imageWidth = rgba.width;
+          _imageHeight = rgba.height;
           _loading = false;
         });
       }

@@ -7,10 +7,10 @@ import '../../../core/constants/app_assets.dart';
 import '../../../router/route_names.dart';
 import '../../image_process/models/image_process_type.dart';
 import '../../image_process/pages/image_process_page.dart';
-import '../../life_tools/pages/blur/blur_page.dart';
 import '../../life_tools/pages/checklist/checklist_page.dart';
 import '../../life_tools/pages/color_drawing_studio_page.dart';
 import '../../life_tools/pages/compass/compass_page.dart';
+import '../../portable_tools/pages/pixel_image_page.dart';
 
 class AllToolsPage extends StatelessWidget {
   const AllToolsPage({super.key});
@@ -84,7 +84,7 @@ class _PaintingGrid extends StatelessWidget {
   Widget build(BuildContext context) {
     final entries = <_PaintingEntry>[
       _PaintingEntry('马赛克', '保护隐私更安全', AppAssets.toolboxMosaic,
-          const Color(0xFFE68FEF), () => BlurPage.push(context)),
+          const Color(0xFFE68FEF), () => PixelImagePage.push(context)),
       _PaintingEntry(
           '黑白上色',
           '一键轻松还原照片颜色',
