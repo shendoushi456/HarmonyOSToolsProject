@@ -18,6 +18,7 @@ import statistics from '@ohos.net.statistics';
 import connection from '@ohos.net.connection';
 import radio from '@ohos.telephony.radio';
 import common from '@ohos.app.ability.common';
+import Want from '@ohos.app.ability.Want';
 
 const TAG = 'WifiPlugin';
 const METHOD_CHANNEL = 'qingman.wifi/native';
@@ -28,8 +29,8 @@ const WIFI_LOCATION_PERMISSIONS: Permissions[] = [
 ];
 
 // ArkTS 严格模式要求对象字面量对应显式 interface(arkts-no-untyped-obj-literals)
-// 跳转系统 wifi 设置页的 Want 参数
-interface WifiSettingsWant {
+// 跳转系统 wifi 设置页的隐式 Want 参数
+interface WifiSettingsActionWant {
   action: string;
 }
 
@@ -268,26 +269,35 @@ export default class WifiPlugin implements FlutterPlugin {
 
   // ====== 跳转系统 wifi 设置页 ======
   /**
-   * 尝试打开系统无线设置。
+   * 打开系统 WLAN 设置页。
    *
-   * ACTION_WIRELESS_SETTINGS 是公开 API，但在部分新系统上已不再注册可供
-   * 三方应用解析的 Ability。此时返回 false，由 Flutter 提示用户手动进入
-   * “设置 > WLAN”；不调用厂商私有 Ability，也不伪造跳转成功。
+   * 部分 HarmonyOS 版本无法解析公开 wireless action，直接使用该 action
+   * 会弹出“暂无可用打开方式”。优先使用设置应用显式 Want 定位 WLAN 页，
+   * 失败时再回退到公开隐式 action。
    */
   private async openWifiSettings(): Promise<boolean> {
     if (this.uiContext === null) {
       Log.e(TAG, 'openWifiSettings skipped: UIAbility context is unavailable');
       return false;
     }
-    // HarmonyOS SDK 公开的无线设置入口；其中包含 Wi-Fi 设置，
-    // 不使用不存在的 ohos.settings.wifi action。
-    const want: WifiSettingsWant = { action: 'ohos.settings.wireless' };
+    const explicitWant: Want = {
+      bundleName: 'com.huawei.hmos.settings',
+      abilityName: 'com.huawei.hmos.settings.MainAbility',
+      uri: 'wifi_entry',
+    };
+    try {
+      await this.uiContext.startAbility(explicitWant);
+      return true;
+    } catch (e) {
+      Log.w(TAG, `openWifiSettings explicit want failed: ${(e as Error)?.message ?? String(e)}`);
+    }
+
+    const want: WifiSettingsActionWant = { action: 'ohos.settings.wireless' };
     try {
       await this.uiContext.startAbility(want);
       return true;
     } catch (e) {
-      const message = (e as Error)?.message ?? String(e);
-      Log.w(TAG, `openWifiSettings is unavailable on this device: ${message}`);
+      Log.w(TAG, `openWifiSettings is unavailable on this device: ${(e as Error)?.message ?? String(e)}`);
       return false;
     }
   }
