@@ -2,6 +2,8 @@
 // 布局: FrameLayout 固定结构 = wifi_top_bg 全屏背景 + 详情卡(叠加顶部) + 底部 homebottomyjbg 列表区(内部滚动)。
 // 数据/权限/系统调用由 WifiViewModel/WifiListViewModel 提供，UI 仅消费状态。
 // 排除: 优化提速(mBg→ClearSilverActivity)、流量速度 UI(安卓 visibility=gone，但 WifiState 保留计算)。
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/constants/app_assets.dart';
@@ -10,15 +12,70 @@ import '../viewmodels/wifi_state.dart';
 import '../viewmodels/wifi_view_model.dart';
 import '../viewmodels/wifi_list_view_model.dart';
 import 'widgets/wifi_connect_dialog.dart';
+import 'widgets/wifi_accelerator_card.dart';
 import 'widgets/wifi_list_section.dart';
 
-class WifiPage extends ConsumerWidget {
+class WifiPage extends ConsumerStatefulWidget {
   const WifiPage({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<WifiPage> createState() => _WifiPageState();
+}
+
+class _WifiPageState extends ConsumerState<WifiPage> {
+  String? _activeSsid;
+  int _improvementPercent = 50;
+  bool _optimized = false;
+  final Random _random = Random();
+
+  void _syncOptimizationState(String ssid) {
+    if (_activeSsid == ssid) return;
+    _activeSsid = ssid;
+    var percent = 30 + _random.nextInt(41);
+    if (percent == _improvementPercent) {
+      percent = percent == 70 ? 69 : percent + 1;
+    }
+    _improvementPercent = percent;
+    _optimized = false;
+  }
+
+  Future<void> _optimizeWifi() async {
+    await showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (_) => const WifiOptimizationProgressDialog(),
+    );
+    if (!mounted) return;
+    setState(() => _optimized = true);
+    ScaffoldMessenger.of(context)
+      ..hideCurrentSnackBar()
+      ..showSnackBar(const SnackBar(content: Text('优化成功')));
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final state = ref.watch(wifiViewModelProvider);
     final listState = ref.watch(wifiListViewModelProvider);
+    final connectedToWifi = state.networkType == NetworkType.wifi;
+    final ssid = state.currentSsid.isEmpty ? '已连接 Wi-Fi' : state.currentSsid;
+    if (connectedToWifi && _activeSsid != ssid) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (!mounted || !connectedToWifi) return;
+        setState(() => _syncOptimizationState(ssid));
+      });
+    } else if (!connectedToWifi && _activeSsid != null) {
+      // 断开后即使重新连回同一个 SSID，也视为新一轮连接，恢复可优化状态。
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (!mounted ||
+            ref.read(wifiViewModelProvider).networkType == NetworkType.wifi) {
+          return;
+        }
+        setState(() {
+          _activeSsid = null;
+          _optimized = false;
+        });
+      });
+    }
     // 对齐安卓 1 秒 Handler 更新 connectiontype: WIFI→ssid / MOBILE→运营商 / 否则"无网络"
     final connectionText = _connectionText(state);
     final isWifiEnabled =
@@ -92,26 +149,38 @@ class WifiPage extends ConsumerWidget {
                     // marginHorizontal 15dp(对齐安卓 LinearLayout marginHorizontal)
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 15),
-                      child: WifiListSection(
-                        isWifiEnabled: isWifiEnabled,
-                        wifiList: listState.wifiList,
-                        onItemClick: (wifi) async {
-                          // 对齐安卓列表项点击 → dialog_wifi → 系统 WiFi 设置
-                          if (await WifiConnectDialog.show(context) == true) {
-                            try {
-                              final opened = await ref
-                                  .read(wifiViewModelProvider.notifier)
-                                  .openWifiSettings();
-                              if (!opened && context.mounted) {
-                                _showWifiSettingsFallback(context);
-                              }
-                            } catch (_) {
-                              if (context.mounted) {
-                                _showWifiSettingsFallback(context);
-                              }
-                            }
-                          }
-                        },
+                      child: Column(
+                        children: [
+                          if (connectedToWifi)
+                            WifiAcceleratorCard(
+                              improvementPercent: _improvementPercent,
+                              optimized: _optimized,
+                              onTap: _optimizeWifi,
+                            ),
+                          Expanded(
+                            child: WifiListSection(
+                                isWifiEnabled: isWifiEnabled,
+                                wifiList: listState.wifiList,
+                                onItemClick: (wifi) async {
+                                  // 对齐安卓列表项点击 → dialog_wifi → 系统 WiFi 设置
+                                  if (await WifiConnectDialog.show(context) ==
+                                      true) {
+                                    try {
+                                      final opened = await ref
+                                          .read(wifiViewModelProvider.notifier)
+                                          .openWifiSettings();
+                                      if (!opened && context.mounted) {
+                                        _showWifiSettingsFallback(context);
+                                      }
+                                    } catch (_) {
+                                      if (context.mounted) {
+                                        _showWifiSettingsFallback(context);
+                                      }
+                                    }
+                                  }
+                                }),
+                          ),
+                        ],
                       ),
                     ),
                   ),
