@@ -38,7 +38,7 @@ class ViolationHandlingCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: const [
                       Text(
-                        '违章处理',
+                        '违章指南',
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 16,
@@ -46,7 +46,7 @@ class ViolationHandlingCard extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        '一键处理违章',
+                        '违章指南资讯',
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 12,
