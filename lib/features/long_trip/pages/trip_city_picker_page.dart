@@ -2,6 +2,8 @@
 import 'package:flutter/material.dart';
 import '../../weather/models/citys.dart';
 import '../../weather/services/city_search_service.dart';
+import '../models/long_trip_models.dart';
+import '../repositories/long_trip_repository.dart';
 
 class TripCityPickerPage extends StatefulWidget {
   const TripCityPickerPage({super.key});
@@ -15,12 +17,14 @@ class _TripCityPickerPageState extends State<TripCityPickerPage> {
   final _cityService = CitySearchService();
   List<Citys> _cities = const [];
   List<Citys> _results = const [];
+  List<LongTripCitySelection> _commonCities = const [];
   bool _loading = true;
 
   @override
   void initState() {
     super.initState();
     _searchController.addListener(_search);
+    _commonCities = LongTripRepository().loadCommonCities();
     _loadCities();
   }
 
@@ -39,6 +43,16 @@ class _TripCityPickerPageState extends State<TripCityPickerPage> {
     } finally {
       if (mounted) setState(() => _loading = false);
     }
+  }
+
+  void _selectCity(Citys city) {
+    Navigator.of(context).pop(LongTripCitySelection(
+      sourceId: city.id,
+      locationId: '',
+      provinceName: city.province,
+      adminCityName: city.city,
+      cityName: city.district,
+    ));
   }
 
   void _search() {
@@ -106,6 +120,33 @@ class _TripCityPickerPageState extends State<TripCityPickerPage> {
                       fontWeight: FontWeight.w600)),
             ),
           ),
+          if (!searching && _commonCities.isNotEmpty)
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Padding(
+                  padding: EdgeInsets.fromLTRB(22, 0, 22, 4),
+                  child: Text('常用沿途城市',
+                      style: TextStyle(color: Colors.white70, fontSize: 13)),
+                ),
+                SizedBox(
+                  height: 42,
+                  child: ListView.separated(
+                    padding: const EdgeInsets.symmetric(horizontal: 18),
+                    scrollDirection: Axis.horizontal,
+                    itemCount: _commonCities.length,
+                    separatorBuilder: (_, __) => const SizedBox(width: 8),
+                    itemBuilder: (_, index) {
+                      final city = _commonCities[index];
+                      return ActionChip(
+                        label: Text(city.cityName),
+                        onPressed: () => Navigator.of(context).pop(city),
+                      );
+                    },
+                  ),
+                ),
+              ],
+            ),
           Expanded(
             child: _loading
                 ? const Center(
@@ -126,8 +167,7 @@ class _TripCityPickerPageState extends State<TripCityPickerPage> {
                           final city = cities[index];
                           return InkWell(
                             borderRadius: BorderRadius.circular(16),
-                            onTap: () =>
-                                Navigator.of(context).pop(city.district),
+                            onTap: () => _selectCity(city),
                             child: Center(
                               child: Text(city.district,
                                   maxLines: 1,

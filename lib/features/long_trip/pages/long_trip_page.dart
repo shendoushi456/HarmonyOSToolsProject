@@ -46,17 +46,17 @@ class _LongTripPageState extends ConsumerState<LongTripPage> {
                           .removePoint(role, index),
                       onSave: () async {
                         final messenger = ScaffoldMessenger.of(context);
-                        final message = await ref
+                        final result = await ref
                             .read(longTripViewModelProvider.notifier)
                             .saveDraft();
                         if (!mounted) {
                           return;
                         }
-                        if (message == null) {
+                        if (result.planSaved) {
                           setState(() => editing = false);
                         }
-                        messenger.showSnackBar(
-                            SnackBar(content: Text(message ?? '长途规划已保存')));
+                        messenger.showSnackBar(SnackBar(
+                            content: Text(result.message ?? '长途规划已保存')));
                       },
                     ),
                   if (state.plans.isNotEmpty) ...[
@@ -411,7 +411,7 @@ class _SavedPlanCard extends StatelessWidget {
                       : index == plan.points.length - 1
                           ? '终点'
                           : '途径点';
-                  final cityWeather = weatherByCity[point.cityName];
+                  final cityWeather = weatherByCity[point.weatherKey];
                   final forecast = cityWeather?.forecasts
                       .where((item) =>
                           item.fxDate ==
@@ -595,13 +595,13 @@ class _PointDialog extends StatefulWidget {
 }
 
 class _PointDialogState extends State<_PointDialog> {
-  String? _cityName;
+  LongTripCitySelection? _city;
   DateTime date = DateTime.now();
 
   Future<void> _selectCity() async {
-    final cityName = await Navigator.of(context).push<String>(
+    final city = await Navigator.of(context).push<LongTripCitySelection>(
         MaterialPageRoute(builder: (_) => const TripCityPickerPage()));
-    if (cityName != null && mounted) setState(() => _cityName = cityName);
+    if (city != null && mounted) setState(() => _city = city);
   }
 
   @override
@@ -621,11 +621,11 @@ class _PointDialogState extends State<_PointDialog> {
                     borderRadius: BorderRadius.circular(10)),
                 child: Row(children: [
                   Expanded(
-                    child: Text(_cityName ?? '请从城市列表选择地点',
+                    child: Text(_city?.cityName ?? '请从城市列表选择地点',
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
-                            color: _cityName == null
+                            color: _city == null
                                 ? const Color(0xFF94A3B8)
                                 : const Color(0xFF1E293B),
                             fontSize: 15)),
@@ -668,9 +668,8 @@ class _PointDialogState extends State<_PointDialog> {
                 child: const Text('取消')),
             FilledButton(
                 onPressed: () {
-                  if (_cityName != null) {
-                    Navigator.pop(context,
-                        LongTripPoint(cityName: _cityName!, date: date));
+                  if (_city != null) {
+                    Navigator.pop(context, _city!.toPoint(date));
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(content: Text('请先从城市列表选择地点')));
@@ -687,10 +686,10 @@ List<_TravelWarning> _visibleWarnings(
   for (final plan in plans) {
     for (var index = 0; index < plan.points.length; index++) {
       final point = plan.points[index];
-      if (!seen.add(point.cityName)) {
+      if (!seen.add(point.weatherKey)) {
         continue;
       }
-      final item = weather[point.cityName]?.warnings.firstOrNull;
+      final item = weather[point.weatherKey]?.warnings.firstOrNull;
       if (item != null) {
         values.add(_TravelWarning(
             point.cityName,

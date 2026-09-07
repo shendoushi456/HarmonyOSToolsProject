@@ -1,8 +1,11 @@
 // 设置主页 - 对齐 Android Setting4Activity + Setting4ToolFragment + fragment_setting_tool_4_layout.xml
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/constants/app_assets.dart';
 import '../../../core/constants/app_colors.dart';
+import '../../../core/storage/prefs_storage.dart';
 import '../../../router/route_names.dart';
 import '../utils/app_info_util.dart';
 
@@ -64,6 +67,7 @@ class SettingPage extends StatelessWidget {
               extra: {'title': '隐私协议', 'url': SettingUrls.policy},
             ),
           ),
+          _buildRevokeAgreementItem(context),
           _buildItem(
             context,
             '关于我们',
@@ -79,6 +83,85 @@ class SettingPage extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  /// 对齐 Android SettingToolFragment2：二次确认后清空本地数据并退出应用。
+  Widget _buildRevokeAgreementItem(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 15, right: 15, top: 10),
+      child: GestureDetector(
+        onTap: () => _confirmRevokeAgreement(context),
+        child: Container(
+          height: 50,
+          padding: const EdgeInsets.symmetric(horizontal: 15),
+          decoration: BoxDecoration(
+            border: Border.all(color: const Color(0xFFFECACA)),
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: Row(
+            children: [
+              const Icon(Icons.delete_outline, color: Color(0xFFDC2626)),
+              const SizedBox(width: 10),
+              const Expanded(
+                child: Text(
+                  '撤销同意用户协议',
+                  style: TextStyle(color: Color(0xFFB91C1C), fontSize: 16),
+                ),
+              ),
+              Image.asset(AppAssets.arrowRight, width: 16, height: 16),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Future<void> _confirmRevokeAgreement(BuildContext context) async {
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        title: const Text('温馨提示'),
+        content: Text(
+          '撤销同意隐私政策及用户协议后，将清空当前所有信息并退出应用。'
+          '如果您撤回对“${AppInfoUtil.appName}”隐私政策的同意，我们将停止收集您的个人信息，'
+          '并按照法律规定删除应用所收集的个人信息，但法律法规另有保存期限规定的除外。'
+          '因为“${AppInfoUtil.appName}”服务依赖必要的个人信息收集，如您撤销同意，'
+          '则视为您不同意我们继续提供服务。确定撤销？',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(dialogContext).pop(false),
+            child: const Text('取消'),
+          ),
+          FilledButton(
+            style: FilledButton.styleFrom(
+              backgroundColor: const Color(0xFFDC2626),
+            ),
+            onPressed: () => Navigator.of(dialogContext).pop(true),
+            child: const Text('确认撤销'),
+          ),
+        ],
+      ),
+    );
+    if (confirmed != true || !context.mounted) return;
+
+    final messenger = ScaffoldMessenger.of(context);
+    try {
+      final cleared = await PrefsStorage.clearAll();
+      if (!cleared) {
+        messenger.showSnackBar(const SnackBar(content: Text('撤销失败，请重试')));
+        return;
+      }
+      messenger.showSnackBar(const SnackBar(content: Text('操作成功，3 秒后应用将自动退出')));
+      await Future<void>.delayed(const Duration(seconds: 3));
+      // SystemNavigator.pop() 仅关闭当前 Flutter 容器，OpenHarmony 会回到桌面。
+      // 撤销协议需要终止整个应用进程，确保下次启动重新展示协议引导。
+      exit(0);
+    } catch (_) {
+      if (context.mounted) {
+        messenger.showSnackBar(const SnackBar(content: Text('撤销失败，请重试')));
+      }
+    }
   }
 
   /// 顶部栏 - 对齐 fragment_setting_tool_4_layout FrameLayout 88dp

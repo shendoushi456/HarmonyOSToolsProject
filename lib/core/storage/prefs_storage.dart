@@ -80,4 +80,8 @@ class PrefsStorage {
 
   /// 重新向平台读取最新值，避免只用当前进程内缓存判断保存是否成功。
   static Future<void> reload() => _instance.reload();
+
+  /// 撤销协议同意时清除当前应用通过 SharedPreferences 保存的全部本地信息。
+  /// 平台插件会只清除本应用带 flutter. 前缀的数据，不会影响其他应用。
+  static Future<bool> clearAll() => _instance.clear();
 }
