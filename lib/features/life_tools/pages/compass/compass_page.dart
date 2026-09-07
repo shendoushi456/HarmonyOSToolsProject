@@ -22,7 +22,7 @@ class CompassPage extends ConsumerStatefulWidget {
 }
 
 class _CompassPageState extends ConsumerState<CompassPage>
-    with SingleTickerProviderStateMixin {
+    with SingleTickerProviderStateMixin, WidgetsBindingObserver {
   late final AnimationController _restoreController;
   double _rotateX = 0;
   double _rotateY = 0;
@@ -30,6 +30,7 @@ class _CompassPageState extends ConsumerState<CompassPage>
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     _restoreController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 1000),
@@ -38,8 +39,27 @@ class _CompassPageState extends ConsumerState<CompassPage>
 
   @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
     _restoreController.dispose();
     super.dispose();
+  }
+
+  /// 对齐 Android CompassActivity.onResume/onPause：应用退到后台时
+  /// 注销传感器，回到前台后再恢复，避免不可见时持续计算和重绘。
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    final notifier = ref.read(compassViewModelProvider.notifier);
+    switch (state) {
+      case AppLifecycleState.resumed:
+        notifier.resume();
+        break;
+      case AppLifecycleState.inactive:
+      case AppLifecycleState.paused:
+      case AppLifecycleState.hidden:
+      case AppLifecycleState.detached:
+        notifier.pause();
+        break;
+    }
   }
 
   /// 弹性回弹插值器 - 对齐 ChaosCompassView.java:623-684 startRestore
@@ -120,7 +140,8 @@ class _CompassPageState extends ConsumerState<CompassPage>
       child: Row(
         children: [
           IconButton(
-            icon: const Icon(Icons.arrow_back_ios, color: Colors.white, size: 20),
+            icon:
+                const Icon(Icons.arrow_back_ios, color: Colors.white, size: 20),
             onPressed: () => Navigator.pop(context),
           ),
           const Expanded(

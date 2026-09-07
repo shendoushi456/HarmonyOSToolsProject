@@ -52,7 +52,6 @@ class HomeShellPage extends ConsumerWidget {
       ),
     ];
     return Container(
-      height: 58,
       decoration: const BoxDecoration(
         color: Color(0xFFF9FDFF),
         boxShadow: [
@@ -62,31 +61,33 @@ class HomeShellPage extends ConsumerWidget {
       ),
       child: SafeArea(
         top: false,
-        bottom: false,
-        child: Row(
-          children: [
-            for (var i = 0; i < items.length; i++)
-              Expanded(
-                child: GestureDetector(
-                  behavior: HitTestBehavior.opaque,
-                  onTap: () =>
-                      ref.read(homeTabIndexProvider.notifier).state = i,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      _buildIcon(items[i], currentIndex == i),
-                      const SizedBox(height: 2),
-                      Text(items[i].label,
-                          style: TextStyle(
-                              fontSize: 10,
-                              color: currentIndex == i
-                                  ? AppColors.qmtqBlue
-                                  : const Color(0xFF999999))),
-                    ],
+        child: SizedBox(
+          height: 58,
+          child: Row(
+            children: [
+              for (var i = 0; i < items.length; i++)
+                Expanded(
+                  child: GestureDetector(
+                    behavior: HitTestBehavior.opaque,
+                    onTap: () =>
+                        ref.read(homeTabIndexProvider.notifier).state = i,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        _buildIcon(items[i], currentIndex == i),
+                        const SizedBox(height: 2),
+                        Text(items[i].label,
+                            style: TextStyle(
+                                fontSize: 10,
+                                color: currentIndex == i
+                                    ? AppColors.qmtqBlue
+                                    : const Color(0xFF999999))),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-          ],
+            ],
+          ),
         ),
       ),
     );

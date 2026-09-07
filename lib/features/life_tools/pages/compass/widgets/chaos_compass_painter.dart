@@ -20,43 +20,54 @@ class ChaosCompassPainter extends CustomPainter {
     final mCenterX = width / 2;
     final mOutSideRadius = width * 3 / 8;
     final mCircumRadius = mOutSideRadius * 4 / 5;
+    // 原版字号在窄屏上会压住刻度与圆心；以 375dp 为设计宽度，
+    // 同时限制最大值，让大屏不会再无限放大。
+    final textScale = (width / 375).clamp(0.72, 1.0);
     // 罗盘圆心 Y(对齐 mOutSideRadius + mTextHeight)
     final centerY = mOutSideRadius + mTextHeight;
 
     // 1. drawText - 顶部方位文字(对齐 ChaosCompassView.java:502-535)
-    _drawText(canvas, width, mTextHeight);
+    _drawText(canvas, width, mTextHeight, textScale);
 
     // 2. drawCompassOutSide - 外圈小三角+4弧(对齐 L478-499)
     _drawCompassOutSide(canvas, width, mTextHeight, mOutSideRadius);
 
     // 3. drawCompassCircum - 外接圆+偏转红弧(对齐 L433-453)
-    _drawCompassCircum(canvas, azimuth, width, mTextHeight, mOutSideRadius, mCircumRadius);
+    _drawCompassCircum(
+        canvas, azimuth, width, mTextHeight, mOutSideRadius, mCircumRadius);
 
     // 4. drawInnerCricle - 内圆辐射渐变(对齐 L323-325)
     _drawInnerCircle(canvas, width, centerY, mCircumRadius);
 
     // 5. drawCompassDegreeScale - 240刻度+NESW(对齐 L358-410)
-    _drawCompassDegreeScale(canvas, azimuth, width, mCenterX, mTextHeight, mOutSideRadius, mCircumRadius);
+    _drawCompassDegreeScale(canvas, azimuth, width, mCenterX, mTextHeight,
+        mOutSideRadius, mCircumRadius, textScale);
 
     // 6. drawCenterText - 圆心数字°(对齐 L328-345)
-    _drawCenterText(canvas, azimuth, width, centerY);
+    _drawCenterText(canvas, azimuth, width, centerY, textScale);
   }
 
   /// 1. 顶部方位文字 - 对齐 drawText L513-534
-  void _drawText(Canvas canvas, double width, double mTextHeight) {
+  void _drawText(
+    Canvas canvas,
+    double width,
+    double mTextHeight,
+    double textScale,
+  ) {
     final text = _directionText(azimuth);
     final tp = TextPainter(
       text: TextSpan(
         text: text,
-        style: const TextStyle(
+        style: TextStyle(
           color: Colors.white,
-          fontSize: 80,
+          fontSize: 56 * textScale,
           fontWeight: FontWeight.normal,
         ),
       ),
       textDirection: TextDirection.ltr,
     )..layout();
-    tp.paint(canvas, Offset(width / 2 - tp.width / 2, mTextHeight / 2 - tp.height / 2));
+    tp.paint(canvas,
+        Offset(width / 2 - tp.width / 2, mTextHeight / 2 - tp.height / 2));
   }
 
   /// 2. 外圈小三角形 + 4 段圆弧 - 对齐 drawCompassOutSide L478-499
@@ -175,7 +186,8 @@ class ChaosCompassPainter extends CustomPainter {
     );
 
     // 350° 深灰弧(对齐 L444) - 外接圆 rect
-    final circumRect = Rect.fromCircle(center: Offset(width / 2, centerY), radius: mCircumRadius);
+    final circumRect = Rect.fromCircle(
+        center: Offset(width / 2, centerY), radius: mCircumRadius);
     canvas.drawArc(
       circumRect,
       -85 * deg,
@@ -203,14 +215,16 @@ class ChaosCompassPainter extends CustomPainter {
   }
 
   /// 4. 内圆辐射渐变 - 对齐 drawInnerCricle L323-325
-  void _drawInnerCircle(Canvas canvas, double width, double centerY, double mCircumRadius) {
+  void _drawInnerCircle(
+      Canvas canvas, double width, double centerY, double mCircumRadius) {
     final radius = mCircumRadius - 40;
     if (radius <= 0) return;
     // RadialGradient #323232 → #000000
     final paint = Paint()
       ..shader = const RadialGradient(
         colors: [AppColors.compassInnerStart, AppColors.compassInnerEnd],
-      ).createShader(Rect.fromCircle(center: Offset(width / 2, centerY), radius: radius));
+      ).createShader(
+          Rect.fromCircle(center: Offset(width / 2, centerY), radius: radius));
     canvas.drawCircle(Offset(width / 2, centerY), radius, paint);
   }
 
@@ -223,6 +237,7 @@ class ChaosCompassPainter extends CustomPainter {
     double mTextHeight,
     double mOutSideRadius,
     double mCircumRadius,
+    double textScale,
   ) {
     canvas.save();
     const deg = math.pi / 180;
@@ -256,13 +271,24 @@ class ChaosCompassPainter extends CustomPainter {
     for (var i = 0; i < 240; i++) {
       // 画刻度线(对齐 L378-382)
       if (i == 0 || i == 60 || i == 120 || i == 180) {
-        canvas.drawLine(Offset(lineX, lineStartY), Offset(lineX, lineEndY), deepGrayPaint);
+        canvas.drawLine(
+            Offset(lineX, lineStartY), Offset(lineX, lineEndY), deepGrayPaint);
       } else {
-        canvas.drawLine(Offset(lineX, lineStartY), Offset(lineX, lineEndY), lightGrayPaint);
+        canvas.drawLine(
+            Offset(lineX, lineStartY), Offset(lineX, lineEndY), lightGrayPaint);
       }
 
       // 画文字(对齐 L383-407)
-      _drawScaleText(canvas, northPaint, othersTp, smallTp, i, lineX, textY);
+      _drawScaleText(
+        canvas,
+        northPaint,
+        othersTp,
+        smallTp,
+        i,
+        lineX,
+        textY,
+        textScale,
+      );
 
       // 每次循环旋转 1.5°(对齐 L408)
       canvas.translate(mCenterX, centerY);
@@ -281,39 +307,66 @@ class ChaosCompassPainter extends CustomPainter {
     int i,
     double x,
     double y,
+    double textScale,
   ) {
     TextPainter? tp;
     String? text;
-    double fontSize = 18;
+    double fontSize = 13 * textScale;
     Color color = AppColors.compassLightGray;
     if (i == 0) {
-      text = 'N'; fontSize = 30; color = AppColors.compassRed;
+      text = 'N';
+      fontSize = 22 * textScale;
+      color = AppColors.compassRed;
     } else if (i == 60) {
-      text = 'E'; fontSize = 30; color = Colors.white;
+      text = 'E';
+      fontSize = 22 * textScale;
+      color = Colors.white;
     } else if (i == 120) {
-      text = 'S'; fontSize = 30; color = Colors.white;
+      text = 'S';
+      fontSize = 22 * textScale;
+      color = Colors.white;
     } else if (i == 180) {
-      text = 'W'; fontSize = 30; color = Colors.white;
+      text = 'W';
+      fontSize = 22 * textScale;
+      color = Colors.white;
     } else if (i == 20) {
-      text = '30'; fontSize = 18; color = AppColors.compassLightGray;
+      text = '30';
+      fontSize = 13 * textScale;
+      color = AppColors.compassLightGray;
     } else if (i == 40) {
-      text = '60'; fontSize = 18; color = AppColors.compassLightGray;
+      text = '60';
+      fontSize = 13 * textScale;
+      color = AppColors.compassLightGray;
     } else if (i == 80) {
-      text = '120'; fontSize = 18; color = AppColors.compassLightGray;
+      text = '120';
+      fontSize = 13 * textScale;
+      color = AppColors.compassLightGray;
     } else if (i == 100) {
-      text = '150'; fontSize = 18; color = AppColors.compassLightGray;
+      text = '150';
+      fontSize = 13 * textScale;
+      color = AppColors.compassLightGray;
     } else if (i == 140) {
-      text = '210'; fontSize = 18; color = AppColors.compassLightGray;
+      text = '210';
+      fontSize = 13 * textScale;
+      color = AppColors.compassLightGray;
     } else if (i == 160) {
-      text = '240'; fontSize = 18; color = AppColors.compassLightGray;
+      text = '240';
+      fontSize = 13 * textScale;
+      color = AppColors.compassLightGray;
     } else if (i == 200) {
-      text = '300'; fontSize = 18; color = AppColors.compassLightGray;
+      text = '300';
+      fontSize = 13 * textScale;
+      color = AppColors.compassLightGray;
     } else if (i == 220) {
-      text = '330'; fontSize = 18; color = AppColors.compassLightGray;
+      text = '330';
+      fontSize = 13 * textScale;
+      color = AppColors.compassLightGray;
     }
 
     if (text == null) return;
-    tp = (i == 0 || i == 60 || i == 120 || i == 180) ? northTp : (text.length > 2 ? smallTp : smallTp);
+    tp = (i == 0 || i == 60 || i == 120 || i == 180)
+        ? northTp
+        : (text.length > 2 ? smallTp : smallTp);
     tp.text = TextSpan(
       text: text,
       style: TextStyle(color: color, fontSize: fontSize),
@@ -323,13 +376,19 @@ class ChaosCompassPainter extends CustomPainter {
   }
 
   /// 6. 圆心数字° - 对齐 drawCenterText L328-345
-  void _drawCenterText(Canvas canvas, double val, double width, double centerY) {
+  void _drawCenterText(
+    Canvas canvas,
+    double val,
+    double width,
+    double centerY,
+    double textScale,
+  ) {
     final tp = TextPainter(
       text: TextSpan(
         text: '${val.toInt()}°',
-        style: const TextStyle(
+        style: TextStyle(
           color: Colors.white,
-          fontSize: 120,
+          fontSize: 72 * textScale,
           fontWeight: FontWeight.normal,
         ),
       ),
