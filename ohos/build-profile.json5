@@ -5,13 +5,13 @@
         "name": "default",
         "type": "HarmonyOS",
         "material": {
-          "storeFile": "/Users/zhuanzmima0000/DevEcoStudioProjects/sxtqt.p12",
-          "storePassword": "0000001B87A97B5338E9CE894D3981A60E7521015D03090749282C4B1A6C3A4318ED47DB0BA8E2F326D91A",
-          "keyAlias": "sxtqt",
-          "keyPassword": "0000001B06F26E8D4476DFB2AEBF65ECA3D76E8741A256507423D47C37432E45AACB01DE954D7BD94029FD",
+          "storeFile": "/Users/zhuanzmima0000/鸿蒙签名/湖南睿思/hunanruisi.p12",
+          "storePassword": "0000001ACF958B534438914C66C88E57DD689207CA5E4E436F36E8B4F91396FEA4CCB8774233476C4182",
+          "keyAlias": "hunanruisi",
+          "keyPassword": "0000001AE8F1665280CBDCF2CEFD52F006E74FD7F68D3DA060908CC391572734F7975812A5578E7E4CC8",
           "signAlg": "SHA256withECDSA",
-          "profile": "/Users/zhuanzmima0000/Downloads/瞬息天气通Release.p7b",
-          "certpath": "/Users/zhuanzmima0000/Downloads/Release_Cert.cer"
+          "profile": "/Users/zhuanzmima0000/鸿蒙签名/湖南睿思/shunxitianqitongRelease.p7b",
+          "certpath": "/Users/zhuanzmima0000/鸿蒙签名/湖南睿思/hunanruisi.cer"
         }
       }
     ],
