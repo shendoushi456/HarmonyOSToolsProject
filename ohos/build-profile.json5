@@ -5,13 +5,13 @@
         "name": "default",
         "type": "HarmonyOS",
         "material": {
-          "certpath": "/Users/zhuanzmima0000/.ohos/config/default_ohos_hbUGDgTL4JbyBE_26afbT1DFf2qslZehwOVpEKnfS9Q=.cer",
-          "keyAlias": "debugKey",
-          "keyPassword": "0000001BD8143A49C25ABF781F3370EE0997FA9934B3B2C5697EC01BEB8AECD4A844BC5A6FCD70458BB473",
-          "profile": "/Users/zhuanzmima0000/.ohos/config/default_ohos_hbUGDgTL4JbyBE_26afbT1DFf2qslZehwOVpEKnfS9Q=.p7b",
+          "storeFile": "/Users/zhuanzmima0000/鸿蒙签名/湖南睿思/hunanruisi.p12",
+          "storePassword": "0000001A61CFA549522ED675C8A1307CC34DF2681CEB2190AFDDB459E73ECE8DA62AC9116DED34CBD00C",
+          "keyAlias": "hunanruisi",
+          "keyPassword": "0000001A3B7F74B643CFD82B97006B354F150C1BECC0928D0E8DC9650B8D31D024800E8929019218E0FD",
           "signAlg": "SHA256withECDSA",
-          "storeFile": "/Users/zhuanzmima0000/.ohos/config/default_ohos_hbUGDgTL4JbyBE_26afbT1DFf2qslZehwOVpEKnfS9Q=.p12",
-          "storePassword": "0000001BA81684385B14BC8724AEC28385F26E44CB5015EB2CDD4735DF1C99DFF34D4F542D9E1ACEB773F3"
+          "profile": "/Users/zhuanzmima0000/鸿蒙签名/湖南睿思/dasushangwangtongRelease.p7b",
+          "certpath": "/Users/zhuanzmima0000/鸿蒙签名/湖南睿思/hunanruisi.cer"
         }
       }
     ],
