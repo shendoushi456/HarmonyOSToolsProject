@@ -10,16 +10,21 @@ class PreferencesStore {
   static const _recentIds = 'recipe_recent_ids_v1';
   static const _maxRecentCount = 30;
 
+  /// 设置页"个性化推荐"开关，key 与 Android 版 myPreferences.isSetting 一致。
+  static const _isSetting = 'isSetting';
+
   final SharedPreferences _preferences;
 
   bool get isPrivacyAccepted => _preferences.getBool(_privacyAccepted) ?? false;
   bool get isOnboardingDone => _preferences.getBool(_onboardingDone) ?? false;
+  bool get isSetting => _preferences.getBool(_isSetting) ?? false;
   Set<int> get favoriteIds => _readIds(_favoriteIds).toSet();
   List<int> get recentIds => _readIds(_recentIds);
 
   Future<void> acceptPrivacy() => _preferences.setBool(_privacyAccepted, true);
   Future<void> completeOnboarding() =>
       _preferences.setBool(_onboardingDone, true);
+  Future<void> saveIsSetting(bool value) => _preferences.setBool(_isSetting, value);
 
   Future<void> saveFavoriteIds(Set<int> ids) =>
       _preferences.setStringList(_favoriteIds, ids.map((id) => '$id').toList());

@@ -32,7 +32,6 @@ class _RecipeDetailPageState extends State<RecipeDetailPage> {
   Widget build(BuildContext context) {
     final item = recipe;
     if (item == null) return const Scaffold(body: Center(child: Text('食谱不存在')));
-    final isFavorite = widget.viewModel.isFavorite(item.id);
     final images = item.imageUrls.isEmpty ? const [''] : item.imageUrls;
     final bodyStyle = Theme.of(context)
         .textTheme
@@ -42,17 +41,23 @@ class _RecipeDetailPageState extends State<RecipeDetailPage> {
       appBar: AppBar(
         title: Text(item.title),
         actions: [
-          IconButton(
-            tooltip: isFavorite ? '取消收藏' : '收藏',
-            onPressed: () async {
-              final added = !widget.viewModel.isFavorite(item.id);
-              await widget.viewModel.toggleFavorite(item.id);
-              if (!context.mounted) return;
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text(added ? '添加到收藏夹' : '已从收藏夹中删除')),
+          AnimatedBuilder(
+            animation: widget.viewModel,
+            builder: (context, _) {
+              final isFavorite = widget.viewModel.isFavorite(item.id);
+              return IconButton(
+                tooltip: isFavorite ? '取消收藏' : '收藏',
+                onPressed: () async {
+                  final added = !widget.viewModel.isFavorite(item.id);
+                  await widget.viewModel.toggleFavorite(item.id);
+                  if (!context.mounted) return;
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text(added ? '添加到收藏夹' : '已从收藏夹中删除')),
+                  );
+                },
+                icon: Icon(isFavorite ? Icons.favorite : Icons.favorite_border),
               );
             },
-            icon: Icon(isFavorite ? Icons.favorite : Icons.favorite_border),
           ),
         ],
       ),

@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>空气炸锅椒盐花菜 | 低卡健康小食</title>
+    <style>
+        body {
+            font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f8f9fa;
+        }
+        .recipe-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #6c757d;
+        }
+        h1 {
+            color: #495057;
+            margin-bottom: 10px;
+        }
+        .recipe-meta {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            color: #6c757d;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+        .recipe-image {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            border-radius: 10px;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+            margin: 25px 0;
+        }
+        .recipe-card {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+            margin-bottom: 30px;
+        }
+        h2 {
+            color: #6c757d;
+            margin-top: 0;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e9ecef;
+        }
+        ul, ol {
+            padding-left: 25px;
+        }
+        li {
+            margin-bottom: 10px;
+        }
+        ol li {
+            counter-increment: step-counter;
+            margin-bottom: 12px;
+            position: relative;
+        }
+        ol li::before {
+            content: counter(step-counter);
+            color: white;
+            background-color: #6c757d;
+            font-weight: bold;
+            padding: 2px 8px;
+            border-radius: 50%;
+            position: absolute;
+            left: -30px;
+            top: -2px;
+        }
+        .nutrition-box {
+            background: linear-gradient(to right, #f1f3f5, #e9ecef);
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 5px solid #6c757d;
+        }
+        .nutrition-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-top: 15px;
+        }
+        .nutrition-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px dashed #ced4da;
+        }
+        .tip-box {
+            background-color: #f1f3f5;
+            padding: 18px;
+            border-radius: 8px;
+            border-left: 5px solid #adb5bd;
+            margin-top: 25px;
+        }
+        .tip-box h3 {
+            color: #495057;
+            margin-top: 0;
+        }
+        .variation-box {
+            background-color: #e9ecef;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+        @media (max-width: 600px) {
+            .recipe-meta {
+                flex-direction: column;
+                gap: 5px;
+                align-items: center;
+            }
+            .recipe-image {
+                height: 280px;
+            }
+            .nutrition-grid {
+                grid-template-columns: 1fr;
+            }
+            .recipe-card {
+                padding: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="recipe-header">
+    <h1>空气炸锅椒盐花菜</h1>
+    <div class="recipe-meta">
+        <span>⏱️ 准备时间: 5分钟</span>
+        <span>🍳 烹饪时间: 15分钟</span>
+        <span>🔥 热量: 80kcal/份</span>
+        <span>🥦 膳食纤维: 5g</span>
+    </div>
+    <p>酥脆可口的低卡健康小食，替代油炸食品的完美选择</p>
+</div>
+
+<img src="https://images.unsplash.com/photo-1603105037880-880cd4edfb0d?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
+     alt="空气炸锅椒盐花菜"
+     class="recipe-image"
+     loading="lazy">
+
+<div class="recipe-card">
+    <h2>📝 食材 (2人份)</h2>
+    <ul>
+        <li>花菜 300g (约1/2个中等大小)</li>
+        <li>橄榄油 1汤匙 (或喷雾油)</li>
+        <li>椒盐 1茶匙</li>
+        <li>大蒜粉 1/2茶匙</li>
+        <li>辣椒粉 1/4茶匙 (可选)</li>
+        <li>黑胡椒粉 1/4茶匙</li>
+        <li>柠檬汁 1茶匙 (可选)</li>
+        <li>帕玛森芝士粉 1茶匙 (可选)</li>
+    </ul>
+</div>
+
+<div class="recipe-card">
+    <h2>👩‍🍳 制作步骤</h2>
+    <ol>
+        <li><strong>准备花菜：</strong>花菜切成小朵，大小均匀，洗净后彻底沥干水分或用厨房纸擦干。</li>
+        <li><strong>调味：</strong>将花菜放入大碗中，加入橄榄油、椒盐、大蒜粉、辣椒粉和黑胡椒，用手充分拌匀。</li>
+        <li><strong>空气炸锅预热：</strong>空气炸锅200℃预热3分钟。</li>
+        <li><strong>第一轮烘烤：</strong>将花菜平铺在炸篮中，不要重叠，200℃烤8分钟。</li>
+        <li><strong>翻面：</strong>取出炸篮，用筷子翻动花菜，确保受热均匀。</li>
+        <li><strong>第二轮烘烤：</strong>继续200℃烤5-7分钟，至花菜边缘金黄酥脆。</li>
+        <li><strong>装盘：</strong>取出后挤少许柠檬汁增加风味，撒上帕玛森芝士粉(如使用)即可。</li>
+    </ol>
+</div>
+
+<div class="nutrition-box">
+    <h2>📊 营养信息 (每份)</h2>
+    <div class="nutrition-grid">
+        <div class="nutrition-item">
+            <span>热量</span>
+            <span>80kcal</span>
+        </div>
+        <div class="nutrition-item">
+            <span>蛋白质</span>
+            <span>3g</span>
+        </div>
+        <div class="nutrition-item">
+            <span>脂肪</span>
+            <span>4g</span>
+        </div>
+        <div class="nutrition-item">
+            <span>碳水化合物</span>
+            <span>10g</span>
+        </div>
+        <div class="nutrition-item">
+            <span>膳食纤维</span>
+            <span>5g</span>
+        </div>
+        <div class="nutrition-item">
+            <span>维生素C</span>
+            <span>77mg (85%日需)</span>
+        </div>
+    </div>
+</div>
+
+<div class="tip-box">
+    <h3>💡 专业小贴士</h3>
+    <ul>
+        <li><strong>干燥是关键：</strong>花菜表面必须完全干燥才能酥脆，可用沙拉脱水器甩干</li>
+        <li><strong>油量控制：</strong>使用喷雾油可减少用油量至1/2茶匙</li>
+        <li><strong>防焦技巧：</strong>不同炸锅功率不同，最后5分钟建议每2分钟检查一次</li>
+        <li><strong>均匀受热：</strong>花菜朵大小要一致，太大可对半切开</li>
+        <li><strong>保存建议：</strong>最好现做现吃，冷藏后会变软，复热需重新空气炸3分钟</li>
+    </ul>
+</div>
+
+<div class="variation-box">
+    <h3>✨ 变化版本</h3>
+    <ul>
+        <li><strong>咖喱风味：</strong>用1茶匙咖喱粉替代椒盐</li>
+        <li><strong>芝士蒜香：</strong>增加至2茶匙蒜粉，烤好后撒2汤匙马苏里拉芝士再烤1分钟</li>
+        <li><strong>韩式辣味：</strong>加入1茶匙韩式辣椒酱与油混合后拌花菜</li>
+        <li><strong>柠檬香草：</strong>加入1茶匙干迷迭香和1茶匙柠檬皮屑</li>
+    </ul>
+</div>
+</body>
+</html>

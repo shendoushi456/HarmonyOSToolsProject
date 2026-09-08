@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>菠菜蘑菇欧姆蛋 | 健康低卡早餐</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff9f0;
+        }
+        .recipe-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #ff9f43;
+        }
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        .recipe-meta {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            color: #7f8c8d;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+        .recipe-image {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            border-radius: 10px;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+            margin: 25px 0;
+        }
+        .recipe-card {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+            margin-bottom: 30px;
+        }
+        h2 {
+            color: #e67e22;
+            margin-top: 0;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f5d6b3;
+        }
+        ul, ol {
+            padding-left: 25px;
+        }
+        li {
+            margin-bottom: 10px;
+            position: relative;
+        }
+        li:before {
+            content: "•";
+            color: #e67e22;
+            font-weight: bold;
+            display: inline-block;
+            width: 1em;
+            margin-left: -1em;
+        }
+        ol li {
+            counter-increment: step-counter;
+            margin-bottom: 12px;
+        }
+        ol li:before {
+            content: counter(step-counter);
+            color: white;
+            background: #e67e22;
+            font-weight: bold;
+            padding: 1px 7px;
+            border-radius: 50%;
+            margin-right: 10px;
+            margin-left: -30px;
+        }
+        .nutrition-box {
+            background: linear-gradient(to right, #fff4e4, #ffe8cc);
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 5px solid #e67e22;
+        }
+        .nutrition-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-top: 15px;
+        }
+        .nutrition-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px dashed #f0c27b;
+        }
+        .tip-box {
+            background-color: #f8f4e8;
+            padding: 18px;
+            border-radius: 8px;
+            border-left: 5px solid #3498db;
+            margin-top: 25px;
+        }
+        .tip-box h3 {
+            color: #3498db;
+            margin-top: 0;
+        }
+        @media (max-width: 600px) {
+            .recipe-meta {
+                flex-direction: column;
+                gap: 5px;
+                align-items: center;
+            }
+            .recipe-image {
+                height: 280px;
+            }
+            .nutrition-grid {
+                grid-template-columns: 1fr;
+            }
+            .recipe-card {
+                padding: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="recipe-header">
+    <h1>菠菜蘑菇欧姆蛋</h1>
+    <div class="recipe-meta">
+        <span>⏱️ 准备时间: 5分钟</span>
+        <span>🍳 烹饪时间: 10分钟</span>
+        <span>🔥 热量: 280kcal/份</span>
+        <span>🥚 蛋白质: 22g</span>
+    </div>
+    <p>营养丰富的低卡早餐，15分钟即可完成的高蛋白选择</p>
+</div>
+
+<img src="https://images.unsplash.com/photo-1556909212-d5b604d0c90d?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
+     alt="菠菜蘑菇欧姆蛋"
+     class="recipe-image"
+     loading="lazy">
+
+<div class="recipe-card">
+    <h2>📝 食材 (1人份)</h2>
+    <ul>
+        <li>鸡蛋 2个 (或1全蛋+2蛋白)</li>
+        <li>新鲜菠菜 50g</li>
+        <li>白蘑菇 3-4个 (约80g)</li>
+        <li>橄榄油 1茶匙</li>
+        <li>盐 1/4茶匙</li>
+        <li>黑胡椒 1/4茶匙</li>
+        <li>低脂奶酪碎 1汤匙 (可选)</li>
+        <li>红椒粉 少许 (装饰用)</li>
+    </ul>
+</div>
+
+<div class="recipe-card">
+    <h2>👩‍🍳 制作步骤</h2>
+    <ol>
+        <li><strong>准备食材：</strong>菠菜洗净沥干，蘑菇切片，鸡蛋打散加入少许盐和黑胡椒。</li>
+        <li><strong>炒蔬菜：</strong>中小火加热不粘锅，加入1/2茶匙橄榄油，先炒蘑菇2分钟至微黄，再加入菠菜炒至萎蔫(约1分钟)，盛出备用。</li>
+        <li><strong>煎蛋皮：</strong>同一锅中加入剩余橄榄油，倒入蛋液，用铲子轻轻推动边缘让未凝固蛋液流到底部。</li>
+        <li><strong>加入馅料：</strong>当蛋液表面半凝固时(约1分钟)，在一侧铺上炒好的蘑菇菠菜，撒上奶酪碎(如使用)。</li>
+        <li><strong>折叠成型：</strong>用铲子将空的一侧蛋皮对折盖住馅料，再煎30秒定型。</li>
+        <li><strong>装盘：</strong>滑入盘中，撒少许红椒粉增加色彩，可搭配全麦面包享用。</li>
+    </ol>
+</div>
+
+<div class="nutrition-box">
+    <h2>📊 营养信息 (每份)</h2>
+    <div class="nutrition-grid">
+        <div class="nutrition-item">
+            <span>热量</span>
+            <span>280kcal</span>
+        </div>
+        <div class="nutrition-item">
+            <span>蛋白质</span>
+            <span>22g</span>
+        </div>
+        <div class="nutrition-item">
+            <span>脂肪</span>
+            <span>18g</span>
+        </div>
+        <div class="nutrition-item">
+            <span>碳水化合物</span>
+            <span>6g</span>
+        </div>
+        <div class="nutrition-item">
+            <span>膳食纤维</span>
+            <span>3g</span>
+        </div>
+        <div class="nutrition-item">
+            <span>钙</span>
+            <span>150mg</span>
+        </div>
+    </div>
+</div>
+
+<div class="tip-box">
+    <h3>💡 专业小贴士</h3>
+    <ul>
+        <li><strong>完美蛋皮秘诀：</strong>使用中小火慢煎，避免高温导致蛋皮变硬</li>
+        <li><strong>减脂版：</strong>用全蛋清替代全蛋，可减少约100kcal和15g脂肪</li>
+        <li><strong>防粘技巧：</strong>使用优质不粘锅或铸铁锅，确保充分预热</li>
+        <li><strong>升级版：</strong>加入1茶匙切碎的新鲜香草(如莳萝或欧芹)增加风味层次</li>
+        <li><strong>保存建议：</strong>最好现做现吃，如需保存可冷藏1天，复热时用小火</li>
+    </ul>
+</div>
+</body>
+</html>

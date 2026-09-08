@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>健康减脂食谱 | 轻食计划</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+
+        .recipe-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        .recipe-card {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 2rem;
+        }
+
+        .recipe-image {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+
+        .recipe-details {
+            flex-grow: 1;
+        }
+
+        h2 {
+            color: #2ecc71;
+            margin-bottom: 1rem;
+        }
+
+        h3 {
+            color: #3498db;
+            margin-top: 1.5rem;
+        }
+
+        ul {
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 0.8rem;
+        }
+
+        .nutrition-info {
+            background: #ecf0f1;
+            padding: 1rem;
+            border-radius: 5px;
+            margin-top: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .recipe-card {
+                grid-template-columns: 1fr;
+            }
+
+            .recipe-image {
+                height: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="recipe-container">
+    <!-- 食谱卡片1 -->
+    <div class="recipe-card">
+        <img src="jianzhi_jinxiong.png" alt="鸡胸肉沙拉" class="recipe-image">
+        <div class="recipe-details">
+            <h2>香煎鸡胸肉沙拉</h2>
+            <p>低卡高蛋白，健身达人必备！</p>
+
+            <h3>食材准备（2人份）：</h3>
+            <ul>
+                <li>鸡胸肉 200g</li>
+                <li>混合生菜 1把</li>
+                <li>番茄 1个</li>
+                <li>黄瓜 ½根</li>
+                <li>橄榄油 1茶匙</li>
+                <li>柠檬汁 2汤匙</li>
+                <li>黑胡椒粉 适量</li>
+            </ul>
+
+            <h3>烹饪步骤：</h3>
+            <ol>
+                <li>鸡胸肉用橄榄油、黑胡椒和柠檬汁腌制20分钟</li>
+                <li>平底锅煎鸡胸肉至两面金黄（每面约3分钟）</li>
+                <li>混合生菜、番茄、黄瓜切块摆盘</li>
+                <li>淋上剩余的柠檬汁即可食用</li>
+            </ol>
+
+            <div class="nutrition-info">
+                <h4>营养信息（每份）：</h4>
+                <p>热量：320kcal | 蛋白质：35g | 碳水：12g | 脂肪：10g</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 食谱卡片2 -->
+    <div class="recipe-card">
+        <img src="jianzhi_quanmai_wan.png" alt="全麦早餐碗" class="recipe-image">
+        <div class="recipe-details">
+            <h2>全麦奇亚籽早餐碗</h2>
+            <p>富含膳食纤维，饱腹感长达4小时！</p>
+
+            <h3>食材准备（1人份）：</h3>
+            <ul>
+                <li>全麦面包 2片</li>
+                <li>奇亚籽 1汤匙</li>
+                <li>希腊酸奶 100g</li>
+                <li>蓝莓 ½杯</li>
+                <li>蜂蜜 1茶匙</li>
+                <li>香草精 几滴</li>
+            </ul>
+
+            <h3>烹饪步骤：</h3>
+            <ol>
+                <li>奇亚籽与3汤匙水混合静置10分钟</li>
+                <li>全麦面包烤至微焦</li>
+                <li>碗中铺酸奶、奇亚籽混合物、蓝莓</li>
+                <li>淋上蜂蜜和香草精调味</li>
+            </ol>
+
+            <div class="nutrition-info">
+                <h4>营养信息（每份）：</h4>
+                <p>热量：420kcal | 蛋白质：18g | 碳水：45g | 脂肪：12g</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer style="text-align: center; margin-top: 2rem; color: #7f8c8d;">
+    <p>&copy; 2024 健康饮食计划 | 所有图片来自Unsplash</p>
+
+</footer>
+</body>
+</html>

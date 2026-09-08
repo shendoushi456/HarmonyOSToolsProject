@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>韩式辣白菜豆腐汤 | 暖心低卡料理</title>
+    <style>
+        body {
+            font-family: 'Noto Sans SC', 'Microsoft YaHei', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff9f9;
+        }
+        .recipe-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #ff6b81;
+        }
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        .recipe-meta {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            color: #7f8c8d;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+        .recipe-image {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            border-radius: 10px;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+            margin: 25px 0;
+        }
+        .recipe-card {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+            margin-bottom: 30px;
+        }
+        h2 {
+            color: #ff6b81;
+            margin-top: 0;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #ffd3d3;
+        }
+        ul, ol {
+            padding-left: 25px;
+        }
+        li {
+            margin-bottom: 10px;
+        }
+        ol li {
+            counter-increment: step-counter;
+            margin-bottom: 12px;
+            position: relative;
+        }
+        ol li::before {
+            content: counter(step-counter);
+            color: white;
+            background-color: #ff6b81;
+            font-weight: bold;
+            padding: 2px 8px;
+            border-radius: 50%;
+            position: absolute;
+            left: -30px;
+            top: -2px;
+        }
+        .nutrition-box {
+            background: linear-gradient(to right, #fff0f0, #ffecec);
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 5px solid #ff6b81;
+        }
+        .nutrition-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-top: 15px;
+        }
+        .nutrition-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px dashed #ffb8b8;
+        }
+        .tip-box {
+            background-color: #f8f9fa;
+            padding: 18px;
+            border-radius: 8px;
+            border-left: 5px solid #3498db;
+            margin-top: 25px;
+        }
+        .tip-box h3 {
+            color: #3498db;
+            margin-top: 0;
+        }
+        .ingredient-notes {
+            font-size: 0.9em;
+            color: #666;
+            margin-top: 5px;
+        }
+        @media (max-width: 600px) {
+            .recipe-meta {
+                flex-direction: column;
+                gap: 5px;
+                align-items: center;
+            }
+            .recipe-image {
+                height: 280px;
+            }
+            .nutrition-grid {
+                grid-template-columns: 1fr;
+            }
+            .recipe-card {
+                padding: 18px;
+            }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="recipe-header">
+    <h1>韩式辣白菜豆腐汤</h1>
+    <div class="recipe-meta">
+        <span>⏱️ 准备时间: 10分钟</span>
+        <span>🍲 烹饪时间: 20分钟</span>
+        <span>🔥 热量: 180kcal/碗</span>
+        <span>🥬 膳食纤维: 5g</span>
+    </div>
+    <p>酸辣开胃的低卡韩式料理，冬日暖身必备</p>
+</div>
+
+<img src="https://images.unsplash.com/photo-1603105037880-880cd4edfb0d?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
+     alt="韩式辣白菜豆腐汤"
+     class="recipe-image"
+     loading="lazy">
+
+<div class="recipe-card">
+    <h2>📝 食材 (2人份)</h2>
+    <ul>
+        <li>嫩豆腐 300g (切块)</li>
+        <li>韩式辣白菜 150g (带汤汁)</li>
+        <li>五花肉薄片 80g (可选，素食可省略)</li>
+        <li>金针菇 100g</li>
+        <li>洋葱 1/4个 (切丝)</li>
+        <li>大葱 1根 (切段)</li>
+        <li>蒜末 2瓣</li>
+        <li>韩式辣椒酱 1汤匙</li>
+        <li>韩式辣椒粉 1茶匙 (可选)</li>
+        <li>生抽 1茶匙</li>
+        <li>糖 1/2茶匙</li>
+        <li>芝麻油 1茶匙</li>
+        <li>水或高汤 500ml</li>
+        <li>鸡蛋 1个 (可选)</li>
+    </ul>
+    <p class="ingredient-notes">* 素食版可省略五花肉，改用香菇增加鲜味</p>
+</div>
+
+<div class="recipe-card">
+    <h2>👩‍🍳 制作步骤</h2>
+    <ol>
+        <li><strong>准备食材：</strong>豆腐切2cm方块，辣白菜剪成适口大小，金针菇去根洗净，洋葱切丝，大葱斜切段。</li>
+        <li><strong>炒香底料：</strong>锅中加芝麻油，中火炒香蒜末和洋葱至透明，加入五花肉片(如使用)炒至变色。</li>
+        <li><strong>加入辣白菜：</strong>放入辣白菜翻炒2分钟，出香味后加入辣椒酱和辣椒粉炒匀。</li>
+        <li><strong>炖煮：</strong>倒入水或高汤，加入生抽和糖调味，大火煮沸后转中小火煮5分钟。</li>
+        <li><strong>加入配菜：</strong>放入豆腐块和金针菇，轻轻推匀，再煮5分钟让味道融合。</li>
+        <li><strong>最后调味：</strong>尝味调整咸淡，加入大葱段煮1分钟关火。</li>
+        <li><strong>可选步骤：</strong>上桌前可在中心打入一个鸡蛋，盖上盖子用余温焖至蛋白凝固。</li>
+    </ol>
+</div>
+
+<div class="nutrition-box">
+    <h2>📊 营养信息 (每碗，含五花肉)</h2>
+    <div class="nutrition-grid">
+        <div class="nutrition-item">
+            <span>热量</span>
+            <span>180kcal</span>
+        </div>
+        <div class="nutrition-item">
+            <span>蛋白质</span>
+            <span>12g</span>
+        </div>
+        <div class="nutrition-item">
+            <span>脂肪</span>
+            <span>9g</span>
+        </div>
+        <div class="nutrition-item">
+            <span>碳水化合物</span>
+            <span>15g</span>
+        </div>
+        <div class="nutrition-item">
+            <span>膳食纤维</span>
+            <span>5g</span>
+        </div>
+        <div class="nutrition-item">
+            <span>钠</span>
+            <span>800mg</span>
+        </div>
+    </div>
+</div>
+
+<div class="tip-box">
+    <h3>💡 专业小贴士</h3>
+    <ul>
+        <li><strong>辣白菜选择：</strong>使用发酵2-3周的辣白菜，酸味更足味道更浓郁</li>
+        <li><strong>减辣版：</strong>减少辣椒酱和辣椒粉用量，或用1/2个苹果泥增加甜味</li>
+        <li><strong>素食高汤：</strong>用干海带和干香菇泡水制作素高汤，鲜味十足</li>
+        <li><strong>豆腐处理：</strong>嫩豆腐提前用盐水浸泡10分钟可去豆腥且不易碎</li>
+        <li><strong>升级版：</strong>加入少许海鲜(如蛤蜊或虾仁)提升鲜味层次</li>
+        <li><strong>保存建议：</strong>冷藏可保存2天，但豆腐会吸收汤汁变咸，最好现做现吃</li>
+        <li><strong>传统吃法：</strong>搭配一碗杂粮饭和韩式泡菜，就是经典的韩式套餐</li>
+    </ul>
+</div>
+</body>
+</html>

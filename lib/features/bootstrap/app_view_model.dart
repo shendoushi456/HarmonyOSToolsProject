@@ -35,6 +35,14 @@ class AppViewModel extends ChangeNotifier {
   bool get isOnboardingDone => _isOnboardingDone;
   Set<int> get favoriteIds => Set.unmodifiable(_favoriteIds);
 
+  /// 设置页"个性化推荐"开关（对应 Android myPreferences.isSetting）。
+  bool get isSetting => _preferencesStore.isSetting;
+
+  Future<void> setSetting(bool value) async {
+    await _preferencesStore.saveIsSetting(value);
+    notifyListeners();
+  }
+
   Future<void> initialize() async {
     if (_isLoading || _catalog != null) return;
     _isLoading = true;

@@ -29,7 +29,7 @@ class PrivacyConsentPage extends StatelessWidget {
                     const Icon(Icons.privacy_tip_outlined,
                         color: RecipeColors.primary, size: 48),
                     const SizedBox(height: 12),
-                    const Text('食谱',
+                    const Text('乐熊菜谱',
                         style: TextStyle(
                             fontSize: 20, fontWeight: FontWeight.bold)),
                     const SizedBox(height: 26),

@@ -51,9 +51,9 @@ class _LaunchPage extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(Icons.restaurant_menu, color: Color(0xFFE36864), size: 72),
+              Image(image: AssetImage('assets/images/recipes_tools/ic_logo.png'), width: 72, height: 72),
               SizedBox(height: 24),
-              Text('食谱',
+              Text('乐熊菜谱',
                   style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
               SizedBox(height: 20),
               CircularProgressIndicator(),

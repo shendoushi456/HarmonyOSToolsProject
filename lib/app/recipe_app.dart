@@ -12,7 +12,7 @@ class RecipeApp extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final viewModel = ref.read(appViewModelProvider);
     return MaterialApp(
-      title: '食谱',
+      title: '乐熊菜谱',
       debugShowCheckedModeBanner: false,
       theme: buildRecipeTheme(),
       home: AppShellPage(viewModel: viewModel),

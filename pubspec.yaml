@@ -64,6 +64,8 @@ flutter:
   generate: true
   assets:
     - assets/recipes/database.json
+    - assets/recipes/jianzhi/
+    - assets/images/recipes_tools/
     - assets/fonts/didact.otf
   fonts:
     - family: Didact
