@@ -7,8 +7,51 @@ import {
   MethodResult,
 } from '@ohos/flutter_ohos';
 import reminderAgentManager from '@ohos.reminderAgentManager';
+import notificationManager from '@ohos.notificationManager';
+import notification from '@ohos.notification';
+import common from '@ohos.app.ability.common';
+import Want from '@ohos.app.ability.Want';
 
 const CHANNEL = 'com.p.a_b/toolbox_reminder';
+const BUNDLE_NAME = 'hm.rsykj.tygjb';
+const ENTRY_ABILITY = 'EntryAbility';
+const MIN_ONE_SHOT_DELAY_MS = 2 * 60 * 1000;
+
+interface ReminderErrorDetails {
+  stage: string;
+  code: number | null;
+}
+
+interface NativeReminderError extends Error {
+  code?: number;
+}
+
+class ReminderOperationError extends Error {
+  readonly stage: string;
+  readonly code: number | null;
+
+  constructor(stage: string, cause: NativeReminderError) {
+    super(cause.message);
+    this.stage = stage;
+    this.code = typeof cause.code === 'number' ? cause.code : null;
+  }
+}
+
+interface ReminderLaunchPayload {
+  launchSource: string;
+  reminderType: string;
+  itemId: string;
+  targetTab: number;
+  timePoint?: string;
+}
+
+interface ReminderWantParameters {
+  launchSource: string;
+  reminderType: string;
+  itemId: string;
+  targetTab: number;
+  timePoint?: string;
+}
 
 /**
  * 将 Flutter 的领域提醒转换为鸿蒙 ReminderAgent。
@@ -16,6 +59,12 @@ const CHANNEL = 'com.p.a_b/toolbox_reminder';
  */
 export default class TodoReminderPlugin implements FlutterPlugin {
   private methodChannel: MethodChannel | null = null;
+  private uiContext: common.UIAbilityContext | null = null;
+  private pendingReminderLaunch: ReminderLaunchPayload | null = null;
+
+  setUiContext(context: common.UIAbilityContext): void {
+    this.uiContext = context;
+  }
 
   getUniqueClassName(): string {
     return 'TodoReminderPlugin';
@@ -37,22 +86,44 @@ export default class TodoReminderPlugin implements FlutterPlugin {
         case 'scheduleTodo':
           this.scheduleTodo(call)
             .then(() => result.success(null))
-            .catch((error: Error) => result.error('REMINDER_ERROR', error.message, null));
+            .catch((error: Error) => this.reportReminderError(result, 'scheduleTodo', error));
+          return;
+        case 'isNotificationEnabled':
+          notificationManager.isNotificationEnabled()
+            .then((enabled: boolean) => result.success(enabled))
+            .catch((error: Error) => this.reportReminderError(result, 'checkNotification', error));
+          return;
+        case 'requestEnableNotification':
+          this.requestEnableNotification()
+            .then(() => result.success(null))
+            .catch((error: Error) => this.reportReminderError(result, 'requestNotification', error));
+          return;
+        case 'openNotificationSettings':
+          this.openNotificationSettings()
+            .then(() => result.success(null))
+            .catch((error: Error) => this.reportReminderError(result, 'openNotificationSettings', error));
+          return;
+        case 'getInitialReminderLaunch':
+          result.success(this.takePendingReminderLaunch());
+          return;
+        case 'consumeReminderLaunch':
+          this.pendingReminderLaunch = null;
+          result.success(null);
           return;
         case 'cancelTodo':
           this.cancelByGroup(this.todoGroup(this.idFrom(call)))
             .then(() => result.success(null))
-            .catch((error: Error) => result.error('REMINDER_ERROR', error.message, null));
+            .catch((error: Error) => this.reportReminderError(result, 'cancelExisting', error));
           return;
         case 'scheduleHabit':
           this.scheduleHabit(call)
             .then(() => result.success(null))
-            .catch((error: Error) => result.error('REMINDER_ERROR', error.message, null));
+            .catch((error: Error) => this.reportReminderError(result, 'scheduleHabit', error));
           return;
         case 'cancelHabit':
           this.cancelByGroup(this.habitGroup(this.idFrom(call)))
             .then(() => result.success(null))
-            .catch((error: Error) => result.error('REMINDER_ERROR', error.message, null));
+            .catch((error: Error) => this.reportReminderError(result, 'cancelExisting', error));
           return;
         case 'scheduleMedication':
           this.scheduleMedication(call)
@@ -83,51 +154,55 @@ export default class TodoReminderPlugin implements FlutterPlugin {
   private async scheduleTodo(call: MethodCall): Promise<void> {
     const id = this.idFrom(call);
     const groupId = this.todoGroup(id);
-    await this.cancelByGroup(groupId);
 
     const reminderAt = Number(call.argument('reminderAt'));
-    if (!Number.isFinite(reminderAt)) return;
+    if (!Number.isFinite(reminderAt)) {
+      throw new Error('提醒时间无效');
+    }
     const date = new Date(reminderAt);
     const repeatType = String(call.argument('repeatType'));
     const content = String(call.argument('content'));
 
     if (repeatType === 'none') {
-      if (reminderAt <= Date.now()) return;
+      // if (reminderAt < Date.now() + MIN_ONE_SHOT_DELAY_MS) {
+      //   throw new Error('提醒时间已过或不足，请至少设置为当前时间两分钟后');
+      // }
+      await this.runReminderStage('checkNotification', () => this.requireNotificationEnabled());
+      await this.runReminderStage('cancelExisting', () => this.cancelByGroup(groupId));
       const request: reminderAgentManager.ReminderRequestCalendar = {
         reminderType: reminderAgentManager.ReminderType.REMINDER_TYPE_CALENDAR,
         groupId: groupId,
         title: '待办提醒',
         content: content,
+        wantAgent: this.reminderWantAgent('todo', id),
+        slotType: notification.SlotType.SERVICE_INFORMATION,
         tapDismissed: true,
-        ringDuration: 30,
-        snoozeTimes: 1,
-        timeInterval: 5,
         dateTime: this.localDateTime(date),
       };
-      await reminderAgentManager.publishReminder(request);
+      await this.publishReminder(request);
       return;
     }
 
+    await this.runReminderStage('checkNotification', () => this.requireNotificationEnabled());
+    await this.runReminderStage('cancelExisting', () => this.cancelByGroup(groupId));
     const request: reminderAgentManager.ReminderRequestAlarm = {
       reminderType: reminderAgentManager.ReminderType.REMINDER_TYPE_ALARM,
       groupId: groupId,
       title: '待办提醒',
       content: content,
+      wantAgent: this.reminderWantAgent('todo', id),
+      slotType: notification.SlotType.SERVICE_INFORMATION,
       tapDismissed: true,
       hour: date.getHours(),
       minute: date.getMinutes(),
       daysOfWeek: this.todoDays(repeatType),
-      ringDuration: 30,
-      snoozeTimes: 1,
-      timeInterval: 5,
     };
-    await reminderAgentManager.publishReminder(request);
+    await this.publishReminder(request);
   }
 
   private async scheduleHabit(call: MethodCall): Promise<void> {
     const id = this.idFrom(call);
     const groupId = this.habitGroup(id);
-    await this.cancelByGroup(groupId);
 
     const startDate = Number(call.argument('startDate'));
     const endDateValue: ESObject = call.argument('endDate');
@@ -139,6 +214,8 @@ export default class TodoReminderPlugin implements FlutterPlugin {
     );
     const times: Array<ESObject> = call.argument('clockInTimes') as Array<ESObject>;
     const name = String(call.argument('name'));
+    await this.runReminderStage('checkNotification', () => this.requireNotificationEnabled());
+    await this.runReminderStage('cancelExisting', () => this.cancelByGroup(groupId));
     for (let index: number = 0; index < times.length; index++) {
       const rawTime: ESObject = times[index];
       const time = String(rawTime);
@@ -153,17 +230,16 @@ export default class TodoReminderPlugin implements FlutterPlugin {
         groupId: groupId,
         title: '打卡提醒',
         content: `${name}，${time} 打卡`,
+        wantAgent: this.reminderWantAgent('habit', id, time),
+        slotType: notification.SlotType.SERVICE_INFORMATION,
         tapDismissed: true,
-        ringDuration: 30,
-        snoozeTimes: 1,
-        timeInterval: 5,
         dateTime: this.localDateTime(date),
         daysOfWeek: daysOfWeek,
       };
       if (endDate != null) {
         request.endDateTime = this.localDateTime(new Date(this.endOfDay(endDate)));
       }
-      await reminderAgentManager.publishReminder(request);
+      await this.publishReminder(request);
     }
   }
 
@@ -285,6 +361,121 @@ export default class TodoReminderPlugin implements FlutterPlugin {
         await reminderAgentManager.cancelReminder(reminder.reminderId);
       }
     }
+  }
+
+  private async publishReminder(
+    request: reminderAgentManager.ReminderRequest,
+  ): Promise<void> {
+    await this.runReminderStage('publishReminder', async () => {
+      await reminderAgentManager.publishReminder(request);
+    });
+  }
+
+  private async runReminderStage(
+    stage: string,
+    operation: () => Promise<void>,
+  ): Promise<void> {
+    try {
+      await operation();
+    } catch (error) {
+      if (error instanceof ReminderOperationError) {
+        throw error;
+      }
+      throw new ReminderOperationError(stage, error as NativeReminderError);
+    }
+  }
+
+  private reportReminderError(
+    result: MethodResult,
+    fallbackStage: string,
+    error: Error,
+  ): void {
+    const operationError = error as ReminderOperationError;
+    const nativeError = error as NativeReminderError;
+    const details: ReminderErrorDetails = {
+      stage: operationError.stage ?? fallbackStage,
+      code: operationError.code ?? (typeof nativeError.code === 'number' ? nativeError.code : null),
+    };
+    result.error('REMINDER_ERROR', error.message, details);
+  }
+
+  /**
+   * 仅保留由 ReminderAgent 传入的启动参数。普通桌面图标启动不会产生该参数。
+   * Flutter 冷启动后读取该缓存；热启动则额外收到 onReminderLaunch 回调。
+   */
+  handleReminderWant(want: Want): void {
+    const parameters = want.parameters;
+    if (parameters == null || String(parameters['launchSource'] ?? '') !== 'reminder') {
+      return;
+    }
+    const itemId = String(parameters['itemId'] ?? '');
+    const reminderType = String(parameters['reminderType'] ?? '');
+    if (itemId.length === 0 || (reminderType !== 'todo' && reminderType !== 'habit')) {
+      return;
+    }
+    const payload: ReminderLaunchPayload = {
+      launchSource: 'reminder',
+      reminderType: reminderType,
+      itemId: itemId,
+      targetTab: Number(parameters['targetTab'] ?? 0),
+    };
+    const timePoint = parameters['timePoint'];
+    if (timePoint != null) {
+      payload.timePoint = String(timePoint);
+    }
+    this.pendingReminderLaunch = payload;
+    this.methodChannel?.invokeMethod('onReminderLaunch', payload);
+  }
+
+  private takePendingReminderLaunch(): ReminderLaunchPayload | null {
+    const payload = this.pendingReminderLaunch;
+    this.pendingReminderLaunch = null;
+    return payload;
+  }
+
+  private reminderWantAgent(
+    reminderType: string,
+    itemId: number,
+    timePoint?: string,
+  ): reminderAgentManager.WantAgent {
+    const parameters: ReminderWantParameters = {
+      launchSource: 'reminder',
+      reminderType: reminderType,
+      itemId: `${itemId}`,
+      targetTab: 0,
+    };
+    if (timePoint != null) {
+      parameters.timePoint = timePoint;
+    }
+    return {
+      pkgName: BUNDLE_NAME,
+      abilityName: ENTRY_ABILITY,
+      parameters: parameters as Object as Record<string, Object>,
+    };
+  }
+
+  private async requireNotificationEnabled(): Promise<void> {
+    if (!await notificationManager.isNotificationEnabled()) {
+      throw new Error('系统通知未开启，请开启通知后重试');
+    }
+  }
+
+  private async requestEnableNotification(): Promise<void> {
+    await notificationManager.requestEnableNotification(this.requireUiContext());
+    if (!await notificationManager.isNotificationEnabled()) {
+      throw new Error('系统通知仍未开启，请在系统设置中允许通知');
+    }
+  }
+
+  private async openNotificationSettings(): Promise<void> {
+    await notificationManager.openNotificationSettings(this.requireUiContext());
+  }
+
+  private requireUiContext(): common.UIAbilityContext {
+    if (this.uiContext == null) {
+      throw new Error('通知设置页面暂不可用');
+    }
+    return this.uiContext;
   }
 
   private idFrom(call: MethodCall): number {

@@ -73,6 +73,23 @@ class OhosReminderScheduler implements ReminderScheduler {
       _channel.invokeMethod<void>(method, arguments);
 }
 
+/// 与系统通知开关交互的最小边界。提醒业务仍由 [ReminderScheduler] 负责。
+class ReminderNotificationSettings {
+  ReminderNotificationSettings._();
+
+  static const _channel = MethodChannel('com.p.a_b/toolbox_reminder');
+
+  static Future<bool> isEnabled() async =>
+      await _channel.invokeMethod<bool>('isNotificationEnabled') ?? false;
+
+  /// 弹出鸿蒙系统的通知授权提示；用户拒绝时由调用方保留已保存的数据。
+  static Future<void> requestEnable() =>
+      _channel.invokeMethod<void>('requestEnableNotification');
+
+  static Future<void> openSettings() =>
+      _channel.invokeMethod<void>('openNotificationSettings');
+}
+
 class NoopReminderScheduler implements ReminderScheduler {
   const NoopReminderScheduler();
 

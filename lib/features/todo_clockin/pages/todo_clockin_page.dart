@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter/services.dart';
 
 import '../models/todo_models.dart';
+import '../services/reminder_scheduler.dart';
 import '../viewmodels/todo_clockin_state.dart';
 import '../viewmodels/todo_clockin_view_model.dart';
 
@@ -96,12 +98,20 @@ class _TodoClockInPageState extends ConsumerState<TodoClockInPage> {
       builder: (_) => _TodoEditorSheet(original: original),
     );
     if (result == null || !mounted) return;
-    await ref.read(todoClockInViewModelProvider.notifier).saveTodo(
-          content: result.content,
-          reminderAt: result.reminderAt,
-          repeatType: result.repeatType,
-          original: original,
-        );
+    if (result.reminderAt != null) {
+      await _requestNotificationIfNeeded();
+    }
+    try {
+      await ref.read(todoClockInViewModelProvider.notifier).saveTodo(
+            content: result.content,
+            reminderAt: result.reminderAt,
+            repeatType: result.repeatType,
+            original: original,
+          );
+    } on PlatformException catch (error) {
+      if (!context.mounted) return;
+      await _showReminderSaveFailure(context, _reminderFailureMessage(error));
+    }
   }
 
   Future<void> _showHabitEditor(BuildContext context) async {
@@ -112,14 +122,107 @@ class _TodoClockInPageState extends ConsumerState<TodoClockInPage> {
       builder: (_) => const _HabitEditorSheet(),
     );
     if (result == null || !mounted) return;
-    await ref.read(todoClockInViewModelProvider.notifier).addHabit(
-          name: result.name,
-          scheduleType: result.scheduleType,
-          clockInTimes: result.times,
-          startDate: result.startDate,
-          endDate: result.endDate,
-          selectedWeekdays: result.selectedWeekdays,
+    await _requestNotificationIfNeeded();
+    try {
+      await ref.read(todoClockInViewModelProvider.notifier).addHabit(
+            name: result.name,
+            scheduleType: result.scheduleType,
+            clockInTimes: result.times,
+            startDate: result.startDate,
+            endDate: result.endDate,
+            selectedWeekdays: result.selectedWeekdays,
+          );
+    } on PlatformException catch (error) {
+      if (!context.mounted) return;
+      await _showReminderSaveFailure(context, _reminderFailureMessage(error),
+          savedSubject: '打卡');
+    }
+  }
+
+  /// 授权弹窗失败不能阻止业务数据保存；真正发布时原生层会再次检查通知状态。
+  Future<void> _requestNotificationIfNeeded() async {
+    try {
+      if (!await ReminderNotificationSettings.isEnabled()) {
+        await ReminderNotificationSettings.requestEnable();
+      }
+    } on PlatformException {
+      // 继续保存。随后由发布 ReminderAgent 的错误提示引导用户打开系统设置。
+    }
+  }
+
+  Future<void> _showReminderSaveFailure(BuildContext context, String? details,
+      {String savedSubject = '待办'}) async {
+    final openSettings = await showDialog<bool>(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        title: const Text('系统提醒设置失败'),
+        content: Text(
+          '$savedSubject已保存，但系统提醒设置失败。${details == null || details.isEmpty ? '请检查系统通知是否开启。' : details}',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(dialogContext, false),
+            child: const Text('知道了'),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.pop(dialogContext, true),
+            child: const Text('前往通知设置'),
+          ),
+        ],
+      ),
+    );
+    if (openSettings == true) {
+      try {
+        await ReminderNotificationSettings.openSettings();
+      } on PlatformException catch (error) {
+        if (!context.mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(error.message ?? '无法打开系统通知设置')),
         );
+      }
+    }
+  }
+
+  String _reminderFailureMessage(PlatformException error) {
+    final rawDetails = error.details;
+    final details = rawDetails is Map ? rawDetails : const <Object?, Object?>{};
+    final rawCode = details['code'];
+    final code = rawCode is int ? rawCode : int.tryParse('$rawCode');
+    final stage = '${details['stage'] ?? ''}';
+
+    switch (code) {
+      case 1700001:
+        return '系统通知未开启，请开启通知后重试。';
+      case 1700002:
+        return '系统可用提醒数量已达上限，请删除不再需要的系统提醒后重试。';
+      case 201:
+        return '系统拒绝访问已设置的提醒，请重新安装应用或检查提醒权限。';
+      case 401:
+        return '系统未接受提醒参数（${_reminderStageLabel(stage)}），请修改提醒时间后重试。';
+    }
+
+    if (stage == 'cancelExisting') {
+      return '无法清理旧的系统提醒，请稍后重试。';
+    }
+    if (stage == 'checkNotification' || stage == 'requestNotification') {
+      return '无法确认系统通知状态，请检查通知设置后重试。';
+    }
+    return error.message?.isNotEmpty == true
+        ? error.message!
+        : '请检查系统通知是否开启后重试。';
+  }
+
+  String _reminderStageLabel(String stage) {
+    switch (stage) {
+      case 'publishReminder':
+        return '发布提醒';
+      case 'cancelExisting':
+        return '清理旧提醒';
+      case 'checkNotification':
+        return '检查通知状态';
+      default:
+        return '设置提醒';
+    }
   }
 
   Future<void> _confirmDeleteTodo(BuildContext context, TodoItem item) async {
@@ -641,19 +744,30 @@ class _TodoEditorSheetState extends State<_TodoEditorSheet> {
                         child: Text('完成')))),
           ]));
   Future<void> _pickReminder() async {
+    final minimumReminderAt = DateTime.now().add(const Duration(minutes: 2));
+    final initialReminderAt =
+        _reminderAt != null && _reminderAt!.isAfter(minimumReminderAt)
+            ? _reminderAt!
+            : DateTime.now().add(const Duration(minutes: 3));
     final date = await showDatePicker(
         context: context,
-        initialDate: _reminderAt ?? DateTime.now(),
-        firstDate: DateTime(2020),
+        initialDate: initialReminderAt,
+        firstDate: DateTime.now(),
         lastDate: DateTime(2100));
     if (date == null || !mounted) return;
     final time = await showTimePicker(
         context: context,
-        initialTime: TimeOfDay.fromDateTime(_reminderAt ?? DateTime.now()));
-    if (time != null) {
-      setState(() => _reminderAt =
-          DateTime(date.year, date.month, date.day, time.hour, time.minute));
-    }
+        initialTime: TimeOfDay.fromDateTime(initialReminderAt));
+    if (time == null || !mounted) return;
+    final selected =
+        DateTime(date.year, date.month, date.day, time.hour, time.minute);
+    // if (selected.isBefore(DateTime.now().add(const Duration(minutes: 2)))) {
+    //   ScaffoldMessenger.of(context).showSnackBar(
+    //     const SnackBar(content: Text('提醒时间请至少设置为当前时间两分钟后')),
+    //   );
+    //   return;
+    // }
+    setState(() => _reminderAt = selected);
   }
 }
 

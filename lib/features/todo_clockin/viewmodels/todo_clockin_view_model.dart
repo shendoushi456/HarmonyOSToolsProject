@@ -40,7 +40,10 @@ class TodoClockInViewModel extends Notifier<TodoClockInState> {
       habits: data.habits,
       records: data.records,
     );
-    await _scheduler.restore(todos: todos, habits: data.habits);
+    // 已保存的历史数据在通知关闭时仍可正常进入应用；同步失败不应阻塞页面。
+    try {
+      await _scheduler.restore(todos: todos, habits: data.habits);
+    } catch (_) {}
   }
 
   void selectTab(TodoClockInTab tab) {
@@ -97,9 +100,17 @@ class TodoClockInViewModel extends Notifier<TodoClockInState> {
         : state.todos.map((item) => item.id == todo.id ? todo : item).toList();
     state = state.copyWith(todos: _refreshTodoStatuses(todos));
     await _persist();
-    await _scheduler.cancelTodo(todo.id);
-    if (todo.status == TodoStatus.pending && todo.reminderAt != null) {
-      await _scheduler.scheduleTodo(todo);
+    try {
+      if (todo.status == TodoStatus.pending && todo.reminderAt != null) {
+        // scheduleTodo 会在原生侧清理同组旧提醒，再发布新提醒。
+        await _scheduler.scheduleTodo(todo);
+      } else if (original?.reminderAt != null) {
+        // 只有删除已有提醒时才需要单独清理。
+        await _scheduler.cancelTodo(todo.id);
+      }
+    } on Exception {
+      // 数据已保存。把原生提醒失败交给 UI 提示，不能吞掉 PlatformException。
+      rethrow;
     }
   }
 
@@ -146,7 +157,12 @@ class TodoClockInViewModel extends Notifier<TodoClockInState> {
     );
     state = state.copyWith(habits: [habit, ...state.habits]);
     await _persist();
-    await _scheduler.scheduleHabit(habit);
+    try {
+      await _scheduler.scheduleHabit(habit);
+    } on Exception {
+      // 数据已保存。把原生提醒失败交给 UI 提示，不能吞掉 PlatformException。
+      rethrow;
+    }
   }
 
   Future<void> clockIn(HabitItem habit, String timePoint) async {

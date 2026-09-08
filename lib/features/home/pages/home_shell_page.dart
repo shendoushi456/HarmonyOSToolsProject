@@ -38,7 +38,7 @@ class HomeShellPage extends ConsumerWidget {
   Widget _buildBottomNav(
       BuildContext context, WidgetRef ref, int currentIndex) {
     return Container(
-      height: 62,
+      height: 75,
       decoration: const BoxDecoration(
         color: Color(0xFFF9FDFF),
         boxShadow: [
@@ -51,7 +51,7 @@ class HomeShellPage extends ConsumerWidget {
       ),
       child: SafeArea(
         top: false,
-        bottom: false,
+        bottom: true,
         child: Row(
           children: [
             _buildNavItem(
