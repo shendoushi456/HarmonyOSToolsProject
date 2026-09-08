@@ -84,9 +84,11 @@ export default class TodoReminderPlugin implements FlutterPlugin {
     onMethodCall: (call: MethodCall, result: MethodResult): void => {
       switch (call.method) {
         case 'scheduleTodo':
-          this.scheduleTodo(call)
-            .then(() => result.success(null))
-            .catch((error: Error) => this.reportReminderError(result, 'scheduleTodo', error));
+          // 暂停 ReminderAgent 系统级后台提醒；前台 Flutter 弹框不受影响。
+          // this.scheduleTodo(call)
+          //   .then(() => result.success(null))
+          //   .catch((error: Error) => this.reportReminderError(result, 'scheduleTodo', error));
+          result.success(null);
           return;
         case 'isNotificationEnabled':
           notificationManager.isNotificationEnabled()
@@ -111,39 +113,32 @@ export default class TodoReminderPlugin implements FlutterPlugin {
           result.success(null);
           return;
         case 'cancelTodo':
-          this.cancelByGroup(this.todoGroup(this.idFrom(call)))
-            .then(() => result.success(null))
-            .catch((error: Error) => this.reportReminderError(result, 'cancelExisting', error));
+          // this.cancelByGroup(this.todoGroup(this.idFrom(call)))
+          result.success(null);
           return;
         case 'scheduleHabit':
-          this.scheduleHabit(call)
-            .then(() => result.success(null))
-            .catch((error: Error) => this.reportReminderError(result, 'scheduleHabit', error));
+          // this.scheduleHabit(call)
+          result.success(null);
           return;
         case 'cancelHabit':
-          this.cancelByGroup(this.habitGroup(this.idFrom(call)))
-            .then(() => result.success(null))
-            .catch((error: Error) => this.reportReminderError(result, 'cancelExisting', error));
+          // this.cancelByGroup(this.habitGroup(this.idFrom(call)))
+          result.success(null);
           return;
         case 'scheduleMedication':
-          this.scheduleMedication(call)
-            .then(() => result.success(null))
-            .catch((error: Error) => result.error('REMINDER_ERROR', error.message, null));
+          // this.scheduleMedication(call)
+          result.success(null);
           return;
         case 'cancelMedication':
-          this.cancelByGroup(this.medicationGroup(this.idFrom(call)))
-            .then(() => result.success(null))
-            .catch((error: Error) => result.error('REMINDER_ERROR', error.message, null));
+          // this.cancelByGroup(this.medicationGroup(this.idFrom(call)))
+          result.success(null);
           return;
         case 'scheduleExpiry':
-          this.scheduleExpiry(call)
-            .then(() => result.success(null))
-            .catch((error: Error) => result.error('REMINDER_ERROR', error.message, null));
+          // this.scheduleExpiry(call)
+          result.success(null);
           return;
         case 'cancelExpiry':
-          this.cancelByGroup(this.expiryGroup(this.idFrom(call)))
-            .then(() => result.success(null))
-            .catch((error: Error) => result.error('REMINDER_ERROR', error.message, null));
+          // this.cancelByGroup(this.expiryGroup(this.idFrom(call)))
+          result.success(null);
           return;
         default:
           result.notImplemented();

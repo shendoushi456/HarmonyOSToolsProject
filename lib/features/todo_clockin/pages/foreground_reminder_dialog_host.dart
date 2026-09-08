@@ -23,6 +23,7 @@ class _ForegroundReminderDialogHostState
     extends ConsumerState<ForegroundReminderDialogHost>
     with WidgetsBindingObserver {
   Timer? _timer;
+  Timer? _minuteTimer;
   bool _isForeground = true;
   bool _showing = false;
 
@@ -30,7 +31,8 @@ class _ForegroundReminderDialogHostState
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
-    _timer = Timer.periodic(const Duration(seconds: 10), (_) => _evaluate());
+    _timer = Timer.periodic(const Duration(seconds: 3), (_) => _evaluate());
+    _scheduleMinuteScan();
     WidgetsBinding.instance.addPostFrameCallback((_) => _evaluate());
   }
 
@@ -38,7 +40,26 @@ class _ForegroundReminderDialogHostState
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
     _timer?.cancel();
+    _minuteTimer?.cancel();
     super.dispose();
+  }
+
+  /// 对齐本地时间的整分钟，确保在分钟切换点额外检查一次。
+  void _scheduleMinuteScan() {
+    final now = DateTime.now();
+    final nextMinute = DateTime(
+      now.year,
+      now.month,
+      now.day,
+      now.hour,
+      now.minute + 1,
+    );
+    _minuteTimer = Timer(nextMinute.difference(now), () {
+      _evaluate();
+      if (mounted) {
+        _scheduleMinuteScan();
+      }
+    });
   }
 
   @override
