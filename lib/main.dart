@@ -19,7 +19,7 @@ class HarmonyOSFlutterApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
-      title: '文本翻译',
+      title: '扫莱扫',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         useMaterial3: true,

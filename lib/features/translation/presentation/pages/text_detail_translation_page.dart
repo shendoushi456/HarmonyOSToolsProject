@@ -64,32 +64,37 @@ class TextDetailTranslationPage extends StatelessWidget {
       body: Column(
         children: [
           _buildDualTopBar(context),
-          SizedBox(
-            height: 30,
-            child: Container(color: AppColors.pageBackground),
-          ),
-          _buildTranslationSection(
-            text: sourceText,
-            onCopy: () => _copyText(context, sourceText),
-          ),
-          const SizedBox(height: 30),
-          _buildTranslationSection(
-            text: translatedText,
-            onCopy: () => _copyText(context, translatedText),
-          ),
-          const Spacer(),
-          // 新建翻译按钮
-          Padding(
-            padding: const EdgeInsets.only(bottom: 91),
-            child: GestureDetector(
-              onTap: () => context.pop(),
-              child: const Text(
-                '新建翻译',
-                style: TextStyle(
-                  fontSize: 16,
-                  color: AppColors.primaryBlue,
-                  fontWeight: FontWeight.w500,
-                ),
+          Expanded(
+            // 翻译结果可能很长，使用滚动容器确保原文和译文都可完整查看。
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.only(top: 30),
+              child: Column(
+                children: [
+                  _buildTranslationSection(
+                    text: sourceText,
+                    onCopy: () => _copyText(context, sourceText),
+                  ),
+                  const SizedBox(height: 30),
+                  _buildTranslationSection(
+                    text: translatedText,
+                    onCopy: () => _copyText(context, translatedText),
+                  ),
+                  // 新建翻译按钮
+                  Padding(
+                    padding: const EdgeInsets.only(top: 40, bottom: 91),
+                    child: GestureDetector(
+                      onTap: () => context.pop(),
+                      child: const Text(
+                        '新建翻译',
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: AppColors.primaryBlue,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
           ),
