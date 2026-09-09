@@ -101,6 +101,55 @@ class AppAssets {
   static const String toolboxWeatherArrowRight =
       '$_toolboxWeatherBase/arrow_right_ic.png';
 
+  // ====== zxxtq 天气首页资源（对齐 Android WeatherChildFragment Compose UI）======
+  /// 顶部 Hero 城市剪影（对齐 Android zxxtq_weather_cityscape，142dp 高）
+  static const String zxxtqWeatherCityscape =
+      '$_toolboxWeatherBase/zxxtq_weather_cityscape.png';
+
+  /// 顶部 Hero 云图（对齐 Android zxxtq_weather_hero_cloud，180x132dp）
+  static const String zxxtqWeatherHeroCloud =
+      '$_toolboxWeatherBase/zxxtq_weather_hero_cloud.png';
+
+  /// 空气胶囊叶子图标（对齐 Android zxxtq_air_leaf，14dp）
+  static const String zxxtqAirLeaf = '$_toolboxWeatherBase/zxxtq_air_leaf.png';
+
+  /// 顶部定位图标（对齐 Android ic_airbox_loc，17dp）
+  static const String zxxtqLocation = '$_toolboxWeatherBase/ic_airbox_loc.png';
+
+  /// 当前天气卡 - 体感温度图标（对齐 Android zxxtq_metric_temperature）
+  static const String zxxtqMetricTemperature =
+      '$_toolboxWeatherBase/zxxtq_metric_temperature.png';
+
+  /// 当前天气卡 - 湿度图标（对齐 Android zxxtq_metric_humidity）
+  static const String zxxtqMetricHumidity =
+      '$_toolboxWeatherBase/zxxtq_metric_humidity.png';
+
+  /// 当前天气卡 - 风速图标（对齐 Android zxxtq_metric_wind）
+  static const String zxxtqMetricWind =
+      '$_toolboxWeatherBase/zxxtq_metric_wind.png';
+
+  /// 当前天气卡 - 舒适度图标（对齐 Android zxxtq_metric_comfort）
+  static const String zxxtqMetricComfort =
+      '$_toolboxWeatherBase/zxxtq_metric_comfort.png';
+
+  /// 生活建议 - 穿衣图标（对齐 Android zxxtq_life_clothes）
+  static const String zxxtqLifeClothes =
+      '$_toolboxWeatherBase/zxxtq_life_clothes.png';
+
+  /// 生活建议 - 紫外线图标（对齐 Android zxxtq_life_uv）
+  static const String zxxtqLifeUv = '$_toolboxWeatherBase/zxxtq_life_uv.png';
+
+  /// 生活建议 - 洗车图标（对齐 Android zxxtq_life_car）
+  static const String zxxtqLifeCar = '$_toolboxWeatherBase/zxxtq_life_car.png';
+
+  /// 生活建议 - 运动图标（对齐 Android zxxtq_life_sport）
+  static const String zxxtqLifeSport =
+      '$_toolboxWeatherBase/zxxtq_life_sport.png';
+
+  /// 长途规划入口图标（对齐 Android zxxtq_longtrip_route，56dp）
+  static const String zxxtqLongTripRoute =
+      '$_toolboxWeatherBase/zxxtq_longtrip_route.png';
+
   // ZyytHomeScreen 原始 Android 资源（与通用天气资源隔离）。
   static const String zyytHomeClouds =
       '$_toolboxWeatherBase/zyyt_home_clouds.png';
@@ -338,9 +387,36 @@ class AppAssets {
   static const String agricultureZyytCategoryOil =
       '$_toolboxAgricultureBase/zyyt_category_oil.png';
 
+  // ====== zxxtq 农业页资源（对齐 Android NongyeFragment Compose UI）======
+  /// 农业页全屏背景图（对齐 Android zxxtq_agriculture_background）
+  static const String zxxtqAgricultureBackground =
+      '$_toolboxAgricultureBase/zxxtq_agriculture_background.png';
+
+  /// 农业天气卡背景图（对齐 Android zxxtq_agriculture_weather_card，151dp 高）
+  static const String zxxtqAgricultureWeatherCard =
+      '$_toolboxAgricultureBase/zxxtq_agriculture_weather_card.png';
+
+  /// 农业天气卡 - 湿度图标（对齐 Android zxxtq_agriculture_humidity，19dp）
+  static const String zxxtqAgricultureHumidity =
+      '$_toolboxAgricultureBase/zxxtq_agriculture_humidity.png';
+
+  /// 农业天气卡 - 风速图标（对齐 Android zxxtq_agriculture_wind，19dp）
+  static const String zxxtqAgricultureWind =
+      '$_toolboxAgricultureBase/zxxtq_agriculture_wind.png';
+
+  /// 农业天气卡 - 日照图标（对齐 Android zxxtq_agriculture_sunshine，19dp）
+  static const String zxxtqAgricultureSunshine =
+      '$_toolboxAgricultureBase/zxxtq_agriculture_sunshine.png';
+
+  /// 农作物记录卡插图（对齐 Android fyzn_ny_new_record_illustration，86x81dp）
+  static const String agricultureRecordIllustration =
+      '$_toolboxAgricultureBase/fyzn_ny_new_record_illustration.png';
+
   static const String _toolboxLongTripBase = '$_base/toolbox_long_trip';
   static const String longTripHomeIcon =
       '$_toolboxLongTripBase/fyzn_ny_tjd_home_route_icon.png';
+  static const String longTripBack =
+      '$_toolboxLongTripBase/fyzn_ny_tjd_back_button.png';
   static const String longTripEmpty =
       '$_toolboxLongTripBase/fyzn_ny_tjd_empty_route.png';
   static const String longTripRouteBackground =
@@ -493,4 +569,61 @@ class AppAssets {
   /// 意见反馈图标
   static const String settingFeedbackIcon =
       '$_base/setting_4_feedback_icon.webp';
+
+  // ====== 旅行规划（travel）模块资源 - 来自 master-qingyichuxingqixiang 分支 ======
+  static const String _travelBase = '$_base/travel';
+
+  /// 旅行卡片图（9 个目的地）
+  static const String travelDisney = '$_travelBase/jbcx_travel_disney.webp';
+  static const String travelBund = '$_travelBase/jbcx_travel_bund.webp';
+  static const String travelForbiddenCity =
+      '$_travelBase/jbcx_travel_forbidden_city.png';
+  static const String travelUniversalBeijing =
+      '$_travelBase/jbcx_travel_universal_beijing.png';
+  static const String travelGreatWall =
+      '$_travelBase/jbcx_travel_great_wall.png';
+  static const String travelTerracottaWarriors =
+      '$_travelBase/jbcx_travel_terracotta_warriors.png';
+  static const String travelHuanglong =
+      '$_travelBase/jbcx_travel_huanglong.png';
+  static const String travelLeshanBuddha =
+      '$_travelBase/jbcx_travel_leshan_buddha.png';
+  static const String travelWestLake =
+      '$_travelBase/jbcx_travel_west_lake.png';
+
+  /// 迪士尼攻略页资源
+  static const String disneyMenpai = '$_travelBase/dishini_s_menpai.webp';
+  static const String disneyLeyuan = '$_travelBase/dishini_sh_leyuan.webp';
+  static const String disneyFood = '$_travelBase/dishini_s_food.webp';
+
+  /// 图片攻略页资源（外滩/故宫/环球/八达岭/兵马俑/九寨沟/西湖长图）
+  static const String scenicGugong = '$_travelBase/guggong_bg2.webp';
+  static const String scenicHuanqiiu = '$_travelBase/huanqiiu.webp';
+  static const String scenicBadaling = '$_travelBase/badaling.webp';
+  static const String scenicBingmayong = '$_travelBase/bingmayong.webp';
+  static const String scenicWaitan = '$_travelBase/waitan.webp';
+  static const String scenicJiuzhaigou = '$_travelBase/jiuzhaigou.webp';
+  static const String scenicXihu = '$_travelBase/xihu.webp';
+
+  /// 乐山峨眉攻略页资源
+  static const String leshanHead = '$_travelBase/img_head_leshan.webp';
+  static const String leshanDafo = '$_travelBase/leshan_dafo.webp';
+  static const String emeishan = '$_travelBase/emeishan.webp';
+  static const String sichuanChuanchuan =
+      '$_travelBase/sichuan_chuanchuan.webp';
+
+  /// 旅行详情页浮动返回按钮
+  static const String icBackGrayWhite =
+      '$_travelBase/ic_back_gray_white.webp';
+
+  // ====== 设置 Tab 资源（对齐 Android WeatherSettingFragment 菜单图标）======
+  static const String _toolboxSettingBase = '$_base/toolbox_setting';
+  static const String settingTabUserAgreement =
+      '$_toolboxSettingBase/yhtk_icon.png';
+  static const String settingTabPrivacy =
+      '$_toolboxSettingBase/ysxy_icon.png';
+  static const String settingTabAbout =
+      '$_toolboxSettingBase/gywm_icon.png';
+  static const String settingTabFeedback =
+      '$_toolboxSettingBase/yjfk_icon.png';
 }

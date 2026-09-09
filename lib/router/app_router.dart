@@ -11,7 +11,10 @@ import '../features/weather/pages/city_select_page.dart';
 import '../features/weather/pages/solar_terms_page.dart';
 import '../features/calendar/pages/life_tips_page.dart';
 import '../features/calendar/pages/health_knowledge_page.dart';
-import '../features/long_trip/pages/long_trip_page.dart';
+import '../features/long_trip/pages/long_trip_plan_page.dart';
+import '../features/travel/pages/disney_scenic_detail_page.dart';
+import '../features/travel/pages/editor_pic_tips_page.dart';
+import '../features/travel/pages/leshan_scenic_detail_page.dart';
 import 'route_names.dart';
 
 final GoRouter appRouter = GoRouter(
@@ -99,7 +102,29 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: RoutePaths.longTrip,
       name: RouteNames.longTrip,
-      builder: (context, state) => const LongTripPage(),
+      builder: (context, state) => const LongTripPlanPage(),
+    ),
+    // ====== 旅行规划（travel）模块路由 - 来自 master-qingyichuxingqixiang 分支 ======
+    // 迪士尼攻略页 - 对齐 Android DisneyShangHaiScenicDetailActivity
+    GoRoute(
+      path: RoutePaths.disneyScenic,
+      name: RouteNames.disneyScenic,
+      builder: (context, state) => const DisneyScenicDetailPage(),
+    ),
+    // 图片攻略页 - 对齐 Android EditorPicTipsActivity(extra: type String)
+    GoRoute(
+      path: RoutePaths.editorPicTips,
+      name: RouteNames.editorPicTips,
+      builder: (context, state) {
+        final extra = state.extra as Map<String, dynamic>? ?? {};
+        return EditorPicTipsPage(extra: extra);
+      },
+    ),
+    // 乐山峨眉攻略页 - 对齐 Android LeShanScenicDetailActivity
+    GoRoute(
+      path: RoutePaths.leShanScenic,
+      name: RouteNames.leShanScenic,
+      builder: (context, state) => const LeShanScenicDetailPage(),
     ),
   ],
 );

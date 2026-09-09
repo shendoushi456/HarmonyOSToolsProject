@@ -1,5 +1,6 @@
 // 天气状态 - 不可变状态类,对应 Android TravelViewModel 的 StateFlow
 import 'package:flutter/foundation.dart';
+import '../models/hourly_weather.dart';
 import '../models/weather_model.dart';
 
 @immutable
@@ -22,6 +23,9 @@ class WeatherState {
   /// 空气质量
   final AirQuality? airQuality;
 
+  /// 24小时预报(对齐 Android TravelViewModel.hourlyWeatherData)
+  final List<HourlyWeather> hourly;
+
   /// 是否首次加载
   final bool isFirst;
 
@@ -38,6 +42,7 @@ class WeatherState {
     this.weather,
     this.today,
     this.airQuality,
+    this.hourly = const [],
     this.isFirst = true,
     this.isLoading = false,
     this.error,
@@ -50,10 +55,12 @@ class WeatherState {
     WeatherInfo? weather,
     DailyWeather? today,
     AirQuality? airQuality,
+    List<HourlyWeather>? hourly,
     bool? isFirst,
     bool? isLoading,
     String? error,
     bool clearError = false,
+    bool clearHourly = false,
   }) {
     return WeatherState(
       cityName: cityName ?? this.cityName,
@@ -62,6 +69,7 @@ class WeatherState {
       weather: weather ?? this.weather,
       today: today ?? this.today,
       airQuality: airQuality ?? this.airQuality,
+      hourly: clearHourly ? const [] : (hourly ?? this.hourly),
       isFirst: isFirst ?? this.isFirst,
       isLoading: isLoading ?? this.isLoading,
       error: clearError ? null : (error ?? this.error),

@@ -1,5 +1,5 @@
 name: qingman_weather
-description: 智雨云图 - Flutter-ohos 版
+description: 清逸出行气象 - Flutter-ohos 版
 publish_to: 'none'
 version: 1.0.0+1
 
@@ -78,6 +78,10 @@ flutter:
     - assets/images/toolbox_long_trip/
     # AirQualityFragment 的 Android 原始背景、天气和污染物图标。
     - assets/images/toolbox_air_quality/
+    # 旅行规划模块（来自 master-qingyichuxingqixiang 分支）独立命名空间。
+    - assets/images/travel/
+    # 设置 Tab（对齐 Android WeatherSettingFragment）菜单图标。
+    - assets/images/toolbox_setting/
     - assets/hot_city.json
     # 二十四节气 H5 资源目录（对齐 Android assets/ershisijieqi/）
     - assets/ershisijieqi/

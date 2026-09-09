@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/utils/date_util.dart';
 import '../../../core/utils/hourly_temp_util.dart';
 import '../models/city_bean.dart';
+import '../models/hourly_weather.dart';
 import '../models/weather_model.dart';
 import '../repositories/weather_repository.dart';
 import 'weather_state.dart';
@@ -33,20 +34,26 @@ class WeatherViewModel extends Notifier<WeatherState> {
       isFirst: false,
       isLoading: true,
       clearError: true,
+      clearHourly: true,
     );
 
     try {
       // 3. 城市名 → 城市ID
       final cityId = await _repository.resolveCityId(city.cityName);
 
-      // 4. 并发加载天气和空气质量
+      // 4. 并发加载天气、空气质量和24小时预报
+      //    24h 失败时保持空列表，由 UI 显示占位(对齐 Android hourlyWeatherData 为 null 的表现)
       final results = await Future.wait([
         _repository.loadDailyWeather(cityId),
         _repository.loadAirQuality(cityId),
+        _repository
+            .loadHourlyWeatherById(cityId)
+            .catchError((_) => const <HourlyWeather>[]),
       ]);
 
       final weather = results[0] as WeatherInfo;
       final airQuality = results[1] as AirQuality?;
+      final hourly = results[2] as List<HourlyWeather>;
 
       final today = weather.daily.isNotEmpty ? weather.daily.first : null;
 
@@ -54,6 +61,7 @@ class WeatherViewModel extends Notifier<WeatherState> {
         weather: weather,
         today: today,
         airQuality: airQuality,
+        hourly: hourly,
         isLoading: false,
       );
     } catch (e) {

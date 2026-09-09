@@ -97,6 +97,12 @@ class WeatherRepository {
     return _service.getWeather24h(cityId);
   }
 
+  /// 按城市ID加载24小时预报 - 对齐 Android TravelViewModel.getWeather24H，
+  /// 与 loadDailyWeather 复用同一次城市定位结果，避免重复请求。
+  Future<List<HourlyWeather>> loadHourlyWeatherById(String cityId) {
+    return _service.getWeather24h(cityId);
+  }
+
   /// 农业页完整数据请求：先城市名→locationId，再并发获取日预报、24h 与预警。
   Future<AgricultureWeatherData> loadAgricultureWeather(String cityName) async {
     final location = await _service.lookupCity(cityName);

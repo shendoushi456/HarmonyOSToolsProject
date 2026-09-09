@@ -49,6 +49,15 @@ class RouteNames {
 
   /// 长途规划（对齐 Android LongTripPlanActivity）
   static const String longTrip = 'longTrip';
+
+  /// 迪士尼攻略页(来自 master-qingyichuxingqixiang 分支，对齐 Android DisneyShangHaiScenicDetailActivity)
+  static const String disneyScenic = 'disneyScenic';
+
+  /// 图片攻略页(对齐 Android EditorPicTipsActivity)
+  static const String editorPicTips = 'editorPicTips';
+
+  /// 乐山峨眉攻略页(对齐 Android LeShanScenicDetailActivity)
+  static const String leShanScenic = 'leShanScenic';
 }
 
 class RoutePaths {
@@ -89,4 +98,13 @@ class RoutePaths {
   static const String stress = '/stress';
 
   static const String longTrip = '/longTrip';
+
+  /// 迪士尼攻略页路径
+  static const String disneyScenic = '/disneyScenic';
+
+  /// 图片攻略页路径
+  static const String editorPicTips = '/editorPicTips';
+
+  /// 乐山峨眉攻略页路径
+  static const String leShanScenic = '/leShanScenic';
 }

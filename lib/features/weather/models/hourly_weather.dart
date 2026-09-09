@@ -3,12 +3,16 @@ import 'dart:convert';
 
 class HourlyWeather {
   final String fxTime;
+  final String temp;
+  final String text;
   final String precipitation;
   final String precipitationProbability;
   final String windScale;
 
   const HourlyWeather({
     required this.fxTime,
+    this.temp = '',
+    this.text = '',
     required this.precipitation,
     required this.precipitationProbability,
     required this.windScale,
@@ -33,6 +37,8 @@ HourlyWeatherResponse? hourlyWeatherResponseFromJson(Object? source) {
         .map(
           (item) => HourlyWeather(
             fxTime: item['fxTime']?.toString() ?? '',
+            temp: item['temp']?.toString() ?? '',
+            text: item['text']?.toString() ?? '',
             precipitation: item['precip']?.toString() ?? '',
             precipitationProbability: item['pop']?.toString() ?? '',
             windScale: item['windScale']?.toString() ?? '',
