@@ -7,15 +7,78 @@ import '../../air_quality/pages/air_quality_new_page.dart';
 import '../../weather/pages/toolbox_weather_page.dart';
 import 'life_home_page.dart';
 import '../../../core/constants/app_assets.dart';
+import '../../../router/app_route_observer.dart';
 
 /// 当前选中的 Tab 索引
 final homeTabIndexProvider = StateProvider<int>((ref) => 0);
 
-class HomeShellPage extends ConsumerWidget {
+class HomeShellPage extends ConsumerStatefulWidget {
   const HomeShellPage({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<HomeShellPage> createState() => _HomeShellPageState();
+}
+
+class _HomeShellPageState extends ConsumerState<HomeShellPage>
+    with WidgetsBindingObserver, RouteAware {
+  bool _isAppResumed = true;
+  bool _isRouteVisible = true;
+  ModalRoute<dynamic>? _subscribedRoute;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final route = ModalRoute.of(context);
+    if (route != null && route != _subscribedRoute) {
+      if (_subscribedRoute != null) {
+        appRouteObserver.unsubscribe(this);
+      }
+      _subscribedRoute = route;
+      appRouteObserver.subscribe(this, route);
+      _isRouteVisible = route.isCurrent;
+    }
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    final resumed = state == AppLifecycleState.resumed;
+    if (resumed != _isAppResumed && mounted) {
+      setState(() => _isAppResumed = resumed);
+    }
+  }
+
+  @override
+  void didPushNext() {
+    if (mounted) setState(() => _isRouteVisible = false);
+  }
+
+  @override
+  void didPopNext() {
+    if (mounted) setState(() => _isRouteVisible = true);
+  }
+
+  @override
+  void didPop() {
+    _isRouteVisible = false;
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    if (_subscribedRoute != null) {
+      appRouteObserver.unsubscribe(this);
+    }
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final currentIndex = ref.watch(homeTabIndexProvider);
 
     const pages = [
@@ -24,6 +87,8 @@ class HomeShellPage extends ConsumerWidget {
       AgriculturePage(),
       AirQualityNewPage(),
     ];
+
+    final animationsEnabled = _isAppResumed && _isRouteVisible;
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
       // 四个一级页面均为深色底，状态栏文字固定使用白色。
@@ -34,7 +99,13 @@ class HomeShellPage extends ConsumerWidget {
       child: Scaffold(
         body: IndexedStack(
           index: currentIndex,
-          children: pages,
+          children: [
+            for (var index = 0; index < pages.length; index++)
+              TickerMode(
+                enabled: animationsEnabled && currentIndex == index,
+                child: pages[index],
+              ),
+          ],
         ),
         bottomNavigationBar: _buildBottomNav(context, ref, currentIndex),
       ),

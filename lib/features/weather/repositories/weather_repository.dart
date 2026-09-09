@@ -5,6 +5,7 @@ import '../models/hourly_weather.dart';
 import '../models/weather_mapper.dart';
 import '../services/weather_service.dart';
 import '../models/weather_warning.dart';
+import '../models/weather_city_dto.dart';
 
 /// 城市定位后的农业气象数据。一次定位，复用同一 locationId / 经纬度请求，
 /// 与 Android TravelViewModel 的请求顺序保持一致。
@@ -29,9 +30,11 @@ class WeatherRepository {
   /// 城市名 → 城市ID
   /// 对应 Android WeatherUtils.getCityLocationID
   Future<String> resolveCityId(String cityName) async {
-    final location = await _service.lookupCity(cityName);
-    return location.id;
+    return (await resolveCity(cityName)).id;
   }
+
+  Future<CityLocationDTO> resolveCity(String cityName) =>
+      _service.lookupCity(cityName);
 
   /// 加载每日预报(15天,失败回退7天)
   /// 对应 Android TravelViewModel.getWeather15Day + getWeather7Day
@@ -74,12 +77,18 @@ class WeatherRepository {
   /// 按城市名查询预警。定位失败或接口暂不可用时交由调用方以空态呈现。
   Future<List<WeatherWarning>> loadWarnings(String cityName) async {
     final location = await _service.lookupCity(cityName);
-    if (location.latitude.isEmpty || location.longitude.isEmpty)
-      return const [];
-    return _service.getWeatherAlerts(
+    return loadWarningsForCoordinates(
       latitude: location.latitude,
       longitude: location.longitude,
     );
+  }
+
+  Future<List<WeatherWarning>> loadWarningsForCoordinates({
+    required String latitude,
+    required String longitude,
+  }) {
+    if (latitude.isEmpty || longitude.isEmpty) return Future.value(const []);
+    return _service.getWeatherAlerts(latitude: latitude, longitude: longitude);
   }
 
   Future<List<HourlyWeather>> loadHourlyWeather(String cityName) async {

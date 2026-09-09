@@ -22,6 +22,8 @@ class _LongTripPageState extends ConsumerState<LongTripPage> {
   Widget build(BuildContext context) {
     final state = ref.watch(longTripViewModelProvider);
     final warnings = _visibleWarnings(state.plans, state.weatherByCity);
+    final weatherLoading =
+        state.weatherByCity.values.any((item) => item.loading);
     return Scaffold(
       backgroundColor: const Color(0xFF0A0D0E),
       body: SafeArea(
@@ -53,17 +55,17 @@ class _LongTripPageState extends ConsumerState<LongTripPage> {
                           .removePoint(role, index),
                       onSave: () async {
                         final messenger = ScaffoldMessenger.of(context);
-                        final message = await ref
+                        final result = await ref
                             .read(longTripViewModelProvider.notifier)
                             .saveDraft();
                         if (!mounted) {
                           return;
                         }
-                        if (message == null) {
+                        if (result.planSaved) {
                           setState(() => editing = false);
                         }
-                        messenger.showSnackBar(
-                            SnackBar(content: Text(message ?? '长途规划已保存')));
+                        messenger.showSnackBar(SnackBar(
+                            content: Text(result.message ?? '长途规划已保存')));
                       },
                     ),
                   if (state.plans.isNotEmpty) ...[
@@ -83,6 +85,13 @@ class _LongTripPageState extends ConsumerState<LongTripPage> {
                     ...warnings.map((item) => Padding(
                         padding: const EdgeInsets.only(bottom: 10),
                         child: _TravelWarningCard(item: item))),
+                  if (state.plans.isNotEmpty &&
+                      !weatherLoading &&
+                      warnings.isEmpty)
+                    const Padding(
+                      padding: EdgeInsets.only(bottom: 16),
+                      child: _NoTravelWarnings(),
+                    ),
                   const SizedBox(height: 4),
                   const _TravelSuggestions(),
                 ]),
@@ -367,7 +376,7 @@ class _SavedPlanCard extends StatelessWidget {
                       : index == plan.points.length - 1
                           ? '终点'
                           : '途径点';
-                  final cityWeather = weatherByCity[point.cityName];
+                  final cityWeather = weatherByCity[point.weatherKey];
                   final forecast = cityWeather?.forecasts
                       .where((item) =>
                           item.fxDate ==
@@ -439,6 +448,32 @@ class _TravelSuggestions extends StatelessWidget {
             title: '备用应急物资',
             detail: '随车准备雨具、应急手电筒、防滑垫片并检查轮胎气压。')
       ]);
+}
+
+class _NoTravelWarnings extends StatelessWidget {
+  const _NoTravelWarnings();
+
+  @override
+  Widget build(BuildContext context) => Container(
+        width: double.infinity,
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+        decoration: BoxDecoration(
+          color: Colors.white.withValues(alpha: .12),
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: const Row(
+          children: [
+            Icon(Icons.verified_outlined, color: Color(0xFF1BCACD), size: 20),
+            SizedBox(width: 10),
+            Expanded(
+              child: Text(
+                '暂无沿途天气预警信息，请放心出行。',
+                style: TextStyle(color: Colors.white, fontSize: 14),
+              ),
+            ),
+          ],
+        ),
+      );
 }
 
 class _Suggestion extends StatelessWidget {
@@ -549,13 +584,13 @@ class _PointDialog extends StatefulWidget {
 }
 
 class _PointDialogState extends State<_PointDialog> {
-  String? _cityName;
+  LongTripCitySelection? _city;
   DateTime date = DateTime.now();
 
   Future<void> _selectCity() async {
-    final cityName = await Navigator.of(context).push<String>(
+    final city = await Navigator.of(context).push<LongTripCitySelection>(
         MaterialPageRoute(builder: (_) => const TripCityPickerPage()));
-    if (cityName != null && mounted) setState(() => _cityName = cityName);
+    if (city != null && mounted) setState(() => _city = city);
   }
 
   @override
@@ -575,11 +610,11 @@ class _PointDialogState extends State<_PointDialog> {
                     borderRadius: BorderRadius.circular(10)),
                 child: Row(children: [
                   Expanded(
-                    child: Text(_cityName ?? '请从城市列表选择地点',
+                    child: Text(_city?.cityName ?? '请从城市列表选择地点',
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
-                            color: _cityName == null
+                            color: _city == null
                                 ? const Color(0xFF94A3B8)
                                 : const Color(0xFF1E293B),
                             fontSize: 15)),
@@ -622,9 +657,8 @@ class _PointDialogState extends State<_PointDialog> {
                 child: const Text('取消')),
             FilledButton(
                 onPressed: () {
-                  if (_cityName != null) {
-                    Navigator.pop(context,
-                        LongTripPoint(cityName: _cityName!, date: date));
+                  if (_city != null) {
+                    Navigator.pop(context, _city!.toPoint(date));
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(content: Text('请先从城市列表选择地点')));
@@ -641,10 +675,10 @@ List<_TravelWarning> _visibleWarnings(
   for (final plan in plans) {
     for (var index = 0; index < plan.points.length; index++) {
       final point = plan.points[index];
-      if (!seen.add(point.cityName)) {
+      if (!seen.add(point.weatherKey)) {
         continue;
       }
-      final item = weather[point.cityName]?.warnings.firstOrNull;
+      final item = weather[point.weatherKey]?.warnings.firstOrNull;
       if (item != null) {
         values.add(_TravelWarning(
             point.cityName,

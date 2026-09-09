@@ -11,10 +11,12 @@ import '../features/weather/pages/city_select_page.dart';
 import '../features/weather/pages/solar_terms_page.dart';
 import '../features/calendar/pages/life_tips_page.dart';
 import '../features/long_trip/pages/long_trip_page.dart';
+import 'app_route_observer.dart';
 import 'route_names.dart';
 
 final GoRouter appRouter = GoRouter(
   initialLocation: RoutePaths.splash,
+  observers: [appRouteObserver],
   routes: [
     // 启动页 - 对齐 Android SplashActivity(检查隐私协议)
     GoRoute(
