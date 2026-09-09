@@ -1,5 +1,5 @@
 name: qingman_weather
-description: 乐熊涂画 - Flutter-ohos 版
+description: 掌上免费画 - Flutter-ohos 版
 publish_to: 'none'
 version: 1.0.0+1
 
@@ -138,6 +138,9 @@ flutter:
   assets:
     - assets/images/
     - assets/images/toolbox_migration/
+    - assets/images/all_tools_android/
+    - assets/images/doodle_category_android/
+    - assets/images/image_tools_android/
     - assets/images/color_draw/
     - assets/images/color_draw/shapes/
     - assets/images/color_draw/trace/

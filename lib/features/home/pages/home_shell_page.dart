@@ -1,14 +1,15 @@
 // 主壳页：对齐 Android ScanMenuActivity 三 Tab 结构。
-// Tab[0] = 首页（NewDrawBoardFragment 迁移），Tab[1] = 画板（NewDrawkFragment 迁移），Tab[2] = 涂鸦（AllToolsFragment 迁移）
+// Tab[0] = 首页（AllToolsFragment 迁移），Tab[1] = 工具，Tab[2] = 原首页（保留）。
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/constants/app_assets.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../all_tools/pages/all_tools_page.dart';
-import '../../new_draw_board/pages/new_draw_board_page.dart';
+import '../../image_tools/pages/image_tools_page.dart';
 import '../../toolbox_migration/pages/tools_fragment_page.dart';
 import '../viewmodels/home_tab_view_model.dart';
+import 'package:flutter/services.dart';
 
 class HomeShellPage extends ConsumerWidget {
   const HomeShellPage({super.key});
@@ -16,17 +17,20 @@ class HomeShellPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final currentIndex = ref.watch(homeTabIndexProvider);
-    // Android nav_tools_menu.xml 顺序：首页(NewDrawBoard) / 工具(Tools) / 工具列表(AllTools)。
-    const pages = [NewDrawBoardPage(), ToolsFragmentPage(), AllToolsPage()];
-    return Scaffold(
+    // 三个 Tab 依次对应 AllTools、DoodleCategory、ImageTools；原
+    // NewDrawBoardPage 保留在代码库中，避免删除既有首页实现。
+    const pages = [AllToolsPage(), ToolsFragmentPage(), ImageToolsPage()];
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+        value: SystemUiOverlayStyle.light, // 白色文字
+        child: Scaffold(
       body: IndexedStack(index: currentIndex, children: pages),
       bottomNavigationBar: _buildBottomNav(ref, currentIndex),
-    );
+        ));
   }
 
   Widget _buildBottomNav(WidgetRef ref, int currentIndex) {
     const items = <_NavItem>[
-      // toolbox_c drawable/icon_tab_tuse.xml -> ic_su_tab_1。
+      // AllToolsFragment 迁移页作为首页。
       _NavItem(
         normalIcon: _IconKind.asset,
         normalAsset: AppAssets.toolboxTabHomeNormal,
@@ -37,22 +41,21 @@ class HomeShellPage extends ConsumerWidget {
       // toolbox_c drawable/icon_tab_tools.xml -> ic_su_tab_3。
       _NavItem(
         normalIcon: _IconKind.asset,
+        normalAsset: AppAssets.toolboxTabListNormal,
+        selectedIcon: _IconKind.asset,
+        selectedAsset: AppAssets.toolboxTabListSelected,
+        label: '涂鸦',
+      ),
+      // ImageToolsFragment 迁移页作为第三个 Tab。
+      _NavItem(
+        normalIcon: _IconKind.asset,
         normalAsset: AppAssets.toolboxTabToolsNormal,
         selectedIcon: _IconKind.asset,
         selectedAsset: AppAssets.toolboxTabToolsSelected,
         label: '工具',
       ),
-      // toolbox_c drawable/icon_tab_home.xml -> ic_su_tab_2。
-      _NavItem(
-        normalIcon: _IconKind.asset,
-        normalAsset: AppAssets.toolboxTabListNormal,
-        selectedIcon: _IconKind.asset,
-        selectedAsset: AppAssets.toolboxTabListSelected,
-        label: '更多',
-      ),
     ];
     return Container(
-      height: 58,
       decoration: const BoxDecoration(
         color: Color(0xFFF9FDFF),
         boxShadow: [
@@ -62,31 +65,33 @@ class HomeShellPage extends ConsumerWidget {
       ),
       child: SafeArea(
         top: false,
-        bottom: false,
-        child: Row(
-          children: [
-            for (var i = 0; i < items.length; i++)
-              Expanded(
-                child: GestureDetector(
-                  behavior: HitTestBehavior.opaque,
-                  onTap: () =>
-                      ref.read(homeTabIndexProvider.notifier).state = i,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      _buildIcon(items[i], currentIndex == i),
-                      const SizedBox(height: 2),
-                      Text(items[i].label,
-                          style: TextStyle(
-                              fontSize: 10,
-                              color: currentIndex == i
-                                  ? AppColors.qmtqBlue
-                                  : const Color(0xFF999999))),
-                    ],
+        child: SizedBox(
+          height: 58,
+          child: Row(
+            children: [
+              for (var i = 0; i < items.length; i++)
+                Expanded(
+                  child: GestureDetector(
+                    behavior: HitTestBehavior.opaque,
+                    onTap: () =>
+                        ref.read(homeTabIndexProvider.notifier).state = i,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        _buildIcon(items[i], currentIndex == i),
+                        const SizedBox(height: 2),
+                        Text(items[i].label,
+                            style: TextStyle(
+                                fontSize: 10,
+                                color: currentIndex == i
+                                    ? AppColors.qmtqBlue
+                                    : const Color(0xFF999999))),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-          ],
+            ],
+          ),
         ),
       ),
     );

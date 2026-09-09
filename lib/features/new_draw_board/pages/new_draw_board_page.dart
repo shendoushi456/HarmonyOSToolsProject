@@ -86,7 +86,7 @@ class _BoardHero extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('乐熊涂画',
+                    Text('掌上免费画',
                         style: TextStyle(
                             fontSize: 28,
                             fontWeight: FontWeight.bold,

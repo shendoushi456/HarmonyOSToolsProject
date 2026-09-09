@@ -2,15 +2,15 @@
   "string": [
     {
       "name": "module_desc",
-      "value": "乐熊涂画主模块"
+      "value": "掌上免费画主模块"
     },
     {
       "name": "EntryAbility_desc",
-      "value": "乐熊涂画"
+      "value": "掌上免费画"
     },
     {
       "name": "EntryAbility_label",
-      "value": "乐熊涂画"
+      "value": "掌上免费画"
     },
     {
       "name": "permission_internet_reason",

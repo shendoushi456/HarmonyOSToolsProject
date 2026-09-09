@@ -507,6 +507,72 @@ class AppAssets {
   static const String toolboxTravel = '$_toolboxMigration/mtoolsl_lxqd.png';
   static const String toolboxSettings = '$_toolboxMigration/shezhi.webp';
 
+  // AllToolsFragment Android UI 原始资源（仅供该迁移页使用）。
+  static const String allToolsAndroidCreate =
+      'assets/images/all_tools_android/ic_add_jiahao.png';
+  static const String allToolsAndroidCompass =
+      'assets/images/all_tools_android/zhinanzhen_icon.png';
+  static const String allToolsAndroidAnime =
+      'assets/images/all_tools_android/image_anime.png';
+  static const String allToolsAndroidTravel =
+      'assets/images/all_tools_android/icon_lvxingqingdan.png';
+  static const String allToolsAndroidMosaic =
+      'assets/images/all_tools_android/newhomemsk.png';
+  static const String allToolsAndroidColorize =
+      'assets/images/all_tools_android/newhomehbss.png';
+  static const String allToolsAndroidTrace =
+      'assets/images/all_tools_android/newhomegthh.png';
+  static const String allToolsAndroidShape =
+      'assets/images/all_tools_android/newhomexzhh.png';
+  static const String allToolsAndroidSettings =
+      'assets/images/all_tools_android/shezhi.webp';
+
+  // DoodleCategoryFragment Android UI 原始分类图标。
+  static const String doodleCategoryCartoon =
+      'assets/images/doodle_category_android/ic_katong.png';
+  static const String doodleCategoryAnimal =
+      'assets/images/doodle_category_android/ic_dongwu.png';
+  static const String doodleCategoryFood =
+      'assets/images/doodle_category_android/ic_food.png';
+  static const String doodleCategoryTraffic =
+      'assets/images/doodle_category_android/ic_bus.png';
+  static const String doodleCategoryNature =
+      'assets/images/doodle_category_android/ic_montan.png';
+  static const String doodleCategoryFlower =
+      'assets/images/doodle_category_android/ic_flow.png';
+  static const String doodleCategoryFruit =
+      'assets/images/doodle_category_android/ic_suhiguo.png';
+  static const String doodleCategoryLetter =
+      'assets/images/doodle_category_android/ic_zimu.png';
+  static const String doodleCategoryNumber =
+      'assets/images/doodle_category_android/ic_shuzi.png';
+  static const String doodleCategoryMandala =
+      'assets/images/doodle_category_android/ic_mantuoluo.png';
+  static const String doodleCategorySettings =
+      'assets/images/doodle_category_android/shezhi.webp';
+
+  // ImageToolsFragment Android UI 原始资源（独立目录，避免与其他迁移页重名）。
+  static const String imageToolsStyleBackground =
+      'assets/images/image_tools_android/shape_bg_jianbian_fenhui.png';
+  static const String imageToolsStyleHero =
+      'assets/images/image_tools_android/ic_zhenzhuxianglian.png';
+  static const String imageToolsSettings =
+      'assets/images/image_tools_android/shezhi_white.png';
+  static const String imageToolsActionHint =
+      'assets/images/image_tools_android/ic_dianjishiyong.png';
+  static const String imageToolsPlant =
+      'assets/images/image_tools_android/ic_huacaoshibie.png';
+  static const String imageToolsFruit =
+      'assets/images/image_tools_android/ic_shuiguoshibie.png';
+  static const String imageToolsAnimal =
+      'assets/images/image_tools_android/ic_dongwushibie.png';
+  static const String imageToolsBankCard =
+      'assets/images/image_tools_android/ic_yinhangka.png';
+  static const String imageToolsMagnifier =
+      'assets/images/image_tools_android/ic_fangdajing.png';
+  static const String imageToolsCurrency =
+      'assets/images/image_tools_android/ic_huilvhusansuan.png';
+
   static const String toolboxTabHomeNormal =
       '$_toolboxMigration/ic_su_tab_1_false.webp';
   static const String toolboxTabHomeSelected =

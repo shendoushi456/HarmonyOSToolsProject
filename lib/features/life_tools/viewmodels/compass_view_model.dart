@@ -8,7 +8,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sensors_plus/sensors_plus.dart';
 import 'compass_state.dart';
 
-class CompassViewModel extends Notifier<CompassState> {
+/// 页面离开后自动销毁，确保传感器订阅不会保留在后台。
+class CompassViewModel extends AutoDisposeNotifier<CompassState> {
   StreamSubscription<AccelerometerEvent>? _accelSub;
   StreamSubscription<MagnetometerEvent>? _magSub;
 
@@ -21,12 +22,28 @@ class CompassViewModel extends Notifier<CompassState> {
   CompassState build() {
     _subscribeSensors();
     ref.onDispose(() {
-      _accelSub?.cancel();
-      _magSub?.cancel();
-      _accelSub = null;
-      _magSub = null;
+      _cancelSensors();
     });
     return const CompassState(isLoading: true);
+  }
+
+  /// 对齐 Android CompassActivity.onPause unregisterListener。
+  void pause() {
+    _cancelSensors();
+  }
+
+  /// 对齐 Android CompassActivity.onResume registerListener。
+  void resume() {
+    if (_accelSub == null && _magSub == null) {
+      _subscribeSensors();
+    }
+  }
+
+  void _cancelSensors() {
+    _accelSub?.cancel();
+    _magSub?.cancel();
+    _accelSub = null;
+    _magSub = null;
   }
 
   void _subscribeSensors() {
@@ -129,4 +146,6 @@ class CompassViewModel extends Notifier<CompassState> {
 
 /// 指南针 ViewModel Provider
 final compassViewModelProvider =
-    NotifierProvider<CompassViewModel, CompassState>(CompassViewModel.new);
+    NotifierProvider.autoDispose<CompassViewModel, CompassState>(
+  CompassViewModel.new,
+);
