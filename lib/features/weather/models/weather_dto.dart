@@ -118,6 +118,15 @@ class AirbeanDTO {
   final String co;
   final String so2;
 
+  /// /v7/weather/now 返回的实时风速，供 QxHome 回退链使用（air 接口无此字段）
+  final String windSpeed;
+
+  /// /v7/weather/now 返回的实时气压，供 QxHome 回退链使用
+  final String pressure;
+
+  /// /v7/weather/now 返回的实时湿度，供 QxHome 回退链使用
+  final String humidity;
+
   const AirbeanDTO({
     required this.name,
     required this.aqi,
@@ -133,6 +142,9 @@ class AirbeanDTO {
     required this.o3,
     required this.co,
     required this.so2,
+    this.windSpeed = '',
+    this.pressure = '',
+    this.humidity = '',
   });
 
   factory AirbeanDTO.fromJson(Map<String, dynamic> json) {
@@ -151,6 +163,9 @@ class AirbeanDTO {
       o3: json['o3']?.toString() ?? '',
       co: json['co']?.toString() ?? '',
       so2: json['so2']?.toString() ?? '',
+      windSpeed: json['windSpeed']?.toString() ?? '',
+      pressure: json['pressure']?.toString() ?? '',
+      humidity: json['humidity']?.toString() ?? '',
     );
   }
 }

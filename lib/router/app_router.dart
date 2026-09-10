@@ -11,6 +11,8 @@ import '../features/weather/pages/city_select_page.dart';
 import '../features/weather/pages/solar_terms_page.dart';
 import '../features/calendar/pages/life_tips_page.dart';
 import '../features/calendar/pages/health_knowledge_page.dart';
+import '../features/calendar/pages/qx_todo_page.dart';
+import '../features/calendar/pages/qx_history_today_page.dart';
 import '../features/long_trip/pages/long_trip_page.dart';
 import 'route_names.dart';
 
@@ -100,6 +102,19 @@ final GoRouter appRouter = GoRouter(
       path: RoutePaths.longTrip,
       name: RouteNames.longTrip,
       builder: (context, state) => const LongTripPage(),
+    ),
+    // 我的待办事项页 - 对齐 Android QxTodoActivity
+    GoRoute(
+      path: RoutePaths.qxTodo,
+      name: RouteNames.qxTodo,
+      builder: (context, state) => const QxTodoPage(),
+    ),
+    // 历史上的今天页 - 对齐 Android QxHistoryTodayActivity(extra: yyyy-MM-dd)
+    GoRoute(
+      path: RoutePaths.qxHistoryToday,
+      name: RouteNames.qxHistoryToday,
+      builder: (context, state) =>
+          QxHistoryTodayPage(date: state.extra as String?),
     ),
   ],
 );

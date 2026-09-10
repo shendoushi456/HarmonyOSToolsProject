@@ -180,23 +180,124 @@ class AppAssets {
   static const String toolboxTabAirNormal =
       '$_toolboxWeatherBase/ic_six_tab_3_false.png';
 
-  // MainWeatherActivity 的 MyBottomNavView 四项图标，来自 navtools_menu.xml。
+  // MainWeatherActivity 的 MyBottomNavView 三项图标，来自 navtools_menu.xml。
+  // 图标取自 Android 工程 mipmap-xxhdpi 的 webp 原图（66px）。
+  // 天气 Tab：icon_tab_tools_1 selector → ic_tab_1_true/false
   static const String toolboxNavWeatherNormal =
-      '$_toolboxWeatherBase/ic_tab_1_false.png';
+      '$_toolboxWeatherBase/ic_tab_1_false.webp';
   static const String toolboxNavWeatherSelected =
-      '$_toolboxWeatherBase/ic_tab_1_true.png';
+      '$_toolboxWeatherBase/ic_tab_1_true.webp';
+  // 日历 Tab：icon_tab_tools_2 selector → ic_su_tab_2（选中态原版拼写为 ture）
   static const String toolboxNavCalendarNormal =
-      '$_toolboxWeatherBase/ic_tab_2_false.png';
+      '$_toolboxWeatherBase/ic_su_tab_2_false.webp';
   static const String toolboxNavCalendarSelected =
-      '$_toolboxWeatherBase/ic_tab_2_true.png';
-  static const String toolboxNavAgricultureNormal =
-      '$_toolboxWeatherBase/ic_tab_3_false.png';
-  static const String toolboxNavAgricultureSelected =
-      '$_toolboxWeatherBase/ic_tab_3_true.png';
+      '$_toolboxWeatherBase/ic_su_tab_2_ture.webp';
+  // 空气质量 Tab：icon_tab_tools_3 selector → ic_tab_3_true/false
+  static const String toolboxNavAirNormal =
+      '$_toolboxWeatherBase/ic_tab_3_false.webp';
+  static const String toolboxNavAirSelected =
+      '$_toolboxWeatherBase/ic_tab_3_true.webp';
   static const String toolboxNavLifeGuideNormal =
       '$_toolboxWeatherBase/ic_tab_4_false.png';
   static const String toolboxNavLifeGuideSelected =
       '$_toolboxWeatherBase/ic_tab_4_true.png';
+
+  // ====== QxHomeFragment 首页天气页资源（对齐 Android weather/home Compose UI）======
+  static const String _qxHomeBase = '$_base/toolbox_qx_home';
+
+  /// 日出卡片图标（对齐 Android qx_home_07，74dp）
+  static const String qxHomeSunriseIcon = '$_qxHomeBase/qx_home_07.png';
+
+  /// 日落卡片图标（对齐 Android qx_home_08，74dp）
+  static const String qxHomeSunsetIcon = '$_qxHomeBase/qx_home_08.png';
+
+  /// 气压指标图标（对齐 Android qx_home_12，30dp）
+  static const String qxHomePressureIcon = '$_qxHomeBase/qx_home_12.png';
+
+  /// 湿度指标图标（对齐 Android qx_home_13，30dp）
+  static const String qxHomeHumidityIcon = '$_qxHomeBase/qx_home_13.png';
+
+  /// 风速指标图标（对齐 Android qx_home_14，30dp）
+  static const String qxHomeWindIcon = '$_qxHomeBase/qx_home_14.png';
+
+  /// 全屏背景图（对齐 Android qx_home_19，alpha 0.22 Crop）
+  static const String qxHomeBackground = '$_qxHomeBase/qx_home_19.png';
+
+  /// Hero 右侧圆角图（对齐 Android qx_home_20，160dp 圆角 20dp）
+  static const String qxHomeHero = '$_qxHomeBase/qx_home_20.png';
+
+  // ====== QxCalendarFragment 日历页资源（对齐 Android weather/calendar Compose UI）======
+  static const String _qxCalendarBase = '$_base/toolbox_qx_calendar';
+
+  /// 月份卡头部右侧插图（对齐 Android qx_calendar_01，68dp）
+  static const String qxCalendarMonthHero = '$_qxCalendarBase/qx_calendar_01.png';
+
+  /// 待办卡右侧插图（对齐 Android qx_calendar_02，110dp）
+  static const String qxCalendarTodoHero = '$_qxCalendarBase/qx_calendar_02.png';
+
+  /// 历史上的今天卡背景（对齐 Android qx_calendar_03，FillBounds 540dp 高）
+  static const String qxCalendarHistoryBg =
+      '$_qxCalendarBase/qx_calendar_03.png';
+
+  /// 右箭头 9x17dp（对齐 Android qx_calendar_08，旋转复用）
+  static const String qxCalendarArrow = '$_qxCalendarBase/qx_calendar_08.png';
+
+  // ====== QxAirFragment 空气质量页资源（对齐 Android weather/air Compose UI）======
+  static const String _qxAirBase = '$_base/toolbox_qx_air';
+
+  /// 生活小窍门卡插图（对齐 Android qx_air_01，92dp）
+  static const String qxAirTipIllustration = '$_qxAirBase/qx_air_01.png';
+
+  /// 生活指数-紫外线图标（对齐 Android qx_air_02，42dp）
+  static const String qxAirUvIcon = '$_qxAirBase/qx_air_02.png';
+
+  /// 生活指数-出行图标（对齐 Android qx_air_03，42dp）
+  static const String qxAirTravelIcon = '$_qxAirBase/qx_air_03.png';
+
+  /// 生活指数-防晒图标（对齐 Android qx_air_04，42dp）
+  static const String qxAirSunscreenIcon = '$_qxAirBase/qx_air_04.png';
+
+  /// 生活指数-交通图标（对齐 Android qx_air_05，42dp）
+  static const String qxAirTrafficIcon = '$_qxAirBase/qx_air_05.png';
+
+  /// 六边形 AQI 徽章底图（对齐 Android qx_air_06）
+  static const String qxAirBadge = '$_qxAirBase/qx_air_06.png';
+
+  /// 污染物-细颗粒物图标（对齐 Android qx_air_09，22dp）
+  static const String qxAirPm25 = '$_qxAirBase/qx_air_09.png';
+
+  /// 污染物-粗颗粒度图标（对齐 Android qx_air_10，22dp）
+  static const String qxAirPm10 = '$_qxAirBase/qx_air_10.png';
+
+  /// 污染物-二氧化氮图标（对齐 Android qx_air_11，22dp）
+  static const String qxAirNo2 = '$_qxAirBase/qx_air_11.png';
+
+  /// 污染物-二氧化硫图标（对齐 Android qx_air_12，22dp）
+  static const String qxAirSo2 = '$_qxAirBase/qx_air_12.png';
+
+  /// 污染物-一氧化碳图标（对齐 Android qx_air_13，22dp）
+  static const String qxAirCo = '$_qxAirBase/qx_air_13.png';
+
+  /// 污染物-臭氧图标（对齐 Android qx_air_14，22dp）
+  static const String qxAirO3 = '$_qxAirBase/qx_air_14.png';
+
+  /// 生活指数-护肤图标（对齐 Android qx_air_15，42dp）
+  static const String qxAirSkinIcon = '$_qxAirBase/qx_air_15.png';
+
+  /// 生活指数-穿衣图标（对齐 Android qx_air_16，42dp）
+  static const String qxAirDressingIcon = '$_qxAirBase/qx_air_16.png';
+
+  /// 全屏背景图（对齐 Android qx_air_17，alpha 0.2 Crop）
+  static const String qxAirBackground = '$_qxAirBase/qx_air_17.png';
+
+  /// 顶部设置图标（对齐 Android qx_air_18，26dp）
+  static const String qxAirSettings = '$_qxAirBase/qx_air_18.png';
+
+  /// 生活小窍门卡前景覆盖（对齐 Android qx_air_19，FillBounds）
+  static const String qxAirTipOverlay = '$_qxAirBase/qx_air_19.png';
+
+  /// 生活小窍门卡背景（对齐 Android qx_air_20，FillBounds 1029:534）
+  static const String qxAirTipBackground = '$_qxAirBase/qx_air_20.png';
 
   // ====== Toolbox AirQualityFragment 资源 ======
   // 与其它迁入页面分目录，避免覆写 HarmonyOS 工程中已有的空气质量资源。

@@ -49,6 +49,12 @@ class RouteNames {
 
   /// 长途规划（对齐 Android LongTripPlanActivity）
   static const String longTrip = 'longTrip';
+
+  /// 我的待办事项页（对齐 Android QxTodoActivity）
+  static const String qxTodo = 'qxTodo';
+
+  /// 历史上的今天页（对齐 Android QxHistoryTodayActivity，extra: yyyy-MM-dd）
+  static const String qxHistoryToday = 'qxHistoryToday';
 }
 
 class RoutePaths {
@@ -89,4 +95,10 @@ class RoutePaths {
   static const String stress = '/stress';
 
   static const String longTrip = '/longTrip';
+
+  /// 我的待办事项页路径
+  static const String qxTodo = '/qxTodo';
+
+  /// 历史上的今天页路径
+  static const String qxHistoryToday = '/qxHistoryToday';
 }

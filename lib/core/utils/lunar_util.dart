@@ -165,6 +165,15 @@ class Lunar {
     final leapPrefix = leap ? '闰' : '';
     return '$leapPrefix${_chineseNumber[month - 1]}月${_getChinaDayString(day)}';
   }
+
+  /// 干支年字符串 - 对齐 Lunar.java cyclical()（如"癸卯"）
+  /// 传入 offset 传回干支, 0=甲子；原版 junkcode 不影响返回值，直接丢弃
+  String cyclical() {
+    const gan = ['甲', '乙', '丙', '丁', '戊', '己', '庚', '辛', '壬', '癸'];
+    const zhi = ['子', '丑', '寅', '卯', '辰', '巳', '午', '未', '申', '酉', '戌', '亥'];
+    final num = year - 1900 + 36;
+    return gan[num % 10] + zhi[num % 12];
+  }
 }
 
 /// 农历工具类 - 对齐 Android CalendarFragment.lunarLabel

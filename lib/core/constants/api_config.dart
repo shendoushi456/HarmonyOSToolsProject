@@ -27,6 +27,10 @@ class ApiConfig {
   /// 实时空气质量 - /v7/air/now
   static const String pathAirNow = '/v7/air/now';
 
+  /// 生活指数(1天) - /v7/indices/1d
+  /// QxAirFragment 按 type=3,6,16,5,13,15 拉取穿衣/出行/防晒/紫外线/护肤/交通
+  static const String pathIndices1d = '/v7/indices/1d';
+
   /// 实时气象灾害预警。路径使用城市经纬度，而非 location id。
   static const String pathWeatherAlert = '/weatheralert/v1/current';
 

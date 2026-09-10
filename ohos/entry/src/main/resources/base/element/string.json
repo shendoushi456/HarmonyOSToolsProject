@@ -2,15 +2,15 @@
   "string": [
     {
       "name": "module_desc",
-      "value": "智雨云图主模块"
+      "value": "气象准点查主模块"
     },
     {
       "name": "EntryAbility_desc",
-      "value": "智雨云图"
+      "value": "气象准点查"
     },
     {
       "name": "EntryAbility_label",
-      "value": "智雨云图"
+      "value": "气象准点查"
     },
     {
       "name": "permission_internet_reason",

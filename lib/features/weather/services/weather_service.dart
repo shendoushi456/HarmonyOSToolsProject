@@ -1,5 +1,7 @@
 // 天气网络服务 - 对齐 Android WeatherUtils + WeatherHttpManager
 // 封装和风天气 4 个接口,返回 DTO
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import '../../../core/network/dio_client.dart';
 import '../../../core/constants/api_config.dart';
@@ -77,6 +79,31 @@ class WeatherService {
     } on DioException catch (e) {
       throw WeatherException('24小时天气查询失败: ${e.message}',
           code: e.response?.statusCode);
+    }
+  }
+
+  /// 生活指数(1天) - GET /v7/indices/1d
+  /// 对齐 Android QxAirRepository.requestWeather("v7/indices/1d", type=3,6,16,5,13,15)
+  Future<Map<String, dynamic>> getLifeIndices(String cityId) async {
+    try {
+      final response = await _dio.get(
+        ApiConfig.pathIndices1d,
+        queryParameters: {
+          'location': cityId,
+          'type': '3,6,16,5,13,15',
+        },
+      );
+      final data = response.data;
+      if (data is Map<String, dynamic>) return data;
+      if (data is String) {
+        return jsonDecode(data) as Map<String, dynamic>;
+      }
+      throw WeatherException('生活指数数据解析失败');
+    } on DioException catch (e) {
+      throw WeatherException(
+        '生活指数查询失败: ${e.message}',
+        code: e.response?.statusCode,
+      );
     }
   }
 

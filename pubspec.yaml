@@ -1,5 +1,5 @@
 name: qingman_weather
-description: 智雨云图 - Flutter-ohos 版
+description: 气象准点查 - Flutter-ohos 版
 publish_to: 'none'
 version: 1.0.0+1
 
@@ -78,6 +78,12 @@ flutter:
     - assets/images/toolbox_long_trip/
     # AirQualityFragment 的 Android 原始背景、天气和污染物图标。
     - assets/images/toolbox_air_quality/
+    # QxHomeFragment 首页天气页资源（日出/日落/指标图标/背景/Hero 图）。
+    - assets/images/toolbox_qx_home/
+    # QxCalendarFragment 日历页资源（月卡/待办卡/历史今天卡背景与箭头）。
+    - assets/images/toolbox_qx_calendar/
+    # QxAirFragment 空气质量页资源（AQI徽章/污染物图标/生活指数图标/小窍门卡）。
+    - assets/images/toolbox_qx_air/
     - assets/hot_city.json
     # 二十四节气 H5 资源目录（对齐 Android assets/ershisijieqi/）
     - assets/ershisijieqi/

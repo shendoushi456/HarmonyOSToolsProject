@@ -3,6 +3,7 @@
 import '../models/weather_model.dart';
 import '../models/hourly_weather.dart';
 import '../models/weather_mapper.dart';
+import '../models/weather_dto.dart';
 import '../services/weather_service.dart';
 import '../models/weather_warning.dart';
 import '../models/weather_city_dto.dart';
@@ -74,6 +75,23 @@ class WeatherRepository {
       return null;
     }
   }
+
+  /// 7 天预报 DTO（对齐 Android QxWeatherRepository.loadHome 使用 getWeather7Day）
+  Future<WeatherBeanInfoDTO> load7d(String cityId) => _service.getWeather7d(cityId);
+
+  /// 实时天气 DTO（对齐 Android QxWeatherRepository.loadNow，取响应 now 节点）
+  Future<AirbeanDTO?> loadNowDto(String cityId) async {
+    final dto = await _service.getWeatherNow(cityId);
+    return dto.now;
+  }
+
+  /// 实时空气质量 DTO（对齐 Android QxAirRepository.loadAirNow，取完整响应）
+  Future<WeatherBeanInfoDTO> loadAirNowDto(String cityId) =>
+      _service.getAirNow(cityId);
+
+  /// 生活指数(1d)（对齐 Android QxAirRepository.requestWeather indices）
+  Future<Map<String, dynamic>> loadLifeIndices(String cityId) =>
+      _service.getLifeIndices(cityId);
 
   /// 按城市名查询预警。定位失败或接口暂不可用时交由调用方以空态呈现。
   Future<List<WeatherWarning>> loadWarnings(String cityName) async {

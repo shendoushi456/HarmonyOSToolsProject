@@ -1,11 +1,10 @@
-// 底部 4 Tab 容器：首位为 toolbox_c 迁入的天气页，保留既有首页/日历/空气质量。
+// 底部 3 Tab 容器：天气(QxHome)/日历(QxCalendar)/空气质量(QxAir)，对齐 Android MainWeatherActivity。
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../agriculture/pages/agriculture_page.dart';
-import '../../calendar/pages/calendar_new_page.dart';
-import '../../weather/pages/life_index_page.dart';
-import '../../weather/pages/toolbox_weather_page.dart';
+import '../../calendar/pages/qx_calendar_page.dart';
+import '../../weather/pages/qx_air_page.dart';
+import '../../weather/pages/qx_home_page.dart';
 import '../../../core/constants/app_assets.dart';
 
 /// 当前选中的 Tab 索引
@@ -19,10 +18,9 @@ class HomeShellPage extends ConsumerWidget {
     final currentIndex = ref.watch(homeTabIndexProvider);
 
     const pages = [
-      ToolboxWeatherPage(),
-      LifeIndexPage(),
-      CalendarNewPage(),
-      AgriculturePage(),
+      QxHomePage(),
+      QxCalendarPage(),
+      QxAirPage(),
     ];
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
@@ -59,36 +57,27 @@ class HomeShellPage extends ConsumerWidget {
               ref,
               index: 0,
               label: '天气',
-              normalIcon: AppAssets.zyytTabWeatherNormal,
-              selectedIcon: AppAssets.zyytTabWeatherSelected,
+              normalIcon: AppAssets.toolboxNavWeatherNormal,
+              selectedIcon: AppAssets.toolboxNavWeatherSelected,
               isSelected: currentIndex == 0,
             ),
             _buildNavItem(
               context,
               ref,
               index: 1,
-              label: '生活指数',
-              normalIcon: AppAssets.zyytTabLifeNormal,
-              selectedIcon: AppAssets.zyytTabLifeSelected,
+              label: '日历',
+              normalIcon: AppAssets.toolboxNavCalendarNormal,
+              selectedIcon: AppAssets.toolboxNavCalendarSelected,
               isSelected: currentIndex == 1,
             ),
             _buildNavItem(
               context,
               ref,
               index: 2,
-              label: '日历',
-              normalIcon: AppAssets.zyytTabCalendarNormal,
-              selectedIcon: AppAssets.zyytTabCalendarSelected,
+              label: '空气质量',
+              normalIcon: AppAssets.toolboxNavAirNormal,
+              selectedIcon: AppAssets.toolboxNavAirSelected,
               isSelected: currentIndex == 2,
-            ),
-            _buildNavItem(
-              context,
-              ref,
-              index: 3,
-              label: '农业',
-              normalIcon: AppAssets.zyytTabAgricultureNormal,
-              selectedIcon: AppAssets.zyytTabAgricultureSelected,
-              isSelected: currentIndex == 3,
             ),
           ],
         ),

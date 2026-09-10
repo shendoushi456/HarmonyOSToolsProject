@@ -78,6 +78,12 @@ class PrefsStorage {
   static Future<bool> setString(String key, String value) =>
       _instance.setString(key, value);
 
+  /// 功能模块私有的整数存取（如 QxAir 小窍门轮询索引）。
+  static int? getInt(String key) => _instance.getInt(key);
+
+  static Future<bool> setInt(String key, int value) =>
+      _instance.setInt(key, value);
+
   /// 重新向平台读取最新值，避免只用当前进程内缓存判断保存是否成功。
   static Future<void> reload() => _instance.reload();
 

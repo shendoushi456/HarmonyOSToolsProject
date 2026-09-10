@@ -6,11 +6,11 @@
         "type": "HarmonyOS",
         "material": {
           "storeFile": "/Users/zhuanzmima0000/鸿蒙签名/beijinglexionghongyun.p12",
-          "storePassword": "0000001CFF6858D1405CEB6A93DEEB09C9AF03B28CF9E649C12E277D7B2EDD051D61A521189722788B787EB6",
+          "storePassword": "0000001CC7251689B6A47E821192C678DC43F31E5BC2A24DCEB8189637ECA7B247F149EF3843AFD4F17D4283",
           "keyAlias": "beijinglexionghongyun",
-          "keyPassword": "0000001C67ED3F7221EC220B4B404086FDCFC3D826EADC806133122661AFBC4887B985C54C10FA75A9E8122C",
+          "keyPassword": "0000001C140A9A4575E5822E4B2573123E0C6C418EBFD93E42171C559F24E5A2FF016CEC43450D6B2980D483",
           "signAlg": "SHA256withECDSA",
-          "profile": "/Users/zhuanzmima0000/鸿蒙签名/zhiyuyuntuRelease.p7b",
+          "profile": "/Users/zhuanzmima0000/鸿蒙签名/qixiangzhundianchaRelease.p7b",
           "certpath": "/Users/zhuanzmima0000/鸿蒙签名/beijinglexionghongyun.cer"
         }
       }
