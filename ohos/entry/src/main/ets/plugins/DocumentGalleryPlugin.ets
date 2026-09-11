@@ -47,10 +47,19 @@ export default class DocumentGalleryPlugin implements FlutterPlugin {
   }
 
   private async handleMethodCall(call: MethodCall, result: MethodResult): Promise<void> {
-    if (call.method !== 'saveImageBytes') {
-      result.notImplemented();
+    if (call.method === 'saveImageBytes') {
+      this.handleSaveImageBytes(call, result);
       return;
     }
+    if (call.method === 'saveImageBytesList') {
+      this.handleSaveImageBytesList(call, result);
+      return;
+    }
+    result.notImplemented();
+  }
+
+  /** 单张图片保存。 */
+  private async handleSaveImageBytes(call: MethodCall, result: MethodResult): Promise<void> {
     if (this.saving) {
       result.error(GALLERY_SAVE_IN_PROGRESS, '正在等待保存确认，请勿重复操作', null);
       return;
@@ -77,11 +86,51 @@ export default class DocumentGalleryPlugin implements FlutterPlugin {
     }
   }
 
+  /** 多张图片批量保存：一次 SaveButton 授权写入全部图片，避免逐张弹确认框。 */
+  private async handleSaveImageBytesList(call: MethodCall, result: MethodResult): Promise<void> {
+    if (this.saving) {
+      result.error(GALLERY_SAVE_IN_PROGRESS, '正在等待保存确认，请勿重复操作', null);
+      return;
+    }
+
+    try {
+      const rawList: ESObject = call.argument('bytesList');
+      const bytesList: Uint8Array[] = rawList as Uint8Array[];
+      const title = call.argument('name') as string;
+      if (!bytesList || bytesList.length === 0 || !title) {
+        throw new GallerySaveError(GALLERY_EXPORT_ERROR, '缺少图片数据或保存名称');
+      }
+      this.saving = true;
+      await this.requestSecureSaveList(bytesList, title);
+      result.success(null);
+    } catch (error) {
+      const exportError = error as GallerySaveError;
+      result.error(
+        exportError.code ?? GALLERY_EXPORT_ERROR,
+        exportError.message ?? this.describeError(error),
+        null,
+      );
+    } finally {
+      this.saving = false;
+    }
+  }
+
   private async requestSecureSave(bytes: Uint8Array, title: string): Promise<void> {
     const safeTitle = this.safeTitle(title);
     await SecureGallerySaveCoordinator.request(async (): Promise<void> => {
       // 此回调由 Index 页面里真正可见的 SaveButton 成功回调直接触发。
       await this.writeImageWithTemporaryAuthorization(bytes, safeTitle);
+    });
+  }
+
+  /** 批量保存：在同一个 SaveButton 授权回调内写入全部图片。 */
+  private async requestSecureSaveList(bytesList: Uint8Array[], title: string): Promise<void> {
+    const safeTitle = this.safeTitle(title);
+    await SecureGallerySaveCoordinator.request(async (): Promise<void> => {
+      for (let i = 0; i < bytesList.length; i++) {
+        const name = bytesList.length === 1 ? safeTitle : `${safeTitle}_${i + 1}`;
+        await this.writeImageWithTemporaryAuthorization(bytesList[i], name);
+      }
     });
   }
 

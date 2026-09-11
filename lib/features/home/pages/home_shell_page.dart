@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/constants/app_assets.dart';
 import '../../menu_fragment/pages/menu_fragment_page.dart';
+import '../../menu_home/pages/menu_home_page.dart';
 import '../../other_scan_tools/pages/other_scan_tools_page.dart';
 import '../../favorite/pages/favorite_list_page.dart';
 import '../viewmodels/home_tab_view_model.dart';
@@ -13,7 +14,8 @@ class HomeShellPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final currentIndex = ref.watch(homeTabIndexProvider);
     const pages = [
-      MenuFragmentPage(),
+      MenuHomePage(),
+      // MenuFragmentPage(),
       OtherScanToolsPage(),
       FavoriteListPage(),
     ];

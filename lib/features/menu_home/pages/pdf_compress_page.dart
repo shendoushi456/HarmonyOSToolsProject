@@ -75,6 +75,14 @@ class PdfCompressPage extends ConsumerWidget {
               style: const TextStyle(color: Colors.green),
             ),
           ),
+        if (state.outputPath != null)
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12),
+            child: Text(
+              '已保存到：${state.outputPath}',
+              style: const TextStyle(color: Colors.green, fontSize: 12),
+            ),
+          ),
         const Spacer(),
       ],
     );

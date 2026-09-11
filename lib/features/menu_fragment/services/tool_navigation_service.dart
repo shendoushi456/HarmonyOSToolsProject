@@ -8,6 +8,7 @@ import '../../life_tools/pages/notebook/notebook_list_page.dart';
 import '../../life_tools/pages/webview/web_tool_page.dart';
 import '../../image_process/models/image_process_type.dart';
 import '../../image_process/pages/image_process_page.dart';
+import '../../menu_home/pages/pdf_to_image_page.dart';
 import '../../menu_home/pages/qr_generate_page.dart';
 import '../../menu_home/pages/qr_scan_page.dart';
 import '../../portable_tools/pages/magnifier_camera_page.dart';
@@ -66,6 +67,7 @@ class ToolNavigationService {
       case ToolDestination.baseConverter:
         return BaseConversionPage.push(context);
       case ToolDestination.eatToday:
+        // return PdfToImagePage.push(context);
         return WebToolPage.push(
           context,
           title: '今天吃什么',
