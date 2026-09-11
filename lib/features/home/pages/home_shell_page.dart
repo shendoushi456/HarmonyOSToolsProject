@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/constants/app_assets.dart';
 import '../../menu_fragment/pages/menu_fragment_page.dart';
-import '../../menu_home/pages/menu_home_page.dart';
-import '../../other_scan_tools/pages/other_scan_tools_page.dart';
-import '../../favorite/pages/favorite_list_page.dart';
+import '../../menu_tools/pages/menu_tools_page.dart';
+import '../../pdf_tools/pages/pdf_tools_page.dart';
+import '../../life_favorite/pages/life_favorite_page.dart';
 import '../viewmodels/home_tab_view_model.dart';
 
 class HomeShellPage extends ConsumerWidget {
@@ -14,10 +14,10 @@ class HomeShellPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final currentIndex = ref.watch(homeTabIndexProvider);
     const pages = [
-      MenuHomePage(),
+      MenuToolsPage(),
       // MenuFragmentPage(),
-      OtherScanToolsPage(),
-      FavoriteListPage(),
+      PdfToolsPage(),
+      LifeFavoritePage(),
     ];
     return Scaffold(
       body: IndexedStack(index: currentIndex, children: pages),
@@ -27,17 +27,17 @@ class HomeShellPage extends ConsumerWidget {
 
   Widget _buildBottomNav(WidgetRef ref, int currentIndex) {
     const items = <_NavItem>[
-      _NavItem(AppAssets.bottomHomeNormal, AppAssets.bottomHomeSelected, '首页'),
+      _NavItem(AppAssets.navHomeNormal, AppAssets.navHomeSelected, '首页'),
       _NavItem(
-          AppAssets.bottomToolsNormal, AppAssets.bottomToolsSelected, '工具'),
+          AppAssets.navToolsNormal, AppAssets.navToolsSelected, 'PDF工具'),
       _NavItem(
-        AppAssets.bottomFavoriteNormal,
-        AppAssets.bottomFavoriteSelected,
+        AppAssets.navFavoriteNormal,
+        AppAssets.navFavoriteSelected,
         '收藏',
       ),
     ];
     return Container(
-      height: 68,
+      height: 78,
       decoration: const BoxDecoration(
         color: Colors.white,
         boxShadow: [
@@ -49,8 +49,8 @@ class HomeShellPage extends ConsumerWidget {
         ],
       ),
       child: SafeArea(
+        // 白色背景(Container)延伸到屏幕底部,图标/文字行避开底部安全区
         top: false,
-        bottom: false,
         child: Row(
           children: [
             for (var i = 0; i < items.length; i++)
@@ -66,8 +66,8 @@ class HomeShellPage extends ConsumerWidget {
                         currentIndex == i
                             ? items[i].selectedAsset
                             : items[i].normalAsset,
-                        width: i == 1 ? 30 : 26,
-                        height: i == 1 ? 30 : 26,
+                        width: 24,
+                        height: 24,
                         fit: BoxFit.contain,
                       ),
                       const SizedBox(height: 1),

@@ -8,6 +8,9 @@ import '../../life_tools/pages/notebook/notebook_list_page.dart';
 import '../../life_tools/pages/webview/web_tool_page.dart';
 import '../../image_process/models/image_process_type.dart';
 import '../../image_process/pages/image_process_page.dart';
+import '../../menu_home/pages/image_to_pdf_page.dart';
+import '../../menu_home/pages/pdf_compress_page.dart';
+import '../../menu_home/pages/pdf_encrypt_page.dart';
 import '../../menu_home/pages/pdf_to_image_page.dart';
 import '../../menu_home/pages/qr_generate_page.dart';
 import '../../menu_home/pages/qr_scan_page.dart';
@@ -18,6 +21,8 @@ import '../../recognition/models/recognition_type.dart';
 import '../../other_scan_tools/pages/base_conversion_page.dart';
 import '../../other_scan_tools/pages/currency_converter_page.dart';
 import '../../other_scan_tools/pages/relatives_calculator_page.dart';
+import '../../scan_menu/pages/document_camera_page.dart';
+import '../../scan_menu/pages/document_capture_preview_page.dart';
 import '../models/tool_definition.dart';
 
 /// The only place that converts a catalogue destination into a Flutter route.
@@ -27,7 +32,15 @@ class ToolNavigationService {
   ToolNavigationService._();
 
   static Future<void> open(BuildContext context, ToolDefinition tool) {
-    switch (tool.destination) {
+    return openDestination(context, tool.destination);
+  }
+
+  /// 按 destination 直接导航 - 供非 ToolDefinition 目录(如 Compose 版首页)复用
+  static Future<void> openDestination(
+    BuildContext context,
+    ToolDestination destination,
+  ) {
+    switch (destination) {
       case ToolDestination.qrGenerate:
         return QrGeneratePage.push(context);
       case ToolDestination.recognitionText:
@@ -83,6 +96,18 @@ class ToolNavigationService {
           title: '随机数生成',
           url: 'https://ol.woobx.cn/tool/random-number',
         );
+      case ToolDestination.imageToPdf:
+        return ImageToPdfPage.push(context);
+      case ToolDestination.pdfToImage:
+        return PdfToImagePage.push(context);
+      case ToolDestination.pdfEncrypt:
+        return PdfEncryptPage.push(context);
+      case ToolDestination.pdfCompress:
+        return PdfCompressPage.push(context);
+      case ToolDestination.photoArchive:
+        // 拍照存档链路 - 对齐 Android CameraWenDangActivity:
+        // 拍照 → 预览/保存/裁剪(scan_menu 模块)
+        return _photoArchive(context);
     }
   }
 
@@ -101,5 +126,16 @@ class ToolNavigationService {
       context,
       MaterialPageRoute(builder: (_) => ImageProcessPage(type: type)),
     );
+  }
+
+  /// 拍照存档:DocumentCameraPage 拍照后进入预览/保存/裁剪链路
+  static Future<void> _photoArchive(BuildContext context) async {
+    final file = await DocumentCameraPage.capture(context);
+    if (file != null && context.mounted) {
+      await Navigator.push(
+        context,
+        MaterialPageRoute(builder: (_) => DocumentCapturePreviewPage(file: file)),
+      );
+    }
   }
 }

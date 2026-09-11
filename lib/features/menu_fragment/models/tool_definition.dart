@@ -53,6 +53,11 @@ enum ToolId {
   notebook,
   travelChecklist,
   randomNumber,
+  imageToPdf,
+  pdfToImage,
+  pdfEncrypt,
+  pdfCompress,
+  photoArchive,
 }
 
 /// UI-independent destination understood by [ToolNavigationService].
@@ -78,6 +83,11 @@ enum ToolDestination {
   notebook,
   travelChecklist,
   randomNumber,
+  imageToPdf,
+  pdfToImage,
+  pdfEncrypt,
+  pdfCompress,
+  photoArchive,
 }
 
 enum MenuToolPlacement {
@@ -87,4 +97,5 @@ enum MenuToolPlacement {
   otherScanImageProcess,
   otherScanCalculator,
   otherScanOther,
+  lifeFavorite,
 }

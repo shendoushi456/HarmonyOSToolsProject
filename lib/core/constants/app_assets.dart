@@ -401,6 +401,98 @@ class AppAssets {
   static const String favoriteTileBackground =
       '$_base/favorite/bg_favorite_unsec.png';
 
+  // ====== LifeFragment 收藏页资源 - 直接来自 toolbox_c Android 源码 mipmap-xxhdpi ======
+  /// 图标命名对齐安卓原版 ic_collection_1~20(排除 12/13/16/20 四个不迁移项)
+  static const String lifeFavoriteQrScan =
+      '$_base/life_favorite/ic_collection_1.png';
+  static const String lifeFavoriteQrGenerate =
+      '$_base/life_favorite/ic_collection_2.png';
+  static const String lifeFavoriteTextRecognition =
+      '$_base/life_favorite/ic_collection_3.png';
+  static const String lifeFavoritePlantRecognition =
+      '$_base/life_favorite/ic_collection_4.png';
+  static const String lifeFavoriteIngredientRecognition =
+      '$_base/life_favorite/ic_collection_5.png';
+  static const String lifeFavoriteAnimalRecognition =
+      '$_base/life_favorite/ic_collection_6.png';
+  static const String lifeFavoriteImageToPdf =
+      '$_base/life_favorite/ic_collection_7.png';
+  static const String lifeFavoritePdfToImage =
+      '$_base/life_favorite/ic_collection_8.png';
+  static const String lifeFavoritePdfEncrypt =
+      '$_base/life_favorite/ic_collection_9.png';
+  static const String lifeFavoritePdfCompress =
+      '$_base/life_favorite/ic_collection_10.png';
+  static const String lifeFavoritePixelImage =
+      '$_base/life_favorite/ic_collection_11.png';
+  static const String lifeFavoriteColourize =
+      '$_base/life_favorite/ic_collection_14.png';
+  static const String lifeFavoriteEat =
+      '$_base/life_favorite/ic_collection_15.png';
+  static const String lifeFavoriteRelatives =
+      '$_base/life_favorite/ic_collection_17.png';
+  static const String lifeFavoriteCurrency =
+      '$_base/life_favorite/ic_collection_18.png';
+  static const String lifeFavoriteMagnifier =
+      '$_base/life_favorite/ic_collection_19.png';
+
+  /// 编辑/保存悬浮按钮(对齐 collection_one=保存 / collection_two=编辑)
+  static const String lifeFavoriteSaveFab =
+      '$_base/life_favorite/collection_one.png';
+  static const String lifeFavoriteEditFab =
+      '$_base/life_favorite/collection_two.png';
+
+  // ====== MenuFragment 首页资源(Compose 版) - 直接来自 toolbox_c Android 源码 ======
+  /// 顶栏右侧装饰图(150x130,对齐 top_bg)
+  static const String menuToolsTopBg = '$_base/menu_tools/top_bg.png';
+
+  /// 顶栏天气图标(对齐 weather_lib wl_ic_six_7day_* 4 种)
+  static const String menuToolsWeatherSun =
+      '$_base/menu_tools/wl_ic_six_7day_sun.png';
+  static const String menuToolsWeatherCloudy =
+      '$_base/menu_tools/wl_ic_six_7day_cloudy.png';
+  static const String menuToolsWeatherThunder =
+      '$_base/menu_tools/wl_ic_six_7day_thunderstorm.png';
+  static const String menuToolsWeatherRain =
+      '$_base/menu_tools/wl_ic_six_7day_rain.png';
+
+  /// 识别卡图标(对齐 ic_huacaoshibie/shuiguo_scan_img/ic_dongwushibie)
+  static const String menuToolsPlant = '$_base/menu_tools/ic_huacaoshibie.png';
+  static const String menuToolsFruit = '$_base/menu_tools/shuiguo_scan_img.png';
+  static const String menuToolsAnimal = '$_base/menu_tools/ic_dongwushibie.png';
+
+  /// 字体大小 banner(对齐 s_ztdx,1005x564)
+  static const String menuToolsTextSizeBanner = '$_base/menu_tools/s_ztdx.png';
+
+  /// 文档工具卡图标(对齐 ic_shan_main_3_2/ic_shan_main_3_1)
+  static const String menuToolsPhotoArchive =
+      '$_base/menu_tools/ic_shan_main_3_2.png';
+  static const String menuToolsTextRecognition =
+      '$_base/menu_tools/ic_shan_main_3_1.png';
+
+  /// 扫描详情长图(对齐 scan_detils_iv,1125x3264)
+  static const String menuToolsScanDetails =
+      '$_base/menu_tools/scan_detils_iv.png';
+
+  // ====== ScanMenuActivity 底部导航资源 - toolbox_c nav_tools_menu selector ======
+  /// 首页 - 对齐 icon_tabapp_1(app_icon_tab_1_true/false)
+  static const String navHomeNormal =
+      '$_base/bottom_nav_toolbox/app_icon_tab_1_false.png';
+  static const String navHomeSelected =
+      '$_base/bottom_nav_toolbox/app_icon_tab_1_true.png';
+
+  /// PDF工具 - 对齐 tools_icon_tab_4(app_icon_tab_4_true/false)
+  static const String navToolsNormal =
+      '$_base/bottom_nav_toolbox/app_icon_tab_4_false.png';
+  static const String navToolsSelected =
+      '$_base/bottom_nav_toolbox/app_icon_tab_4_true.png';
+
+  /// 收藏 - 对齐 tools_icon_tab_5(icon_tab_5_true/false)
+  static const String navFavoriteNormal =
+      '$_base/bottom_nav_toolbox/icon_tab_5_false.png';
+  static const String navFavoriteSelected =
+      '$_base/bottom_nav_toolbox/icon_tab_5_true.png';
+
   // ====== ScanMenuActivity 底部导航资源 - toolbox_c 原始状态图标 ======
   static const String bottomHomeNormal =
       '$_base/bottom_navigation/icon_tab_1_def.png';
