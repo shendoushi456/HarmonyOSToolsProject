@@ -31,6 +31,15 @@ dependencies:
   # 网络（纯 Dart，无需 ohos 适配）
   dio: 5.4.0
 
+  # 图像处理（纯 Dart，像素图功能用，与源分支一致）
+  image: ^4.1.7
+
+  # 二维码生成（纯 Flutter）
+  qr_flutter: ^4.1.0
+
+  # 二维码扫描（OpenHarmony 适配版，相机权限由其在启动预览时请求）
+  qr_code_scanner_ohos: any
+
   # OpenHarmony SIG 适配，版本与当前 Flutter 3.27 工具链对应。
   camera:
     git:
@@ -65,6 +74,20 @@ dependencies:
       path: packages/path_provider/path_provider
       ref: br_path_provider-v2.1.5_ohos
 
+  # 选择 PDF 文件 - 鸿蒙适配版
+  file_picker_ohos:
+    git:
+      url: https://gitcode.com/openharmony-sig/fluttertpc_file_picker.git
+      ref: br_v10.3.8_ohos
+
+# 覆盖 file_picker_ohos 对 hosted image_picker 的依赖，强制使用鸿蒙适配版
+dependency_overrides:
+  image_picker:
+    git:
+      url: https://gitcode.com/openharmony-sig/flutter_packages.git
+      path: packages/image_picker/image_picker
+      ref: image_picker-v1.1.2-ohos-1.0.1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -79,3 +102,10 @@ flutter:
   assets:
     - assets/images/
     - assets/hot_city.json
+    # HarmonyOS Flutter 构建不会递归收录此目录；WebToolPage 会逐项从
+    # rootBundle 复制到临时目录，故将 HTML 的全部相对依赖显式声明。
+    - assets/game/jintianchishenme/index.html
+    - assets/game/jintianchishenme/style/css/eat-min.css
+    - assets/game/jintianchishenme/style/css/img/bg.jpg
+    - assets/game/jintianchishenme/style/img/logo.png
+    - assets/game/jintianchishenme/style/js/jquery-1.11.1.min.js

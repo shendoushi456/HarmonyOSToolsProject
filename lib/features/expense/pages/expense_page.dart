@@ -871,19 +871,13 @@ ExpenseCategoryVisual categoryVisual(ExpenseRecord record) {
   }
 }
 
-/// 分 → "¥xx.xx"，两位小数四舍五入 - 对齐 formatMoney。
+/// 分 → "¥xx.xx"，两位小数 - 对齐 formatMoney。
+/// 金额以整数分存储，展示时直接取整拆分，无需四舍五入。
 String _formatMoney(int cents) {
   final safe = cents < 0 ? 0 : cents;
   final yuan = safe ~/ 100;
-  final remainder = ((safe % 100) + 0.5).round();
-  // 进位处理
-  var y = yuan;
-  var r = remainder;
-  if (r >= 100) {
-    y += 1;
-    r = 0;
-  }
-  return '¥$y.${r.toString().padLeft(2, '0')}';
+  final remainder = safe % 100;
+  return '¥$yuan.${remainder.toString().padLeft(2, '0')}';
 }
 
 /// 分 → 可编辑金额文本（去尾零）- 对齐 formatEditableMoney。

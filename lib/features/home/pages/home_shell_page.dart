@@ -1,8 +1,9 @@
-// 底部导航容器：依次承载待办、倒数日、花费记账和更多页面。
+// 底部导航容器：依次承载待办、倒数日、分类、花费记账和更多页面。
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../todo_clockin/pages/todo_clockin_page.dart';
 import '../../countdown/pages/countdown_page.dart';
+import '../../category/pages/category_page.dart';
 import '../../expense/pages/expense_page.dart';
 import '../../more/pages/more_page.dart';
 import '../../../core/constants/app_colors.dart';
@@ -21,6 +22,7 @@ class HomeShellPage extends ConsumerWidget {
     const pages = [
       TodoClockInPage(),
       CountdownPage(),
+      CategoryPage(),
       ExpensePage(),
       MorePage(),
     ];
@@ -38,7 +40,7 @@ class HomeShellPage extends ConsumerWidget {
   Widget _buildBottomNav(
       BuildContext context, WidgetRef ref, int currentIndex) {
     return Container(
-      height: 62,
+      height: 82,
       decoration: const BoxDecoration(
         color: Color(0xFFF9FDFF),
         boxShadow: [
@@ -51,7 +53,7 @@ class HomeShellPage extends ConsumerWidget {
       ),
       child: SafeArea(
         top: false,
-        bottom: false,
+        bottom: true,
         child: Row(
           children: [
             _buildNavItem(
@@ -76,19 +78,28 @@ class HomeShellPage extends ConsumerWidget {
               context,
               ref,
               index: 2,
-              label: '花费记账',
-              normalIcon: AppAssets.toolboxTabExpenseNormal,
-              selectedIcon: AppAssets.toolboxTabExpenseSelected,
+              label: '精选',
+              normalIcon: AppAssets.toolboxTabCategoryNormal,
+              selectedIcon: AppAssets.toolboxTabCategorySelected,
               isSelected: currentIndex == 2,
             ),
             _buildNavItem(
               context,
               ref,
               index: 3,
+              label: '花费记账',
+              normalIcon: AppAssets.toolboxTabExpenseNormal,
+              selectedIcon: AppAssets.toolboxTabExpenseSelected,
+              isSelected: currentIndex == 3,
+            ),
+            _buildNavItem(
+              context,
+              ref,
+              index: 4,
               label: '百宝箱',
               normalIcon: AppAssets.toolboxTabMoreNormal,
               selectedIcon: AppAssets.toolboxTabMoreSelected,
-              isSelected: currentIndex == 3,
+              isSelected: currentIndex == 4,
             ),
           ],
         ),

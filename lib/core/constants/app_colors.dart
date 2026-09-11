@@ -86,4 +86,11 @@ class AppColors {
 
   /// 设置页应用名色
   static const Color settingAppName = Color(0xFF333333);
+
+  // ====== 便携工具颜色 - 对齐 master_mianfeisaosaowang 分支 AppColors ======
+  /// 工具页顶栏背景(像素图等, 对齐 #F0FFB8)
+  static const Color toolsTopBarBg = Color(0xFFF0FFB8);
+
+  /// 顶栏标题色
+  static const Color toolsTitleText = Color(0xFF4C4C4C);
 }

@@ -253,4 +253,21 @@ class AppAssets {
       '$_base/nxtx_tab_expense_normal.png';
   static const String toolboxTabExpenseSelected =
       '$_base/nxtx_tab_expense_selected.png';
+
+  // ====== 分类页资源（对齐 Android OtherSaoMiaoFrgment） ======
+  /// 底部导航 - 分类(图标用安卓"精洗"Tab 的 ic_quan_tab_1，标题仍为"分类")
+  static const String toolboxTabCategoryNormal =
+      '$_base/toolbox_tab_category_normal.webp';
+  static const String toolboxTabCategorySelected =
+      '$_base/toolbox_tab_category_selected.webp';
+
+  /// 分类页顶栏设置图标(源分支 ic_black_shezhi)
+  static const String categorySettings = '$_base/ic_black_shezhi.webp';
+
+  /// 部分工具图标为 png 格式(源分支 mipmap 中 2/11/14 为 png，其余为 webp)
+  static const _quanToolsPngIndexes = {2, 11, 14};
+
+  /// 分类页工具图标(源分支 ic_quan_tools_1..35)
+  static String quanTool(int index) =>
+      '$_base/ic_quan_tools_$index.${_quanToolsPngIndexes.contains(index) ? 'png' : 'webp'}';
 }
