@@ -26,8 +26,8 @@ final NotifierProvider<GlobalLanguageNotifier, GlobalLanguageState>
 
 class GlobalLanguageState {
   const GlobalLanguageState({
-    this.fromLanguage = '自动',
-    this.toLanguage = '中文',
+    this.fromLanguage = '中文',
+    this.toLanguage = '英文',
   });
 
   final String fromLanguage;

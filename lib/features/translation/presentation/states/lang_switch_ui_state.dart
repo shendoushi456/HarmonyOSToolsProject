@@ -4,8 +4,8 @@
 /// 保真字段与默认值。
 class LangSwitchUiState {
   const LangSwitchUiState({
-    this.fromLanguage = '自动',
-    this.toLanguage = '中文',
+    this.fromLanguage = '中文',
+    this.toLanguage = '英文',
     this.searchQuery = '',
     this.selectionType = 0,
   });

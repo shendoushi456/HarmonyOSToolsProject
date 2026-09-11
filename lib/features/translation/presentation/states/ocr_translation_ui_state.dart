@@ -5,8 +5,8 @@ import 'package:harmonyos_flutter_empty/features/translation/domain/ocr_translat
 /// 对应原 Android `OcrTranslationUiState`，保真字段与默认值。
 class OcrTranslationUiState {
   const OcrTranslationUiState({
-    this.fromLanguage = '自动',
-    this.toLanguage = '中文',
+    this.fromLanguage = '中文',
+    this.toLanguage = '英文',
     this.isLoading = false,
     this.errorMessage,
     this.translationResult,

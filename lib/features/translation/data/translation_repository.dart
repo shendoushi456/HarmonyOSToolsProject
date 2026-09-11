@@ -12,8 +12,8 @@ class TranslationRepository {
 
   static const String _keyFromLanguage = 'translation_from_language';
   static const String _keyToLanguage = 'translation_to_language';
-  static const String _defaultFromLanguage = '自动';
-  static const String _defaultToLanguage = '中文';
+  static const String _defaultFromLanguage = '中文';
+  static const String _defaultToLanguage = '英文';
 
   /// 获取源语言
   Future<String> getFromLanguage() async {

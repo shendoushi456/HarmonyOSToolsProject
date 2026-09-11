@@ -10,8 +10,8 @@ class TranslationUiState {
     this.errorMessage,
     this.translateHistory = const [],
     this.selectedTranslateData,
-    this.fromLanguage = '自动',
-    this.toLanguage = '中文',
+    this.fromLanguage = '中文',
+    this.toLanguage = '英文',
   });
 
   /// 是否正在加载
