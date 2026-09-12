@@ -24,9 +24,9 @@ class ImageToPdfPage extends ConsumerWidget {
 
     return PdfToolLayout(
       title: '图片转PDF',
-      selectButtonText: '添加图片',
+      selectButtonText: '选择图片',
       actionButtonText: state.isProcessing ? '处理中…' : '转换 PDF',
-      onSelect: vm.pickImages,
+      onSelect: vm.pickImage,
       onAction: state.isProcessing ? null : vm.convert,
       child: _buildBody(context, state, vm),
     );
@@ -41,7 +41,7 @@ class ImageToPdfPage extends ConsumerWidget {
             const PdfTypeBadge(text: 'IMG\n→ PDF'),
             const SizedBox(height: 16),
             Text(
-              state.errorMessage ?? '请先选择图片（最多30张）',
+              state.errorMessage ?? '请先选择一张图片',
               style: TextStyle(
                 color: state.errorMessage != null ? Colors.red : Colors.grey,
               ),
@@ -72,19 +72,10 @@ class ImageToPdfPage extends ConsumerWidget {
         Expanded(
           child: Padding(
             padding: const EdgeInsets.all(12),
-            child: GridView.builder(
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 3,
-                crossAxisSpacing: 8,
-                mainAxisSpacing: 8,
-              ),
-              itemCount: state.selectedImagePaths.length,
-              itemBuilder: (context, index) {
-                return SelectedImageThumbnail(
-                  path: state.selectedImagePaths[index],
-                  onRemove: () => vm.removeImage(index),
-                );
-              },
+            // 单选一张：占满宽度、高度自适应展示
+            child: SelectedImageThumbnail(
+              path: state.selectedImagePaths.first,
+              onRemove: () => vm.removeImage(0),
             ),
           ),
         ),

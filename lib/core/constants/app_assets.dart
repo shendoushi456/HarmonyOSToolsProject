@@ -369,6 +369,11 @@ class AppAssets {
   static const String colorTabMoreNormal = '$_base/color_draw/icon_tab_gj.png';
   static const String colorTabMoreSelected =
       '$_base/color_draw/icon_tab_gj2.png';
+  // "更多"Tab 设置图标（shezhi.webp 着色：灰 #CBC9C8 / 紫 #352570，与其它 Tab 同规格）
+  static const String colorTabSettingNormal =
+      '$_base/color_draw/icon_tab_setting.png';
+  static const String colorTabSettingSelected =
+      '$_base/color_draw/icon_tab_setting2.png';
 
   // ====== ColorDrawPage 画板工具图标（对齐 master_lingganhuasebao color_draw） ======
   static const String colorDrawPenSize = '$_base/color_draw/icon_draw_c1.png';
@@ -436,4 +441,25 @@ class AppAssets {
   static const String drawkPen = '$_base/lhbicon.png';
   /// 橡皮图标（lxpcicon）
   static const String drawkEraser = '$_base/lxpcicon.png';
+
+  // ====== ScanToolsFragment 工具页图标（对齐 toolbox_c ScanToolsFragment.kt） ======
+  // 底部 Tab"工具"图标（tools_icon_tab_3 selector）
+  static const String toolsTabNormal = '$_base/app_icon_tab_3_false.png';
+  static const String toolsTabSelected = '$_base/app_icon_tab_3_true.png';
+  // 扫描工具
+  static const String toolBankCard = '$_base/lic_yhksb.png';
+  static const String toolDocScan = '$_base/lic_wdsm.png';
+  static const String toolTextScan = '$_base/lic_wzsb.png';
+  // PDF处理
+  static const String toolPdfToImage = '$_base/ic_pdf_img.png';
+  static const String toolImageToPdf = '$_base/ic_img_pdf.png';
+  static const String toolPdfEncrypt = '$_base/ic_jiami_pdf.png';
+  // 计算工具
+  static const String toolExchangeRate = '$_base/qlsb_hlhs.png';
+  static const String toolDateCalc = '$_base/qlsb_rqjsq.png';
+  static const String toolTally = '$_base/lic_hfjz.png';
+  static const String toolJsonEditor = '$_base/qlsb_json.png';
+  // 分类展开/收起箭头（topiconl / bottomiconl）
+  static const String toolArrowUp = '$_base/topiconl.png';
+  static const String toolArrowDown = '$_base/bottomiconl.png';
 }

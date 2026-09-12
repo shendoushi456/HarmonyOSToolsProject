@@ -152,29 +152,41 @@ class _CategoryDrawPageState extends ConsumerState<CategoryDrawPage> {
     }
   }
 
-  void _pickCustomColor() async {
+  Future<void> _pickCustomColor() async {
     // flask ColorPickerDialogBuilder 等价物 - 对齐 MainActivityTwo.select_color
+    // （对齐 master_lexiongtuhua：StatefulBuilder 维持色盘实时刷新，
+    //   确定按钮才回传颜色；当前分支旧写法 onColorChanged 直接 pop 导致
+    //   滑动选色立即关窗、上色颜色与所见不一致）
     final state = ref.read(categoryDrawViewModelProvider);
+    var selectedColor = state.currentColor;
     final selected = await showDialog<Color>(
       context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('选择颜色'),
-        content: SingleChildScrollView(
-          child: ColorPicker(
-            pickerColor: state.currentColor,
-            onColorChanged: (c) => Navigator.pop(context, c),
-            pickerAreaHeightPercent: 0.7,
-            displayThumbColor: true,
-            enableAlpha: false,
-            paletteType: PaletteType.hsv,
+      builder: (dialogContext) => StatefulBuilder(
+        builder: (dialogContext, setDialogState) => AlertDialog(
+          title: const Text('选择颜色'),
+          content: SingleChildScrollView(
+            child: ColorPicker(
+              pickerColor: selectedColor,
+              onColorChanged: (color) {
+                setDialogState(() => selectedColor = color);
+              },
+              pickerAreaHeightPercent: 0.7,
+              displayThumbColor: true,
+              enableAlpha: false,
+              paletteType: PaletteType.hsv,
+            ),
           ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(dialogContext),
+              child: const Text('取消'),
+            ),
+            FilledButton(
+              onPressed: () => Navigator.pop(dialogContext, selectedColor),
+              child: const Text('确定'),
+            ),
+          ],
         ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('取消'),
-          ),
-        ],
       ),
     );
     if (selected != null) {

@@ -21,6 +21,36 @@ class DocumentExportService {
     await exportBytesToGallery(bytes, name: name);
   }
 
+  /// 将多张图片一次性写入鸿蒙照片库。
+  ///
+  /// 原生侧只弹一次 SaveButton 确认，授权后在同一回调内写入全部图片。
+  /// PDF 转图片等多页结果使用，避免逐张弹出系统确认框。
+  /// （master_mianfeisaosaowang 分支版本，供 PDF 转图片批量保存使用）
+  Future<void> exportBytesListToGallery(
+    List<Uint8List> bytesList, {
+    required String name,
+  }) async {
+    if (bytesList.isEmpty) {
+      throw const GalleryExportException('GALLERY_EXPORT_ERROR', '没有可保存的图片数据');
+    }
+    try {
+      await _channel.invokeMethod<void>('saveImageBytesList', <String, Object>{
+        'bytesList': bytesList,
+        'name': name,
+      });
+    } on PlatformException catch (error) {
+      throw GalleryExportException(
+        error.code,
+        error.message ?? '保存到系统相册失败',
+      );
+    } on MissingPluginException {
+      throw const GalleryExportException(
+        'GALLERY_PLUGIN_UNAVAILABLE',
+        '图片保存组件未加载，请重新安装应用后重试',
+      );
+    }
+  }
+
   /// 将内存中的图片直接写入鸿蒙照片库。
   ///
   /// 图像处理页的结果本来就在内存中；直接传给原生层可避免不同设备上

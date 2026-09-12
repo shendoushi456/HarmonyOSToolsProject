@@ -48,7 +48,7 @@ class NewDrawBoardPage extends StatelessWidget {
                   children: [
                     _buildImageEditorCard(context),
                     _buildRecognitionRow(context),
-                    _buildToolsRow(context),
+                    // _buildToolsRow(context),
                     _buildGraffitiRow(context),
                   ],
                 ),

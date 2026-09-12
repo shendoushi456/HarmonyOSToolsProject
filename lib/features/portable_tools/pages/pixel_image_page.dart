@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../life_tools/pages/widgets/tool_top_bar.dart';
+import '../../scan_menu/services/document_export_service.dart';
 import '../viewmodels/image_tool_view_model.dart';
 
 /// 对齐 Android PicturePixelActivity：选图、像素块大小、预览与保存。
@@ -119,11 +120,31 @@ class _PixelImagePageState extends ConsumerState<PixelImagePage> {
     }
   }
 
+  /// 保存到系统图库：vm.save() 的沙箱文件仅作为中间产物，写入图库后删除。
   Future<void> _save(PixelImageToolViewModel vm) async {
     final file = await vm.save();
-    if (mounted && file != null) {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text('已保存到 ${file.path}')));
+    if (file == null) return;
+    try {
+      final bytes = await file.readAsBytes();
+      await DocumentExportService().exportBytesToGallery(
+        bytes,
+        name: '像素图-${DateTime.now().millisecondsSinceEpoch}',
+      );
+      // 中间产物不再保留，避免沙箱残留
+      try {
+        await file.delete();
+      } catch (_) {}
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('已保存到系统相册')),
+        );
+      }
+    } on GalleryExportException catch (error) {
+      if (mounted && !error.isCanceled) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('保存失败：${error.message}')),
+        );
+      }
     }
   }
 }

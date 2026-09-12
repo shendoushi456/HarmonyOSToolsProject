@@ -24,12 +24,16 @@ class CategoryDrawViewModel extends Notifier<CategoryDrawState> {
       if (decoded == null) {
         throw StateError('线稿解码失败: $assetPath');
       }
-      final normalized = Uint8List.fromList(img.encodePng(decoded));
+      // 素材混用了 WebP 与索引色 PNG。索引色图片直接 setPixelRgba 时实际
+      // 修改的是 palette index，会导致选色退化为黑色；统一烘焙为 4 通道 RGBA。
+      // （对齐 master_lexiongtuhua 修复"选择颜色无效/上色显示不一致"）
+      final rgba = decoded.convert(numChannels: 4, withPalette: false);
+      final normalized = Uint8List.fromList(img.encodePng(rgba));
       state = state.copyWith(
         initialBytes: normalized,
         currentBytes: Uint8List.fromList(normalized),
-        imageWidth: decoded.width,
-        imageHeight: decoded.height,
+        imageWidth: rgba.width,
+        imageHeight: rgba.height,
         code: code,
         position: position,
       );

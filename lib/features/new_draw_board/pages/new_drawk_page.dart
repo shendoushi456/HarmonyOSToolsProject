@@ -2,19 +2,18 @@
 // 对齐 Android fragment_new_draw_tool.xml + NewDrawkFragment.kt
 // 替换 HomeShellPage 的 Tab[1]（原 ScanToolsPage）
 // 复用 DrawViewModel + DrawState + PalettePainter 画板逻辑
-import 'dart:io';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:path_provider/path_provider.dart';
 
 import '../../../core/constants/app_assets.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../life_tools/pages/color_drawing_studio_page.dart';
 import '../../life_tools/viewmodels/draw_state.dart';
 import '../../life_tools/viewmodels/draw_view_model.dart';
+import '../../scan_menu/services/document_export_service.dart';
 
 class NewDrawkPage extends ConsumerStatefulWidget {
   const NewDrawkPage({super.key});
@@ -388,7 +387,7 @@ class _NewDrawkPageState extends ConsumerState<NewDrawkPage> {
     }
   }
 
-  /// 保存图片（对齐 :196-256 SaveImage 到 /工具箱/简易画板/）
+  /// 保存图片到系统图库（原对齐 SaveImage 到 /工具箱/简易画板/，改为图库）
   Future<void> _save() async {
     final boundary =
         _canvasKey.currentContext?.findRenderObject() as RenderRepaintBoundary?;
@@ -396,17 +395,23 @@ class _NewDrawkPageState extends ConsumerState<NewDrawkPage> {
     final image = await boundary.toImage(pixelRatio: 2);
     final data = await image.toByteData(format: ImageByteFormat.png);
     if (data == null) return;
-    final dir = await getApplicationDocumentsDirectory();
-    final saveDir = Directory('${dir.path}/工具箱/简易画板');
-    await saveDir.create(recursive: true);
     final now = DateTime.now();
-    final file = File(
-        '${saveDir.path}/Image-${now.hour}-${now.minute}-${now.second}.png');
-    await file.writeAsBytes(data.buffer.asUint8List());
-    if (mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('已保存到 ${file.path}')),
+    try {
+      await DocumentExportService().exportBytesToGallery(
+        data.buffer.asUint8List(),
+        name: '简易画板-${now.hour}-${now.minute}-${now.second}',
       );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('已保存到系统相册')),
+        );
+      }
+    } on GalleryExportException catch (error) {
+      if (mounted && !error.isCanceled) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('保存失败：${error.message}')),
+        );
+      }
     }
   }
 }

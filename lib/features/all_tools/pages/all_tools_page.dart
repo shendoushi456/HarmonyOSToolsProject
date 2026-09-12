@@ -166,33 +166,33 @@ class AllToolsPage extends StatelessWidget {
     return Column(
       children: [
         // 第一行：二十四节气 + 马赛克（对齐 :134-201）
-        Padding(
-          padding: const EdgeInsets.only(bottom: 12),
-          child: Row(
-            children: [
-              Expanded(
-                child: _buildToolCard(
-                  context,
-                  icon: AppAssets.allToolsSolarTerms,
-                  title: '二十四节气',
-                  onTap: () => WebToolPage.push(
-                    context,
-                    title: '24节气',
-                    url: 'assets/game/ershisijieqi/index.html',
-                  ),
-                ),
-              ),
-              Expanded(
-                child: _buildToolCard(
-                  context,
-                  icon: AppAssets.allToolsMosaic,
-                  title: '马赛克',
-                  onTap: () => BlurPage.push(context),
-                ),
-              ),
-            ],
-          ),
-        ),
+        // Padding(
+        //   padding: const EdgeInsets.only(bottom: 12),
+        //   child: Row(
+        //     children: [
+        //       Expanded(
+        //         child: _buildToolCard(
+        //           context,
+        //           icon: AppAssets.allToolsSolarTerms,
+        //           title: '二十四节气',
+        //           onTap: () => WebToolPage.push(
+        //             context,
+        //             title: '24节气',
+        //             url: 'assets/game/ershisijieqi/index.html',
+        //           ),
+        //         ),
+        //       ),
+        //       Expanded(
+        //         child: _buildToolCard(
+        //           context,
+        //           icon: AppAssets.allToolsMosaic,
+        //           title: '马赛克',
+        //           onTap: () => BlurPage.push(context),
+        //         ),
+        //       ),
+        //     ],
+        //   ),
+        // ),
         // 第二行：旅行清单 + 花费记账（对齐 :202-270）
         Padding(
           padding: const EdgeInsets.only(bottom: 12),
