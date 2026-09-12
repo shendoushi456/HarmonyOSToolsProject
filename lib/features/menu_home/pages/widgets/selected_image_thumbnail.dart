@@ -16,13 +16,13 @@ class SelectedImageThumbnail extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       children: [
+        // 单选大图展示：宽度占满、高度按图片比例自适应
         ClipRRect(
           borderRadius: BorderRadius.circular(8),
           child: Image.file(
             File(path),
-            fit: BoxFit.cover,
+            fit: BoxFit.contain,
             width: double.infinity,
-            height: double.infinity,
           ),
         ),
         Positioned(

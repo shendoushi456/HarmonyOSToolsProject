@@ -7,6 +7,8 @@ class PdfCompressState {
   final String? selectedPdfName;
   final int? sourceSize;
   final int? outputSize;
+  /// 压缩结果保存位置（用户通过系统保存选择器确认的公共目录 uri）
+  final String? outputPath;
   final bool isProcessing;
   final String? errorMessage;
 
@@ -15,6 +17,7 @@ class PdfCompressState {
     this.selectedPdfName,
     this.sourceSize,
     this.outputSize,
+    this.outputPath,
     this.isProcessing = false,
     this.errorMessage,
   });
@@ -24,6 +27,7 @@ class PdfCompressState {
     String? selectedPdfName,
     int? sourceSize,
     int? outputSize,
+    String? outputPath,
     bool? isProcessing,
     String? errorMessage,
     bool clearError = false,
@@ -34,6 +38,7 @@ class PdfCompressState {
       selectedPdfName: selectedPdfName ?? this.selectedPdfName,
       sourceSize: sourceSize ?? this.sourceSize,
       outputSize: clearOutput ? null : outputSize ?? this.outputSize,
+      outputPath: clearOutput ? null : outputPath ?? this.outputPath,
       isProcessing: isProcessing ?? this.isProcessing,
       errorMessage: clearError ? null : errorMessage ?? this.errorMessage,
     );

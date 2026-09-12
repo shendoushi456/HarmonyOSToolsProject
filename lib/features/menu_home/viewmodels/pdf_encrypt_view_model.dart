@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:file_picker_ohos/file_picker_ohos.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:path_provider/path_provider.dart';
 import '../services/pdf_kit_service.dart';
@@ -71,6 +72,16 @@ class PdfEncryptViewModel extends Notifier<PdfEncryptState> {
         state.password,
       );
       state = state.copyWith(isProcessing: false, outputPath: output);
+    } on PlatformException catch (e) {
+      if (e.code == 'PDF_SAVE_CANCELED') {
+        // 用户在系统保存选择器点了取消，不当作错误
+        state = state.copyWith(isProcessing: false);
+        return;
+      }
+      state = state.copyWith(
+        isProcessing: false,
+        errorMessage: '加密失败：${e.message ?? e.code}',
+      );
     } catch (e) {
       state = state.copyWith(isProcessing: false, errorMessage: '加密失败：$e');
     }

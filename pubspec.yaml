@@ -124,7 +124,12 @@ flutter:
   assets:
     - assets/images/
     - assets/hot_city.json
-    - assets/game/jintianchishenme/   # 今天吃什么 WebView 本地资源
+    # Flutter assets 目录声明不递归，今天吃什么的 style 子目录须逐文件列出（对齐 mianfeis 版）
+    - assets/game/jintianchishenme/index.html   # 今天吃什么 WebView 本地资源
+    - assets/game/jintianchishenme/style/css/eat-min.css
+    - assets/game/jintianchishenme/style/css/img/bg.jpg
+    - assets/game/jintianchishenme/style/img/logo.png
+    - assets/game/jintianchishenme/style/js/jquery-1.11.1.min.js
     - assets/game/ershisijieqi/       # 二十四节气 WebView 本地资源
     - assets/game/ershisijieqi/css/       # 二十四节气 WebView 本地资源
     - assets/game/ershisijieqi/js/       # 二十四节气 WebView 本地资源

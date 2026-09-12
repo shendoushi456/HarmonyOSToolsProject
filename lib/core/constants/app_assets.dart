@@ -279,4 +279,23 @@ class AppAssets {
       '$_base/new_life_calendar_previous.png';
   static const String newLifeCalendarNext = '$_base/new_life_calendar_next.png';
   static const String newLifeSettings = '$_base/new_life_settings.png';
+
+  // ScanToolsFragment 工具页资源（取自 toolbox_c drawable/mipmap-xxhdpi）
+  // PDF 工具区（MenuFragment PdfToolsSection）
+  static const String iconPdfImg = '$_base/icon_pdf_img.png';
+  static const String iconImgPdf = '$_base/icon_img_pdf.png';
+  static const String iconYasuoPdf = '$_base/icon_yasuo_pdf.png';
+  static const String iconJiamiPdf = '$_base/icon_jiami_pdf.png';
+  // 图片工具区
+  static const String mtoolslSst = '$_base/mtoolsl_sst.png';
+  static const String mtoolslTxt = '$_base/mtoolsl_txt.png';
+  static const String mtoolslYct = '$_base/mtoolsl_yct.png';
+  static const String mtoolslHbss = '$_base/mtoolsl_hbss.png';
+  // 其他区
+  static const String mtoolslHlhs = '$_base/mtoolsl_hlhs.png';
+  static const String mtoolslJzzh = '$_base/mtoolsl_jzzh.png';
+  static const String mtoolslRqjs = '$_base/mtoolsl_rqjs.png';
+  static const String mtoolslEw = '$_base/mtoolsl_ew.png';
+  static const String mtoolslSjs = '$_base/mtoolsl_sjs.png';
+  static const String mtoolslJson = '$_base/mtoolsl_json.png';
 }

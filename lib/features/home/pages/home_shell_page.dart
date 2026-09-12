@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/constants/app_colors.dart';
+import '../../scan_tools/pages/scan_tools_fragment_page.dart';
 import '../../scan_tools/pages/scan_tools_page.dart';
 import '../../wifi/pages/wifi_page.dart';
 import '../../new_life/pages/new_life_home_page.dart';
@@ -12,7 +13,8 @@ class HomeShellPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final currentIndex = ref.watch(homeTabIndexProvider);
-    const pages = [WifiPage(), ScanToolsPage(), NewLifeHomePage()];
+    // Tab 顺序：Wi-Fi → 工具(ScanToolsFragment 迁移版，位于 wifi 页后面) → 我的
+    const pages = [WifiPage(), ScanToolsFragmentPage(), ScanToolsPage(), NewLifeHomePage()];
     return Scaffold(
       body: IndexedStack(index: currentIndex, children: pages),
       bottomNavigationBar: _buildBottomNav(ref, currentIndex),
@@ -22,11 +24,12 @@ class HomeShellPage extends ConsumerWidget {
   Widget _buildBottomNav(WidgetRef ref, int currentIndex) {
     const items = <_NavItem>[
       _NavItem(Icons.wifi_outlined, Icons.wifi, 'Wi-Fi'),
+      _NavItem(Icons.featured_play_list_outlined, Icons.featured_play_list, '生活助手'),
       _NavItem(Icons.grid_view_outlined, Icons.grid_view, '工具'),
       _NavItem(Icons.margin_outlined, Icons.margin, '我的'),
     ];
     return Container(
-      height: 62,
+      height: 80,
       decoration: const BoxDecoration(
         color: Color(0xFFF9FDFF),
         boxShadow: [
@@ -36,7 +39,7 @@ class HomeShellPage extends ConsumerWidget {
       ),
       child: SafeArea(
         top: false,
-        bottom: false,
+        bottom: true,
         child: Row(
           children: [
             for (var i = 0; i < items.length; i++)

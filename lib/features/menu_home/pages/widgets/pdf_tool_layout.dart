@@ -9,6 +9,8 @@ class PdfToolLayout extends StatelessWidget {
   final Widget child;
   final VoidCallback? onSelect;
   final VoidCallback? onAction;
+  /// AppBar 右上角自定义按钮区（如保存图标），其他 PDF 页不传则不显示。
+  final List<Widget>? actions;
 
   const PdfToolLayout({
     super.key,
@@ -18,6 +20,7 @@ class PdfToolLayout extends StatelessWidget {
     required this.child,
     this.onSelect,
     this.onAction,
+    this.actions,
   });
 
   @override
@@ -40,6 +43,7 @@ class PdfToolLayout extends StatelessWidget {
           ),
         ),
         centerTitle: true,
+        actions: actions,
       ),
       body: Column(
         children: [
