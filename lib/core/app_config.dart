@@ -9,12 +9,12 @@ class AppConfig {
   /// 有道应用 ID（appKey）
   ///
   /// TODO(用户): 替换为实际的有道应用 ID
-  static const String youdaoAppId = '1727c4fd13d6a729';
+  static const String youdaoAppId = '2e2aff5d94bf2841';
 
   /// 有道应用密钥（appSecret）
   ///
   /// TODO(用户): 替换为实际的有道应用密钥
-  static const String youdaoAppSecret = 'Ymg5lt2YMMim7K06HINMSl7EkSrfJSJk';
+  static const String youdaoAppSecret = 'YZoUMgpsZoxziDpfSGUeFnSruyNqmRLl';
 
   /// 有道作文批改应用 ID（作文批改使用独立服务实例）。
   static const String youdaoCorrectionAppId = '2c481e93cff5c35f';
@@ -26,18 +26,18 @@ class AppConfig {
   /// 有道文档翻译应用 ID（文档翻译使用独立密钥）
   ///
   /// TODO(用户): 替换为实际的有道文档翻译应用 ID
-  static const String youdaoDocAppId = '1727c4fd13d6a729';
+  static const String youdaoDocAppId = '2e2aff5d94bf2841';
 
   /// 有道文档翻译应用密钥
   ///
   /// TODO(用户): 替换为实际的有道文档翻译应用密钥
-  static const String youdaoDocAppSecret = 'Ymg5lt2YMMim7K06HINMSl7EkSrfJSJk';
+  static const String youdaoDocAppSecret = 'YZoUMgpsZoxziDpfSGUeFnSruyNqmRLl';
 
   /// 隐私政策 URL
   static const String privacyUrl =
-      'http://api.jyhytech.top/agreement/txsls/privacy';
+      'http://api.jyhytech.top/agreement/hmfymfy/privacy';
 
   /// 用户协议 URL
   static const String userAgreementUrl =
-      'http://api.jyhytech.top/agreement/txsls/user';
+      'http://api.jyhytech.top/agreement/hmfymfy/user';
 }

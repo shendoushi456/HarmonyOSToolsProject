@@ -75,7 +75,7 @@ class _AboutPageState extends State<AboutPage> {
                   ),
                   const SizedBox(height: 16),
                   Text(
-                    _appName.isEmpty ? '扫莱扫' : _appName,
+                    _appName.isEmpty ? '翻译免费用' : _appName,
                     style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w500,

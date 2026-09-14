@@ -5,11 +5,14 @@ import 'features/privacy/presentation/pages/about_page.dart';
 import 'features/privacy/presentation/pages/feed_back_page.dart';
 import 'features/privacy/presentation/pages/policy_page.dart';
 import 'features/privacy/presentation/pages/splash_page.dart';
+import 'features/recognition/models/recognition_type.dart';
+import 'features/recognition/pages/recognition_page.dart';
 import 'features/scan_menu/presentation/scan_menu_page.dart';
 import 'features/scan_menu/presentation/widgets/placeholder_page.dart';
 import 'features/translation/domain/english_result.dart';
 import 'features/translation/presentation/pages/article_result_translation_page.dart';
 import 'features/translation/presentation/pages/contrast_translation_page.dart';
+import 'features/translation/presentation/pages/format_convert_page.dart';
 import 'features/translation/presentation/pages/doc_translation_activity_page.dart';
 import 'features/translation/presentation/pages/lang_switch_translation_page.dart';
 import 'features/translation/presentation/pages/original_translation_page.dart';
@@ -93,6 +96,19 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: '/photo_translation_activity',
       builder: (_, __) => const PhotoTranslationActivityPage(),
+    ),
+    GoRoute(
+      path: '/recognition',
+      builder: (_, state) {
+        final extra = state.extra as RecognitionType?;
+        return RecognitionPage(
+          type: extra ?? RecognitionType.text,
+        );
+      },
+    ),
+    GoRoute(
+      path: '/format_convert',
+      builder: (_, __) => const FormatConvertPage(),
     ),
     GoRoute(
       path: '/contrast_translation',

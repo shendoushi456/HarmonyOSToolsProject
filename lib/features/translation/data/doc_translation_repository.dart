@@ -26,7 +26,7 @@ class DocTranslationRepository {
   static const String _defaultFromLanguage = '中文';
   static const String _defaultToLanguage = '英文';
   static const MethodChannel _documentDownloadChannel = MethodChannel(
-    'hm.ruisi.saosaole/document_download',
+    'hm.xxhy.fanyifreeuse/document_download',
   );
 
   final DocTransApiClient _apiClient = DocTransApiClient();

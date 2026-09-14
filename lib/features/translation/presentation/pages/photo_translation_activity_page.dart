@@ -30,7 +30,7 @@ class _PhotoTranslationActivityPageState
     extends ConsumerState<PhotoTranslationActivityPage>
     with WidgetsBindingObserver {
   static const MethodChannel _cameraPermissionChannel = MethodChannel(
-    'hm.ruisi.saosaole/camera_permission',
+    'hm.xxhy.fanyifreeuse/camera_permission',
   );
   static const String _cameraPermissionDeniedKey =
       'photo_translation_camera_permission_denied';

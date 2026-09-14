@@ -15,7 +15,13 @@ const int _maxLength = 5000;
 /// 对应原 Android `ArticleTranslationFragment`，保真还原 Compose UI：
 /// 蓝色标题栏 + 白色卡片输入区（背景 ic_text_bg）+ 批改按钮 + 等级下拉框 + Loading 遮罩。
 class ArticleTranslationPage extends ConsumerStatefulWidget {
-  const ArticleTranslationPage({super.key});
+  const ArticleTranslationPage({super.key, this.isActive = true});
+
+  /// 是否为当前可见 Tab。
+  ///
+  /// 底部导航为 IndexedStack，各 Tab 常驻；批改结果 Provider 为共享单例，
+  /// 仅可见 Tab 响应结果跳转，避免与文档翻译页（内含文章批改）重复 push。
+  final bool isActive;
 
   @override
   ConsumerState<ArticleTranslationPage> createState() =>
@@ -44,9 +50,12 @@ class _ArticleTranslationPageState
   Widget build(BuildContext context) {
     final uiState = ref.watch(articleCorrectionNotifierProvider);
 
-    // 监听批改结果跳转结果页，监听错误消息
+    // 监听批改结果跳转结果页，监听错误消息（仅当前可见 Tab 响应）
     ref.listen<ArticleCorrectionUiState>(articleCorrectionNotifierProvider,
         (ArticleCorrectionUiState? previous, ArticleCorrectionUiState next) {
+      if (!widget.isActive) {
+        return;
+      }
       if (next.correctionResult != null) {
         context.push('/article_result', extra: next.correctionResult);
         ref.read(articleCorrectionNotifierProvider.notifier).clearResult();

@@ -26,7 +26,7 @@ class SettingTranslationPage extends StatefulWidget {
 
 class _SettingTranslationPageState extends State<SettingTranslationPage> {
   static const MethodChannel _cameraPermissionChannel = MethodChannel(
-    'hm.ruisi.saosaole/camera_permission',
+    'hm.xxhy.fanyifreeuse/camera_permission',
   );
   static const String _qrCameraPermissionDeniedKey =
       'qr_scanner_camera_permission_denied';
@@ -149,7 +149,7 @@ class _SettingTranslationPageState extends State<SettingTranslationPage> {
                 const SizedBox(height: 12),
                 // 副标题
                 const Text(
-                  '欢迎使用扫莱扫',
+                  '欢迎使用翻译免费用',
                   style: TextStyle(
                     fontSize: 22,
                     color: AppColors.langSwitchText,

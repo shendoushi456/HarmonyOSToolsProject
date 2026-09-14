@@ -79,7 +79,7 @@ class _SplashLogo extends StatelessWidget {
           ),
           const SizedBox(height: 12),
           const Text(
-            '扫莱扫',
+            '翻译免费用',
             style: TextStyle(
               fontSize: 22,
               color: AppColors.langSwitchText,
@@ -129,7 +129,7 @@ class _PrivacyAgreementScreen extends StatelessWidget {
           const SizedBox(height: 16),
           const Center(
             child: Text(
-              '扫莱扫',
+              '翻译免费用',
               style: TextStyle(
                 fontSize: 22,
                 fontWeight: FontWeight.w600,
@@ -147,7 +147,7 @@ class _PrivacyAgreementScreen extends StatelessWidget {
                 height: 1.6,
               ),
               children: [
-                const TextSpan(text: '欢迎您使用扫莱扫。在使用本应用前，请您仔细阅读并了解'),
+                const TextSpan(text: '欢迎您使用翻译免费用。在使用本应用前，请您仔细阅读并了解'),
                 WidgetSpan(
                   child: GestureDetector(
                     onTap: onUserAgreementClick,

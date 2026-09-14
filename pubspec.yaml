@@ -72,6 +72,30 @@ dependencies:
   qr_flutter: ^4.1.0
   # 国际化
   intl: 0.19.0
+  # ====== PDF 格式转换（图片转PDF / PDF转图片，自 master_mianfeisaosaowang 复制）======
+  # 图片真实宽高读取（纯 Dart）
+  image: ^4.1.7
+  # 相册选图 - 鸿蒙适配版
+  image_picker:
+    git:
+      url: https://gitcode.com/openharmony-sig/flutter_packages.git
+      path: packages/image_picker/image_picker
+      ref: image_picker-v1.1.2-ohos-1.0.1
+  # 选择 PDF 文件 - 鸿蒙适配版
+  file_picker_ohos:
+    git:
+      url: https://gitcode.com/openharmony-sig/fluttertpc_file_picker.git
+      ref: br_v10.3.8_ohos
+  # 百度 AI 文字识别 HTTP 客户端（纯 Dart）— 自 master_mianfeisaosaowang
+  dio: 5.4.0
+
+# 覆盖 file_picker_ohos 对 hosted image_picker 的依赖，强制使用鸿蒙适配版
+dependency_overrides:
+  image_picker:
+    git:
+      url: https://gitcode.com/openharmony-sig/flutter_packages.git
+      path: packages/image_picker/image_picker
+      ref: image_picker-v1.1.2-ohos-1.0.1
 
 dev_dependencies:
   flutter_test:

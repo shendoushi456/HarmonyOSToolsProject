@@ -4,7 +4,7 @@ import { fileIo, fileUri, picker } from '@kit.CoreFileKit';
 import MethodChannel, { MethodResult } from '@ohos/flutter_ohos/src/main/ets/plugin/common/MethodChannel';
 import { FlutterEngine, MethodCall } from '@ohos/flutter_ohos';
 
-const CHANNEL_NAME = 'hm.ruisi.saosaole/document_download';
+const CHANNEL_NAME = 'hm.xxhy.fanyifreeuse/document_download';
 
 /**
  * 将 Flutter 下载好的翻译文档保存到系统下载目录。

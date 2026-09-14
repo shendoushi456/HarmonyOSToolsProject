@@ -27,7 +27,7 @@ class DocTransApiClient {
   static const String _queryUrl = '$_baseUrl/file_trans/query';
   static const String _downloadUrl = '$_baseUrl/file_trans/download';
   static const MethodChannel _documentUploadChannel =
-      MethodChannel('hm.ruisi.saosaole/document_upload');
+      MethodChannel('hm.xxhy.fanyifreeuse/document_upload');
 
   static const Uuid _uuid = Uuid();
 
