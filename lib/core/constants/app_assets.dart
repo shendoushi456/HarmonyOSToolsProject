@@ -277,6 +277,74 @@ class AppAssets {
   /// 扫描二维码图标(对齐 ic_tong_life_2_2)
   static const String icQrScan = '$_base/ic_tong_life_2_2.png';
 
+  // ====== MenuFragment(sao 版)首页资源 - 对齐 toolbox_c ic_sao_main_* ======
+  static const String saoMainBg = '$_base/sao_home/ic_sao_main_bg.png';
+  static const String saoMain11 = '$_base/sao_home/ic_sao_main_1_1.png';
+  static const String saoMain12 = '$_base/sao_home/ic_sao_main_1_2.png';
+  static const String saoMain13 = '$_base/sao_home/ic_sao_main_1_3.png';
+  static const String saoMain14 = '$_base/sao_home/ic_sao_main_1_4.png';
+  static const String saoMain21 = '$_base/sao_home/ic_sao_main_2_1.png';
+  static const String saoMain22 = '$_base/sao_home/ic_sao_main_2_2.png';
+  static const String saoMain23 = '$_base/sao_home/ic_sao_main_2_3.png';
+  static const String saoMain24 = '$_base/sao_home/ic_sao_main_2_4.png';
+  static const String saoMain31 = '$_base/sao_home/ic_sao_main_3_1.png';
+  static const String saoMain32 = '$_base/sao_home/ic_sao_main_3_2.png';
+  static const String saoMain33 = '$_base/sao_home/ic_sao_main_3_3.png';
+  static const String saoMain34 = '$_base/sao_home/ic_sao_main_3_4.png';
+  static const String saoMain35 = '$_base/sao_home/ic_sao_main_3_5.png';
+
+  // ====== ImageGalleryFragment(sao 版)资源 - 对齐 toolbox_c filesmanager ======
+  /// 排序按钮初始图标(对齐 icon_sort -> @mipmap/ic_black_sort)
+  static const String igBlackSort = '$_base/image_gallery_sao/ic_black_sort.png';
+  /// 排序随机切换图标(对齐 sort_one / drawable ic_sort)
+  static const String igSortOne = '$_base/image_gallery_sao/sort_one.png';
+  static const String igSort = '$_base/image_gallery_sao/ic_sort.png';
+  /// 空态插图(对齐 empty_ic)
+  static const String igEmpty = '$_base/image_gallery_sao/empty_ic.png';
+  /// 列表项右侧箭头(对齐 ic_black_enter)
+  static const String igBlackEnter = '$_base/image_gallery_sao/ic_black_enter.png';
+  /// 详情页返回图标(对齐 icon_title_bar_back -> @mipmap/icon_black_back)
+  static const String igBlackBack = '$_base/image_gallery_sao/icon_black_back.png';
+  /// 保存到本地/删除操作图标
+  static const String igSaveLocal = '$_base/image_gallery_sao/save_local_ic.png';
+  static const String igDelete = '$_base/image_gallery_sao/delete_ic.png';
+  /// 列表项白色卡片背景(对齐 shape_card_white)
+  static const String igShapeCardWhite =
+      '$_base/image_gallery_sao/shape_card_white.png';
+
+  // ====== ScanToolsFragment(sao 版)工具页资源 - 对齐 toolbox_c ic_sao_tools_* ======
+  static const String saoTools11 = '$_base/sao_tools/ic_sao_tools_1_1.png';
+  static const String saoTools12 = '$_base/sao_tools/ic_sao_tools_1_2.png';
+  static const String saoTools13 = '$_base/sao_tools/ic_sao_tools_1_3.png';
+  static const String saoTools14 = '$_base/sao_tools/ic_sao_tools_1_4.png';
+  static const String saoTools21 = '$_base/sao_tools/ic_sao_tools_2_1.png';
+  static const String saoTools22 = '$_base/sao_tools/ic_sao_tools_2_2.png';
+  static const String saoTools23 = '$_base/sao_tools/ic_sao_tools_2_3.png';
+  static const String saoTools24 = '$_base/sao_tools/ic_sao_tools_2_4.png';
+  static const String saoTools31 = '$_base/sao_tools/ic_sao_tools_3_1.png';
+  static const String saoTools32 = '$_base/sao_tools/ic_sao_tools_3_2.png';
+  static const String saoTools33 = '$_base/sao_tools/ic_sao_tools_3_3.png';
+  static const String saoTools34 = '$_base/sao_tools/ic_sao_tools_3_4.png';
+  static const String saoTools41 = '$_base/sao_tools/ic_sao_tools_4_1.png';
+  static const String saoTools42 = '$_base/sao_tools/ic_sao_tools_4_2.png';
+  static const String saoTools43 = '$_base/sao_tools/ic_sao_tools_4_3.png';
+  static const String saoTools44 = '$_base/sao_tools/ic_sao_tools_4_4.png';
+
+  // ====== sao 版底部导航资源 - 对齐 toolbox_c nav_tools_menu.xml selector ======
+  // tab1 首页(22x23dp)、tab2 文档(22x24dp)、tab3 工具(true 22x22 / false 24x24)
+  static const String saoNavHomeSelected =
+      '$_base/sao_bottom_nav/icon_tab_1_true.png';
+  static const String saoNavHomeNormal =
+      '$_base/sao_bottom_nav/icon_tab_1_false.png';
+  static const String saoNavDocSelected =
+      '$_base/sao_bottom_nav/icon_tab_2_true.png';
+  static const String saoNavDocNormal =
+      '$_base/sao_bottom_nav/icon_tab_2_false.png';
+  static const String saoNavToolsSelected =
+      '$_base/sao_bottom_nav/icon_tab_3_true.png';
+  static const String saoNavToolsNormal =
+      '$_base/sao_bottom_nav/icon_tab_3_false.png';
+
   // ====== ScanMenu 资源 - 仅来自 Android 源码 res/mipmap-xxhdpi ======
   static const String scanHomeBg = '$_base/scan_home_bg.png';
   static const String scanToolArchive = '$_base/scan_tool_archive.png';

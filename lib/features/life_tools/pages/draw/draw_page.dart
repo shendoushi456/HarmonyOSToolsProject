@@ -1,11 +1,10 @@
 // 画板页 - 对齐 Android DrawActivity.java + activity_lib_draw_tool.xml
 // 顶栏"画板" + 菜单(笔粗/颜色/保存) + CustomPaint + 底部 5 个按钮(撤销/重做/画笔/橡皮擦/清除)
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:path_provider/path_provider.dart';
 import 'dart:ui' as ui;
+import '../../../scan_menu/services/document_export_service.dart';
 import '../../viewmodels/draw_state.dart';
 import '../../viewmodels/draw_view_model.dart';
 import '../widgets/tool_top_bar.dart';
@@ -167,7 +166,7 @@ class _DrawPageState extends ConsumerState<DrawPage> {
   }
 
   /// 保存 PNG - 对齐 DrawActivity.java:175-230 Util.SaveImage
-  /// 写入应用文档目录(对齐 /工具箱/简易画板/)
+  /// 保存到系统相册(用户要求，替代沙箱目录)
   Future<void> _savePng() async {
     final boundary = _repaintKey.currentContext?.findRenderObject() as RenderRepaintBoundary?;
     if (boundary == null) return;
@@ -176,22 +175,22 @@ class _DrawPageState extends ConsumerState<DrawPage> {
     if (byteData == null) return;
     final bytes = byteData.buffer.asUint8List();
     final now = DateTime.now();
-    final fileName = 'Image-${now.hour.toString().padLeft(2, '0')}-${now.minute.toString().padLeft(2, '0')}-${now.second.toString().padLeft(2, '0')}.png';
+    final fileName = 'Image-${now.hour.toString().padLeft(2, '0')}-${now.minute.toString().padLeft(2, '0')}-${now.second.toString().padLeft(2, '0')}';
     try {
-      final dir = await getApplicationDocumentsDirectory();
-      final saveDir = Directory('${dir.path}/工具箱/简易画板');
-      if (!await saveDir.exists()) {
-        await saveDir.create(recursive: true);
-      }
-      final file = File('${saveDir.path}/$fileName');
-      await file.writeAsBytes(bytes);
-      if (context.mounted) {
+      await DocumentExportService().exportBytesToGallery(bytes, name: fileName);
+      if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('已保存: ${file.path}')),
+          const SnackBar(content: Text('已保存到系统相册')),
+        );
+      }
+    } on GalleryExportException catch (error) {
+      if (mounted && !error.isCanceled) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('保存失败：${error.message}')),
         );
       }
     } catch (e) {
-      if (context.mounted) {
+      if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('保存失败: $e')),
         );

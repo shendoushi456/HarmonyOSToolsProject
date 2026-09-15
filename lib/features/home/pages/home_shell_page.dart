@@ -2,10 +2,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/constants/app_assets.dart';
-import '../../menu_fragment/pages/menu_fragment_page.dart';
-import '../../menu_tools/pages/menu_tools_page.dart';
-import '../../pdf_tools/pages/pdf_tools_page.dart';
-import '../../life_favorite/pages/life_favorite_page.dart';
+import '../../image_gallery/pages/image_gallery_page.dart';
+import '../../menu_fragment/pages/sao_menu_page.dart';
+import '../../scan_tools/pages/sao_tools_page.dart';
 import '../viewmodels/home_tab_view_model.dart';
 
 class HomeShellPage extends ConsumerWidget {
@@ -14,10 +13,9 @@ class HomeShellPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final currentIndex = ref.watch(homeTabIndexProvider);
     const pages = [
-      MenuToolsPage(),
-      // MenuFragmentPage(),
-      PdfToolsPage(),
-      LifeFavoritePage(),
+      SaoMenuPage(),
+      ImageGalleryPage(),
+      SaoToolsPage(),
     ];
     return Scaffold(
       body: IndexedStack(index: currentIndex, children: pages),
@@ -25,19 +23,19 @@ class HomeShellPage extends ConsumerWidget {
     );
   }
 
+  /// 底部导航 - 对齐 toolbox_c activity_sacnmenu_layout.xml + nav_tools_menu.xml：
+  /// 白底 + 顶部 #FFCECECE 分隔线(MyBottomNavView stroke)，图标原色无 tint，
+  /// 文字 12sp(选中 #1B2630=colorPrimary blue，未选中默认灰)
   Widget _buildBottomNav(WidgetRef ref, int currentIndex) {
     const items = <_NavItem>[
-      _NavItem(AppAssets.navHomeNormal, AppAssets.navHomeSelected, '首页'),
-      _NavItem(
-          AppAssets.navToolsNormal, AppAssets.navToolsSelected, 'PDF工具'),
-      _NavItem(
-        AppAssets.navFavoriteNormal,
-        AppAssets.navFavoriteSelected,
-        '收藏',
-      ),
+      _NavItem(AppAssets.saoNavHomeNormal, AppAssets.saoNavHomeSelected, '首页',
+          22, 23, 22, 23),
+      _NavItem(AppAssets.saoNavDocNormal, AppAssets.saoNavDocSelected, '文档',
+          22, 24, 22, 24),
+      _NavItem(AppAssets.saoNavToolsNormal, AppAssets.saoNavToolsSelected, '工具',
+          24, 24, 22, 22),
     ];
     return Container(
-      height: 78,
       decoration: const BoxDecoration(
         color: Colors.white,
         boxShadow: [
@@ -49,39 +47,53 @@ class HomeShellPage extends ConsumerWidget {
         ],
       ),
       child: SafeArea(
-        // 白色背景(Container)延伸到屏幕底部,图标/文字行避开底部安全区
+        // 白色背景(Container)延伸到屏幕底部,导航内容行避开底部安全区
         top: false,
-        child: Row(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
-            for (var i = 0; i < items.length; i++)
-              Expanded(
-                child: GestureDetector(
-                  behavior: HitTestBehavior.opaque,
-                  onTap: () =>
-                      ref.read(homeTabIndexProvider.notifier).state = i,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Image.asset(
-                        currentIndex == i
-                            ? items[i].selectedAsset
-                            : items[i].normalAsset,
-                        width: 24,
-                        height: 24,
-                        fit: BoxFit.contain,
+            // MyBottomNavView 顶部 5px #FFCECECE stroke 分隔线
+            Container(height: 1, color: const Color(0xFFFCECEC)),
+            // 对齐 BottomNavigationView wrap_content = 56dp(不含系统导航安全区)
+            SizedBox(
+              height: 55,
+              child: Row(
+                children: [
+                  for (var i = 0; i < items.length; i++)
+                    Expanded(
+                      child: GestureDetector(
+                        behavior: HitTestBehavior.opaque,
+                        onTap: () =>
+                            ref.read(homeTabIndexProvider.notifier).state = i,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Image.asset(
+                              currentIndex == i
+                                  ? items[i].selectedAsset
+                                  : items[i].normalAsset,
+                              width: currentIndex == i
+                                  ? items[i].selectedWidth
+                                  : items[i].normalWidth,
+                              height: currentIndex == i
+                                  ? items[i].selectedHeight
+                                  : items[i].normalHeight,
+                              fit: BoxFit.contain,
+                            ),
+                            const SizedBox(height: 1),
+                            Text(items[i].label,
+                                style: TextStyle(
+                                    fontSize: 12,
+                                    color: currentIndex == i
+                                        ? const Color(0xFF1B2630)
+                                        : const Color(0xFF666666))),
+                          ],
+                        ),
                       ),
-                      const SizedBox(height: 1),
-                      Text(items[i].label,
-                          style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w500,
-                              color: currentIndex == i
-                                  ? const Color(0xFF7357F6)
-                                  : const Color(0xFF8E8E8E))),
-                    ],
-                  ),
-                ),
+                    ),
+                ],
               ),
+            ),
           ],
         ),
       ),
@@ -93,5 +105,17 @@ class _NavItem {
   final String normalAsset;
   final String selectedAsset;
   final String label;
-  const _NavItem(this.normalAsset, this.selectedAsset, this.label);
+  final double normalWidth;
+  final double normalHeight;
+  final double selectedWidth;
+  final double selectedHeight;
+  const _NavItem(
+    this.normalAsset,
+    this.selectedAsset,
+    this.label,
+    this.normalWidth,
+    this.normalHeight,
+    this.selectedWidth,
+    this.selectedHeight,
+  );
 }

@@ -77,27 +77,10 @@ class _DocumentCapturePreviewPageState
   }
 
   Future<void> _watermark() async {
-    final controller = TextEditingController(text: '默认水印');
     final text = await showDialog<String>(
-        context: context,
-        builder: (dialogContext) => AlertDialog(
-              title: const Text('设置水印文字'),
-              content: TextField(
-                  controller: controller,
-                  autofocus: true,
-                  decoration: const InputDecoration(hintText: '输入要添加的水印')),
-              actions: [
-                TextButton(
-                    onPressed: () => Navigator.pop(dialogContext),
-                    child: const Text('取消')),
-                FilledButton(
-                    onPressed: () =>
-                        Navigator.pop(dialogContext, controller.text),
-                    child: const Text('添加'))
-              ],
-            ));
-    controller.dispose();
+        context: context, builder: (_) => const _WatermarkDialog());
     if (text == null || text.trim().isEmpty) return;
+    if (!mounted) return;
     setState(() => _processing = true);
     try {
       final result =
@@ -116,6 +99,55 @@ class _DocumentCapturePreviewPageState
     final saved = await Navigator.push<bool>(context,
         MaterialPageRoute(builder: (_) => DocumentSavePage(file: _file)));
     if (saved == true && mounted) Navigator.pop(context, true);
+  }
+}
+
+/// 水印输入框自行管理控制器生命周期，避免弹框关闭时父页面提前释放
+/// TextEditingController，导致鸿蒙 Flutter 引擎在 InheritedElement 销毁阶段
+/// 触发 `_dependents.isEmpty` 断言(红屏)。
+/// 修复方案取自 master_yisaopaike 分支 18284407 提交。
+class _WatermarkDialog extends StatefulWidget {
+  const _WatermarkDialog();
+
+  @override
+  State<_WatermarkDialog> createState() => _WatermarkDialogState();
+}
+
+class _WatermarkDialogState extends State<_WatermarkDialog> {
+  late final TextEditingController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = TextEditingController(text: '默认水印');
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: const Text('设置水印文字'),
+      content: TextField(
+        controller: _controller,
+        autofocus: true,
+        decoration: const InputDecoration(hintText: '输入要添加的水印'),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(context),
+          child: const Text('取消'),
+        ),
+        FilledButton(
+          onPressed: () => Navigator.pop(context, _controller.text),
+          child: const Text('添加'),
+        ),
+      ],
+    );
   }
 }
 

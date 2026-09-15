@@ -1,7 +1,7 @@
 {
   "app": {
-    "bundleName": "hm.xxhy.freescanking",
-    "vendor": "xxhy",
+    "bundleName": "hm.ruisi.saosaole",
+    "vendor": "ruisi",
     "versionCode": 1000000,
     "versionName": "1.0.1",
     "icon": "$media:app_icon",

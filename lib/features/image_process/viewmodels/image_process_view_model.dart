@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../models/image_process_state.dart';
@@ -51,8 +52,19 @@ class ImageProcessViewModel
                 style: state.style,
               );
       state = state.copyWith(resultBytes: result, isProcessing: false);
-    } catch (_) {
-      state = state.copyWith(isProcessing: false, errorMessage: '图片处理失败，请稍后重试');
+    } catch (e) {
+      debugPrint('ImageProcess[$_type] error: $e');
+      // 对齐安卓 DiscernViewMode：配额/频率类错误给出明确提示
+      final message = e.toString();
+      final String errorText;
+      if (message.contains('daily request limit')) {
+        errorText = '今日次数已经用完';
+      } else if (message.contains('QPS') || message.contains('rate limit')) {
+        errorText = '操作频繁，请您稍后。';
+      } else {
+        errorText = '图片处理失败，请稍后重试';
+      }
+      state = state.copyWith(isProcessing: false, errorMessage: errorText);
     }
   }
 }

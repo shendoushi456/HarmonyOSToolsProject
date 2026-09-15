@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
+import '../../scan_menu/services/document_export_service.dart';
 import 'qr_generate_state.dart';
 
 final qrGenerateViewModelProvider = NotifierProvider<QrGenerateViewModel, QrGenerateState>(
@@ -68,19 +69,17 @@ class QrGenerateViewModel extends Notifier<QrGenerateState> {
   }
 
   /// 保存二维码 - 对齐 QRCodeActivity.java:181-198
-  Future<String?> save() async {
-    if (state.generatedQrBytes == null) return null;
+  /// 保存到系统相册(用户要求，替代沙箱目录)
+  Future<void> save() async {
+    if (state.generatedQrBytes == null) return;
     state = state.copyWith(isSaving: true);
     try {
-      final docDir = await getApplicationDocumentsDirectory();
-      final dir = '${docDir.path}/工具箱/二维码生成';
-      await Directory(dir).create(recursive: true);
       final now = DateTime.now();
-      final fileName = 'Image-${now.hour.toString().padLeft(2, '0')}-${now.minute.toString().padLeft(2, '0')}-${now.second.toString().padLeft(2, '0')}.png';
-      final path = '$dir/$fileName';
-      await File(path).writeAsBytes(state.generatedQrBytes!);
+      final fileName =
+          'Image-${now.hour.toString().padLeft(2, '0')}-${now.minute.toString().padLeft(2, '0')}-${now.second.toString().padLeft(2, '0')}';
+      await DocumentExportService()
+          .exportBytesToGallery(state.generatedQrBytes!, name: fileName);
       state = state.copyWith(isSaving: false);
-      return path;
     } catch (e) {
       state = state.copyWith(isSaving: false);
       rethrow;

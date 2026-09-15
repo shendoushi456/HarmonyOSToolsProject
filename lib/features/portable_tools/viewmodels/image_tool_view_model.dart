@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../scan_menu/services/document_export_service.dart';
 import '../models/image_tool_state.dart';
 import '../services/portable_image_tool_service.dart';
 
@@ -38,13 +39,14 @@ class PixelImageToolViewModel extends Notifier<ImageToolState> {
     }
   }
 
-  Future<File?> save() async {
-    if (state.resultBytes == null) return null;
-    return ref.read(portableImageToolServiceProvider).savePng(
-          state.resultBytes!,
-          directoryName: '图片像素化',
-          prefix: 'pixel_',
-        );
+  /// 保存到系统相册(用户要求，替代沙箱目录)
+  Future<void> save() async {
+    final bytes = state.resultBytes;
+    if (bytes == null) return;
+    await DocumentExportService().exportBytesToGallery(
+      bytes,
+      name: 'pixel_${DateTime.now().millisecondsSinceEpoch}',
+    );
   }
 }
 

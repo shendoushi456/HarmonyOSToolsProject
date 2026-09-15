@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/constants/app_colors.dart';
+import '../../scan_menu/services/document_export_service.dart';
 import '../viewmodels/qr_generate_state.dart';
 import '../viewmodels/qr_generate_view_model.dart';
 import 'widgets/pdf_tool_layout.dart';
@@ -158,11 +159,18 @@ class QrGeneratePage extends ConsumerWidget {
                         ? null
                         : () async {
                             try {
-                              final path = await vm.save();
-                              if (context.mounted && path != null) {
+                              await vm.save();
+                              if (context.mounted) {
                                 vm.dismissPreview();
                                 ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(content: Text('已保存: $path')),
+                                  const SnackBar(content: Text('已保存到系统相册')),
+                                );
+                              }
+                            } on GalleryExportException catch (error) {
+                              if (context.mounted && !error.isCanceled) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                      content: Text('保存失败：${error.message}')),
                                 );
                               }
                             } catch (e) {

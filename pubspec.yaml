@@ -1,5 +1,5 @@
 name: qingman_weather
-description: 免费扫扫王 - Flutter-ohos 版
+description: 扫莱扫 - Flutter-ohos 版
 publish_to: 'none'
 version: 1.0.0+1
 
@@ -130,6 +130,10 @@ flutter:
     - assets/images/life_favorite/    # LifeFragment 收藏页图标
     - assets/images/menu_tools/       # MenuFragment 首页图标
     - assets/images/bottom_nav_toolbox/ # toolbox_c 底部导航图标
+    - assets/images/sao_home/          # MenuFragment(sao 版) 首页图标
+    - assets/images/image_gallery_sao/ # ImageGalleryFragment(sao 版) 图片库图标
+    - assets/images/sao_tools/         # ScanToolsFragment(sao 版) 工具页图标
+    - assets/images/sao_bottom_nav/    # sao 版底部导航图标(nav_tools_menu)
     - assets/hot_city.json
     - assets/game/xiaoqiaomen.html   # 生活小窍门 WebView 本地资源
     # HarmonyOS Flutter 构建不会递归收录此目录；WebToolPage 会逐项从
