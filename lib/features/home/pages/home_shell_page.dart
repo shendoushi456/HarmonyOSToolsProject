@@ -35,7 +35,7 @@ class HomeShellPage extends ConsumerWidget {
       ),
     ];
     return Container(
-      height: 68,
+      height: 80,
       decoration: const BoxDecoration(
         color: Colors.white,
         boxShadow: [
@@ -48,7 +48,7 @@ class HomeShellPage extends ConsumerWidget {
       ),
       child: SafeArea(
         top: false,
-        bottom: false,
+        bottom: true,
         child: Row(
           children: [
             for (var i = 0; i < items.length; i++)

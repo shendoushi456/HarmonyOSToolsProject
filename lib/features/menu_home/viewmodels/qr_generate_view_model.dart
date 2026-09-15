@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
+import '../../scan_menu/services/document_export_service.dart';
 import 'qr_generate_state.dart';
 
 final qrGenerateViewModelProvider = NotifierProvider<QrGenerateViewModel, QrGenerateState>(
@@ -67,23 +68,17 @@ class QrGenerateViewModel extends Notifier<QrGenerateState> {
     state = state.copyWith(showPreviewDialog: false);
   }
 
-  /// 保存二维码 - 对齐 QRCodeActivity.java:181-198
-  Future<String?> save() async {
-    if (state.generatedQrBytes == null) return null;
+  /// 保存二维码到系统图库
+  Future<void> save() async {
+    if (state.generatedQrBytes == null) return;
     state = state.copyWith(isSaving: true);
     try {
-      final docDir = await getApplicationDocumentsDirectory();
-      final dir = '${docDir.path}/工具箱/二维码生成';
-      await Directory(dir).create(recursive: true);
-      final now = DateTime.now();
-      final fileName = 'Image-${now.hour.toString().padLeft(2, '0')}-${now.minute.toString().padLeft(2, '0')}-${now.second.toString().padLeft(2, '0')}.png';
-      final path = '$dir/$fileName';
-      await File(path).writeAsBytes(state.generatedQrBytes!);
+      await DocumentExportService().exportBytesToGallery(
+        state.generatedQrBytes!,
+        name: '二维码生成',
+      );
+    } finally {
       state = state.copyWith(isSaving: false);
-      return path;
-    } catch (e) {
-      state = state.copyWith(isSaving: false);
-      rethrow;
     }
   }
 
@@ -124,8 +119,19 @@ class QrGenerateViewModel extends Notifier<QrGenerateState> {
       ),
     );
 
-    final imageData = await painter.toImageData(size, format: ui.ImageByteFormat.png);
-    if (imageData == null) throw Exception('二维码渲染失败');
-    return imageData.buffer.asUint8List();
+    // QrPainter 不支持背景色，toImageData 导出的是透明背景；
+    // 手动先铺背景色再绘制二维码，保证 backgroundColor 生效。
+    final side = size.round();
+    final recorder = ui.PictureRecorder();
+    final canvas = ui.Canvas(recorder, ui.Rect.fromLTWH(0, 0, side.toDouble(), side.toDouble()));
+    canvas.drawRect(
+      ui.Rect.fromLTWH(0, 0, side.toDouble(), side.toDouble()),
+      ui.Paint()..color = backgroundColor,
+    );
+    painter.paint(canvas, ui.Size.square(side.toDouble()));
+    final image = await recorder.endRecording().toImage(side, side);
+    final byteData = await image.toByteData(format: ui.ImageByteFormat.png);
+    if (byteData == null) throw Exception('二维码渲染失败');
+    return byteData.buffer.asUint8List();
   }
 }

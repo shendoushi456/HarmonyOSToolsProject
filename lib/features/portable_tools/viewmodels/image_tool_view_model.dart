@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../scan_menu/services/document_export_service.dart';
 import '../models/image_tool_state.dart';
 import '../services/portable_image_tool_service.dart';
 
@@ -38,13 +39,13 @@ class PixelImageToolViewModel extends Notifier<ImageToolState> {
     }
   }
 
-  Future<File?> save() async {
-    if (state.resultBytes == null) return null;
-    return ref.read(portableImageToolServiceProvider).savePng(
-          state.resultBytes!,
-          directoryName: '图片像素化',
-          prefix: 'pixel_',
-        );
+  /// 保存结果图到系统图库
+  Future<void> save() async {
+    if (state.resultBytes == null) return;
+    await DocumentExportService().exportBytesToGallery(
+      state.resultBytes!,
+      name: '图片像素化',
+    );
   }
 }
 
@@ -84,12 +85,12 @@ class WatermarkImageToolViewModel extends Notifier<ImageToolState> {
     }
   }
 
-  Future<File?> save() async {
-    if (state.resultBytes == null) return null;
-    return ref.read(portableImageToolServiceProvider).savePng(
-          state.resultBytes!,
-          directoryName: '图片水印',
-          prefix: 'watermark_',
-        );
+  /// 保存结果图到系统图库
+  Future<void> save() async {
+    if (state.resultBytes == null) return;
+    await DocumentExportService().exportBytesToGallery(
+      state.resultBytes!,
+      name: '图片水印',
+    );
   }
 }
