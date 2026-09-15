@@ -459,6 +459,11 @@ class AppAssets {
   static const String toolDateCalc = '$_base/qlsb_rqjsq.png';
   static const String toolTally = '$_base/lic_hfjz.png';
   static const String toolJsonEditor = '$_base/qlsb_json.png';
+  // 其它工具（图标来自 master_saolaisao_new 分支 sao_tools）
+  static const String toolEatToday = '$_base/sao_tools/ic_sao_tools_4_3.png';
+  static const String toolRandomNumber = '$_base/sao_tools/ic_sao_tools_4_2.png';
+  static const String toolDateCalculator = '$_base/sao_tools/ic_sao_tools_3_2.png';
+  static const String toolJsonEditorSao = '$_base/sao_tools/ic_sao_tools_4_4.png';
   // 分类展开/收起箭头（topiconl / bottomiconl）
   static const String toolArrowUp = '$_base/topiconl.png';
   static const String toolArrowDown = '$_base/bottomiconl.png';

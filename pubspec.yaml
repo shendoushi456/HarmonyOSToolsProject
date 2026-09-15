@@ -151,10 +151,15 @@ flutter:
     - assets/images/coloring_book/numbers/
     - assets/images/coloring_book/alphabets/
     - assets/images/coloring_book/mandala/
+    - assets/images/sao_tools/
     - assets/sounds/
     - assets/hot_city.json
     - assets/game/xiaoqiaomen.html   # 生活小窍门 WebView 本地资源
-    - assets/game/jintianchishenme/   # 今天吃什么 WebView 本地资源
+    - assets/game/jintianchishenme/   # 今天吃什么 WebView 本地资源(目录声明不递归,子目录需单独注册)
+    - assets/game/jintianchishenme/style/css/
+    - assets/game/jintianchishenme/style/css/img/
+    - assets/game/jintianchishenme/style/img/
+    - assets/game/jintianchishenme/style/js/
     - assets/game/ershisijieqi/       # 二十四节气 WebView 本地资源
     - assets/game/ershisijieqi/css/       # 二十四节气 WebView 本地资源
     - assets/game/ershisijieqi/js/       # 二十四节气 WebView 本地资源

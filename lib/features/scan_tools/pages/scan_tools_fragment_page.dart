@@ -15,6 +15,7 @@ import '../../menu_home/pages/pdf_encrypt_page.dart';
 import '../../menu_home/pages/pdf_to_image_page.dart';
 import '../../menu_home/pages/qr_scan_page.dart';
 import '../../other_scan_tools/pages/base_conversion_page.dart';
+import '../../life_tools/pages/webview/web_tool_page.dart';
 import '../../recognition/models/recognition_type.dart';
 import '../../recognition/pages/recognition_page.dart';
 import '../../scan_menu/pages/currency_converter_page.dart';
@@ -128,6 +129,24 @@ class _ToolCategoryPanelState extends State<ToolCategoryPanel> {
       // 进制计算器（master_mianfeisaosaowang 迁入，other_scan_tools）
       _ToolItem(AppAssets.toolJsonEditor, '进制计算器',
           (c) => BaseConversionPage.push(c)),
+    ]),
+    // 其它工具（master_saolaisao_new 迁入：EatActivity 网页工具，走 WebToolPage）
+    _ToolCategory('其它工具', [
+      _ToolItem(AppAssets.toolEatToday, '今天吃什么', (c) => WebToolPage.push(c,
+          title: '今天吃什么',
+          url: 'assets/game/jintianchishenme/index.html')),
+      _ToolItem(AppAssets.toolJsonEditorSao, 'json编辑器', (c) =>
+          WebToolPage.push(c,
+              title: 'json编辑器',
+              url: 'https://ol.woobx.cn/tool/json-editor')),
+      _ToolItem(AppAssets.toolDateCalculator, '日期计算器', (c) =>
+          WebToolPage.push(c,
+              title: '日期计算器',
+              url: 'https://ol.woobx.cn/tool/date-calculator')),
+      _ToolItem(AppAssets.toolRandomNumber, '随机数生成', (c) =>
+          WebToolPage.push(c,
+              title: '随机数生成',
+              url: 'https://ol.woobx.cn/tool/random-number')),
     ]),
   ];
 

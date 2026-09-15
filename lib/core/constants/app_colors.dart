@@ -207,6 +207,7 @@ class AppColors {
   // ====== NewDrawBoardFragment 首页颜色 - 对齐 fragment_new_drawboard.xml ======
   /// 首页背景米黄(对齐 #FFF1EBD5)
   static const Color homeBg = Color(0xFFF1EBD5);
+  static const Color homeDaohang = Color(0xFFD6BF08);
 
   /// 图片编辑器卡片蓝(对齐 #FF89BDE5)
   static const Color homeImageEditorCard = Color(0xFF89BDE5);

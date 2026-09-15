@@ -1,12 +1,11 @@
 // ColorDrawFragment 的“跟图绘画 / 形状绘画”迁移版。
-import 'dart:io';
 import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:path_provider/path_provider.dart';
 
+import '../../scan_menu/services/document_export_service.dart';
 import '../viewmodels/draw_state.dart';
 import '../viewmodels/draw_view_model.dart';
 
@@ -310,15 +309,29 @@ class _ColorDrawingStudioPageState
     if (data == null) {
       return;
     }
-    final root = await getApplicationDocumentsDirectory();
-    final directory = Directory('${root.path}/工具箱/$_title');
-    await directory.create(recursive: true);
-    final file = File(
-        '${directory.path}/Image-${DateTime.now().millisecondsSinceEpoch}.png');
-    await file.writeAsBytes(data.buffer.asUint8List());
-    if (mounted) {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text('已保存到 ${file.path}')));
+    // 保存到系统图库（复用 DocumentExportService，与分类涂鸦页一致）
+    try {
+      await DocumentExportService().exportBytesToGallery(
+        data.buffer.asUint8List(),
+        name: '$_title-${DateTime.now().millisecondsSinceEpoch}',
+      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('已保存到系统相册')),
+        );
+      }
+    } on GalleryExportException catch (error) {
+      if (mounted && !error.isCanceled) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('保存失败：${error.message}')),
+        );
+      }
+    } catch (error) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('保存失败：$error')),
+        );
+      }
     }
   }
 }
