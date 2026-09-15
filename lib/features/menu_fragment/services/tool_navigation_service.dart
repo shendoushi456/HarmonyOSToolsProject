@@ -81,6 +81,13 @@ class ToolNavigationService {
           title: '随机数生成',
           url: 'https://ol.woobx.cn/tool/random-number',
         );
+      // 对齐 EatActivity(KEY=https://ol.woobx.cn/tool/json-editor)
+      case ToolDestination.jsonEditor:
+        return WebToolPage.push(
+          context,
+          title: 'json编辑器',
+          url: 'https://ol.woobx.cn/tool/json-editor',
+        );
     }
   }
 

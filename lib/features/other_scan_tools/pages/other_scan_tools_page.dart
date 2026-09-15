@@ -95,14 +95,21 @@ class _CategoryCard extends StatelessWidget {
                     fontSize: 16,
                     fontWeight: FontWeight.w600)),
             const SizedBox(height: 16),
-            Row(
-              children: [
-                for (final tool in tools)
-                  Expanded(
-                      child: _ToolTile(
-                          tool: tool, calculatorLayout: calculatorLayout)),
-              ],
-            ),
+            // 每行最多 4 个，超出一行自动换行(计算器分组 6 项时排 4+2)。
+            LayoutBuilder(builder: (context, constraints) {
+              const columns = 4;
+              final tileWidth = constraints.maxWidth / columns;
+              return Wrap(
+                runSpacing: 14,
+                children: [
+                  for (final tool in tools)
+                    SizedBox(
+                        width: tileWidth,
+                        child: _ToolTile(
+                            tool: tool, calculatorLayout: calculatorLayout)),
+                ],
+              );
+            }),
           ],
         ),
       ),

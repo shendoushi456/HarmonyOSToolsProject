@@ -53,6 +53,7 @@ enum ToolId {
   notebook,
   travelChecklist,
   randomNumber,
+  jsonEditor,
 }
 
 /// UI-independent destination understood by [ToolNavigationService].
@@ -78,6 +79,7 @@ enum ToolDestination {
   notebook,
   travelChecklist,
   randomNumber,
+  jsonEditor,
 }
 
 enum MenuToolPlacement {

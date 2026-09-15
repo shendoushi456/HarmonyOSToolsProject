@@ -367,6 +367,9 @@ class AppAssets {
   static const String otherScanChecklist = '$_base/ic_tong_life_3_3.png';
   static const String otherScanRandom =
       '$_base/other_scan_tools/ic_suijisu.png';
+  /// json编辑器图标 - 来自 saolaisao 分支 saoTools44
+  static const String otherScanJsonEditor =
+      '$_base/other_scan_tools/ic_sao_tools_4_4.png';
 
   // ====== FavoriteListFragment 收藏页资源 - 直接来自 toolbox_c Android 源码 ======
   static const String favoriteEmpty = '$_base/favorite/ic_fac_flag.png';
