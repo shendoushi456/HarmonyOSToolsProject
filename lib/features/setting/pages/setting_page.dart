@@ -67,7 +67,7 @@ class SettingPage extends StatelessWidget {
               extra: {'title': '隐私协议', 'url': SettingUrls.policy},
             ),
           ),
-          _buildRevokeAgreementItem(context),
+          // _buildRevokeAgreementItem(context),
           _buildItem(
             context,
             '关于我们',

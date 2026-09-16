@@ -493,4 +493,131 @@ class AppAssets {
   /// 意见反馈图标
   static const String settingFeedbackIcon =
       '$_base/setting_4_feedback_icon.webp';
+
+  // ====== WeatherFragment(toolsbox_moduel/toolsbox) 迁入资源 ======
+  // 独立 toolbox_weather_home 命名空间，对齐 Android mipmap 原名。
+  static const String _tbWeatherHomeBase = '$_base/toolbox_weather_home';
+
+  /// 顶栏定位图标(对齐 ic_loc)
+  static const String tbWeatherLoc = '$_tbWeatherHomeBase/ic_loc.png';
+
+  /// 顶栏设置图标(对齐 setting_black_icon)
+  static const String tbWeatherSetting =
+      '$_tbWeatherHomeBase/setting_black_icon.png';
+
+  /// 页面指示器圆点(对齐 drawable bg selector：enabled 亮白/disabled 灰)
+  static const String tbWeatherDotEnable =
+      '$_tbWeatherHomeBase/enable_ic.png';
+  static const String tbWeatherDotDisable =
+      '$_tbWeatherHomeBase/disable_ic.png';
+
+  /// 中央温度卡背景(对齐 weather_center_bg)
+  static const String tbWeatherCenterBg =
+      '$_tbWeatherHomeBase/weather_center_bg.png';
+
+  /// 风速/气压/湿度三项指标图标(对齐 ic_wind2_new/ic_pressur_new/ic_water_new)
+  static const String tbWeatherWind = '$_tbWeatherHomeBase/ic_wind2_new.png';
+  static const String tbWeatherPressure =
+      '$_tbWeatherHomeBase/ic_pressur_new.png';
+  static const String tbWeatherWater = '$_tbWeatherHomeBase/ic_water_new.png';
+
+  /// 日出/日落图标(对齐 sun_up_icon/sun_down_icon)
+  static const String tbWeatherSunUp = '$_tbWeatherHomeBase/sun_up_icon.png';
+  static const String tbWeatherSunDown =
+      '$_tbWeatherHomeBase/sun_down_icon.png';
+
+  /// 天气状态小图标(对齐 ic_0d/yingtian_icon/dalei_icn/xiayu_icon)
+  static const String tbWeatherSunny = '$_tbWeatherHomeBase/ic_0d.png';
+  static const String tbWeatherCloudy =
+      '$_tbWeatherHomeBase/yingtian_icon.png';
+  static const String tbWeatherThunder =
+      '$_tbWeatherHomeBase/dalei_icn.png';
+  static const String tbWeatherRain = '$_tbWeatherHomeBase/xiayu_icon.png';
+
+  // ====== 天气页 Lottie 动画(对齐 Android res/raw) ======
+  static const String _lottieBase = 'assets/lottie';
+  static const String lottieSunny = '$_lottieBase/sunny.json';
+  static const String lottieWindy = '$_lottieBase/windy.json';
+  static const String lottieFoggy = '$_lottieBase/foggy.json';
+  static const String lottieShower = '$_lottieBase/shower.json';
+  static const String lottieSnow = '$_lottieBase/snow.json';
+  static const String lottieMist = '$_lottieBase/mist.json';
+  static const String lottieStorm = '$_lottieBase/storm.json';
+
+  /// 每日一句(对齐 Android assets/good_article.json)
+  static const String goodArticle = 'assets/good_article.json';
+
+  // ====== AirQualityFragment(toolsbox_moduel/toolsbox) 迁入资源 ======
+  // 独立 toolbox_air_home 命名空间，对齐 Android mipmap 原名。
+  static const String _tbAirHomeBase = '$_base/toolbox_air_home';
+
+  /// 城市名左侧定位图标(对齐 dingwei_air_icon)
+  static const String tbAirLocation =
+      '$_tbAirHomeBase/dingwei_air_icon.png';
+
+  /// 六项污染物卡片图标(对齐 air_menu_icon1~6)
+  static const String tbAirMenu1 = '$_tbAirHomeBase/air_menu_icon1.png';
+  static const String tbAirMenu2 = '$_tbAirHomeBase/air_menu_icon2.png';
+  static const String tbAirMenu3 = '$_tbAirHomeBase/air_menu_icon3.png';
+  static const String tbAirMenu4 = '$_tbAirHomeBase/air_menu_icon4.png';
+  static const String tbAirMenu5 = '$_tbAirHomeBase/air_menu_icon5.png';
+  static const String tbAirMenu6 = '$_tbAirHomeBase/air_menu_icon6.png';
+
+  /// 健康生活方式四卡图标(对齐 yingyang/huanjieyali/jieqi/history_today)
+  static const String tbAirNutrition =
+      '$_tbAirHomeBase/yingyang_icon.png';
+  static const String tbAirStress =
+      '$_tbAirHomeBase/huanjieyali_icon.png';
+  static const String tbAirSolarTerms =
+      '$_tbAirHomeBase/jieqi_icon.png';
+  static const String tbAirHistoryToday =
+      '$_tbAirHomeBase/history_today_icon.png';
+
+  // ====== WeatherCalendarFragment(清逸出行气象 v502) 迁入资源 ======
+  // 独立 toolbox_calendar_home 命名空间，12 星座图标(对齐 Android mipmap 原名)。
+  static const String _tbCalendarHomeBase = '$_base/toolbox_calendar_home';
+
+  static const String tbCalXingzuoSheshou =
+      '$_tbCalendarHomeBase/sheshou_icon.png';
+  static const String tbCalXingzuoMojiezuo =
+      '$_tbCalendarHomeBase/mojiezuo_icon.png';
+  static const String tbCalXingzuoTianpingzuo =
+      '$_tbCalendarHomeBase/tianpingzuo_icon.png';
+  static const String tbCalXingzuoJuxiezuo =
+      '$_tbCalendarHomeBase/juxiezuo_icon.png';
+  static const String tbCalXingzuoTianxiezuo =
+      '$_tbCalendarHomeBase/tianxiezuo_icon.png';
+  static const String tbCalXingzuoShizizuo =
+      '$_tbCalendarHomeBase/shizhizuo_icon.png';
+  static const String tbCalXingzuoChunvzuo =
+      '$_tbCalendarHomeBase/chunvzuo_icon.png';
+  static const String tbCalXingzuoShuangzizuo =
+      '$_tbCalendarHomeBase/shuangzizuo_icon.png';
+  static const String tbCalXingzuoJingniuzuo =
+      '$_tbCalendarHomeBase/jingniuzuo_icon.png';
+  static const String tbCalXingzuoShuipingzuo =
+      '$_tbCalendarHomeBase/shuipingzuo_icon.png';
+  static const String tbCalXingzuoShuangyu =
+      '$_tbCalendarHomeBase/shuangyu_icon.png';
+  static const String tbCalXingzuoBaiyang =
+      '$_tbCalendarHomeBase/baiyang_icon.png';
+
+  // ====== 底部导航图标(MainWeatherActivity navtools_menu 3Tab) ======
+  // 独立 toolbox_nav 命名空间，对齐 Android mipmap 原名。
+  static const String _tbNavBase = '$_base/toolbox_nav';
+
+  /// 天气 Tab(对齐 icon_tab_tools_1 selector: icon_tab_1_true/def)
+  static const String tbNavWeatherOn = '$_tbNavBase/icon_tab_1_true.png';
+  static const String tbNavWeatherOff = '$_tbNavBase/icon_tab_1_def.png';
+
+  /// 日历 Tab(对齐 icon_tab_tools_2 selector；
+  /// 修正：安卓源码未选中态笔误引用 icon_tab_3_def，此处改用正确的 icon_tab_tools_2_def)
+  static const String tbNavCalendarOn =
+      '$_tbNavBase/icon_tab_tools_2_true.png';
+  static const String tbNavCalendarOff =
+      '$_tbNavBase/icon_tab_tools_2_def.png';
+
+  /// 生活指南 Tab(对齐 icon_tab_tools_3 selector)
+  static const String tbNavAirOn = '$_tbNavBase/icon_tab_tools_3_true.png';
+  static const String tbNavAirOff = '$_tbNavBase/icon_tab_3_def.png';
 }

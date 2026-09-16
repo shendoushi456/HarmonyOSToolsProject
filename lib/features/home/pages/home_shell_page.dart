@@ -1,11 +1,12 @@
-// 底部 4 Tab 容器：首位为 toolbox_c 迁入的天气页，保留既有首页/日历/空气质量。
+// 底部 3 Tab 容器 - 对齐 toolbox_c(清逸出行气象) MainWeatherActivity + navtools_menu：
+// 天气(WeatherFragment) / 日历(WeatherCalendarFragment) / 生活指南(AirQualityFragment)。
+// 图标对齐 icon_tab_tools_1/2/3 selector，文字统一黑色(itemTextColor @color/black)。
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../agriculture/pages/agriculture_page.dart';
-import '../../calendar/pages/calendar_new_page.dart';
-import '../../weather/pages/life_index_page.dart';
-import '../../weather/pages/toolbox_weather_page.dart';
+import '../../calendar/pages/toolbox_weather_calendar_page.dart';
+import '../../weather/pages/toolbox_air_quality_page.dart';
+import '../../weather/pages/toolbox_weather_home_page.dart';
 import '../../../core/constants/app_assets.dart';
 
 /// 当前选中的 Tab 索引
@@ -19,17 +20,16 @@ class HomeShellPage extends ConsumerWidget {
     final currentIndex = ref.watch(homeTabIndexProvider);
 
     const pages = [
-      ToolboxWeatherPage(),
-      LifeIndexPage(),
-      CalendarNewPage(),
-      AgriculturePage(),
+      ToolboxWeatherHomePage(),
+      ToolboxWeatherCalendarPage(),
+      ToolboxAirQualityPage(),
     ];
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
-      // 四个一级页面均为深色底，状态栏文字固定使用白色。
+      // 三个一级页面均为白底，状态栏文字使用黑色。
       value: SystemUiOverlayStyle.dark.copyWith(
         statusBarColor: Colors.transparent,
-        systemNavigationBarColor: const Color(0xFF0A0D0E),
+        systemNavigationBarColor: Colors.white,
       ),
       child: Scaffold(
         body: IndexedStack(
@@ -41,17 +41,17 @@ class HomeShellPage extends ConsumerWidget {
     );
   }
 
-  /// 底部导航栏 - 对齐 Android MyBottomNavView
+  /// 底部导航栏 - 对齐 Android MyBottomNavView + navtools_menu(白底/黑字/原色图标)
   Widget _buildBottomNav(
       BuildContext context, WidgetRef ref, int currentIndex) {
     return Container(
-      height: 72,
+      height: 80,
       decoration: const BoxDecoration(
         color: Color(0xFFFFFFFF),
       ),
       child: SafeArea(
         top: false,
-        bottom: false,
+        bottom: true,
         child: Row(
           children: [
             _buildNavItem(
@@ -59,36 +59,27 @@ class HomeShellPage extends ConsumerWidget {
               ref,
               index: 0,
               label: '天气',
-              normalIcon: AppAssets.zyytTabWeatherNormal,
-              selectedIcon: AppAssets.zyytTabWeatherSelected,
+              normalIcon: AppAssets.tbNavWeatherOff,
+              selectedIcon: AppAssets.tbNavWeatherOn,
               isSelected: currentIndex == 0,
             ),
             _buildNavItem(
               context,
               ref,
               index: 1,
-              label: '生活指数',
-              normalIcon: AppAssets.zyytTabLifeNormal,
-              selectedIcon: AppAssets.zyytTabLifeSelected,
+              label: '日历',
+              normalIcon: AppAssets.tbNavCalendarOff,
+              selectedIcon: AppAssets.tbNavCalendarOn,
               isSelected: currentIndex == 1,
             ),
             _buildNavItem(
               context,
               ref,
               index: 2,
-              label: '日历',
-              normalIcon: AppAssets.zyytTabCalendarNormal,
-              selectedIcon: AppAssets.zyytTabCalendarSelected,
+              label: '生活指南',
+              normalIcon: AppAssets.tbNavAirOff,
+              selectedIcon: AppAssets.tbNavAirOn,
               isSelected: currentIndex == 2,
-            ),
-            _buildNavItem(
-              context,
-              ref,
-              index: 3,
-              label: '农业',
-              normalIcon: AppAssets.zyytTabAgricultureNormal,
-              selectedIcon: AppAssets.zyytTabAgricultureSelected,
-              isSelected: currentIndex == 3,
             ),
           ],
         ),
@@ -96,7 +87,7 @@ class HomeShellPage extends ConsumerWidget {
     );
   }
 
-  /// 单个底部导航项
+  /// 单个导航项 - 图标按 Android 原图尺寸(66x60@xxhdpi = 22x20dp)
   Widget _buildNavItem(
     BuildContext context,
     WidgetRef ref, {
@@ -115,15 +106,16 @@ class HomeShellPage extends ConsumerWidget {
           children: [
             Image.asset(
               isSelected ? selectedIcon : normalIcon,
-              width: 24,
-              height: 24,
+              width: 22,
+              height: 20,
+              fit: BoxFit.contain,
             ),
             const SizedBox(height: 3),
             Text(
               label,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 12,
-                color: Colors.grey,
+                color: Colors.black,
               ),
             ),
           ],

@@ -1,5 +1,5 @@
 name: qingman_weather
-description: 智雨云图 - Flutter-ohos 版
+description: 清逸出行气象 - Flutter-ohos 版
 publish_to: 'none'
 version: 1.0.0+1
 
@@ -36,6 +36,9 @@ dependencies:
 
   # 打开协议 URL（系统浏览器）
   url_launcher: 6.1.11
+
+  # Lottie 动画（纯 Dart 渲染，天气页晴天/雨雪等动画）
+  lottie: 3.1.2
 
   # 应用内 WebView 显示协议页(OpenHarmony 适配版)
   webview_flutter_ohos:
@@ -78,6 +81,18 @@ flutter:
     - assets/images/toolbox_long_trip/
     # AirQualityFragment 的 Android 原始背景、天气和污染物图标。
     - assets/images/toolbox_air_quality/
+    # WeatherFragment(toolsbox_moduel/toolsbox) 迁入资源，独立命名空间防冲突。
+    - assets/images/toolbox_weather_home/
+    # AirQualityFragment(toolsbox_moduel/toolsbox) 迁入资源，独立命名空间防冲突。
+    - assets/images/toolbox_air_home/
+    # WeatherCalendarFragment(toolsbox_moduel/toolsbox 清逸出行气象v502) 迁入星座图标。
+    - assets/images/toolbox_calendar_home/
+    # 底部导航图标(MainWeatherActivity navtools_menu 3Tab, 对齐 Android mipmap 原名)。
+    - assets/images/toolbox_nav/
+    # 天气页 Lottie 动画（对齐 Android res/raw：sunny/windy/foggy/shower/snow/mist/storm）
+    - assets/lottie/
+    # 每日一句（对齐 Android assets/good_article.json）
+    - assets/good_article.json
     - assets/hot_city.json
     # 二十四节气 H5 资源目录（对齐 Android assets/ershisijieqi/）
     - assets/ershisijieqi/
