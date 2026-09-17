@@ -48,6 +48,15 @@ class QrGenerateViewModel extends Notifier<QrGenerateState> {
     state = state.copyWith(logoPath: targetPath);
   }
 
+  /// 清除：移除 Logo，前景色/背景色恢复默认(黑/白)。
+  void clearLogo() {
+    state = state.copyWith(
+      clearLogo: true,
+      foregroundColor: Colors.black,
+      backgroundColor: Colors.white,
+    );
+  }
+
   /// 生成二维码
   Future<void> generate() async {
     if (state.inputText.isEmpty) {

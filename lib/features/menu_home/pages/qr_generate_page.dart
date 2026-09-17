@@ -107,7 +107,7 @@ class QrGeneratePage extends ConsumerWidget {
         const SizedBox(width: 12),
         if (state.logoPath != null)
           TextButton(
-            onPressed: () => vm.setForegroundColor(Colors.black), // 占位，实际应调用清除 logo
+            onPressed: vm.clearLogo, // 清除 Logo 并恢复默认前景色/背景色
             child: const Text('清除'),
           ),
       ],
