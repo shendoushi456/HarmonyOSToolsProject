@@ -12,6 +12,7 @@ import {
   Log,
 } from '@ohos/flutter_ohos';
 import wifiManager from '@ohos.wifi';
+import wifiSta from '@ohos.wifiManager';
 import abilityAccessCtrl, { PermissionRequestResult, Permissions } from '@ohos.abilityAccessCtrl';
 import bundleManager from '@ohos.bundle.bundleManager';
 import statistics from '@ohos.net.statistics';
@@ -115,6 +116,20 @@ export default class WifiPlugin implements FlutterPlugin {
           break;
         case 'openWifiSettings':
           result.success(await this.openWifiSettings());
+          break;
+        case 'connectWifi':
+          result.success(await this.connectWifi(call));
+          break;
+        case 'getConnectionDetail':
+          result.success(await this.getConnectionDetail());
+          break;
+        case 'getWifiRxBytes':
+          // wlan0 接口开机以来累计接收字节(每日 WiFi 用量差值基准)
+          result.success(await statistics.getIfaceRxBytes('wlan0').catch((): number => 0));
+          break;
+        case 'getCellularRxBytes':
+          // 蜂窝开机以来累计接收字节(每日移动用量差值基准)
+          result.success(await statistics.getCellularRxBytes().catch((): number => 0));
           break;
         default:
           result.notImplemented();
@@ -298,6 +313,100 @@ export default class WifiPlugin implements FlutterPlugin {
       Log.w(TAG, `openWifiSettings is unavailable on this device: ${(e as Error)?.message ?? String(e)}`);
       return false;
     }
+  }
+
+  // ====== 连接指定 wifi - 对齐 Android WifiLinkDialog 的 addNetwork→enableNetwork→reconnect ======
+  // 参数: ssid/password(空密码按开放网络处理,对齐 Android 无密码直连/有密码 preSharedKey 分支)
+  // 鸿蒙 API: @ohos.wifiManager 的 addCandidateConfig(仅需 SET_WIFI_INFO)
+  // + connectToCandidateConfig(addDeviceConfig 需 SET_WIFI_CONFIG,三方应用走 candidate 通道)
+  private async connectWifi(call: MethodCall): Promise<boolean> {
+    const ssid: string = call.argument('ssid') as string ?? '';
+    const password: string = call.argument('password') as string ?? '';
+    // 安卓原版不区分 WPA/WEP 一律 preSharedKey; 空密码按开放网络处理
+    const securityType: number = password.length > 0
+      ? wifiSta.WifiSecurityType.WIFI_SEC_TYPE_PSK
+      : wifiSta.WifiSecurityType.WIFI_SEC_TYPE_OPEN;
+    const config: wifiSta.WifiDeviceConfig = {
+      ssid: ssid,
+      bssid: '',
+      isHiddenSsid: false,
+      preSharedKey: password,
+      securityType: securityType,
+    };
+    const netId = await wifiSta.addCandidateConfig(config);
+    if (netId < 0) return false;
+    wifiSta.connectToCandidateConfig(netId);
+    return true;
+  }
+
+  // ====== 当前连接详细信息 - 对齐 Android WiFiStrengthActivity(DhcpInfo/LinkProperties) ======
+  // rssi/linkSpeed/frequency/bssid/hidden 来自 WifiLinkedInfo; ip/gateway/dns 来自网络连接属性
+  // 子网掩码不直接返回, 由 Dart 端按 ipPrefixLength 计算(对齐安卓按接口前缀长度的实现)
+  private async getConnectionDetail(): Promise<Record<string, Object> | null> {
+    let linked: Record<string, Object> | null = null;
+    try {
+      const info = await wifiManager.getLinkedInfo();
+      if (info) {
+        linked = {
+          'ssid': info.ssid ?? '',
+          'bssid': info.bssid ?? '',
+          'rssi': info.rssi ?? 0,
+          'frequency': info.frequency ?? 0,
+          'linkSpeed': info.linkSpeed ?? 0,
+          'isHidden': info.isHidden ?? false,
+        };
+      }
+    } catch (e) {
+      Log.e(TAG, `getConnectionDetail linkedInfo error: ${(e as Error)?.message ?? String(e)}`);
+    }
+    const detail: Record<string, Object> = linked ?? {
+      'ssid': '', 'bssid': '', 'rssi': 0, 'frequency': 0,
+      'linkSpeed': 0, 'isHidden': false,
+    };
+    try {
+      // hasDefaultNetSync 同步判断默认网络(异步版在 if 条件中不合法)
+      if (connection.hasDefaultNetSync()) {
+        const netHandle = await connection.getDefaultNet();
+        const props = await connection.getConnectionProperties(netHandle);
+        // ConnectionProperties 字段: linkAddresses/dnses/routes(对齐安卓 LinkProperties/DhcpInfo)
+        const linkAddresses: connection.LinkAddress[] = props?.linkAddresses ?? [];
+        const routes: connection.RouteInfo[] = props?.routes ?? [];
+        const dnses: connection.NetAddress[] = props?.dnses ?? [];
+        let gateway = '';
+        for (const route of routes) {
+          // 对齐安卓 DhcpInfo.gateway 取默认网关
+          if (route.hasGateway && route.gateway && route.gateway.address &&
+            route.gateway.address.length > 0) {
+            gateway = route.gateway.address;
+            break;
+          }
+        }
+        detail['ip'] = linkAddresses.length > 0 ? (linkAddresses[0].address.address ?? '') : '';
+        detail['ipPrefixLength'] =
+          linkAddresses.length > 0 ? (linkAddresses[0].prefixLength ?? 0) : 0;
+        detail['gateway'] = gateway;
+        detail['dns1'] = dnses.length > 0 ? (dnses[0].address ?? '') : '';
+        detail['dns2'] = dnses.length > 1 ? (dnses[1].address ?? '') : '';
+      } else {
+        detail['ip'] = ''; detail['ipPrefixLength'] = 0;
+        detail['gateway'] = ''; detail['dns1'] = ''; detail['dns2'] = '';
+      }
+    } catch (e) {
+      Log.e(TAG, `getConnectionDetail props error: ${(e as Error)?.message ?? String(e)}`);
+      detail['ip'] = ''; detail['ipPrefixLength'] = 0;
+      detail['gateway'] = ''; detail['dns1'] = ''; detail['dns2'] = '';
+    }
+    // 本机 WLAN MAC - 对齐 Android getConnectionInfo().getMacAddress()
+    // (系统 WiFi 设置里连接详情展示的就是这个值);无 GET_WIFI_LOCAL_MAC
+    // 授权时 API 抛 201,返回空串由 Dart 端降级显示
+    try {
+      const macs: string[] = wifiSta.getDeviceMacAddress();
+      detail['mac'] = (macs !== null && macs !== undefined && macs.length > 0) ? macs[0] : '';
+    } catch (e) {
+      Log.e(TAG, `getDeviceMacAddress error: ${(e as Error)?.message ?? String(e)}`);
+      detail['mac'] = '';
+    }
+    return detail;
   }
 
   // ====== EventChannel: 订阅系统扫描完成事件 ======

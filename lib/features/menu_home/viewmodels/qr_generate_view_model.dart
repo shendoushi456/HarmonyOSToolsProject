@@ -47,6 +47,11 @@ class QrGenerateViewModel extends Notifier<QrGenerateState> {
     state = state.copyWith(logoPath: targetPath);
   }
 
+  /// 清除 LOGO - 对齐 QRCodeActivity ToggleGroup 切回"无LOGO"
+  void clearLogo() {
+    state = state.copyWith(clearLogo: true);
+  }
+
   /// 生成二维码
   Future<void> generate() async {
     if (state.inputText.isEmpty) {

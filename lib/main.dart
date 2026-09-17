@@ -6,9 +6,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'app.dart';
 import 'core/constants/app_assets.dart';
+import 'core/storage/prefs_storage.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  // 存储必须在 runApp 前完成初始化: App 根部的 floatSpeedProvider(悬浮窗开关)
+  // 首帧即读取 SP,若未初始化会在 build 中抛 StateError 导致红屏。
+  await PrefsStorage.init();
   // 原生启动窗口和 Flutter 启动页使用同一张 Logo。先完成图片解码，再交出
   // Flutter 首帧，使系统启动窗口能够无缝过渡到完整的“Logo + 名称”。
   await _warmUpSplashLogo();

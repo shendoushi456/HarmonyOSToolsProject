@@ -20,6 +20,24 @@ class PrefsStorage {
     return _prefs!;
   }
 
+  /// 通用 bool 存取(toolbox_c WiFi 设置页开关用,key 对齐安卓 StoredPreferencesValue)
+  static bool getBool(String key, {bool defValue = false}) =>
+      _instance.getBool(key) ?? defValue;
+
+  static Future<void> setBool(String key, bool value) =>
+      _instance.setBool(key, value);
+
+  /// 通用 string/int 存取(悬浮窗每日用量快照用)
+  static String? getString(String key) => _instance.getString(key);
+
+  static Future<void> setString(String key, String value) =>
+      _instance.setString(key, value);
+
+  static int? getInt(String key) => _instance.getInt(key);
+
+  static Future<void> setInt(String key, int value) =>
+      _instance.setInt(key, value);
+
   /// 城市列表 key(对齐 Android key="city")
   static const String keyCity = 'city';
 

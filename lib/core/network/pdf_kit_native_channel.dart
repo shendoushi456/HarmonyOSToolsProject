@@ -15,39 +15,52 @@ class PdfKitNativeChannel {
 
   /// 图片转 PDF
   /// 对齐 ImageToPdfProcessor.kt:20-103
+  /// [widths]/[heights] 为 Flutter 侧解码得到的真实图片尺寸；
+  /// [fileName] 为保存到下载/文档目录时的建议文件名。
+  /// 原生侧生成 PDF 后会弹出系统保存位置选择器，用户取消时抛出
+  /// code 为 PDF_SAVE_CANCELED 的 PlatformException。
   Future<String?> convertImagesToPdf({
     required List<String> imagePaths,
     required String outputPath,
+    List<int> widths = const [],
+    List<int> heights = const [],
+    String fileName = '',
   }) async {
     return _channel.invokeMethod<String>('convertImagesToPdf', {
       'imagePaths': imagePaths,
       'outputPath': outputPath,
+      'widths': widths,
+      'heights': heights,
+      'fileName': fileName,
     });
   }
 
-  /// PDF 转图片
-  /// 对齐 PdfToImageProcessor.kt:17-96
+  /// PDF 转图片。
+  /// 使用 HarmonyOS PDFKit 的普通 convertToImage() 模式。
+  /// PDF 转图片不处理加密 PDF，也不向原生侧传递密码。
   Future<List<String>> convertPdfToImages({
     required String pdfPath,
     required String outputDir,
-    String? password,
   }) async {
-    final result = await _channel.invokeMethod<List<dynamic>>('convertPdfToImages', {
+    final result =
+        await _channel.invokeMethod<List<dynamic>>('convertPdfToImages', {
       'pdfPath': pdfPath,
       'outputDir': outputDir,
-      if (password != null && password.isNotEmpty) 'password': password,
     });
     return result?.cast<String>() ?? [];
   }
 
   /// 压缩 PDF
   /// 对齐 PdfCompressor.kt:28-149
+  /// 原生流程：每页渲染 PNG → ImagePacker 重编码 JPEG(jpegQuality) → 重建 PDF，
+  /// 成功后弹出系统保存位置选择器，用户取消时抛出 code 为 PDF_SAVE_CANCELED
+  /// 的 PlatformException。
   Future<String?> compressPdf({
     required String sourcePath,
     required String outputPath,
     String? password,
     int dpi = 120,
-    double jpegQuality = 0.72,
+    double jpegQuality = 0.75,
   }) async {
     return _channel.invokeMethod<String>('compressPdf', {
       'sourcePath': sourcePath,

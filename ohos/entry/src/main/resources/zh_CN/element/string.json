@@ -35,6 +35,10 @@
     {
       "name": "permission_media_reason",
       "value": "用于从相册选择识别图片"
+    },
+    {
+      "name": "permission_wifi_local_mac_reason",
+      "value": "获取本机Wi-Fi的MAC地址，用于Wi-Fi详情页展示"
     }
   ]
 }

@@ -2,9 +2,9 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../../core/constants/app_colors.dart';
 import '../viewmodels/pdf_to_image_state.dart';
 import '../viewmodels/pdf_to_image_view_model.dart';
-import 'widgets/pdf_password_dialog.dart';
 import 'widgets/pdf_tool_layout.dart';
 import 'widgets/pdf_type_badge.dart';
 import 'widgets/selected_pdf_path.dart';
@@ -29,23 +29,44 @@ class PdfToImagePage extends ConsumerWidget {
       selectButtonText: '选择 PDF',
       actionButtonText: state.isProcessing ? '处理中…' : '转换为图片',
       onSelect: vm.pickPdf,
-      onAction: state.isProcessing || state.selectedPdfPath == null ? null : vm.convert,
-      child: Stack(
-        children: [
-          _buildBody(context, state, vm),
-          if (state.showPasswordDialog)
-            PdfPasswordDialog(
-              errorText: state.passwordError,
-              onPasswordChanged: vm.setPassword,
-              onConfirm: vm.confirmPasswordAndConvert,
-              onCancel: vm.dismissPasswordDialog,
-            ),
-        ],
-      ),
+      onAction: state.isProcessing || state.selectedPdfPath == null
+          ? null
+          : vm.convert,
+      actions: [
+        if (state.generatedImagePaths.isNotEmpty)
+          IconButton(
+            icon: state.isSaving
+                ? const SizedBox(
+                    width: 18,
+                    height: 18,
+                    child: CircularProgressIndicator(strokeWidth: 2),
+                  )
+                : const Icon(Icons.save_alt),
+            color: AppColors.toolsTitleText,
+            tooltip: '保存到图库',
+            onPressed: state.isSaving || state.isProcessing
+                ? null
+                : () => _saveAll(context, vm),
+          ),
+      ],
+      child: _buildBody(context, state, vm),
     );
   }
 
-  Widget _buildBody(BuildContext context, PdfToImageState state, PdfToImageViewModel vm) {
+  /// 保存全部生成图片到系统相册，SnackBar 反馈结果。
+  Future<void> _saveAll(
+      BuildContext context, PdfToImageViewModel vm) async {
+    final count = await vm.saveAllToGallery();
+    if (!context.mounted) return;
+    if (count > 0) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('已保存 $count 张图片到系统相册')),
+      );
+    }
+  }
+
+  Widget _buildBody(
+      BuildContext context, PdfToImageState state, PdfToImageViewModel vm) {
     return Column(
       children: [
         if (state.errorMessage != null)
@@ -74,25 +95,22 @@ class PdfToImagePage extends ConsumerWidget {
           ),
         if (state.generatedImagePaths.isNotEmpty)
           Expanded(
-            child: Padding(
+            child: ListView.builder(
               padding: const EdgeInsets.all(12),
-              child: GridView.builder(
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 8,
-                  mainAxisSpacing: 8,
-                ),
-                itemCount: state.generatedImagePaths.length,
-                itemBuilder: (context, index) {
-                  return ClipRRect(
+              itemCount: state.generatedImagePaths.length,
+              itemBuilder: (context, index) {
+                return Padding(
+                  padding: const EdgeInsets.only(bottom: 12),
+                  child: ClipRRect(
                     borderRadius: BorderRadius.circular(8),
                     child: Image.file(
                       File(state.generatedImagePaths[index]),
-                      fit: BoxFit.cover,
+                      width: double.infinity,
+                      fit: BoxFit.contain,
                     ),
-                  );
-                },
-              ),
+                  ),
+                );
+              },
             ),
           ),
       ],

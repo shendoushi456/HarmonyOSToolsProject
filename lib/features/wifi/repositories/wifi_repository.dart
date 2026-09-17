@@ -1,5 +1,6 @@
 // WiFi Repository - 持有 Service + Mapper,做 DTO→Model 转换
 // 对齐 Android 业务编排层:ToolsMainActivity.getNetworkType/getCurrentSsid + CarrierName
+import '../models/wifi_dto.dart';
 import '../models/wifi_info.dart';
 import '../models/wifi_scan_result.dart';
 import '../models/wifi_mapper.dart';
@@ -55,4 +56,12 @@ class WifiRepository {
 
   /// wifi 扫描完成事件流
   Stream<dynamic> get onScanFinishedStream => _service.onScanFinishedStream;
+
+  /// 连接指定 wifi(对齐 WifiLinkDialog 的 addNetwork→enableNetwork→reconnect)
+  Future<bool> connect(String ssid, String password) =>
+      _service.connectWifi(ssid, password);
+
+  /// 当前连接详细信息(对齐 WiFiStrengthActivity 信息卡数据源)
+  Future<WifiConnectionDetailDTO?> getConnectionDetail() =>
+      _service.getConnectionDetail();
 }

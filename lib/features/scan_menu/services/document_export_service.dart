@@ -21,6 +21,32 @@ class DocumentExportService {
     await exportBytesToGallery(bytes, name: name);
   }
 
+  /// 多张图片批量写入鸿蒙照片库(PDF转图片保存用,一次授权写入全部)。
+  Future<void> exportBytesListToGallery(
+    List<Uint8List> bytesList, {
+    required String name,
+  }) async {
+    if (bytesList.isEmpty) {
+      throw const GalleryExportException('GALLERY_EXPORT_ERROR', '没有可保存的图片数据');
+    }
+    try {
+      await _channel.invokeMethod<void>('saveImageBytesList', <String, Object>{
+        'bytesList': bytesList,
+        'name': name,
+      });
+    } on PlatformException catch (error) {
+      throw GalleryExportException(
+        error.code,
+        error.message ?? '保存到系统相册失败',
+      );
+    } on MissingPluginException {
+      throw const GalleryExportException(
+        'GALLERY_PLUGIN_UNAVAILABLE',
+        '图片保存组件未加载，请重新安装应用后重试',
+      );
+    }
+  }
+
   /// 将内存中的图片直接写入鸿蒙照片库。
   ///
   /// 图像处理页的结果本来就在内存中；直接传给原生层可避免不同设备上

@@ -308,4 +308,119 @@ class AppAssets {
       '$_base/new_life_calendar_previous.png';
   static const String newLifeCalendarNext = '$_base/new_life_calendar_next.png';
   static const String newLifeSettings = '$_base/new_life_settings.png';
+
+  // ====== toolbox_c 首页迁移资源(assets/images/wifi_box/,对齐 Android 原名) ======
+  static const String _wifiBox = '$_base/wifi_box';
+
+  /// 首页大圆卡背景(@mipmap/top_round_bg)
+  static const String wifiBoxTopRoundBg = '$_wifiBox/top_round_bg.png';
+
+  /// 首页大圆卡内 wifi 图标(@mipmap/top_wifi_icon,与旧 wifiTopIcon 不同版本)
+  static const String wifiBoxTopWifiIcon = '$_wifiBox/top_wifi_icon.png';
+
+  /// 首页顶栏图标(@drawable/title_ic)
+  static const String wifiBoxTitleIc = '$_wifiBox/title_ic.webp';
+
+  /// 下载/上传白色小图标(网速卡内)
+  static const String wifiBoxDownloadWhite = '$_wifiBox/download_white.webp';
+  static const String wifiBoxUploadWhite = '$_wifiBox/upload_white.webp';
+
+  /// 附近 WiFi/网速测试/WiFi设置 入口图标(原首页隐藏按钮)
+  static const String wifiBoxRange = '$_wifiBox/range.webp';
+  static const String wifiBoxSpeedtest = '$_wifiBox/speedtest.webp';
+  static const String wifiBoxNotifySettings = '$_wifiBox/notify_settings.webp';
+
+  /// 测速页仪表盘底图与指针(@drawable/megabitps|megabyteps|shelf|wave)
+  static const String wifiBoxMegabitps = '$_wifiBox/megabitps.webp';
+  static const String wifiBoxMegabyteps = '$_wifiBox/megabyteps.webp';
+  static const String wifiBoxShelf = '$_wifiBox/shelf.webp';
+  static const String wifiBoxWave = '$_wifiBox/wave.webp';
+
+  /// WiFi 设置页(通知设置)图标
+  static const String wifiBoxIcNotifySettings =
+      '$_wifiBox/ic_notify_settings.webp';
+  static const String wifiBoxIcNotifySpeedCurrent =
+      '$_wifiBox/ic_notify_speed_current.webp';
+  static const String wifiBoxIcSettingsWifiData =
+      '$_wifiBox/ic_settings_wifi_data.webp';
+  static const String wifiBoxIcSettingsMobileData =
+      '$_wifiBox/ic_settings_mobile_data.webp';
+  static const String wifiBoxIcSettingsLockScreen =
+      '$_wifiBox/ic_settings_lock_screen.webp';
+  static const String wifiBoxIcSettingsHideDisconnected =
+      '$_wifiBox/ic_settings_hide_disconnected.webp';
+
+  /// 通用返回键(@drawable/back)
+  static const String wifiBoxBack = '$_wifiBox/back.webp';
+
+  /// 浮窗图标(@drawable/floating_window,工具箱浮窗卡复用)
+  static const String wifiBoxFloatingWindow = '$_wifiBox/floating_window.webp';
+
+  // ====== toolbox_c 工具箱迁移资源(assets/images/wifi_tools/,对齐 Android 原名) ======
+  static const String _wifiTools = '$_base/wifi_tools';
+
+  /// PDF 四卡背景(@mipmap/clolr_bg_1 原名拼写)
+  static const String wifiToolsPdfBg1 = '$_wifiTools/clolr_bg_1.png';
+  static const String wifiToolsPdfBg2 = '$_wifiTools/color_item_2.png';
+  static const String wifiToolsPdfBg3 = '$_wifiTools/color_item_3.png';
+  static const String wifiToolsPdfBg4 = '$_wifiTools/color_item_4.png';
+
+  /// PDF 四卡图标
+  static const String wifiToolsPdfCompress = '$_wifiTools/pdf_compress_icon.png';
+  static const String wifiToolsPdfEncrypt = '$_wifiTools/pdf_jiami_icon.png';
+  static const String wifiToolsPdfImageToPdf = '$_wifiTools/pdf_zhuanhua.png';
+  static const String wifiToolsPdfPdfToImage = '$_wifiTools/pdftoimg.png';
+
+  /// 工具列表卡图标(特效图/WiFi设置/自制二维码/LED滚动)
+  static const String wifiToolsLowPoly = '$_wifiTools/cesu_icon.png';
+  static const String wifiToolsWifiSetting = '$_wifiTools/wifi_seting.png';
+  static const String wifiToolsQrCode = '$_wifiTools/create_qrcode_icon.png';
+  static const String wifiToolsLed = '$_wifiTools/led_icon.png';
+
+  /// 工具卡右箭头(@mipmap/arrow_right_ic)
+  static const String wifiToolsArrowRight = '$_wifiTools/arrow_right_ic.png';
+
+  /// LowPoly 页空态图(@mipmap/ic_null_img)
+  static const String wifiToolsNullImg = '$_wifiTools/ic_null_img.png';
+
+  /// 浮窗设置区图标(@drawable/top_speed/ic_download/ic_upload)
+  static const String wifiToolsTopSpeed = '$_wifiTools/top_speed.webp';
+  static const String wifiToolsIcDownload = '$_wifiTools/ic_download.webp';
+  static const String wifiToolsIcUpload = '$_wifiTools/ic_upload.webp';
+
+  // ====== toolbox_c 我的页迁移资源(assets/images/setting_box/,对齐 Android 原名) ======
+  static const String _settingBox = '$_base/setting_box';
+
+  /// 顶栏返回键(@mipmap/iv_back)
+  static const String settingBoxIvBack = '$_settingBox/iv_back.png';
+
+  /// 入口右箭头(@mipmap/arrow_right)
+  static const String settingBoxArrowRight = '$_settingBox/arrow_right.png';
+
+  /// 入口图标(用户协议/隐私协议/关于我们/意见反馈)
+  static const String settingBoxUserAgrement =
+      '$_settingBox/user_agrement_icon.png';
+  static const String settingBoxIcPr = '$_settingBox/ic_pr.webp';
+  static const String settingBoxIcUs = '$_settingBox/ic_us.webp';
+  static const String settingBoxIcYj = '$_settingBox/ic_yj.png';
+
+  /// 二级页白色返回键(@mipmap/icon_white_back)
+  static const String settingBoxIconWhiteBack =
+      '$_settingBox/icon_white_back.webp';
+
+  // ====== toolbox_c 底部导航图标(assets/images/main_tabs/,对齐 Android 原名) ======
+  static const String _mainTabs = '$_base/main_tabs';
+
+  /// Tab1 首页
+  static const String mainTabHomeSelected = '$_mainTabs/tools_icon_tab_1_true.png';
+  static const String mainTabHomeNormal = '$_mainTabs/tools_icon_tab_1_def.png';
+
+  /// Tab2 工具箱
+  static const String mainTabToolsSelected =
+      '$_mainTabs/tools_icon_tab_2_true.png';
+  static const String mainTabToolsNormal = '$_mainTabs/tools_icon_tab_2_def.png';
+
+  /// Tab3 我的
+  static const String mainTabMineSelected = '$_mainTabs/tools_icon_tab_3_true.png';
+  static const String mainTabMineNormal = '$_mainTabs/tools_icon_tab_3_def.png';
 }

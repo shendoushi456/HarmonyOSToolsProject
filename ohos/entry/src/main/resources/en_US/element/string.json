@@ -35,6 +35,10 @@
     {
       "name": "permission_media_reason",
       "value": "Used to choose recognition images from your gallery"
+    },
+    {
+      "name": "permission_wifi_local_mac_reason",
+      "value": "Get the local Wi-Fi MAC address for display on the Wi-Fi details page."
     }
   ]
 }

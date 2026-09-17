@@ -4,6 +4,7 @@ import WifiPlugin from '../plugins/WifiPlugin';
 import PdfKitPlugin from '../plugins/PdfKitPlugin';
 import DocumentGalleryPlugin from '../plugins/DocumentGalleryPlugin';
 import CameraPermissionPlugin from '../plugins/CameraPermissionPlugin';
+import NotifySpeedPlugin from '../plugins/NotifySpeedPlugin';
 
 export default class EntryAbility extends FlutterAbility {
   private cameraPermissionPlugin?: CameraPermissionPlugin;
@@ -20,6 +21,8 @@ export default class EntryAbility extends FlutterAbility {
     flutterEngine.getPlugins()?.add(new DocumentGalleryPlugin(this.context));
     // 应用内相机预览前的运行时授权。
     this.cameraPermissionPlugin = CameraPermissionPlugin.register(flutterEngine, this.context);
+    // 常驻通知实时网速插件(对齐 Android NetworkSpeedService 简化版)
+    flutterEngine.getPlugins()?.add(new NotifySpeedPlugin(this.context));
   }
 
   onDestroy(): void {

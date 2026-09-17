@@ -79,3 +79,55 @@ class WifiScanInfoDTO {
     );
   }
 }
+
+/// WiFi 连接详细信息 DTO - 对齐 Android WiFiStrengthActivity 的 DhcpInfo+LinkProperties
+/// 由 WifiPlugin.ets getConnectionDetail() 返回的 Map 反序列化
+class WifiConnectionDetailDTO {
+  final String ssid;
+  final String bssid;
+  final int rssi;
+  final int frequency;
+  final int linkSpeed;
+  final bool isHidden;
+  final String ip;
+  final int ipPrefixLength;
+  final String gateway;
+  final String dns1;
+  final String dns2;
+
+  /// 本机 WLAN MAC(对齐 Android getConnectionInfo().getMacAddress;
+  /// 无 GET_WIFI_LOCAL_MAC 授权时为空串)
+  final String mac;
+
+  const WifiConnectionDetailDTO({
+    required this.ssid,
+    required this.bssid,
+    required this.rssi,
+    required this.frequency,
+    required this.linkSpeed,
+    required this.isHidden,
+    required this.ip,
+    required this.ipPrefixLength,
+    required this.gateway,
+    required this.dns1,
+    required this.dns2,
+    this.mac = '',
+  });
+
+  factory WifiConnectionDetailDTO.fromMap(Map<dynamic, dynamic> m) {
+    return WifiConnectionDetailDTO(
+      ssid: (m['ssid'] ?? '') as String,
+      bssid: (m['bssid'] ?? '') as String,
+      rssi: (m['rssi'] ?? 0) as int,
+      frequency: (m['frequency'] ?? 0) as int,
+      linkSpeed: (m['linkSpeed'] ?? 0) as int,
+      isHidden: (m['isHidden'] ?? false) as bool,
+      ip: (m['ip'] ?? '') as String,
+      ipPrefixLength: (m['ipPrefixLength'] ?? 0) as int,
+      gateway: (m['gateway'] ?? '') as String,
+      dns1: (m['dns1'] ?? '') as String,
+      dns2: (m['dns2'] ?? '') as String,
+      mac: (m['mac'] ?? '') as String,
+    );
+  }
+}

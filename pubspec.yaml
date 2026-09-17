@@ -102,6 +102,10 @@ dependencies:
       url: https://gitcode.com/openharmony-sig/fluttertpc_file_picker.git
       ref: br_v10.3.8_ohos
 
+  # ====== toolbox_c 首页(WiFi工具)迁移新增依赖 ======
+  # Lottie 动画（WiFi列表空态/定位弹窗）- 纯 Dart 渲染无需 ohos 适配
+  lottie: ^3.1.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -121,8 +125,17 @@ dependency_overrides:
 flutter:
   uses-material-design: true
   generate: true
+  fonts:
+    - family: SansToolbox
+      fonts:
+        - asset: assets/fonts/Sans.ttf
   assets:
     - assets/images/
+    - assets/images/wifi_box/         # toolbox_c 首页迁移资源
+    - assets/images/wifi_tools/       # toolbox_c 工具箱迁移资源
+    - assets/images/setting_box/      # toolbox_c 我的页迁移资源
+    - assets/images/main_tabs/        # toolbox_c 底部导航图标
+    - assets/lottie/                  # toolbox_c Lottie(空态/定位弹窗)
     - assets/hot_city.json
     - assets/game/xiaoqiaomen.html   # 生活小窍门 WebView 本地资源
     - assets/game/jintianchishenme/   # 今天吃什么 WebView 本地资源

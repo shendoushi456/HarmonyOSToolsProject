@@ -60,4 +60,30 @@ class WifiNativeChannel {
   /// wifi 扫描完成事件流(对齐 Android WIFI_SCAN_RESULTS_AVAILABLE_ACTION 广播)
   /// 系统周期性扫描完成后触发,客户端据此刷新 getScanInfoList
   Stream<dynamic> get onScanFinishedStream => _events.receiveBroadcastStream();
+
+  /// 连接指定 wifi - 对齐 Android WifiLinkDialog 的 addNetwork→enableNetwork→reconnect
+  /// 空密码按开放网络处理,有密码一律 PSK(对齐安卓不区分 WPA/WEP 的实现)
+  Future<bool> connectWifi(String ssid, String password) async =>
+      (await _method.invokeMethod<bool>('connectWifi', <String, dynamic>{
+            'ssid': ssid,
+            'password': password,
+          })) ??
+          false;
+
+  /// 当前连接详细信息 - 对齐 Android WiFiStrengthActivity(DhcpInfo+LinkProperties)
+  /// 返回 null 表示未连接 wifi 或读取失败
+  Future<WifiConnectionDetailDTO?> getConnectionDetail() async {
+    final result =
+        await _method.invokeMethod<Map>('getConnectionDetail');
+    if (result == null) return null;
+    return WifiConnectionDetailDTO.fromMap(result);
+  }
+
+  /// wlan0 接口开机以来累计接收字节(悬浮窗每日 WiFi 用量差值基准)
+  Future<int> getWifiRxBytes() async =>
+      (await _method.invokeMethod<int>('getWifiRxBytes')) ?? 0;
+
+  /// 蜂窝开机以来累计接收字节(悬浮窗每日移动用量差值基准)
+  Future<int> getCellularRxBytes() async =>
+      (await _method.invokeMethod<int>('getCellularRxBytes')) ?? 0;
 }

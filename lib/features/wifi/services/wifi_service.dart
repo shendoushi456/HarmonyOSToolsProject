@@ -35,4 +35,12 @@ class WifiService {
 
   /// wifi 扫描完成事件流(对齐 WIFI_SCAN_RESULTS_AVAILABLE_ACTION 广播)
   Stream<dynamic> get onScanFinishedStream => _channel.onScanFinishedStream;
+
+  /// 连接指定 wifi(对齐 WifiLinkDialog 的 addNetwork 流程)
+  Future<bool> connectWifi(String ssid, String password) =>
+      _channel.connectWifi(ssid, password);
+
+  /// 当前连接详细信息(对齐 WiFiStrengthActivity 的 DhcpInfo+LinkProperties)
+  Future<WifiConnectionDetailDTO?> getConnectionDetail() =>
+      _channel.getConnectionDetail();
 }
