@@ -40,6 +40,7 @@ enum ToolId {
   watermark,
   mosaic,
   magnifier,
+  spyglass,
   tally,
   pixelImage,
   imageStyleTransfer,
@@ -54,6 +55,12 @@ enum ToolId {
   travelChecklist,
   randomNumber,
   jsonEditor,
+  pdfToImage,
+  imageToPdf,
+  pdfEncrypt,
+  pdfCompress,
+  lowPoly,
+  hiddenImage,
 }
 
 /// UI-independent destination understood by [ToolNavigationService].
@@ -67,6 +74,7 @@ enum ToolDestination {
   watermark,
   pixelImage,
   magnifier,
+  spyglass,
   tally,
   imageStyleTransfer,
   selfieAnime,
@@ -80,6 +88,12 @@ enum ToolDestination {
   travelChecklist,
   randomNumber,
   jsonEditor,
+  pdfToImage,
+  imageToPdf,
+  pdfEncrypt,
+  pdfCompress,
+  lowPoly,
+  hiddenImage,
 }
 
 enum MenuToolPlacement {
@@ -89,4 +103,5 @@ enum MenuToolPlacement {
   otherScanImageProcess,
   otherScanCalculator,
   otherScanOther,
+  otherScanPdf,
 }

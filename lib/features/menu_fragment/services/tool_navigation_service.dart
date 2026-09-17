@@ -10,12 +10,19 @@ import '../../image_process/models/image_process_type.dart';
 import '../../image_process/pages/image_process_page.dart';
 import '../../menu_home/pages/qr_generate_page.dart';
 import '../../menu_home/pages/qr_scan_page.dart';
+import '../../menu_home/pages/pdf_to_image_page.dart';
+import '../../menu_home/pages/image_to_pdf_page.dart';
+import '../../menu_home/pages/pdf_encrypt_page.dart';
+import '../../menu_home/pages/pdf_compress_page.dart';
 import '../../portable_tools/pages/magnifier_camera_page.dart';
+import '../../portable_tools/pages/spyglass_camera_page.dart';
 import '../../portable_tools/pages/pixel_image_page.dart';
 import '../../portable_tools/pages/watermark_image_page.dart';
 import '../../recognition/models/recognition_type.dart';
 import '../../other_scan_tools/pages/base_conversion_page.dart';
 import '../../other_scan_tools/pages/currency_converter_page.dart';
+import '../../other_scan_tools/pages/hidden_image_page.dart';
+import '../../other_scan_tools/pages/low_poly_page.dart';
 import '../../other_scan_tools/pages/relatives_calculator_page.dart';
 import '../models/tool_definition.dart';
 
@@ -45,6 +52,8 @@ class ToolNavigationService {
         return PixelImagePage.push(context);
       case ToolDestination.magnifier:
         return MagnifierCameraPage.push(context);
+      case ToolDestination.spyglass:
+        return SpyglassCameraPage.push(context);
       case ToolDestination.tally:
         return TallyPage.push(context);
       case ToolDestination.imageStyleTransfer:
@@ -88,6 +97,25 @@ class ToolNavigationService {
           title: 'json编辑器',
           url: 'https://ol.woobx.cn/tool/json-editor',
         );
+      // PDF 四功能(master_mianfeisaosaowang 分支实现，PDF转图片保存到相册)。
+      case ToolDestination.pdfToImage:
+        return PdfToImagePage.push(context);
+      case ToolDestination.imageToPdf:
+        return ImageToPdfPage.push(context);
+      case ToolDestination.pdfEncrypt:
+        return PdfEncryptPage.push(context);
+      case ToolDestination.pdfCompress:
+        return PdfCompressPage.push(context);
+      // 特效图(对齐安卓 PictureLowPolyActivity，功能取
+      // master_dasushangwangtong_huawei 分支 LowPolyPage)。
+      case ToolDestination.lowPoly:
+        return Navigator.push(
+          context,
+          MaterialPageRoute(builder: (_) => const LowPolyPage()),
+        );
+      // 隐藏图(对齐安卓 PictureHideActivity，合成见 hidden_image_service)。
+      case ToolDestination.hiddenImage:
+        return HiddenImagePage.push(context);
     }
   }
 

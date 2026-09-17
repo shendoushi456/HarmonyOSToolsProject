@@ -37,6 +37,12 @@ class OtherScanToolsPage extends ConsumerWidget {
                         tools: _forPlacement(
                             tools, MenuToolPlacement.otherScanImageProcess)),
                     const SizedBox(height: 18),
+                    // 对齐 OtherSaoMiaoFrgment 的 "PDF工具" 分类。
+                    _CategoryCard(
+                        title: 'PDF工具',
+                        tools: _forPlacement(
+                            tools, MenuToolPlacement.otherScanPdf)),
+                    const SizedBox(height: 18),
                     _CategoryCard(
                         title: '计算器',
                         tools: _forPlacement(
@@ -79,38 +85,42 @@ class _CategoryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      color: Colors.white,
-      elevation: 2,
-      shadowColor: const Color(0x24000000),
-      borderRadius: BorderRadius.circular(20),
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(title,
-                style: const TextStyle(
-                    color: Color(0xFF434343),
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600)),
-            const SizedBox(height: 16),
-            // 每行最多 4 个，超出一行自动换行(计算器分组 6 项时排 4+2)。
-            LayoutBuilder(builder: (context, constraints) {
-              const columns = 4;
-              final tileWidth = constraints.maxWidth / columns;
-              return Wrap(
-                runSpacing: 14,
-                children: [
-                  for (final tool in tools)
-                    SizedBox(
-                        width: tileWidth,
-                        child: _ToolTile(
-                            tool: tool, calculatorLayout: calculatorLayout)),
-                ],
-              );
-            }),
-          ],
+    // 对齐安卓 ToolCategoryCard 的 fillMaxWidth：不足 4 项时卡片仍满宽。
+    return SizedBox(
+      width: double.infinity,
+      child: Material(
+        color: Colors.white,
+        elevation: 2,
+        shadowColor: const Color(0x24000000),
+        borderRadius: BorderRadius.circular(20),
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(title,
+                  style: const TextStyle(
+                      color: Color(0xFF434343),
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600)),
+              const SizedBox(height: 16),
+              // 每行最多 4 个，超出一行自动换行(计算器分组 6 项时排 4+2)。
+              LayoutBuilder(builder: (context, constraints) {
+                const columns = 4;
+                final tileWidth = constraints.maxWidth / columns;
+                return Wrap(
+                  runSpacing: 14,
+                  children: [
+                    for (final tool in tools)
+                      SizedBox(
+                          width: tileWidth,
+                          child: _ToolTile(
+                              tool: tool, calculatorLayout: calculatorLayout)),
+                  ],
+                );
+              }),
+            ],
+          ),
         ),
       ),
     );

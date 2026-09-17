@@ -127,6 +127,7 @@ flutter:
     - assets/images/other_scan_tools/
     - assets/images/favorite/
     - assets/images/bottom_navigation/
+    - assets/images/recognition/
     - assets/hot_city.json
     - assets/game/xiaoqiaomen.html   # 生活小窍门 WebView 本地资源
     # HarmonyOS Flutter 构建不会递归收录此目录；WebToolPage 会逐项从

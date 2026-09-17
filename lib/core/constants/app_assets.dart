@@ -240,6 +240,10 @@ class AppAssets {
       '$_base/menu_fragment/tool_mosaic.png';
   static const String menuFragmentToolMagnifier =
       '$_base/menu_fragment/tool_magnifier.png';
+
+  /// 望远镜图标(对齐安卓 ic_wangyuanjing)
+  static const String menuFragmentToolSpyglass =
+      '$_base/menu_fragment/tool_spyglass.png';
   static const String menuFragmentToolTally =
       '$_base/menu_fragment/tool_tally.png';
   static const String menuFragmentSettings =
@@ -355,6 +359,8 @@ class AppAssets {
   static const String otherScanAnime = '$_base/other_scan_tools/cartoon.png';
   static const String otherScanColourize =
       '$_base/other_scan_tools/ic_heibaitu.png';
+  static const String otherScanHiddenImage =
+      '$_base/other_scan_tools/ic_yicangtu.png';
   static const String otherScanRelatives =
       '$_base/other_scan_tools/ic_qinqiguanxi.png';
   static const String otherScanCurrency =
@@ -370,6 +376,18 @@ class AppAssets {
   /// json编辑器图标 - 来自 saolaisao 分支 saoTools44
   static const String otherScanJsonEditor =
       '$_base/other_scan_tools/ic_sao_tools_4_4.png';
+  static const String otherScanPdfToImage =
+      '$_base/other_scan_tools/ic_pdf_img.png';
+  static const String otherScanImageToPdf =
+      '$_base/other_scan_tools/ic_img_pdf.png';
+  static const String otherScanPdfEncrypt =
+      '$_base/other_scan_tools/ic_jiami_pdf.png';
+  static const String otherScanPdfCompress =
+      '$_base/other_scan_tools/ic_yasuo_pdf.png';
+
+  /// 特效图(LowPoly)空态图 - 来自 master_dasushangwangtong_huawei 分支 ic_null_img
+  static const String otherScanNullImg =
+      '$_base/other_scan_tools/ic_null_img.png';
 
   // ====== FavoriteListFragment 收藏页资源 - 直接来自 toolbox_c Android 源码 ======
   static const String favoriteEmpty = '$_base/favorite/ic_fac_flag.png';
@@ -388,9 +406,19 @@ class AppAssets {
   static const String favoriteWatermark = '$_base/favorite/s_tjsy.png';
   static const String favoriteMosaic = '$_base/favorite/s_msk.png';
   static const String favoriteMagnifier = '$_base/favorite/s_fdj.png';
+
+  /// 望远镜收藏图标(对齐安卓 s_wyj)
+  static const String favoriteSpyglass = '$_base/favorite/s_wyj.png';
+
+  /// 望远镜全屏遮挡图(对齐安卓 scanlibrary drawable/v.webp：
+  /// 黑色边框+上下两个透明圆孔+中心白色十字准星)
+  static const String spyglassMask = '$_base/portable_tools_spyglass_mask.webp';
   static const String favoriteTally = '$_base/menu_fragment/tool_tally.png';
   static const String favoritePixel = '$_base/favorite/s_xst.png';
   static const String favoriteStyle = '$_base/favorite/s_txt.png';
+
+  /// 隐藏图收藏图标(对齐安卓 s_yincangtu)
+  static const String favoriteHiddenImage = '$_base/favorite/s_yincangtu.png';
   static const String favoriteAnime = '$_base/favorite/s_yincangtu.png';
   static const String favoriteColourize = '$_base/favorite/s_hbss.png';
   static const String favoriteRelatives = '$_base/favorite/s_qqgx.png';
