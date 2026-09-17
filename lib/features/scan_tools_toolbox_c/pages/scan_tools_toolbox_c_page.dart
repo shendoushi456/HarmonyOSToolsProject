@@ -124,8 +124,10 @@ class _CategorySection extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 12),
+        // Android 源码固定 180dp 恰好容纳 2 行(上下 padding 20 + 2×64 + 行距 12)；
+        // 行数更多时按同规格延伸，保持每行 64dp、行距 12dp 的还原效果。
         Container(
-          height: 180,
+          height: 40 + rows.length * 64 + (rows.length - 1) * 12,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16),
             image: const DecorationImage(

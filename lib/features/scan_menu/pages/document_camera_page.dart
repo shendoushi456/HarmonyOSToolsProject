@@ -30,7 +30,14 @@ class _DocumentCameraPageState extends State<DocumentCameraPage>
   CameraController? _controller;
   bool _initializing = true;
   bool _capturing = false;
+  bool _opening = false;
   String? _error;
+
+  /// 对齐识别页相机控制：默认后置，可切换前置。
+  CameraLensDirection _lensDirection = CameraLensDirection.back;
+
+  /// 对齐识别页闪光灯：OFF → ALWAYS → AUTO 三态循环，初始关闭。
+  FlashMode _flashMode = FlashMode.off;
 
   @override
   void initState() {
@@ -59,9 +66,8 @@ class _DocumentCameraPageState extends State<DocumentCameraPage>
   }
 
   Future<void> _initializeCamera() async {
-    if (_initializing == false && _controller?.value.isInitialized == true) {
-      return;
-    }
+    if (_opening) return;
+    _opening = true;
     if (mounted) {
       setState(() {
         _initializing = true;
@@ -74,22 +80,37 @@ class _DocumentCameraPageState extends State<DocumentCameraPage>
       if (granted != true) {
         throw const DocumentCaptureException('未获得相机权限');
       }
+      // 鸿蒙 CameraKit 同一时刻只允许一个相机 session，
+      // 必须先释放旧相机再创建新的，否则新相机预览黑屏。
+      final previous = _controller;
+      _controller = null;
+      if (mounted) setState(() {});
+      await previous?.dispose();
+
       final cameras = await availableCameras();
-      if (cameras.isEmpty) {
-        throw const DocumentCaptureException('未找到可用相机');
-      }
-      final backCamera = cameras.firstWhere(
-        (camera) => camera.lensDirection == CameraLensDirection.back,
-        orElse: () => cameras.first,
+      final selected = cameras.where(
+        (camera) => camera.lensDirection == _lensDirection,
       );
+      if (selected.isEmpty) {
+        throw DocumentCaptureException(
+          '没有${_lensDirection == CameraLensDirection.front ? '前' : '后'}置相机',
+        );
+      }
       final controller = CameraController(
-        backCamera,
+        selected.first,
         ResolutionPreset.high,
         enableAudio: false,
       );
       await controller.initialize();
-      await _controller?.dispose();
-      _controller = controller;
+      if (!mounted) {
+        await controller.dispose();
+        return;
+      }
+      setState(() => _controller = controller);
+      // 相机就绪后恢复当前闪光灯模式(前置不支持时忽略)。
+      try {
+        await controller.setFlashMode(_flashMode);
+      } catch (_) {}
     } on DocumentCaptureException catch (error) {
       _error = error.message;
     } on CameraException catch (error) {
@@ -99,8 +120,36 @@ class _DocumentCameraPageState extends State<DocumentCameraPage>
     } catch (_) {
       _error = '相机初始化失败，请重试';
     } finally {
+      _opening = false;
       if (mounted) setState(() => _initializing = false);
     }
+  }
+
+  /// 对齐安卓 camera_switch_button：切换前后摄像头并重启相机。
+  Future<void> _switchCamera() async {
+    final cameras = await availableCameras();
+    final target = _lensDirection == CameraLensDirection.back
+        ? CameraLensDirection.front
+        : CameraLensDirection.back;
+    if (!cameras.any((camera) => camera.lensDirection == target)) return;
+    setState(() => _lensDirection = target);
+    await _initializeCamera();
+  }
+
+  /// 对齐安卓 flash_switch_button：OFF→ALWAYS→AUTO 三态循环。
+  Future<void> _cycleFlashMode() async {
+    setState(() {
+      if (_flashMode == FlashMode.off) {
+        _flashMode = FlashMode.always;
+      } else if (_flashMode == FlashMode.always) {
+        _flashMode = FlashMode.auto;
+      } else {
+        _flashMode = FlashMode.off;
+      }
+    });
+    try {
+      await _controller?.setFlashMode(_flashMode);
+    } catch (_) {}
   }
 
   Future<void> _takePicture() async {
@@ -152,7 +201,19 @@ class _DocumentCameraPageState extends State<DocumentCameraPage>
                   style: const TextStyle(color: Colors.white, fontSize: 18),
                 ),
               ),
-              const SizedBox(width: 56),
+              // 对齐安卓 camera_switch_button：右上角切换前后摄像头。
+              SizedBox(
+                width: 56,
+                child: IconButton(
+                  tooltip: '反转摄像头',
+                  onPressed: _switchCamera,
+                  icon: Image.asset(
+                    'assets/images/recognition/ic_switch.png',
+                    width: 26,
+                    height: 26,
+                  ),
+                ),
+              ),
             ]),
           ),
           Expanded(
@@ -177,28 +238,53 @@ class _DocumentCameraPageState extends State<DocumentCameraPage>
           ),
           SizedBox(
             height: 128,
-            child: Center(
-              child: GestureDetector(
-                onTap: previewReady && !_capturing ? _takePicture : null,
-                child: Container(
-                  width: 70,
-                  height: 70,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    border: Border.all(color: Colors.white, width: 4),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 28),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  // 左侧占位，与闪光灯等宽，保持快门居中。
+                  const SizedBox(width: 48),
+                  Center(
+                    child: GestureDetector(
+                      onTap: previewReady && !_capturing ? _takePicture : null,
+                      child: Container(
+                        width: 70,
+                        height: 70,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border: Border.all(color: Colors.white, width: 4),
+                        ),
+                        padding: const EdgeInsets.all(5),
+                        child: DecoratedBox(
+                          decoration: const BoxDecoration(
+                              shape: BoxShape.circle, color: Colors.white),
+                          child: _capturing
+                              ? const Padding(
+                                  padding: EdgeInsets.all(14),
+                                  child:
+                                      CircularProgressIndicator(strokeWidth: 2),
+                                )
+                              : null,
+                        ),
+                      ),
+                    ),
                   ),
-                  padding: const EdgeInsets.all(5),
-                  child: DecoratedBox(
-                    decoration: const BoxDecoration(
-                        shape: BoxShape.circle, color: Colors.white),
-                    child: _capturing
-                        ? const Padding(
-                            padding: EdgeInsets.all(14),
-                            child: CircularProgressIndicator(strokeWidth: 2),
-                          )
-                        : null,
+                  // 对齐安卓 flash_switch_button：快门右侧三态闪光灯。
+                  IconButton(
+                    tooltip: '闪光灯',
+                    onPressed: _cycleFlashMode,
+                    icon: Image.asset(
+                      _flashMode == FlashMode.always
+                          ? 'assets/images/recognition/open_flash.png'
+                          : _flashMode == FlashMode.auto
+                              ? 'assets/images/recognition/auto_flash.png'
+                              : 'assets/images/recognition/stop_flash.png',
+                      width: 28,
+                      height: 28,
+                    ),
                   ),
-                ),
+                ],
               ),
             ),
           ),

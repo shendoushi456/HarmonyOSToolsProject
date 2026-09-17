@@ -1,6 +1,7 @@
-/// Android NewCameraMagnifygActivity 中迁移的三项百度图像处理能力。
+/// Android NewCameraMagnifygActivity 中迁移的图像处理能力。
+/// colourize 已由"黑白上色"(百度接口)改为本地图库"图片转黑白"。
 enum ImageProcessType {
-  colourize('图片黑白上色', 'rest/2.0/image-process/v1/colourize'),
+  colourize('图片转黑白', 'rest/2.0/image-process/v1/colourize'),
   styleTransfer('图像风格转换', 'rest/2.0/image-process/v1/style_trans'),
   selfieAnime('人像动漫化', 'rest/2.0/image-process/v1/selfie_anime');
 

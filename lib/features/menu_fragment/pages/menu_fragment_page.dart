@@ -34,10 +34,10 @@ class MenuFragmentPage extends ConsumerWidget {
       sections,
       MenuToolboxCSectionKind.qrCard,
     ).qrCard!;
-    final toolListItem = _firstOfKind(
-      sections,
-      MenuToolboxCSectionKind.toolList,
-    ).toolListItem!;
+    final toolListItems = sections
+        .where((s) => s.kind == MenuToolboxCSectionKind.toolList)
+        .map((s) => s.toolListItem!)
+        .toList();
 
     return Scaffold(
       backgroundColor: const Color(0xFFFBF8F1),
@@ -64,8 +64,12 @@ class MenuFragmentPage extends ConsumerWidget {
                 _buildExtractionTools(extraction),
                 const SizedBox(height: 30),
                 _buildCreateQrCard(context, qrCard),
+                // 对齐 Android LazyColumn：文档扫描 paddingTop 30，格式转换 paddingTop 12。
                 const SizedBox(height: 30),
-                _buildToolListItem(context, toolListItem),
+                for (var i = 0; i < toolListItems.length; i++) ...[
+                  if (i > 0) const SizedBox(height: 12),
+                  _buildToolListItem(context, toolListItems[i]),
+                ],
                 const SizedBox(height: 24),
               ],
             ),
@@ -246,7 +250,7 @@ class MenuFragmentPage extends ConsumerWidget {
     );
   }
 
-  /// 文档扫描列表项 - 对应 ToolListItem(裁剪格式转换)
+  /// 底部工具列表项 - 对应 ToolListItem(文档扫描/格式转换)
   Widget _buildToolListItem(BuildContext context, MenuToolListItem item) {
     return Material(
       color: Colors.transparent,

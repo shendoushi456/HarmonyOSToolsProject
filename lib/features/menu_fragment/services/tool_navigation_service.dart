@@ -16,7 +16,14 @@ import '../../portable_tools/pages/watermark_image_page.dart';
 import '../../recognition/models/recognition_type.dart';
 import '../../other_scan_tools/pages/base_conversion_page.dart';
 import '../../other_scan_tools/pages/currency_converter_page.dart';
+import '../../other_scan_tools/pages/hidden_image_page.dart';
+import '../../other_scan_tools/pages/low_poly_page.dart';
 import '../../other_scan_tools/pages/relatives_calculator_page.dart';
+import '../../menu_home/pages/pdf_compress_page.dart';
+import '../../menu_home/pages/pdf_encrypt_page.dart';
+import '../../menu_home/pages/image_to_pdf_page.dart';
+import '../../menu_home/pages/pdf_to_image_page.dart';
+import '../../wifi/pages/speed_net_page.dart';
 import '../../scan_menu/pages/document_capture_preview_page.dart';
 import '../models/tool_definition.dart';
 
@@ -93,6 +100,37 @@ class ToolNavigationService {
         );
       case ToolDestination.documentScan:
         return DocumentCapturePreviewPage.startFlow(context, title: '拍照存档');
+      // PDF 四功能(master_mianfeisaosaowang 分支实现，PDF转图片带保存到相册)。
+      case ToolDestination.pdfToImage:
+        return PdfToImagePage.push(context);
+      case ToolDestination.imageToPdf:
+        return ImageToPdfPage.push(context);
+      case ToolDestination.pdfEncrypt:
+        return PdfEncryptPage.push(context);
+      case ToolDestination.pdfCompress:
+        return PdfCompressPage.push(context);
+      // 特效图(对齐安卓 PictureLowPolyActivity，取 65fb1c3 提交 LowPolyPage)。
+      case ToolDestination.lowPoly:
+        return Navigator.push(
+          context,
+          MaterialPageRoute(builder: (_) => const LowPolyPage()),
+        );
+      // 隐藏图(对齐安卓 PictureHideActivity，取 65fb1c3 提交 HiddenImagePage)。
+      case ToolDestination.hiddenImage:
+        return HiddenImagePage.push(context);
+      // 网速测试(取 f97812d 提交达速上网通 SpeedNetPage)。
+      case ToolDestination.speedTest:
+        return Navigator.push(
+          context,
+          MaterialPageRoute(builder: (_) => const SpeedNetPage()),
+        );
+      // json编辑器(f30166b 提交：WebToolPage 打开 ol.woobx.cn 在线工具)。
+      case ToolDestination.jsonEditor:
+        return WebToolPage.push(
+          context,
+          title: 'json编辑器',
+          url: 'https://ol.woobx.cn/tool/json-editor',
+        );
     }
   }
 

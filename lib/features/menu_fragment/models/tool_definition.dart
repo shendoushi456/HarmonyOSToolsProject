@@ -54,6 +54,14 @@ enum ToolId {
   travelChecklist,
   randomNumber,
   documentScan,
+  pdfToImage,
+  imageToPdf,
+  pdfEncrypt,
+  pdfCompress,
+  lowPoly,
+  hiddenImage,
+  speedTest,
+  jsonEditor,
 }
 
 /// UI-independent destination understood by [ToolNavigationService].
@@ -80,6 +88,14 @@ enum ToolDestination {
   travelChecklist,
   randomNumber,
   documentScan,
+  pdfToImage,
+  imageToPdf,
+  pdfEncrypt,
+  pdfCompress,
+  lowPoly,
+  hiddenImage,
+  speedTest,
+  jsonEditor,
 }
 
 enum MenuToolPlacement {

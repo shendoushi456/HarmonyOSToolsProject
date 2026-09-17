@@ -8,13 +8,14 @@ import '../../menu_home/pages/qr_generate_page.dart';
 import '../../menu_home/pages/qr_scan_page.dart';
 import '../../recognition/models/recognition_type.dart';
 import '../../scan_menu/pages/document_capture_preview_page.dart';
+import '../../translation/presentation/pages/format_convert_page.dart';
 import '../models/menu_toolbox_c_section.dart';
 
 /// 对齐 Android MenuFragment.kt:ScannerHomeScreen 的固定分区数据。
 ///
 /// 整页由 [banner] / [identification] / [extraction] / [qrCard] / [toolList]
 /// 五段构成，与 Android Composable 的 item 列表一一对应；智能扫描横幅按要求
-/// 不带点击事件，格式转换按用户要求不迁移。
+/// 不带点击事件。
 final menuToolboxCSectionsProvider = Provider<List<MenuToolboxCSection>>((ref) {
   return [
     // 1. 顶部标题不在 section 数据里，由页面固定渲染，对应 TopHeader Composable。
@@ -79,7 +80,7 @@ final menuToolboxCSectionsProvider = Provider<List<MenuToolboxCSection>>((ref) {
       ),
     ),
 
-    // 6. 文档扫描 - 对应 ToolListItem；格式转换按要求不迁移。
+    // 6. 文档扫描 + 格式转换 - 对应两个 ToolListItem。
     MenuToolboxCSection.toolList(
       MenuToolListItem(
         title: '文档扫描',
@@ -87,6 +88,19 @@ final menuToolboxCSectionsProvider = Provider<List<MenuToolboxCSection>>((ref) {
         iconAsset: AppAssets.tbcIcOcrDocument,
         onTap: (context) =>
             DocumentCapturePreviewPage.startFlow(context, title: '拍照存档'),
+      ),
+    ),
+    // 格式转换 - 对齐 Android 点击打开 PdfToImgConversionActivity；
+    // 二级页取 master_fanyimianfeiyong 分支 FormatConvertPage。
+    MenuToolboxCSection.toolList(
+      MenuToolListItem(
+        title: '格式转换',
+        subtitle: '一键转换PDF格式',
+        iconAsset: AppAssets.tbcIcPdfConvert,
+        onTap: (context) => Navigator.push(
+          context,
+          MaterialPageRoute(builder: (_) => const FormatConvertPage()),
+        ),
       ),
     ),
   ];

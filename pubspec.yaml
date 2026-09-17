@@ -129,6 +129,9 @@ flutter:
     - assets/images/scan_tools_toolbox_c/
     - assets/images/bottom_nav_toolbox_c/
     - assets/images/other_scan_tools/
+    - assets/images/recognition/
+    - assets/images/wifi_box/
+    - assets/images/wifi_tools/
     - assets/images/favorite/
     - assets/images/bottom_navigation/
     - assets/hot_city.json

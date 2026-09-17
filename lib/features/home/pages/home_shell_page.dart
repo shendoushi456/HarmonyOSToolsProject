@@ -48,9 +48,9 @@ class HomeShellPage extends ConsumerWidget {
       ),
       child: SafeArea(
         top: false,
-        bottom: false,
+        bottom: true,
         child: SizedBox(
-          height: 56,
+          height: 70,
           child: Row(
             children: [
               for (var i = 0; i < items.length; i++)

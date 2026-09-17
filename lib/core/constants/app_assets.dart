@@ -315,6 +315,7 @@ class AppAssets {
   static const String tbcIcArrowRightWhite = '$_tbcBase/ic_arrow_right_white.png';
   static const String tbcIcArrowRightBlack = '$_tbcBase/ic_arrow_right_black.png';
   static const String tbcIcOcrDocument = '$_tbcBase/ic_ocr_document.png';
+  static const String tbcIcPdfConvert = '$_tbcBase/ic_pdf_convert.png';
   static const String tbcIcCaijian = '$_tbcBase/ic_caijian.png';
   static const String tbcIcChongpai = '$_tbcBase/ic_chongpai.png';
   static const String tbcIcShuiyin = '$_tbcBase/ic_shuiyin.png';
@@ -407,6 +408,8 @@ class AppAssets {
       '$_base/other_scan_tools/ic_xiangsutu.png';
   static const String otherScanStyle =
       '$_base/other_scan_tools/ic_texiaotu.png';
+  static const String otherScanHiddenImage =
+      '$_base/other_scan_tools/ic_yicangtu.png';
   static const String otherScanAnime = '$_base/other_scan_tools/cartoon.png';
   static const String otherScanColourize =
       '$_base/other_scan_tools/ic_heibaitu.png';
@@ -422,6 +425,24 @@ class AppAssets {
   static const String otherScanChecklist = '$_base/ic_tong_life_3_3.png';
   static const String otherScanRandom =
       '$_base/other_scan_tools/ic_suijisu.png';
+
+  /// 特效图(LowPoly)/隐藏图 空态图 - 来自 65fb1c3 提交 ic_null_img
+  static const String otherScanNullImg =
+      '$_base/other_scan_tools/ic_null_img.png';
+
+  // ====== 网络测速页资源 - 来自 f97812d 提交(达速上网通) wifi_box ======
+  static const String _wifiBox = '$_base/wifi_box';
+  static const String wifiBoxBack = '$_wifiBox/back.webp';
+  static const String wifiBoxMegabitps = '$_wifiBox/megabitps.webp';
+  static const String wifiBoxMegabyteps = '$_wifiBox/megabyteps.webp';
+  static const String wifiBoxShelf = '$_wifiBox/shelf.webp';
+  static const String wifiBoxWave = '$_wifiBox/wave.webp';
+
+  /// 工具页"网速测试"入口图标 - 来自 f97812d 提交 wifi_tools/cesu_icon
+  static const String wifiToolsCesuIcon = '$_base/wifi_tools/cesu_icon.png';
+
+  /// 工具页"json编辑器"入口图标 - 来自 f30166b 提交 mtoolsl_json
+  static const String mtoolslJson = '$_base/mtoolsl_json.png';
 
   // ====== FavoriteListFragment 收藏页资源 - 直接来自 toolbox_c Android 源码 ======
   static const String favoriteEmpty = '$_base/favorite/ic_fac_flag.png';
