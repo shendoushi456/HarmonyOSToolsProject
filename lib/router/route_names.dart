@@ -32,6 +32,9 @@ class RouteNames {
   /// 反馈页(对齐 Android FeedBackSettingActivity)
   static const String feedback = 'feedback';
   static const String recognition = 'recognition';
+
+  /// 字体大小设置页(对齐 Android TextSizeSettingsActivity)
+  static const String fontSizeSetting = 'fontSizeSetting';
 }
 
 class RoutePaths {
@@ -59,4 +62,7 @@ class RoutePaths {
   /// 反馈页路径
   static const String feedback = '/feedback';
   static const String recognition = '/recognition';
+
+  /// 字体大小设置页路径
+  static const String fontSizeSetting = '/fontSizeSetting';
 }

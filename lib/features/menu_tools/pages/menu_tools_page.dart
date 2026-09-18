@@ -1,7 +1,6 @@
 // MenuFragment 首页(Compose 版) - 对齐 toolbox_c MenuFragment.kt。
 // 顶栏天气(城市可点击换城市,温度不带跳转) + 白色圆角内容区:
-// 3 识别卡 + 字体大小 banner(点击进放大镜) + 文档工具 4 卡。
-// 按用户要求:不放放大镜 banner 模块。
+// 放大镜 banner + 3 识别卡 + 字体大小 banner(进字体大小设置页) + 文档工具 4 卡。
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -76,6 +75,9 @@ class _MenuToolsPageState extends ConsumerState<MenuToolsPage> {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     const SizedBox(height: 23),
+                    // 放大镜 banner - 对齐 RecognitionToolsSection(识别卡上方)
+                    const _MagnifierBanner(),
+                    const SizedBox(height: 16),
                     _RecognizeTools(items: recognitionItems),
                     const SizedBox(height: 20),
                     const _TextSizeBanner(),
@@ -229,6 +231,65 @@ class _TopBar extends StatelessWidget {
   }
 }
 
+/// 放大镜 banner - 对齐 RecognitionToolsSection:
+/// 高 92(水平 20),ic_ninepic 背景图 FillBounds,左起 36 竖排
+/// "放大镜" 22sp 白 Medium + 6 间距 + 箭头图 33x15。
+/// 点击对齐 startNewCameraMagnToFangda(activity, true) → 放大镜相机页。
+class _MagnifierBanner extends StatelessWidget {
+  const _MagnifierBanner();
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: () => ToolNavigationService.openDestination(
+          context,
+          ToolDestination.magnifier,
+        ),
+        child: SizedBox(
+          height: 92,
+          child: Stack(
+            fit: StackFit.expand,
+            children: [
+              Image.asset(
+                AppAssets.menuToolsMagnifierBanner,
+                fit: BoxFit.fill,
+              ),
+              // 左起 36 垂直居中的文字列
+              Padding(
+                padding: const EdgeInsets.only(left: 36),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      '放大镜',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 22,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    const SizedBox(height: 6),
+                    Image.asset(
+                      AppAssets.menuToolsMagnifierArrow,
+                      width: 33,
+                      height: 15,
+                      fit: BoxFit.fill,
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 /// 3 张识别卡 - 对齐 RecognizeTools:水平 20,间距 18。
 class _RecognizeTools extends StatelessWidget {
   const _RecognizeTools({required this.items});
@@ -301,7 +362,7 @@ class _RecognizeToolCard extends StatelessWidget {
 }
 
 /// 字体大小 banner - 对齐 s_ztdx 图(水平 20,高 188,FillBounds)。
-/// 用户指定:点击进入放大镜(安卓原版跳 TextSizeSettingsActivity,按需求改为放大镜)。
+/// 对齐安卓原版:点击进入字体大小设置页(TextSizeSettingsActivity 对应页)。
 class _TextSizeBanner extends StatelessWidget {
   const _TextSizeBanner();
 
@@ -311,10 +372,7 @@ class _TextSizeBanner extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: GestureDetector(
         behavior: HitTestBehavior.opaque,
-        onTap: () => ToolNavigationService.openDestination(
-          context,
-          ToolDestination.magnifier,
-        ),
+        onTap: () => context.push(RoutePaths.fontSizeSetting),
         child: Image.asset(
           AppAssets.menuToolsTextSizeBanner,
           height: 188,

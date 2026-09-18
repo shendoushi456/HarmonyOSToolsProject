@@ -29,3 +29,6 @@ ohos/.appanalyzer/
 **/junk_code/**
 **/proguardMapping.txt
 **/mapping/**
+
+flutter_*.log
+*.log

@@ -461,6 +461,12 @@ class AppAssets {
   static const String menuToolsFruit = '$_base/menu_tools/shuiguo_scan_img.png';
   static const String menuToolsAnimal = '$_base/menu_tools/ic_dongwushibie.png';
 
+  /// 放大镜 banner 背景(对齐 ic_ninepic)与箭头图(对齐 ljiantou_iocn,33x15)
+  static const String menuToolsMagnifierBanner =
+      '$_base/menu_tools/ic_ninepic.png';
+  static const String menuToolsMagnifierArrow =
+      '$_base/menu_tools/ljiantou_iocn.png';
+
   /// 字体大小 banner(对齐 s_ztdx,1005x564)
   static const String menuToolsTextSizeBanner = '$_base/menu_tools/s_ztdx.png';
 

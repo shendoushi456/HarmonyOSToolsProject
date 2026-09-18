@@ -1,6 +1,7 @@
 // 路由配置 - 集中定义所有路由
 import 'package:go_router/go_router.dart';
 import '../features/home/pages/home_shell_page.dart';
+import '../features/menu_tools/pages/font_size_settings_page.dart';
 import '../features/setting/pages/about_page.dart';
 import '../features/setting/pages/feedback_page.dart';
 import '../features/setting/pages/policy_page.dart';
@@ -67,6 +68,12 @@ final GoRouter appRouter = GoRouter(
       builder: (context, state) => RecognitionPage(
         type: state.extra as RecognitionType,
       ),
+    ),
+    // 字体大小设置页 - 对齐 Android TextSizeSettingsActivity(应用内缩放方案)
+    GoRoute(
+      path: RoutePaths.fontSizeSetting,
+      name: RouteNames.fontSizeSetting,
+      builder: (context, state) => const FontSizeSettingsPage(),
     ),
   ],
 );

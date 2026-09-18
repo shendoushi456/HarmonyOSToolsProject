@@ -72,6 +72,18 @@ class PrefsStorage {
     await _instance.setBool(keyIsAgressment, value);
   }
 
+  // ====== 应用内字体缩放 ======
+  /// 字体缩放档位 key(双精度,1.0=默认)
+  static const String keyFontScale = 'font_scale';
+
+  /// 保存字体缩放档位
+  static Future<void> saveFontScale(double scale) async {
+    await _instance.setDouble(keyFontScale, scale);
+  }
+
+  /// 读取字体缩放档位(默认 1.0)
+  static double loadFontScale() => _instance.getDouble(keyFontScale) ?? 1.0;
+
   // ====== LifeTools - 旅行清单勾选状态持久化 ======
   /// 旅行清单勾选状态 key(对齐原版无持久化的改进,避免每次进入重置)
   static const String keyChecklistChecked = 'checklist_checked';
