@@ -65,6 +65,8 @@ class _CategoryDrawPageState extends ConsumerState<CategoryDrawPage> {
   }
 
   Future<void> _playClick() async {
+    // 对齐开关语义：声音关闭时上色不播放音效。
+    if (!ref.read(categoryDrawViewModelProvider).bgMusicOn) return;
     _clickPlayer ??= AudioPlayer();
     try {
       await _clickPlayer!.setAsset('assets/sounds/click.wav');
@@ -131,13 +133,22 @@ class _CategoryDrawPageState extends ConsumerState<CategoryDrawPage> {
     }
   }
 
+  /// 顶栏声音开关 - 对齐 MainActivityTwo two_detail_action_mute
+  /// (yinyueIv + sound_on/sound_off 图标 + Snackbar 提示)。
+  /// 开：背景音乐播放 + 上色播放音效；关：全部静音。
   void _toggleMusic() {
-    final state = ref.read(categoryDrawViewModelProvider);
+    final wasOn = ref.read(categoryDrawViewModelProvider).bgMusicOn;
     ref.read(categoryDrawViewModelProvider.notifier).toggleBgMusic();
-    if (state.bgMusicOn) {
+    if (wasOn) {
       _bgPlayer?.pause();
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('音效已关闭')),
+      );
     } else {
       _bgPlayer?.play();
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('音效已开启')),
+      );
     }
   }
 
@@ -217,16 +228,16 @@ class _CategoryDrawPageState extends ConsumerState<CategoryDrawPage> {
                 Image.asset(AppAssets.categoryDrawUndo, width: 24, height: 24),
             onPressed: state.drawnPoints.isEmpty ? null : _undo,
           ),
-          // IconButton(
-          //   icon: Image.asset(
-          //     state.bgMusicOn
-          //         ? AppAssets.categoryDrawSoundOn
-          //         : AppAssets.categoryDrawSoundOff,
-          //     width: 24,
-          //     height: 24,
-          //   ),
-          //   onPressed: _toggleMusic,
-          // ),
+          IconButton(
+            icon: Image.asset(
+              state.bgMusicOn
+                  ? AppAssets.categoryDrawSoundOn
+                  : AppAssets.categoryDrawSoundOff,
+              width: 24,
+              height: 24,
+            ),
+            onPressed: _toggleMusic,
+          ),
           IconButton(
             icon:
                 Image.asset(AppAssets.categoryDrawSave, width: 24, height: 24),

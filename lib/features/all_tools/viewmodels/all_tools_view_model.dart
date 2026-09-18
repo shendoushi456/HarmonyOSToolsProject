@@ -4,6 +4,8 @@ import '../../../core/constants/app_assets.dart';
 enum AllToolsDestination {
   create,
   compass,
+  hiddenImage,
+  lowPoly,
   selfieAnime,
   travelChecklist,
   mosaic,
@@ -35,7 +37,7 @@ class AllToolsViewModel {
     destination: AllToolsDestination.create,
   );
 
-  /// Android 中“隐藏图”按需求排除；原“特效图”位置改接人像动漫化。
+  /// 对齐安卓 AllToolsFragment：指南针/隐藏图/特效图/旅行清单。
   static const quickTools = [
     AllToolsItem(
       title: '指南针',
@@ -43,9 +45,14 @@ class AllToolsViewModel {
       destination: AllToolsDestination.compass,
     ),
     AllToolsItem(
-      title: '图像动漫化',
-      asset: AppAssets.allToolsAndroidAnime,
-      destination: AllToolsDestination.selfieAnime,
+      title: '隐藏图',
+      asset: AppAssets.allToolsAndroidHiddenImage,
+      destination: AllToolsDestination.hiddenImage,
+    ),
+    AllToolsItem(
+      title: '特效图',
+      asset: AppAssets.allToolsAndroidEffect,
+      destination: AllToolsDestination.lowPoly,
     ),
     AllToolsItem(
       title: '旅行清单',

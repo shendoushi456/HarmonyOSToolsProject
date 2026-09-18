@@ -106,6 +106,12 @@ dependencies:
   # 音频播放（分类涂鸦背景音乐 + 点击音）- 纯 Dart，鸿蒙兼容
   # 用 just_audio 而非 audioplayers：后者依赖 hosted path_provider 与项目 git 版冲突
   just_audio: ^0.9.35
+  # 鸿蒙平台实现（无此包真机播放会 MissingPluginException，音效/背景音乐无声）
+  just_audio_ohos:
+    git:
+      url: https://gitcode.com/openharmony-sig/fluttertpc_just_audio.git
+      path: just_audio/ohos
+      ref: just_audio-v0.9.37_ohos_1.0.0
 
   # HSV 色轮选择器（对齐 flask ColorPickerDialogBuilder）- 纯 Dart
   flutter_colorpicker: ^1.0.3
@@ -126,6 +132,11 @@ dependency_overrides:
       url: https://gitcode.com/openharmony-sig/flutter_packages.git
       path: packages/image_picker/image_picker
       ref: image_picker-v1.1.2-ohos-1.0.1
+  # just_audio_ohos 依赖鸿蒙适配版 audio_session，hosted 版真机不可用
+  audio_session:
+    git:
+      url: https://gitee.com/openharmony-sig/flutter_audio_session.git
+      ref: br_v0.1.21_ohos
   path_provider:
     git:
       url: https://gitcode.com/openharmony-sig/flutter_packages.git
@@ -137,6 +148,8 @@ flutter:
   generate: true
   assets:
     - assets/images/
+    - assets/images/recognition/
+    - assets/images/other_scan_tools/
     - assets/images/toolbox_migration/
     - assets/images/all_tools_android/
     - assets/images/doodle_category_android/

@@ -512,6 +512,10 @@ class AppAssets {
       'assets/images/all_tools_android/ic_add_jiahao.png';
   static const String allToolsAndroidCompass =
       'assets/images/all_tools_android/zhinanzhen_icon.png';
+  static const String allToolsAndroidHiddenImage =
+      'assets/images/all_tools_android/yincangtu_icon.png';
+  static const String allToolsAndroidEffect =
+      'assets/images/all_tools_android/icon_texiaotu.png';
   static const String allToolsAndroidAnime =
       'assets/images/all_tools_android/image_anime.png';
   static const String allToolsAndroidTravel =
@@ -526,6 +530,11 @@ class AppAssets {
       'assets/images/all_tools_android/newhomexzhh.png';
   static const String allToolsAndroidSettings =
       'assets/images/all_tools_android/shezhi.webp';
+
+  // other_scan_tools 隐藏图/特效图页资源 - 来自 65fb1c3 提交。
+  /// 特效图(LowPoly)空态图 - 来自 master_dasushangwangtong_huawei 分支 ic_null_img
+  static const String otherScanNullImg =
+      '$_base/other_scan_tools/ic_null_img.png';
 
   // DoodleCategoryFragment Android UI 原始分类图标。
   static const String doodleCategoryCartoon =

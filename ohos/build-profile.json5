@@ -6,12 +6,12 @@
         "type": "HarmonyOS",
         "material": {
           "storeFile": "/Users/zhuanzmima0000/鸿蒙签名/beijinglexionghongyun.p12",
-          "storePassword": "0000001CE3B890259AA61AE67E5E7F16127E94E8458B8C8D4DA03B81F5757D8C36AEA1893979A10539359640",
+          "storePassword": "0000001C71EDA53D60FF590943ED329EDCAA4F89B02B5B3C56C5136262866A070C50EFE6669CE670CCEBAEA1",
           "keyAlias": "beijinglexionghongyun",
-          "keyPassword": "0000001CB9ABAD4288F8AC7F27B279F97FA14DD1A6D9DA286EBBD486628B9B2BA585468E78A87702FAAB94E8",
+          "keyPassword": "0000001CBE0724BB8495B5070476A518BACF3976050A9DE7A9B841ECCF1893CCCD55B1C9C2E1D3B9925907B1",
           "signAlg": "SHA256withECDSA",
           "profile": "/Users/zhuanzmima0000/鸿蒙签名/zhangshangmianfeihuaRelease.p7b",
-          "certpath": "/Users/zhuanzmima0000/鸿蒙签名/北京喜熊鸿运/beijingxixionghongyun.cer"
+          "certpath": "/Users/zhuanzmima0000/鸿蒙签名/北京喜熊鸿运 p12用乐熊/beijingxixionghongyun.cer"
         }
       }
     ],

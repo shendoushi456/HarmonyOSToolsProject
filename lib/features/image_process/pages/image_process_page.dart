@@ -31,6 +31,12 @@ class _ImageProcessPageState extends ConsumerState<ImageProcessPage>
   bool _initializingCamera = false;
   bool _saving = false;
 
+  /// 对齐安卓 NewCameraMagnifygActivity 的 cameraSelector，默认后置。
+  CameraLensDirection _lensDirection = CameraLensDirection.back;
+
+  /// 对齐安卓 flashMode：OFF → ON → AUTO 三态循环，初始关闭。
+  FlashMode _flashMode = FlashMode.off;
+
   @override
   void initState() {
     super.initState();
@@ -58,10 +64,10 @@ class _ImageProcessPageState extends ConsumerState<ImageProcessPage>
   }
 
   Future<void> _initializeCamera() async {
-    if (_initializingCamera || _camera?.value.isInitialized == true) return;
+    if (_initializingCamera) return;
+    _initializingCamera = true;
     if (mounted) {
       setState(() {
-        _initializingCamera = true;
         _cameraError = null;
       });
     }
@@ -74,15 +80,22 @@ class _ImageProcessPageState extends ConsumerState<ImageProcessPage>
       if (granted != true) throw const _ImageProcessCameraException('未获得相机权限');
 
       final cameras = await availableCameras();
-      if (cameras.isEmpty) {
-        throw const _ImageProcessCameraException('未找到可用相机');
-      }
-      final camera = cameras.firstWhere(
-        (item) => item.lensDirection == CameraLensDirection.back,
-        orElse: () => cameras.first,
+      final selected = cameras.where(
+        (item) => item.lensDirection == _lensDirection,
       );
+      if (selected.isEmpty) {
+        throw _ImageProcessCameraException(
+            '没有${_lensDirection == CameraLensDirection.front ? '前' : '后'}置相机');
+      }
+      // 鸿蒙 CameraKit 同一时刻只允许一个相机 session，
+      // 必须先释放旧相机再创建新的，否则切换摄像头后预览黑屏。
+      final previous = _camera;
+      _camera = null;
+      if (mounted) setState(() {});
+      await previous?.dispose();
+
       final controller = CameraController(
-        camera,
+        selected.first,
         ResolutionPreset.high,
         enableAudio: false,
       );
@@ -91,15 +104,24 @@ class _ImageProcessPageState extends ConsumerState<ImageProcessPage>
         await controller.dispose();
         return;
       }
-      final previous = _camera;
       setState(() {
         _camera = controller;
         _cameraError = null;
       });
-      if (previous != null && previous != controller) {
-        unawaited(previous.dispose());
-      }
+      // 安卓在 startCamera 时用 ImageCapture.Builder().setFlashMode(flashMode)
+      // 重建拍照用例；这里在相机就绪后恢复当前闪光灯模式(前置不支持时忽略)。
+      try {
+        await controller.setFlashMode(_flashMode);
+      } catch (_) {}
     } on _ImageProcessCameraException catch (error) {
+      debugPrint(
+          'ImageProcessPage openCamera($_lensDirection) failed: ${error.message}');
+      // 打开失败时回退到后置相机，避免切换后一直黑屏。
+      if (mounted && _lensDirection != CameraLensDirection.back) {
+        _lensDirection = CameraLensDirection.back;
+        _initializingCamera = false;
+        return _initializeCamera();
+      }
       if (mounted) setState(() => _cameraError = error.message);
     } on CameraException catch (error) {
       if (mounted) {
@@ -109,11 +131,40 @@ class _ImageProcessPageState extends ConsumerState<ImageProcessPage>
       if (mounted) {
         setState(() => _cameraError = error.message ?? '相机权限申请失败');
       }
-    } catch (_) {
+    } catch (error) {
+      debugPrint(
+          'ImageProcessPage openCamera($_lensDirection) failed: $error');
       if (mounted) setState(() => _cameraError = '相机初始化失败，请重试');
     } finally {
       if (mounted) setState(() => _initializingCamera = false);
     }
+  }
+
+  /// 对齐安卓 camera_switch_button：切换前后摄像头并重启相机。
+  Future<void> _switchCamera() async {
+    final cameras = await availableCameras();
+    final target = _lensDirection == CameraLensDirection.back
+        ? CameraLensDirection.front
+        : CameraLensDirection.back;
+    if (!cameras.any((camera) => camera.lensDirection == target)) return;
+    setState(() => _lensDirection = target);
+    await _initializeCamera();
+  }
+
+  /// 对齐安卓 flash_switch_button：OFF→ON→AUTO 三态循环，切换后重启相机。
+  Future<void> _cycleFlashMode() async {
+    setState(() {
+      if (_flashMode == FlashMode.off) {
+        _flashMode = FlashMode.always;
+      } else if (_flashMode == FlashMode.always) {
+        _flashMode = FlashMode.auto;
+      } else {
+        _flashMode = FlashMode.off;
+      }
+    });
+    try {
+      await _camera?.setFlashMode(_flashMode);
+    } catch (_) {}
   }
 
   Future<void> _select(XFile? source) async {
@@ -172,6 +223,18 @@ class _ImageProcessPageState extends ConsumerState<ImageProcessPage>
         title: Text(widget.type.title),
         backgroundColor: Colors.black,
         foregroundColor: Colors.white,
+        // 对齐安卓 camera_switch_button：右上角切换前后摄像头。
+        actions: [
+          IconButton(
+            tooltip: '反转摄像头',
+            onPressed: _switchCamera,
+            icon: Image.asset(
+              'assets/images/recognition/ic_switch.png',
+              width: 26,
+              height: 26,
+            ),
+          ),
+        ],
       ),
       body: Stack(children: [
         Positioned.fill(
@@ -233,7 +296,20 @@ class _ImageProcessPageState extends ConsumerState<ImageProcessPage>
                     ),
                   ),
                 ),
-                const SizedBox(width: 40),
+                // 对齐安卓 flash_switch_button：拍照键右侧三态闪光灯。
+                IconButton(
+                  tooltip: '闪光灯',
+                  onPressed: _cycleFlashMode,
+                  icon: Image.asset(
+                    _flashMode == FlashMode.always
+                        ? 'assets/images/recognition/open_flash.png'
+                        : _flashMode == FlashMode.auto
+                            ? 'assets/images/recognition/auto_flash.png'
+                            : 'assets/images/recognition/stop_flash.png',
+                    width: 28,
+                    height: 28,
+                  ),
+                ),
               ],
             ),
           ),

@@ -1,5 +1,5 @@
 // toolbox_c AllToolsFragment 的 Flutter UI 迁移。
-// 隐藏图按需求排除；Android“特效图”位置改接既有的人像动漫化能力。
+// 隐藏图/特效图二级页功能取自 65fb1c3 提交（other_scan_tools）。
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -11,6 +11,8 @@ import '../../life_tools/pages/checklist/checklist_page.dart';
 import '../../life_tools/pages/color_drawing_studio_page.dart';
 import '../../life_tools/pages/compass/compass_page.dart';
 import '../../life_tools/pages/draw/draw_page.dart';
+import '../../other_scan_tools/pages/hidden_image_page.dart';
+import '../../other_scan_tools/pages/low_poly_page.dart';
 import '../../portable_tools/pages/pixel_image_page.dart';
 import '../viewmodels/all_tools_view_model.dart';
 
@@ -59,6 +61,12 @@ class AllToolsPage extends StatelessWidget {
     switch (destination) {
       case AllToolsDestination.compass:
         CompassPage.push(context);
+        return;
+      case AllToolsDestination.hiddenImage:
+        HiddenImagePage.push(context);
+        return;
+      case AllToolsDestination.lowPoly:
+        LowPolyPage.push(context);
         return;
       case AllToolsDestination.selfieAnime:
         _pushProcess(context, ImageProcessType.selfieAnime);
