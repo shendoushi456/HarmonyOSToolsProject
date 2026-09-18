@@ -5,8 +5,8 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'package:flutter/services.dart' show rootBundle;
 import 'package:intl/intl.dart';
-import '../../../core/storage/prefs_storage.dart';
 import '../models/chinese_calendar_bean.dart';
 import '../models/xingzuo_info.dart';
 
@@ -58,67 +58,73 @@ class CalendarAlmanacService {
     }
   }
 
-  /// 星座解析本地缓存 key(PrefsStorage 通用 KV;撤销协议 clearAll 时一并清除)
-  static const String _xingzuoCacheKey = 'xingzuo_cache_v1';
+  // ===== 星座解析(本地数据) =====
+  // 数据迁自安卓工程 tallynotes/src/main/assets/constellation 的 HTML 文件,
+  // 已复制到本项目 assets/constellation/。页面展示格式保持 title\ngrade\ncontent。
 
-  /// 读取星座解析缓存: {星座名: {title,grade,content}}
-  Map<String, dynamic> _readXingzuoCache() {
-    final raw = PrefsStorage.getString(_xingzuoCacheKey);
-    if (raw == null || raw.isEmpty) return {};
-    try {
-      final decoded = jsonDecode(raw);
-      return decoded is Map<String, dynamic> ? decoded : {};
-    } catch (_) {
-      return {};
-    }
-  }
+  /// 页面星座短名 → 本地 HTML 文件名(无扩展名)。
+  /// 安卓 assets 里另有 shizi.html,内容与 leo.html 同为狮子座(仅格式微差),取 leo。
+  static const Map<String, String> _xingzuoFileMap = {
+    '射手': 'sagittarius',
+    '摩羯': 'capricornus',
+    '天秤': 'libra',
+    '巨蟹': 'cancer',
+    '天蝎': 'scorpio',
+    '狮子': 'leo',
+    '处女': 'virgo',
+    '双子': 'gemini',
+    '金牛': 'taurus',
+    '水瓶': 'aquarius',
+    '双鱼': 'pisces',
+    '白羊': 'aries',
+  };
 
-  /// 星座解析成功(200)后保存到本地
-  Future<void> _saveXingzuoCache(String name, XingzuoBean bean) async {
-    final cache = _readXingzuoCache();
-    cache[name] = {
-      'title': bean.title,
-      'grade': bean.grade,
-      'content': bean.content,
-    };
-    await PrefsStorage.setString(_xingzuoCacheKey, jsonEncode(cache));
-  }
-
-  /// 星座运势 - 对齐 Android WeatherCalendarFragment.initXingZuo
-  /// URL: xingzuoUrl + name，即 https://apis.tianapi.com/xingzuo/index?key={token}&me={星座名}
-  /// 缓存策略(用户指定): 接口 code==200 成功时把解析保存到本地;
-  /// 点击时先查本地,命中直接用本地数据不走接口,未命中才请求
-  /// 返回 XingzuoInfo(code==200 时 result 非空;失败/异常返回 null)
+  /// 星座解析 - 改为读取本地 HTML(安卓 tallynotes assets/constellation),
+  /// 不再请求天api xingzuo 接口。
+  /// 解析规则: title 取 <title> 标签(如"白羊座分析介绍");
+  /// grade 取"星座特点"字段值(如"热情活力");
+  /// content 为其余字段按原顺序拼"字段：值",每字段一行。
+  /// 返回 XingzuoInfo(code==200 时 result 非空;文件缺失/解析失败返回 null)
   Future<XingzuoInfo?> fetchXingzuo(String name) async {
-    // 1. 先判断本地是否有对应星座解析
-    final cached = _readXingzuoCache()[name];
-    if (cached is Map<String, dynamic>) {
+    final file = _xingzuoFileMap[name];
+    if (file == null) return null;
+    try {
+      final html =
+          await rootBundle.loadString('assets/constellation/$file.html');
+      // title: <title>白羊座分析介绍</title>(文件内含缩进空白,需 trim)
+      final titleMatch =
+          RegExp(r'<title>(.*?)</title>', dotAll: true).firstMatch(html);
+      final title = titleMatch?.group(1)?.trim() ?? '';
+      // 逐条 <p> 提取"字段：值"(span 标签剔除后按第一个全角冒号切分)
+      final fields = <String, String>{};
+      final ordered = <List<String>>[];
+      final pMatches =
+          RegExp(r'<p[^>]*>(.*?)</p>', dotAll: true).allMatches(html);
+      for (final m in pMatches) {
+        final text = m.group(1)!.replaceAll(RegExp(r'<[^>]*>'), '').trim();
+        if (text.isEmpty) continue;
+        final sep = text.indexOf('：');
+        if (sep <= 0) continue;
+        final label = text.substring(0, sep);
+        final value = text.substring(sep + 1).trim();
+        if (fields.containsKey(label)) continue;
+        fields[label] = value;
+        ordered.add([label, value]);
+      }
+      final grade = fields['星座特点'] ?? '';
+      final contentLines = ordered
+          .where((e) => e[0] != '星座特点')
+          .map((e) => '${e[0]}：${e[1]}');
       return XingzuoInfo(
         code: 200,
-        msg: 'local cache',
-        result: XingzuoBean.fromJson(cached),
+        msg: 'local',
+        result: XingzuoBean(
+          title: title,
+          grade: grade,
+          content: contentLines.join('\n'),
+        ),
       );
-    }
-    // 2. 本地无缓存,请求接口
-    try {
-      final response = await _dio.get<String>(
-        'https://apis.tianapi.com/xingzuo/index',
-        queryParameters: {'key': _almanacToken, 'me': name},
-      );
-      if (response.statusCode != 200 || response.data == null) {
-        return null;
-      }
-      // 对齐 Android Gson().fromJson(data, XingzuoInfo::class.java)
-      final decoded = jsonDecode(response.data!);
-      if (decoded is! Map<String, dynamic>) return null;
-      final info = XingzuoInfo.fromJson(decoded);
-      // 3. 接口返回 200 成功时,把对应星座解析保存到本地
-      if (info.code == 200 && info.result != null) {
-        await _saveXingzuoCache(name, info.result!);
-      }
-      return info;
     } catch (_) {
-      // 对齐 Android OnFail: 空实现
       return null;
     }
   }

@@ -87,6 +87,8 @@ flutter:
     - assets/images/toolbox_air_home/
     # WeatherCalendarFragment(toolsbox_moduel/toolsbox 清逸出行气象v502) 迁入星座图标。
     - assets/images/toolbox_calendar_home/
+    # 星座解析本地数据：迁自安卓 tallynotes/src/main/assets/constellation 的 HTML。
+    - assets/constellation/
     # 底部导航图标(MainWeatherActivity navtools_menu 3Tab, 对齐 Android mipmap 原名)。
     - assets/images/toolbox_nav/
     # 天气页 Lottie 动画（对齐 Android res/raw：sunny/windy/foggy/shower/snow/mist/storm）

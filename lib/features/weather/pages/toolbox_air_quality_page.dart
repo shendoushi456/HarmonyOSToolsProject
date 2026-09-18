@@ -148,8 +148,9 @@ class _ToolboxAirQualityPageState
   Widget build(BuildContext context) {
     // 对齐安卓 AirQualityFragment.onResume：每次切回本 Tab 都重新读城市列表、
     // 重新请求数据，并无条件跳到 fragment_position(天气页滑动时保存的位置)
+    // 本分支 3 Tab：天气(0)/日历(1)/生活指南(2)
     ref.listen(homeTabIndexProvider, (prev, next) {
-      if (next == 3) _initData();
+      if (next == 2) _initData();
     });
     return Scaffold(
       backgroundColor: Colors.white,
