@@ -18,6 +18,7 @@ import statistics from '@ohos.net.statistics';
 import connection from '@ohos.net.connection';
 import radio from '@ohos.telephony.radio';
 import common from '@ohos.app.ability.common';
+import Want from '@ohos.app.ability.Want';
 
 const TAG = 'WifiPlugin';
 const METHOD_CHANNEL = 'qingman.wifi/native';
@@ -28,8 +29,8 @@ const WIFI_LOCATION_PERMISSIONS: Permissions[] = [
 ];
 
 // ArkTS 严格模式要求对象字面量对应显式 interface(arkts-no-untyped-obj-literals)
-// 跳转系统 wifi 设置页的 Want 参数
-interface WifiSettingsWant {
+// 跳转系统 wifi 设置页的 Want 参数(隐式 action 方式)
+interface WifiSettingsActionWant {
   action: string;
 }
 
@@ -268,20 +269,34 @@ export default class WifiPlugin implements FlutterPlugin {
 
   // ====== 跳转系统 wifi 设置页 ======
   /**
-   * 尝试打开系统无线设置。
+   * 打开系统无线设置。
    *
-   * ACTION_WIRELESS_SETTINGS 是公开 API，但在部分新系统上已不再注册可供
-   * 三方应用解析的 Ability。此时返回 false，由 Flutter 提示用户手动进入
-   * “设置 > WLAN”；不调用厂商私有 Ability，也不伪造跳转成功。
+   * 1) 优先显式 Want 直跳华为设置应用的 WLAN 页:
+   *    uri 必须是 'wifi_entry'(设置应用的可路由页面标识)。
+   *    若误用 'wifi' 等未注册标识, 设置应用被拉起后路由失败会显示白屏;
+   *    公开 action 'ohos.settings.wireless' 在 HarmonyOS NEXT 真机上则
+   *    无 Ability 响应, startAbility 匹配失败会弹系统 toast"暂无可用打开方式"。
+   * 2) 回退隐式 action 方式, 仅保留给部分可解析该 action 的系统版本。
    */
   private async openWifiSettings(): Promise<boolean> {
     if (this.uiContext === null) {
       Log.e(TAG, 'openWifiSettings skipped: UIAbility context is unavailable');
       return false;
     }
-    // HarmonyOS SDK 公开的无线设置入口；其中包含 Wi-Fi 设置，
-    // 不使用不存在的 ohos.settings.wifi action。
-    const want: WifiSettingsWant = { action: 'ohos.settings.wireless' };
+    // 1) 显式 Want: 设置应用包名/入口 + uri 定位 WLAN 页
+    const explicitWant: Want = {
+      bundleName: 'com.huawei.hmos.settings',
+      abilityName: 'com.huawei.hmos.settings.MainAbility',
+      uri: 'wifi_entry',
+    };
+    try {
+      await this.uiContext.startAbility(explicitWant);
+      return true;
+    } catch (e) {
+      Log.w(TAG, `openWifiSettings explicit want failed: ${(e as Error)?.message ?? String(e)}`);
+    }
+    // 2) 回退: 隐式 action 方式
+    const want: WifiSettingsActionWant = { action: 'ohos.settings.wireless' };
     try {
       await this.uiContext.startAbility(want);
       return true;

@@ -5,13 +5,13 @@
         "name": "default",
         "type": "HarmonyOS",
         "material": {
-          "certpath": "/Users/zhuanzmima0000/.ohos/config/default_ohos_hbUGDgTL4JbyBE_26afbT1DFf2qslZehwOVpEKnfS9Q=.cer",
-          "keyAlias": "debugKey",
-          "keyPassword": "0000001BF116616CEAC659ABDF8D7005BDCAC75F2CD269678195F021BB04014A33FDC69AD522D58B7E4B7E",
-          "profile": "/Users/zhuanzmima0000/.ohos/config/default_ohos_hbUGDgTL4JbyBE_26afbT1DFf2qslZehwOVpEKnfS9Q=.p7b",
+          "storeFile": "/Users/zhuanzmima0000/鸿蒙签名/湖南睿思/hunanruisi.p12",
+          "storePassword": "0000001AA2FDB393C2D942D6F1CC4E8443F536889811B52A747BC5780BFAAE0CEAC48243C2B26B22D5FD",
+          "keyAlias": "hunanruisi",
+          "keyPassword": "0000001A82A4C32A39A03C1A07B872574C692C34C73631B2C8B10F300A06B05BF044E0F9C044D2096FBF",
           "signAlg": "SHA256withECDSA",
-          "storeFile": "/Users/zhuanzmima0000/.ohos/config/default_ohos_hbUGDgTL4JbyBE_26afbT1DFf2qslZehwOVpEKnfS9Q=.p12",
-          "storePassword": "0000001B9D3FBB286BA597AF9F40DE06331B0C3F8CB420A325290028C1500DEF5EB99FAF467E94BC5FF87E"
+          "profile": "/Users/zhuanzmima0000/鸿蒙签名/湖南睿思/wifihuliantongRelease.p7b",
+          "certpath": "/Users/zhuanzmima0000/鸿蒙签名/湖南睿思/hunanruisi.cer"
         }
       }
     ],
