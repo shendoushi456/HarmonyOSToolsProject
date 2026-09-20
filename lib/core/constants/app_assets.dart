@@ -180,27 +180,35 @@ class AppAssets {
   static const String toolboxTabAirNormal =
       '$_toolboxWeatherBase/ic_six_tab_3_false.png';
 
-  // MainWeatherActivity 的 MyBottomNavView 三项图标，来自 navtools_menu.xml。
-  // 图标取自 Android 工程 mipmap-xxhdpi 的 webp 原图（66px）。
-  // 天气 Tab：icon_tab_tools_1 selector → ic_tab_1_true/false
+  // MainWeatherActivity 的 MyBottomNavView 四项图标，来自 navtools_menu.xml。
+  // 图标取自 master_qingyichuxingqixiang_nongye 分支（png 原图），按 Tab 位置对齐：
+  // 天气=ic_tab_1 / 日历=ic_tab_2 / 农业=ic_tab_3 / 空气质量=ic_tab_4
   static const String toolboxNavWeatherNormal =
-      '$_toolboxWeatherBase/ic_tab_1_false.webp';
+      '$_toolboxWeatherBase/ic_tab_1_false.png';
   static const String toolboxNavWeatherSelected =
-      '$_toolboxWeatherBase/ic_tab_1_true.webp';
-  // 日历 Tab：icon_tab_tools_2 selector → ic_su_tab_2（选中态原版拼写为 ture）
+      '$_toolboxWeatherBase/ic_tab_1_true.png';
+  // 日历 Tab
   static const String toolboxNavCalendarNormal =
-      '$_toolboxWeatherBase/ic_su_tab_2_false.webp';
+      '$_toolboxWeatherBase/ic_tab_2_false.png';
   static const String toolboxNavCalendarSelected =
-      '$_toolboxWeatherBase/ic_su_tab_2_ture.webp';
-  // 空气质量 Tab：icon_tab_tools_3 selector → ic_tab_3_true/false
+      '$_toolboxWeatherBase/ic_tab_2_true.png';
+  // 农业 Tab
+  static const String toolboxNavAgricultureNormal =
+      '$_toolboxWeatherBase/ic_tab_3_false.png';
+  static const String toolboxNavAgricultureSelected =
+      '$_toolboxWeatherBase/ic_tab_3_true.png';
+  // 空气质量 Tab
   static const String toolboxNavAirNormal =
-      '$_toolboxWeatherBase/ic_tab_3_false.webp';
-  static const String toolboxNavAirSelected =
-      '$_toolboxWeatherBase/ic_tab_3_true.webp';
-  static const String toolboxNavLifeGuideNormal =
       '$_toolboxWeatherBase/ic_tab_4_false.png';
-  static const String toolboxNavLifeGuideSelected =
+  static const String toolboxNavAirSelected =
       '$_toolboxWeatherBase/ic_tab_4_true.png';
+  // 顶部定位图标（对齐 Android ic_airbox_loc，17dp）
+  static const String zxxtqLocation = '$_toolboxWeatherBase/ic_airbox_loc.png';
+  // 生活建议 - 紫外线图标（对齐 Android zxxtq_life_uv）
+  static const String zxxtqLifeUv = '$_toolboxWeatherBase/zxxtq_life_uv.png';
+  // 长途规划入口图标（对齐 Android zxxtq_longtrip_route，56dp）
+  static const String zxxtqLongTripRoute =
+      '$_toolboxWeatherBase/zxxtq_longtrip_route.png';
 
   // ====== QxHomeFragment 首页天气页资源（对齐 Android weather/home Compose UI）======
   static const String _qxHomeBase = '$_base/toolbox_qx_home';
@@ -412,6 +420,21 @@ class AppAssets {
       '$_toolboxAgricultureBase/fyzn_ny_new_category_oil.png';
   static const String agricultureCategoryList =
       '$_toolboxAgricultureBase/fyzn_ny_new_category_list.png';
+  // 农业天气卡背景图（对齐 Android zxxtq_agriculture_weather_card，151dp 高）
+  static const String zxxtqAgricultureWeatherCard =
+      '$_toolboxAgricultureBase/zxxtq_agriculture_weather_card.png';
+  // 农业天气卡 - 湿度图标（对齐 Android zxxtq_agriculture_humidity，19dp）
+  static const String zxxtqAgricultureHumidity =
+      '$_toolboxAgricultureBase/zxxtq_agriculture_humidity.png';
+  // 农业天气卡 - 风速图标（对齐 Android zxxtq_agriculture_wind，19dp）
+  static const String zxxtqAgricultureWind =
+      '$_toolboxAgricultureBase/zxxtq_agriculture_wind.png';
+  // 农业天气卡 - 日照图标（对齐 Android zxxtq_agriculture_sunshine，19dp）
+  static const String zxxtqAgricultureSunshine =
+      '$_toolboxAgricultureBase/zxxtq_agriculture_sunshine.png';
+  // 农作物记录卡插图（对齐 Android fyzn_ny_new_record_illustration，86x81dp）
+  static const String agricultureRecordIllustration =
+      '$_toolboxAgricultureBase/fyzn_ny_new_record_illustration.png';
   static const String agricultureAddRecord =
       '$_toolboxAgricultureBase/fyzn_ny_new_add_record.png';
   static const String agricultureDeleteRecord =

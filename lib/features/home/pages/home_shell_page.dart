@@ -1,7 +1,8 @@
-// 底部 3 Tab 容器：天气(QxHome)/日历(QxCalendar)/空气质量(QxAir)，对齐 Android MainWeatherActivity。
+// 底部 4 Tab 容器：天气(QxHome)/日历(QxCalendar)/农业(Nongye)/空气质量(QxAir)，对齐 Android MainWeatherActivity。
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../agriculture/pages/nongye_page.dart';
 import '../../calendar/pages/qx_calendar_page.dart';
 import '../../weather/pages/qx_air_page.dart';
 import '../../weather/pages/qx_home_page.dart';
@@ -20,6 +21,7 @@ class HomeShellPage extends ConsumerWidget {
     const pages = [
       QxHomePage(),
       QxCalendarPage(),
+      NongyePage(),
       QxAirPage(),
     ];
 
@@ -43,13 +45,14 @@ class HomeShellPage extends ConsumerWidget {
   Widget _buildBottomNav(
       BuildContext context, WidgetRef ref, int currentIndex) {
     return Container(
-      height: 72,
+      height: 82,
       decoration: const BoxDecoration(
-        color: Color(0xFFFFFFFF),
+        // 底栏背景色对齐 master_qingyichuxingqixiang_nongye 分支
+        color: Color(0xFF2772C8),
       ),
       child: SafeArea(
         top: false,
-        bottom: false,
+        bottom: true,
         child: Row(
           children: [
             _buildNavItem(
@@ -74,10 +77,19 @@ class HomeShellPage extends ConsumerWidget {
               context,
               ref,
               index: 2,
+              label: '农业',
+              normalIcon: AppAssets.toolboxNavAgricultureNormal,
+              selectedIcon: AppAssets.toolboxNavAgricultureSelected,
+              isSelected: currentIndex == 2,
+            ),
+            _buildNavItem(
+              context,
+              ref,
+              index: 3,
               label: '空气质量',
               normalIcon: AppAssets.toolboxNavAirNormal,
               selectedIcon: AppAssets.toolboxNavAirSelected,
-              isSelected: currentIndex == 2,
+              isSelected: currentIndex == 3,
             ),
           ],
         ),
@@ -110,9 +122,9 @@ class HomeShellPage extends ConsumerWidget {
             const SizedBox(height: 3),
             Text(
               label,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 12,
-                color: Colors.grey,
+                color: Colors.white,
               ),
             ),
           ],

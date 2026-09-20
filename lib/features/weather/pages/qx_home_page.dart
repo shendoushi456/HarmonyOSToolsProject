@@ -115,6 +115,9 @@ class _QxHomePageState extends ConsumerState<QxHomePage>
                           _SunriseSunsetRow(state: state),
                           const SizedBox(height: 20),
                           _ForecastListCard(forecasts: state.forecasts),
+                          const SizedBox(height: 20),
+                          // 底部长途规划入口 - 点击进入 /longTrip 路由
+                          const _LongTripEntry(),
                         ],
                       ),
                     ),
@@ -572,6 +575,64 @@ class _ForecastRow extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+}
+
+/// 底部长途规划入口卡 - 对齐 master_qingyichuxingqixiang_nongye 分支
+/// WeatherHomePage 的 _LongTripEntryCard（白底卡 + 路线图标 + 副标题 + ›箭头）；
+/// 外层已有 20 横向 padding，故 margin 用 zero
+class _LongTripEntry extends StatelessWidget {
+  const _LongTripEntry();
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () => context.push(RoutePaths.longTrip),
+      child: Container(
+        constraints: const BoxConstraints(minHeight: 80),
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 9),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(15),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.12),
+              blurRadius: 6,
+              offset: const Offset(0, 3),
+            ),
+          ],
+        ),
+        child: Row(children: [
+          Image.asset(AppAssets.zxxtqLongTripRoute, width: 56, height: 56),
+          const SizedBox(width: 10),
+          const Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text('长途规划',
+                    style: TextStyle(
+                        color: Color(0xFF147FE4),
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600)),
+                Padding(
+                  padding: EdgeInsets.only(top: 4),
+                  child: Text('规划长途行程，查看沿途天气',
+                      maxLines: 1,
+                      style:
+                          TextStyle(color: Color(0xFF596579), fontSize: 11)),
+                ),
+              ],
+            ),
+          ),
+          const Text('›',
+              style: TextStyle(
+                  color: Color(0xFF147FE4),
+                  fontSize: 28,
+                  fontWeight: FontWeight.w500)),
+        ]),
+      ),
     );
   }
 }

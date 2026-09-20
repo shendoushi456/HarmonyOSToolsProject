@@ -39,6 +39,10 @@ class DisasterGuide {
   final String title;
   final String danger;
   final String prevention;
+
+  /// 指南前置标签，默认"预防措施："；对齐 Android oil_field 干旱指南
+  /// 误配的 preventionLabel="危害："（保真保留）
+  final String preventionLabel;
   final int color;
   final List<String> aliases;
   final Set<String> eventCodes;
@@ -48,6 +52,7 @@ class DisasterGuide {
     required this.danger,
     required this.prevention,
     required this.color,
+    this.preventionLabel = '预防措施：',
     this.aliases = const [],
     this.eventCodes = const {},
   });
@@ -57,8 +62,10 @@ class DisasterGuide {
         eventCodes.contains(warning.eventCode)) {
       return true;
     }
+    // 对齐 Android warningAliases 默认值 listOf(title)
+    final effectiveAliases = aliases.isEmpty ? [title] : aliases;
     final text = '${warning.eventName} ${warning.headline}';
-    return aliases.any(text.contains);
+    return effectiveAliases.any(text.contains);
   }
 }
 
