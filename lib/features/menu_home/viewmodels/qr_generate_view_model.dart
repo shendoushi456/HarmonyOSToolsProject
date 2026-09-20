@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
+import '../../scan_menu/services/document_export_service.dart';
 import 'qr_generate_state.dart';
 
 final qrGenerateViewModelProvider = NotifierProvider<QrGenerateViewModel, QrGenerateState>(
@@ -47,6 +48,15 @@ class QrGenerateViewModel extends Notifier<QrGenerateState> {
     state = state.copyWith(logoPath: targetPath);
   }
 
+  /// 清除：移除 Logo，前景色/背景色恢复默认(黑/白)。
+  void clearLogo() {
+    state = state.copyWith(
+      clearLogo: true,
+      foregroundColor: Colors.black,
+      backgroundColor: Colors.white,
+    );
+  }
+
   /// 生成二维码
   Future<void> generate() async {
     if (state.inputText.isEmpty) {
@@ -67,21 +77,15 @@ class QrGenerateViewModel extends Notifier<QrGenerateState> {
     state = state.copyWith(showPreviewDialog: false);
   }
 
-  /// 保存二维码 - 对齐 QRCodeActivity.java:181-198
-  Future<String?> save() async {
-    if (state.generatedQrBytes == null) return null;
+  /// 保存二维码到系统图库 - 对齐 QRCodeActivity.java:181-198
+  Future<void> save() async {
+    if (state.generatedQrBytes == null) return;
     state = state.copyWith(isSaving: true);
     try {
-      final docDir = await getApplicationDocumentsDirectory();
-      final dir = '${docDir.path}/工具箱/二维码生成';
-      await Directory(dir).create(recursive: true);
-      final now = DateTime.now();
-      final fileName = 'Image-${now.hour.toString().padLeft(2, '0')}-${now.minute.toString().padLeft(2, '0')}-${now.second.toString().padLeft(2, '0')}.png';
-      final path = '$dir/$fileName';
-      await File(path).writeAsBytes(state.generatedQrBytes!);
+      await DocumentExportService()
+          .exportBytesToGallery(state.generatedQrBytes!, name: '二维码生成');
       state = state.copyWith(isSaving: false);
-      return path;
-    } catch (e) {
+    } catch (_) {
       state = state.copyWith(isSaving: false);
       rethrow;
     }

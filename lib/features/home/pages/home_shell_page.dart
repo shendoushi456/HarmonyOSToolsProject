@@ -31,7 +31,7 @@ class HomeShellPage extends ConsumerWidget {
       _NavItem(Icons.calendar_month_outlined, Icons.calendar_month, '日历'),
     ];
     return Container(
-      height: 62,
+      height: 80,
       decoration: const BoxDecoration(
         color: Color(0xFFF9FDFF),
         boxShadow: [
@@ -41,7 +41,7 @@ class HomeShellPage extends ConsumerWidget {
       ),
       child: SafeArea(
         top: false,
-        bottom: false,
+        bottom: true,
         child: Row(
           children: [
             for (var i = 0; i < items.length; i++)

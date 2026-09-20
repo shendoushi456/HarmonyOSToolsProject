@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/constants/app_colors.dart';
+import '../../scan_menu/services/document_export_service.dart';
 import '../viewmodels/qr_generate_state.dart';
 import '../viewmodels/qr_generate_view_model.dart';
 import 'widgets/pdf_tool_layout.dart';
@@ -106,7 +107,7 @@ class QrGeneratePage extends ConsumerWidget {
         const SizedBox(width: 12),
         if (state.logoPath != null)
           TextButton(
-            onPressed: () => vm.setForegroundColor(Colors.black), // 占位，实际应调用清除 logo
+            onPressed: vm.clearLogo, // 清除 Logo 并恢复默认前景色/背景色
             child: const Text('清除'),
           ),
       ],
@@ -158,11 +159,18 @@ class QrGeneratePage extends ConsumerWidget {
                         ? null
                         : () async {
                             try {
-                              final path = await vm.save();
-                              if (context.mounted && path != null) {
+                              await vm.save();
+                              if (context.mounted) {
                                 vm.dismissPreview();
                                 ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(content: Text('已保存: $path')),
+                                  const SnackBar(content: Text('已保存到系统相册')),
+                                );
+                              }
+                            } on GalleryExportException catch (error) {
+                              // 用户在相册权限弹窗取消时不提示失败
+                              if (context.mounted && !error.isCanceled) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(content: Text('保存失败：${error.message}')),
                                 );
                               }
                             } catch (e) {

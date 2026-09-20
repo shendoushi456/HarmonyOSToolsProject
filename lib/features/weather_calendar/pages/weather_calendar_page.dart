@@ -12,9 +12,12 @@ import '../../weather/pages/history_today_page.dart';
 import '../viewmodels/weather_calendar_view_model.dart';
 import 'widgets/month_calendar_view.dart';
 
-/// 节气卡描述 - tools_fr_weather.xml 立冬 TextView 静态原文
+/// 节气卡描述 - 白露为 tools_fr_weather.xml 静态原文；9月23日后(>22号)切为秋分
 const String _kJieQiDesc =
-    '立冬（Beginning of Winter ），是二十四节气之第十九个节气，也是冬季的起始。斗柄指向西北，太阳黄经达225°，于每年公历11月7-8日之间交节 。立，建始也；冬，终也，万物收藏也。立冬，意味着生气开始闭蓄，万物进入休养、收藏状态。其气候也由秋季少雨干燥向阴雨寒冻的冬季气候过渡。';
+    '白露，是“二十四节气”中的第15个节气，秋季第3个节气，干支历申月的结束与酉月的起始。斗指庚，太阳达黄经165度，于公历9月7—9日交节。“白露”是反映自然界寒气增长的重要节气。古人以四时配五行，秋属金，金色白，以白形容秋露，故名“白露”。';
+
+const String _kJieQiDescQiuFen =
+    '秋分（Autumnal Equinox），是二十四节气之第十六个节气，秋季第四个节气。斗指酉，太阳到达黄经180°，于每年的公历9月22至24日交节。';
 
 class WeatherCalendarPage extends ConsumerWidget {
   const WeatherCalendarPage({super.key});
@@ -22,6 +25,10 @@ class WeatherCalendarPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(weatherCalendarViewModelProvider);
+    // 节气卡：9月22日之后(含交节)显示秋分，否则显示白露
+    final isQiuFen = DateTime.now().day > 22;
+    final jieQiTitle = isQiuFen ? '当前节气：秋分' : '当前节气：白露';
+    final jieQiDesc = isQiuFen ? _kJieQiDescQiuFen : _kJieQiDesc;
     // 状态栏高度(安卓 ImmersionBar fitsSystemWindows(false), 内容自行避让)
     final topInset = MediaQuery.paddingOf(context).top;
 
@@ -152,9 +159,9 @@ class WeatherCalendarPage extends ConsumerWidget {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  const Text(
-                                    '当前节气：立冬',
-                                    style: TextStyle(
+                                  Text(
+                                    jieQiTitle,
+                                    style: const TextStyle(
                                       fontSize: 14,
                                       color: Color(0xFF1E1E1E),
                                     ),
@@ -169,11 +176,11 @@ class WeatherCalendarPage extends ConsumerWidget {
                                       ),
                                     ),
                                   ),
-                                  const Padding(
-                                    padding: EdgeInsets.only(top: 10),
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 10),
                                     child: Text(
-                                      _kJieQiDesc,
-                                      style: TextStyle(
+                                      jieQiDesc,
+                                      style: const TextStyle(
                                         fontSize: 12,
                                         color: Color(0xFF000000),
                                       ),
