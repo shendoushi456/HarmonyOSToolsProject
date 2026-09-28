@@ -46,7 +46,13 @@ class _ImageProcessPageState extends ConsumerState<ImageProcessPage>
       _camera = null;
       unawaited(camera!.dispose());
     } else if (state == AppLifecycleState.resumed && _camera == null) {
-      _initializeCamera();
+      // 仅拍摄视图需要恢复预览；结果视图(hasSource)下不重新拉起相机，
+      // 否则相机会在不可见状态下持续渲染。
+      if (!ref
+          .read(imageProcessViewModelProvider(widget.type))
+          .hasSource) {
+        _initializeCamera();
+      }
     }
   }
 
@@ -118,6 +124,13 @@ class _ImageProcessPageState extends ConsumerState<ImageProcessPage>
 
   Future<void> _select(XFile? source) async {
     if (source == null) return;
+    // 选中图片后整页切到结果视图，相机不再可见，先释放会话，
+    // 避免不可见组件持续渲染造成功耗浪费(商店功耗检测项)。
+    final camera = _camera;
+    if (camera != null) {
+      _camera = null;
+      unawaited(camera.dispose());
+    }
     await ref
         .read(imageProcessViewModelProvider(widget.type).notifier)
         .select(File(source.path));

@@ -46,7 +46,56 @@ class _WebToolPageState extends State<WebToolPage> {
     _controller = PlatformWebViewController(
       OhosWebViewControllerCreationParams(),
     )..setJavaScriptMode(JavaScriptMode.unrestricted);
+    _setupPageFinishedInject();
     _loadContent();
+  }
+
+  /// json 编辑器(一个木函)为 Nuxt SPA，页面由 JS 渲染。
+  /// 在每次页面加载完成后注入脚本，隐藏 返回首页/未登录/下载json/copyright 模块。
+  /// 脚本内用 MutationObserver 兜底：SPA 渲染晚于 onPageFinished 也能生效。
+  static const String _jsonEditorHost = 'ol.woobx.cn/tool/json-editor';
+  static const String _randomEditorHost = 'ol.woobx.cn/tool/random-number';
+  static const String _dateEditorHost = 'ol.woobx.cn/tool/date-calculator';
+
+  static const String _jsonEditorHideScript = '''
+(function(){
+  var kws=['返回首页','未登录','下载JSON'];
+  function norm(t){return (t||'').replace(/\\s+/g,'');}
+  function hide(){
+    var els=document.querySelectorAll('a,button,p,span,div,footer');
+    for(var i=0;i<els.length;i++){
+      var el=els[i];
+      var t=norm(el.textContent);
+      if(!t) continue;
+      var hit=false;
+      for(var j=0;j<kws.length;j++){ if(t===kws[j]){hit=true;break;} }
+      if(!hit && t.indexOf('Copyright')===0){hit=true;}
+      if(hit){ el.style.display='none'; }
+    }
+  }
+  hide();
+  var timer=0;
+  function start(){
+    if(!document.body){ setTimeout(start,200); return; }
+    new MutationObserver(function(){
+      clearTimeout(timer);
+      timer=setTimeout(hide,120);
+    }).observe(document.body,{childList:true,subtree:true});
+  }
+  start();
+  setTimeout(hide,800);
+  setTimeout(hide,2500);
+})();
+''';
+
+  Future<void> _setupPageFinishedInject() async {
+    if (!widget.url.contains(_jsonEditorHost) && !widget.url.contains(_randomEditorHost) && !widget.url.contains(_dateEditorHost)) return;
+    final delegate =
+        OhosNavigationDelegate(const PlatformNavigationDelegateCreationParams());
+    await delegate.setOnPageFinished((url) {
+      _controller.runJavaScript(_jsonEditorHideScript);
+    });
+    await _controller.setPlatformNavigationDelegate(delegate);
   }
 
   /// 加载内容 - 对齐 EatActivity.kt:35-81 initWebView

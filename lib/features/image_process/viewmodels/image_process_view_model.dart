@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../models/image_process_state.dart';
@@ -51,8 +52,14 @@ class ImageProcessViewModel
                 style: state.style,
               );
       state = state.copyWith(resultBytes: result, isProcessing: false);
-    } catch (_) {
-      state = state.copyWith(isProcessing: false, errorMessage: '图片处理失败，请稍后重试');
+    } catch (error, stackTrace) {
+      // 诊断日志：真实失败原因(hilog 抓取)，UI 仍显示统一文案。
+      debugPrint('ImageProcess[$_type] failed: $error');
+      debugPrint('ImageProcess[$_type] stack: $stackTrace');
+      // 百度业务错误(配额/图片问题等)直接透出原因，其余显示统一文案。
+      final message =
+          error is StateError ? error.message : '图片处理失败，请稍后重试';
+      state = state.copyWith(isProcessing: false, errorMessage: message);
     }
   }
 }
