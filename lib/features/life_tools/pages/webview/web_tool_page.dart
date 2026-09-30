@@ -57,6 +57,28 @@ class _WebToolPageState extends State<WebToolPage> {
   static const String _randomEditorHost = 'ol.woobx.cn/tool/random-number';
   static const String _dateEditorHost = 'ol.woobx.cn/tool/date-calculator';
 
+  /// 随机数页死循环兜底：
+  /// 原站逻辑为"允许重复=关 且 max-min+1 < 生成数量"时，
+  /// 内层 for(;s.includes(u)&&!allowRepeat;) 永远凑不齐不重复数 → 同步死循环卡死 WebView。
+  /// 方案：包装 Math.random 做看门狗，单次同步执行内调用超过阈值即抛异常打断循环
+  /// (Vue watch 回调异常会被框架捕获，页面保持响应)；事件循环空闲时计数清零。
+  static const String _randomGuardScript = '''
+(function(){
+  if (window.__rnRandomGuard) return;
+  window.__rnRandomGuard = true;
+  var orig = Math.random.bind(Math);
+  var count = 0;
+  setInterval(function(){ count = 0; }, 100);
+  Math.random = function(){
+    if (++count > 200000) {
+      count = 0;
+      throw new Error('random-number guard: 检测到不重复生成死循环，已打断');
+    }
+    return orig();
+  };
+})();
+''';
+
   static const String _jsonEditorHideScript = '''
 (function(){
   var kws=['返回首页','未登录','下载JSON'];
@@ -94,6 +116,9 @@ class _WebToolPageState extends State<WebToolPage> {
         OhosNavigationDelegate(const PlatformNavigationDelegateCreationParams());
     await delegate.setOnPageFinished((url) {
       _controller.runJavaScript(_jsonEditorHideScript);
+      if (widget.url.contains(_randomEditorHost)) {
+        _controller.runJavaScript(_randomGuardScript);
+      }
     });
     await _controller.setPlatformNavigationDelegate(delegate);
   }
