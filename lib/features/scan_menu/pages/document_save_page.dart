@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
-import '../../home/viewmodels/home_tab_view_model.dart';
 import '../services/document_export_service.dart';
 import '../viewmodels/scanned_document_view_model.dart';
 
@@ -101,7 +100,7 @@ class _DocumentSavePageState extends ConsumerState<DocumentSavePage> {
           .read(scannedDocumentRepositoryProvider)
           .saveCapturedDocument(widget.file, displayName: _name);
       await ref.read(scannedDocumentViewModelProvider.notifier).refresh();
-      ref.read(homeTabIndexProvider.notifier).state = 1;
+      // 本分支 Tab1 是 PDF 工具页，不再切换 Tab（避免保存后跳到 PDF 工具页）。
       if (mounted) {
         Navigator.pop(context, true);
       }

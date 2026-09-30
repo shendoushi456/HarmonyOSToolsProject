@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:camera/camera.dart';
@@ -30,6 +31,10 @@ class _DocumentCameraPageState extends State<DocumentCameraPage>
   CameraController? _controller;
   bool _initializing = true;
   bool _capturing = false;
+  bool _opening = false;
+
+  /// 拍照完成已释放相机、正在返回预览页，过渡期不再显示相机内容。
+  bool _closing = false;
   String? _error;
 
   @override
@@ -41,13 +46,20 @@ class _DocumentCameraPageState extends State<DocumentCameraPage>
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    final controller = _controller;
-    if (controller == null || !controller.value.isInitialized) return;
     if (state == AppLifecycleState.inactive) {
+      // 失焦/退后台时立即释放相机并同步 UI，让 CameraPreview 从组件树
+      // 卸载，避免不可见状态下持续渲染造成功耗浪费(商店功耗检测项)。
+      final controller = _controller;
       _controller = null;
-      controller.dispose();
+      if (mounted) setState(() {});
+      unawaited(controller?.dispose());
     } else if (state == AppLifecycleState.resumed) {
-      _initializeCamera();
+      // 本页即拍摄视图，回前台且相机已释放时重新拉起预览。
+      // 对齐 master_lecaihuihuawu be769c7 功耗修复方案：
+      // 仅拍摄视图恢复预览，不可见视图不重新拉起相机。
+      if (_controller == null && !_capturing && !_closing) {
+        _initializeCamera();
+      }
     }
   }
 
@@ -59,9 +71,9 @@ class _DocumentCameraPageState extends State<DocumentCameraPage>
   }
 
   Future<void> _initializeCamera() async {
-    if (_initializing == false && _controller?.value.isInitialized == true) {
-      return;
-    }
+    // 重入保护：避免并发初始化泄漏一个持续渲染的相机 session。
+    if (_opening) return;
+    _opening = true;
     if (mounted) {
       setState(() {
         _initializing = true;
@@ -74,6 +86,11 @@ class _DocumentCameraPageState extends State<DocumentCameraPage>
       if (granted != true) {
         throw const DocumentCaptureException('未获得相机权限');
       }
+      // 鸿蒙同一时刻只允许一个相机 session：先释放旧会话再创建新的，
+      // 防止旧相机在不可见状态下持续渲染。
+      final previous = _controller;
+      _controller = null;
+      await previous?.dispose();
       final cameras = await availableCameras();
       if (cameras.isEmpty) {
         throw const DocumentCaptureException('未找到可用相机');
@@ -88,7 +105,10 @@ class _DocumentCameraPageState extends State<DocumentCameraPage>
         enableAudio: false,
       );
       await controller.initialize();
-      await _controller?.dispose();
+      if (!mounted) {
+        await controller.dispose();
+        return;
+      }
       _controller = controller;
     } on DocumentCaptureException catch (error) {
       _error = error.message;
@@ -99,6 +119,7 @@ class _DocumentCameraPageState extends State<DocumentCameraPage>
     } catch (_) {
       _error = '相机初始化失败，请重试';
     } finally {
+      _opening = false;
       if (mounted) setState(() => _initializing = false);
     }
   }
@@ -111,6 +132,12 @@ class _DocumentCameraPageState extends State<DocumentCameraPage>
     setState(() => _capturing = true);
     try {
       final image = await controller.takePicture();
+      // 拍照完成即将返回预览页，相机不再可见，先释放会话，
+      // 避免不可见组件持续渲染造成功耗浪费(商店功耗检测项)。
+      _closing = true;
+      _controller = null;
+      if (mounted) setState(() {});
+      unawaited(controller.dispose());
       if (mounted) Navigator.pop(context, File(image.path));
     } on CameraException catch (error) {
       if (mounted) {
@@ -171,8 +198,11 @@ class _DocumentCameraPageState extends State<DocumentCameraPage>
                           message: _error!, onRetry: _initializeCamera)
                       : previewReady
                           ? Center(child: CameraPreview(controller!))
-                          : _CameraError(
-                              message: '相机未就绪', onRetry: _initializeCamera),
+                          : _closing
+                              ? const SizedBox.shrink()
+                              : _CameraError(
+                                  message: '相机未就绪',
+                                  onRetry: _initializeCamera),
             ),
           ),
           SizedBox(
