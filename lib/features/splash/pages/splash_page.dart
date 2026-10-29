@@ -7,6 +7,7 @@ import '../../../core/constants/app_assets.dart';
 import '../../../core/storage/prefs_storage.dart';
 import '../../../router/route_names.dart';
 import '../../setting/utils/app_info_util.dart';
+import '../../todo_clockin/services/reminder_launch_coordinator.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({super.key});
@@ -60,6 +61,8 @@ class _SplashPageState extends State<SplashPage> {
         onAgree: () async {
           await PrefsStorage.saveIsAgressment(true);
           if (dialogContext.mounted) Navigator.of(dialogContext).pop();
+          // 协议同意后派发此前保留的冷启动通知点击事件
+          ReminderLaunchCoordinator.instance.notifyPrivacyAccepted();
           _toMain();
         },
         onRefuse: () {

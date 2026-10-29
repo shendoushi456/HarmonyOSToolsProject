@@ -43,6 +43,10 @@
     {
       "name": "permission_media_reason",
       "value": "用于从相册选择识别图片"
+    },
+    {
+      "name": "permission_reminder_reason",
+      "value": "用于在待办和打卡时间到达时发送提醒"
     }
   ]
 }
